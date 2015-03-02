@@ -1,0 +1,125 @@
+<div class="bannerLoanSignContract hidden-print">
+  <div class="container">
+
+    <div class="col-sm-8 col-sm-offset-2">
+      <h3><strong>Your payment plan</strong></h3>
+
+      <div class="row loan-plan-sign-contract">
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.loanAmount | currency}}
+              <span class="text-CS clearfix">loan amount</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.term}}
+              <span class="text-CS clearfix">term</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.apr + '%'}}
+              <span class="text-CS clearfix">apr</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.monthlyPayment | currency}}
+              <span class="text-CS clearfix">monthly payment</span>
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-8 col-sm-offset-2">
+      <div class="contract bg-Block">
+        <div class="clearfix"></div>
+        <span>
+          <small>
+            <strong class="pull-right hidden-print">
+              <a href="javascript:window.print()" target="blank">PRINT</a>
+            </strong>
+          </small>
+        </span>
+        <div class="clearfix"></div>
+
+        <!-- contract -->
+        <div ng-bind-html="contractHTML"></div>
+        <!-- contract -->
+
+      </div>
+
+      <div class="sign-contract hidden-print">
+        <form name="signContractForm" ng-submit="signAgreement()" novalidate>
+
+          <h3>Sign contract</h3>
+          <div class="row">
+            <div class="col-sm-4">
+              <small>First name</small>
+              <input type="text" name="firstName" ng-model="signContract.firstName" class="form-control" placeholder="First name" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="signContractForm.firstName.$error.required && submitted">
+                <small class="text-CS">First name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="signContractForm.firstName.$error.pattern && submitted">
+                <small class="text-CS">First name should only contain letters</small>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <small>Last name</small>
+              <input type="text" name="lastName" ng-model="signContract.lastName" class="form-control" placeholder="Last name" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="signContractForm.lastName.$error.required && submitted">
+                <small class="text-CS">Last name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="signContractForm.lastName.$error.pattern && submitted">
+                <small class="text-CS">Last name should only contain letters</small>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <small>Last 4 digits of your SSN*</small>
+              <input type="text" name="ssn" ng-model="signContract.ssn" class="form-control" ui-mask="9 9 9 9" placeholder="_ _ _ _" required ng-required="true">
+              <div class="text-CS text-center" ng-show="signContractForm.ssn.$error.required && submitted">
+                <small class="text-CS">SSN is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="signContractForm.ssn.$error.mask && submitted">
+                <small class="text-CS">SSN Format Error</small>
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <small>I AGREE that I have read all the applicable terms and conditions of the agreement above and consent to all terms.</small>
+            </div>
+            <div class="clearfix"></div>
+            <br>
+            <div class="clearfix"></div>
+            <div class="col-sm-6 col-sm-offset-3">
+              <button class="btn btnSignUp btn-block btn-lg" type="submit">Sign Agreement</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="container empty-car text-CS" ng-show="loading">
+  <loading></loading>
+</div>

@@ -1,0 +1,70 @@
+<div class="width-100 bg-Block">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+
+        <br>
+
+        <img src="/assets/images/check-example.png" style="max-width:370px" class="center-block" id="check-img">
+
+        <form name="paymentForm" ng-submit="confirmLoanPayment()" novalidate>
+
+          <div class="row">
+
+            <div class="col-sm-6">
+              Rounting number (ABA)
+              <input type="text" name="aba" ng-model="inputRoutingNumber" class="form-control" placeholder="" required ng-required="true" ng-change="ABAValidator()" ng-blur="maskABA()" ng-focus="unmaskABA()">
+              <div class="text-CS text-center" ng-show="paymentForm.aba.$error.required && submitted">
+                <small class="text-CS">Routing number is required</small>
+              </div>
+              <div class="text-CS text-center number-error" ng-show="paymentForm.aba.$error.aba && submitted">
+                <small class="text-CS">Routing number is not correct</small>
+              </div>
+              Repeat Routing number (ABA)
+              <input type="text" name="abaVerification" ng-model="inputRoutingNumberVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskABAVerification()" ng-focus="unmaskABAVerification()">
+              <div class="text-CS text-center" ng-show="paymentForm.abaVerification.$error.required && submitted">
+                <small class="text-CS">Routing number verification is required</small>
+              </div>
+              <div class="text-CS text-center number-match" ng-show="paymentForm.abaVerification.$error.match && submitted">
+                <small class="text-CS">Routing number verification does not match</small>
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              Account number (DDA)
+              <input type="text" name="dda" ng-model="inputAccountNumber" class="form-control" placeholder="" required ng-required="true" ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()">
+              <div class="text-CS text-center" ng-show="paymentForm.dda.$error.required && submitted">
+                <small class="text-CS">Account number is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="paymentForm.dda.$error.pattern && submitted">
+                <small class="text-CS">Account number format error</small>
+              </div>
+              Repeat Account number (DDA)
+              <input type="text" name="ddaVerification" ng-model="inputAccountNumberVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()">
+              <div class="text-CS text-center" ng-show="paymentForm.ddaVerification.$error.required && submitted">
+                <small class="text-CS">Account number verification is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="paymentForm.ddaVerification.$error.match && submitted">
+                <small class="text-CS">Account number verification does not match</small>
+              </div>
+            </div>
+
+            <div class="clearfix"><br></div>
+
+            <div class="col-sm-6 col-sm-offset-3">
+              <button class="btn btnSignUp btn-block btn-lg" type="submit" id="payment-btn">Confirm</button>
+              <br>
+              <br>
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container empty-car text-CS" ng-show="loading">
+  <loading></loading>
+</div>

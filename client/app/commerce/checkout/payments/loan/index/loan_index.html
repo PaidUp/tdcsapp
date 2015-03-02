@@ -1,0 +1,159 @@
+<div class="bannerLoan">
+ <div class="container">
+    <div class="row">
+      <div class="col-sm-12 title">
+        <img src="/assets/images/loanHomeIcon.png" class="center-block">
+        <h2>Your order qualifies for special financing!</h2>
+      </div>
+      <div class="col-sm-4 item1">
+        <h2><strong>Check your rate</strong></h2>
+        It takes just a few minutes to apply. <br>
+        <strong>Applying won’t impact your FICO&reg; credit score</strong>.
+      </div>
+      <div class="col-sm-4 item2">
+        <h2><strong>Sign your contract online</strong></h2>
+        You can e-sign your contract if approved. <br>
+        <strong>Trust &amp; security is our #1 priority.</strong>
+      </div>
+      <div class="col-sm-4 item3">
+        <h2><strong>Join the team!</strong></h2>
+        We will notify the team of your approved loan. <br>
+        <strong>And get ready for the season!</strong>
+      </div>
+      <div class="clearfix"></div>
+      <div class="home-button center-block">
+        <a class="btn btnSignUp btn-block btn-lg loan-apply-btn" ui-sref="payment-loan-apply">Apply now</a>
+      </div>
+    </div>
+
+    <div class="row ex-loan-plan">
+      <div class="col-sm-4">
+        <div class="explanation">
+          <strong class="clearfix">Example payment plan<sup>1</sup></strong>
+          <i class="fa fa-lock img-circle"></i>At Convenience Select, we use 128-bit SSL protection and strict, high levels of security and encriptions standards.
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="item">
+          <strong>
+            {{paymentPlan.loanAmount | currency}}
+            <span class="text-CS clearfix">loan amount</span>
+          </strong>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="item">
+          <strong>
+            {{paymentPlan.term}}
+            <span class="text-CS clearfix">term</span>
+          </strong>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="item">
+          <strong>
+            {{paymentPlan.apr}}
+            <span class="text-CS clearfix">apr</span>
+          </strong>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="item">
+          <strong>
+            {{paymentPlan.monthlyPayment | currency}}
+            <span class="text-CS clearfix">monthly payment</span>
+          </strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="container">
+
+  <br>
+  <br>
+
+  <div class="row">
+
+    <div class="col-md-8">
+      <table class="table loan-table">
+        <thead>
+          <tr>
+            <th><strong>{{"item" | uppercase}}</strong></th>
+            <th></th>
+            <th width="11%"><strong>{{"item price" | uppercase}}</strong></th>
+            <th width="11%"><strong>{{"quantity" | uppercase}}</strong></th>
+            <th width="11%"><strong>{{"total" | uppercase}}</strong></th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr ng-repeat="team in teams">
+            <td><img ng-src="{{team.getImage('small_image').url}}" alt=""></td>
+            <td>
+              <strong>{{team.attributes.name}}</strong> {{team.attributes.season.name}} {{team.attributes.shortDescription}} <br>
+
+            </td>
+            <td>{{team.attributes.price | currency}}</td>
+            <td>{{team.attributes.qty}}</td>
+            <td>{{team.attributes.price | currency}}</td>
+          </tr>
+
+
+
+          <tr ng-repeat="requiredItem in item.attributes.requiredItems">
+            <td><img src="http://placehold.it/85x85" alt=""></td>
+            <td>{{requiredItem.itemName}}</td>
+            <td>{{requiredItem.price | currency}}</td>
+            <td>{{requiredItem.quantity}}</td>
+            <td>{{requiredItem.price * requiredItem.quantity | currency}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-4">
+      <ul class="order-summary">
+        <li>
+          <strong>ORDER SUMMARY</strong>
+        </li>
+        <li>
+          <strong>{{subtotal.title  | uppercase}}</strong>
+          <span>{{subtotal.amount | currency}}</span>
+        </li>
+        <!-- <li>
+          <strong>{{"shipping" | uppercase}}</strong>
+          <span>{{shipping | currency}}</span>
+        </li>
+        <li>
+          <strong>{{"tax" | uppercase}}</strong>
+          <span>{{tax | currency}}</span>
+        </li> -->
+        <li>
+          <strong>{{total.title | uppercase}}</strong>
+          <span>{{total.amount | currency}}</span>
+        </li>
+      </ul>
+      <button class="btn btnSignUp btn-block btn-lg loan-apply-btn" type="button" ui-sref="payment-loan-apply">Apply Now!</button>
+      <button class="btn btnSignUpWhite btn-block btn-lg" type="button" ui-sref="cart">Edit Order</button>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <small>
+    <strong>Important</strong> <br>
+    (1) The actual amount of loan that a coustomer qualifies may vary based on credit determination and state law. Minimum loan amounts vary by state.
+  </small>
+</div>
+  <br />
+  <br />
+
+<div class="container empty-car text-CS" ng-show="(!total || teams.length === 0) && !noCart">
+  <loading></loading>
+</div>

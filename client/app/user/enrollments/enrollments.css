@@ -1,0 +1,105 @@
+.enrollments-acordion .panel-heading {
+  height: auto;
+  padding: 0px;
+  border: none;
+  background-color: #ffffff;
+  border-bottom: 1px solid #fff;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+.enrollments-acordion .panel-heading small{
+  color: #6c737c;
+}
+.enrollments-acordion .panel.panel-default{
+  border: none;
+}
+.enrollments-acordion .panel-title{
+  font-weight: 300;
+}
+.enrollments-acordion .panel-default > .enrollments-acordion .panel-heading {
+  color: #6c737c;
+  background-color: #fff;
+  border-color: none;
+}
+.enrollments-acordion .table > tbody > tr > td{
+  padding: 14px;
+  font-size: 12px;
+  line-height: 16px;
+  /*vertical-align:middle;*/
+}
+.enrollments-acordion .table > thead > tr > th{
+  padding: 10px;
+  font-size: 12px;
+  line-height: 13px;
+  vertical-align:middle;
+  text-align: center;
+}
+.enrollments-acordion .table {
+  margin-bottom: 0px;
+  color: #6c737c;
+}
+.enrollments-acordion .table-bordered > tbody > tr > td{
+  border: 2px solid #fff;
+  background-color: #f9f9f9;
+}
+.enrollments-acordion .table-bordered > thead > tr > th{
+  border: 2px solid #fff;
+  background-color: #f9f9f9;
+}
+.enrollments-acordion .table img{
+  width: 58px;
+  border: 1px solid #cad0d7;
+  margin: 5px;
+  float: left;
+}
+.enrollments-acordion .panel {
+  -webkit-box-shadow: none;
+  -moz-box-shadow:    none;
+  box-shadow:         none;
+}
+.enrollments-acordion .table > tbody > tr > td:first-child{
+  width: 98px;
+  font-size: 11px;
+}
+.enrollments-acordion .table > tbody > tr > td:nth-child(2) img{
+  margin: 5px 20px 5px 5px;
+}
+.table.payment-schedule > tbody > tr > td{
+  text-align: center;
+}
+.table.payment-schedule > tbody > tr > td:first-child{
+  font-size: 12px;
+  text-align: center;
+}
+.enrollments-acordion .panel-body .table > tbody > tr > td:nth-child(4){
+  width: 98px;
+}
+.enrollments-acordion .table > thead > tr > th:first-child{
+  width: 98px;
+}
+.enrollments-acordion .table > thead > tr > th:nth-child(4){
+  width: 98px;
+}
+.enrollments-acordion .athlete-name{
+  font-size: 14px;
+}
+.enrollments-acordion .athlete-team-info{
+  color: #a1acb5;
+}
+.enrollments-acordion .panel-group .panel-heading + .enrollments-acordion .panel-collapse .panel-body {
+  border-top: 1px solid #ddd;
+}
+.enrollments-acordion .panel-collapse .panel-body {
+  padding: 0px;
+  padding-bottom: 15px;
+}
+.enrollments-acordion .panel-group .panel-heading + .panel-collapse .panel-body {
+  border-top: 1px solid #fff;
+}
+.enrollments-acordion .table > thead:first-child > tr:first-child > th{
+  border-top: 1px solid #fff;
+}
+.item-paid{
+  color: #cad0d7;
+}

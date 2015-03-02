@@ -1,0 +1,170 @@
+<div class="container">
+  <form name="updateAthleteForm" ng-submit="updateAthlete()" novalidate>
+    <br>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+
+        <div class="row bg-Block" ng-form name="profileForm">
+          <div class="col-sm-12">
+            <h3 class="text-CS">My Athlete's info</h3>
+          </div>
+
+          <div class="col-sm-6 col-sm-push-6">
+            <img src="/assets/images/avatar.jpg" alt="" class="img-circle center-block">
+          </div>
+          <!-- first name -->
+          <div class="col-sm-6 col-sm-pull-6">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" name="firstName" class="form-control" placeholder="First name" ng-model="user.firstName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="profileForm.firstName.$error.required && submitted">
+                <small class="text-CS">First Name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="profileForm.firstName.$error.maxlength && submitted">
+                <small class="text-CS">First Name exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="profileForm.firstName.$error.pattern && submitted">
+                <small class="text-CS">First Name should only contain letters</small>
+              </div>
+            </div>
+            <!-- last name -->
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" name="lastName" class="form-control" placeholder="Last name" ng-model="user.lastName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="profileForm.lastName.$error.required && submitted">
+                <small class="text-CS">Last Name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="profileForm.lastName.$error.maxlength && submitted">
+                <small class="text-CS">Last Name exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="profileForm.lastName.$error.pattern && submitted">
+                <small class="text-CS">Last Name should only contain letters</small>
+              </div>
+            </div>
+            <!-- gender -->
+            <label>Gender</label><br>
+            <label class="radio-inline radioModal">
+              <input type="radio"
+                      name="radioGender"
+                      value="male"
+                      ng-model="user.gender"
+                      ng-required="!user.gender">
+              <div>Male</div>
+            </label>
+            <label class="radio-inline radioModal">
+              <input type="radio"
+                      name="radioGender"
+                      value="female"
+                      ng-model="user.gender"
+                      ng-required="!user.gender">
+              <div>Female</div>
+            </label>
+            <div class="text-CS text-center" ng-show="profileForm.radioGender.$error.required && submitted">
+              <small class="text-CS">A Gender should be selected</small>
+            </div>
+
+            <br>
+
+            <!-- date of birth -->
+            <div class="form-inline clearfix" ng-class="{ 'has-error': (profileForm.year.$invalid || profileForm.month.$invalid || profileForm.day.$invalid) && submitted }">
+              <label>Date of Birth</label><br>
+              <div class="form-group">
+                <label class="sr-only"for="month">Month</label>
+                <input type="number"
+                        class="form-control"
+                        id="month"
+                        placeholder="MM"
+                        name="month"
+                        ng-model="date.month"
+                        required
+                        ng-required="true"
+                        ng-pattern="/^\d{1,2}$/">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="day">Day</label>
+                <input type="number"
+                        class="form-control"
+                        id="day"
+                        placeholder="DD"
+                        name="day"
+                        ng-model="date.day"
+                        required
+                        ng-required="true"
+                        ng-pattern="/^\d{1,2}$/">
+              </div>
+              <div class="form-group">
+                <label class="sr-only" for="year">Year</label>
+                <input type="number"
+                        class="form-control col-sm-4"
+                        id="year"
+                        placeholder="YYYY"
+                        name="year"
+                        ng-model="date.year"
+                        required
+                        ng-required="true"
+                        ng-pattern="/^\d{4}$/">
+              </div>
+              <div class="text-CS text-center" ng-show="profileForm.$error.date && submitted">
+                <small class="text-CS">Invalid Date</small>
+              </div>
+            </div>
+            <br>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row bg-Block" ng-form name="contactForm">
+          <div class="col-sm-12">
+            <h3 class="text-CS">Contact info</h3>
+            <small>We will sen you a copy of every message that we send to your child.</small>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <input type="email"
+                      class="form-control"
+                      placeholder="Email (optional)"
+                      name="email"
+                      ng-model="user.email"
+                      ng-class="{ 'has-error': contactForm.email.$invalid && submitted }">
+              <div class="text-CS text-center" ng-show="contactForm.email.$error.email && submitted">
+                <small class="text-CS">Not a valid email.</small>
+              </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error': contactForm.phone.$invalid && submitted }">
+                <input type="text"
+                        class="form-control"
+                        placeholder="Phone (optional)"
+                        name="phone"
+                        ng-model="user.phone"
+                        ng-pattern="/^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$/">
+                <!-- (541) 754-3010 VALID -->
+                <!-- (541) 7543010 VALID -->
+                <!-- (541) 754 3010 VALID -->
+                <!-- (541)754 3010 VALID -->
+                <!-- 5417543010 VALID -->
+                <div class="text-CS text-center" ng-show="contactForm.phone.$error.pattern && submitted">
+                  <small class="text-CS">Invalid phone format</small>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <div class="row">
+          <div class="col-xs-3">
+            <button type="submit" class="btn btnCancel btn-block">Cancel</button>
+          </div>
+          <div class="col-xs-3">
+            <button type="submit" class="btn btnSignUp btn-block">Save changes</button>
+          </div>
+          <div class="col-xs-3 col-xs-offset-3">
+          </div>
+        </div>
+        <br>
+
+      </div>
+    </div>
+  </form>
+</div>

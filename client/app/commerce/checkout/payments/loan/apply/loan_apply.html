@@ -1,0 +1,268 @@
+<div class="loan-apply-container">
+  <form name="loanApplyForm" ng-submit="apply()" novalidate>
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm-4 text-center clearfix">
+          <h3>Personal Info</h3>
+        </div>
+      </div>
+      <div class="row">
+
+          <div class="form-group  clearfix">
+            <div class="col-sm-4 text-right">
+              <label>First Name</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" name="firstName" class="form-control" placeholder="First name" ng-model="user.firstName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="loanApplyForm.firstName.$error.required && submitted">
+                <small class="text-CS">First Name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.firstName.$error.maxlength && submitted">
+                <small class="text-CS">First Name exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.firstName.$error.pattern && submitted">
+                <small class="text-CS">First Name should only contain letters</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Last Name</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" name="lastName" class="form-control" placeholder="Last name" ng-model="user.lastName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="loanApplyForm.lastName.$error.required && submitted">
+                <small class="text-CS">Last Name is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.lastName.$error.maxlength && submitted">
+                <small class="text-CS">Last Name exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.lastName.$error.pattern && submitted">
+                <small class="text-CS">Last Name should only contain letters</small>
+              </div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Address</label>
+            </div>
+            <div class="col-sm-4" ng-class="{ 'has-error': loanApplyForm.address1.$invalid && submitted }">
+              <input type="text" class="form-control" name="address1" placeholder="Address 1" ng-model="billing.address.address1" required ng-required="true">
+              <div class="text-CS text-center" ng-show="loanApplyForm.address1.$error.required && submitted">
+                <small class="text-CS">Address1 is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 col-sm-offset-4">
+              <input type="text" class="form-control" name="address2" placeholder="Address 2" ng-model="billing.address.address2">
+            </div>
+          </div>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 col-sm-offset-4" ng-class="{ 'has-error': loanApplyForm.city.$invalid && submitted }">
+              <input type="text" class="form-control" name="city" placeholder="City" ng-model="billing.address.city" required ng-required="true">
+              <div class="text-CS text-center" ng-show="loanApplyForm.city.$error.required && submitted">
+                <small class="text-CS">City is required</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 col-sm-offset-4">
+              <div class="row">
+                <div class="col-sm-6">
+                  <select name="state"
+                        ng-model="billing.address.state"
+                        class="form-control"
+                        ng-class="{ 'has-error': loanApplyForm.state.$invalid && submitted }"
+                        required
+                        ng-required="true">
+                    <option value="" disabled>Select a State</option>
+                    <option ng-repeat="state in states" value="{{state.abbreviation}}">
+                        {{state.abbreviation}}
+                    </option>
+                  </select>
+                  <div class="text-CS text-center" ng-show="loanApplyForm.state.$error.required && submitted">
+                    <small class="text-CS">State is required</small>
+                  </div>
+                </div>
+                <div class="col-sm-6" ng-class="{ 'has-error': loanApplyForm.zipCode.$invalid && submitted }">
+                  <input type="text" class="form-control" required ng-required="true" name="zipCode" placeholder="Zip code" ng-model="billing.address.zipCode" ng-maxlength="5" ng-minlength="5" ng-pattern="/^\d{5}$/">
+                  <div class="text-CS text-center" ng-show="(loanApplyForm.zipCode.$error.maxlength || loanApplyForm.zipCode.$error.minlength || loanApplyForm.zipCode.$error.pattern) && submitted">
+                    <small class="text-CS">Invalid Zip code</small>
+                  </div>
+                  <div class="text-CS text-center" ng-show="loanApplyForm.zipCode.$error.required && submitted">
+                    <small class="text-CS">Zip Code is required</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <br>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Phone</label>
+            </div>
+            <div class="col-sm-4" ng-class="{ 'has-error': loanApplyForm.phone.$invalid && submitted }">
+              <input type="text" class="form-control" name="phone" placeholder="Phone number" ng-model="billing.phone" required ng-required="true" ng-pattern="/^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$/">
+              <!-- (541) 754-3010 VALID -->
+              <!-- (541) 7543010 VALID -->
+              <!-- (541) 754 3010 VALID -->
+              <!-- (541)754 3010 VALID -->
+              <!-- 5417543010 VALID -->
+              <div class="text-CS text-center" ng-show="loanApplyForm.phone.$error.pattern">
+                <small class="text-CS">Invalid phone format</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.phone.$error.required && submitted">
+                <small class="text-CS">Your phone is required</small>
+              </div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Email</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="email" name="email" class="form-control" placeholder="Email" ng-model="user.email" required ng-required="true">
+              <div class="text-CS text-center" ng-show="loanApplyForm.email.$error.email && submitted">
+                <small class="text-CS">Not a valid email.</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.email.$error.required && submitted">
+                <small class="text-CS">What's your email address?</small>
+              </div>
+            </div>
+          </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4 text-center clearfix">
+          <h3>Incomes Info</h3>
+        </div>
+      </div>
+
+
+      <div class="row">
+
+        <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Income Type</label>
+            </div>
+            <div class="col-sm-4">
+              <select name="incomeType"
+                      ng-model="incomeInfo.type"
+                      class="form-control"
+                      ng-class="{ 'has-error': loanApplyForm.incomeType.$invalid && submitted }"
+                      required
+                      ng-required="true">
+                  <option value="" disabled>Select an Income type</option>
+                  <option ng-repeat="type in incomeInfoTypes" value="{{type.value}}">
+                      {{type.value}}
+                  </option>
+              </select>
+              <div class="text-CS text-center" ng-show="loanApplyForm.incomeType.$error.required && submitted">
+                <small class="text-CS">Income Type is required</small>
+              </div>
+            </div>
+          </div>
+
+          <br>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Social Security Number</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" name="socialSecurityNumber" ng-model="inputSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
+              <div class="text-CS text-center" ng-show="loanApplyForm.socialSecurityNumber.$error.required && submitted">
+                <small class="text-CS">Social Security Number is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.socialSecurityNumber.$error.pattern && submitted">
+                <small class="text-CS">Social Security Number Format Error</small>
+              </div>
+              <small>We use 128-bit SSL protection and strict levels of security and encryption standards to keep your information safe.</small>
+            </div>
+          </div>
+
+          <div class="form-group clearfix">
+            <div class="col-sm-4 text-right">
+              <label>Monthly Gross Income</label>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" name="monthlyGrossIncome" ng-model="incomeInfo.monthlyGrossIncome" required ng-required="true" ng-change="validateGrossIncome()">
+              <div class="text-CS text-center" ng-show="loanApplyForm.monthlyGrossIncome.$error.required && submitted">
+                <small class="text-CS">Monthly Gross Income is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="loanApplyForm.monthlyGrossIncome.$error.number && submitted">
+                <small class="text-CS">Monthly Gross Income Must be Only Numbers</small>
+              </div>
+              <small>Monthly Gross Income is your income each month AFTER all taxes and deductions. Alimony, child support, or separate maintenance income need not to be revealed if you do not wish to have it considered as a basis for repaying this loan.</small>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+
+  <div class="width-100 bg-Block">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+
+          <div class="row">
+            <div class="col-sm-12">
+              <br>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="agree" ng-model="agree" required ng-required="true">I consent to the electronic communications agreement specified
+                  <div id="agree-checkbox"></div>
+                  <a href="" ng-click="modalFactory.ElectronicModal()">&nbsp;here</a>
+                </label>
+              </div>
+
+              <br>
+              <div class="text-CS" ng-show="loanApplyForm.agree.$error.required && submitted">
+                <small class="text-CS">Please click on the consent box.</small>
+              </div>
+              <strong>By clicking on the "Agree and Apply" button, I agree to the following:</strong>
+              <br>
+              <ul>
+                <li>I consent to the <a href="" ng-click="modalFactory.CreditReportAuthModal()">Credit Report Pull Authorization</a></li>
+                <li>I agree to Convenience Select's <a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of Use</a> and Convenience Select's <a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                <li>I consent to receive calls (including SMS text messages) from Convenience Select regarding my account as specified <a href="" ng-click="modalFactory.PhoneAuthModal()">here</a></li>
+                <li>I consent to being considered for terms available from Convenience Select</li>
+              </ul>
+            </div>
+            <div class="col-sm-12">
+              <button type="submit" class="btn btnSignUp btn-block btn-lg" ng-disabled="applied">Agree and Apply</button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <br>
+          <small><strong>Important information about procedures for opening a new account:</strong><br>
+            <small>To help the goverment fight the funding of terrorism and money laundering activities, Federal law requires all financial institutions to obtain, verify and record information that identifies each person who opens an account. <br>
+              What this means for you: When you open an account, obtain a loan from Convenience Select in this case, we will ask you for your name, address, date of birth an other information that allow us to identify you. We may also ask to see your drivers license or other identifying documents.</small></small>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+</div>

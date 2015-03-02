@@ -4,55 +4,222 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
+    <!--
+
+    -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
+      <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+      <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
+      <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/application/main/main.css">
+      <link rel="stylesheet" href="app/athletes/athletes.css">
+      <link rel="stylesheet" href="app/auth/login/auth.css">
+      <link rel="stylesheet" href="app/auth/verify/email.css">
+      <link rel="stylesheet" href="app/commerce/cart/cart.css">
+      <link rel="stylesheet" href="app/commerce/checkout/payments/loan/loan.css">
+      <link rel="stylesheet" href="app/teams/teams.css">
+      <link rel="stylesheet" href="app/user/account/account.css">
+      <link rel="stylesheet" href="app/user/billingHistory/billingHistory.css">
+      <link rel="stylesheet" href="app/user/enrollments/enrollments.css">
+      <link rel="stylesheet" href="app/user/user.css">
+      <link rel="stylesheet" href="components/application/alertDirective/alertDirective.css">
+      <link rel="stylesheet" href="components/application/footerBar/footerBar.css">
+      <link rel="stylesheet" href="components/application/navBar/navBar.css">
+      <link rel="stylesheet" href="components/application/welcomeBar/welcomeBar.css">
+      <link rel="stylesheet" href="components/auth/facebookDirective/facebookBtn.css">
       <!-- endinjector -->
     <!-- endbuild -->
+
+    <!-- start Mixpanel --><script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+    for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+  mixpanel.init("8ba53b96dac49b615ec74993b824fefd");</script><!-- end Mixpanel -->
   </head>
-  <body ng-app="tdcsAppApp">
+  <body ng-app="convenienceApp" ng-controller="MainCtrl" id="top">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <div class="fixedTop">
+      <!-- <img src="assets/images/CS-Logo.png" width="280" alt="Talos Logo" class="visible-print"> -->
+      <nav-bar class="hidden-print"></nav-bar>
+      <welcome-bar class="hidden-print"></welcome-bar>
+      <alerts class="hidden-print"> </alerts>
+    </div>
+    <!-- Jumbotron -->
+    <div ng-show="alerts.length > 0">
+      <br>
+      <br>
+    </div>
+    <div class="main">
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <div class="space" ui-view autoscroll="true">
 
-      ga('create', 'UA-XXXXX-X');
-      ga('send', 'pageview');
-    </script>
+        </div>
+
+    </div>
+    <!-- End Jumbotron -->
+
+    <!-- Site footer -->
+    <footer-bar class="hidden-print"></footer-bar>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+    <!-- BALANCED PAYMENTS -->
+    <script type="text/javascript" src="https://js.balancedpayments.com/v1/balanced.min.js" async defer></script>
+    <!-- END BALANCED PAYMENTS -->
     <!-- build:js({client,node_modules}) app/vendor.js -->
       <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/angular/angular.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/waypoints/waypoints.js"></script>
+      <script src="bower_components/SHA-1/sha1.js"></script>
+      <script src="bower_components/angulartics/src/angulartics.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-adobe.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-chartbeat.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-cnzz.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-flurry.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-ga-cordova.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-ga.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-gtm.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-kissmetrics.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-mixpanel.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-piwik.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-scroll.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-splunk.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-woopra.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-marketo.js"></script>
+      <script src="bower_components/angulartics/src/angulartics-intercom.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/angular-facebook/lib/angular-facebook.js"></script>
+      <script src="bower_components/moment-range/lib/moment-range.js"></script>
+      <script src="bower_components/angular-number-picker/angular-number-picker.js"></script>
+      <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
       <!-- endbower -->
-      <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
-
+      <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" async defer></script>
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
+          <script src="app/application/boom_agreement/boomAgreement.controller.js"></script>
+          <script src="app/application/boom_agreement/boomAgreement.js"></script>
+          <script src="app/application/credit_report_pull_auth/creditReportAuth.controller.js"></script>
+          <script src="app/application/credit_report_pull_auth/creditReportAuth.js"></script>
+          <script src="app/application/credits/credits.js"></script>
+          <script src="app/application/electronic_communications_agreement/electronicAgreement.controller.js"></script>
+          <script src="app/application/electronic_communications_agreement/electronicAgreement.js"></script>
+          <script src="app/application/main/contactUs.controller.js"></script>
+          <script src="app/application/main/main.controller.js"></script>
+          <script src="app/application/main/main.js"></script>
+          <script src="app/application/phone_authorization/phoneAuthorization.controller.js"></script>
+          <script src="app/application/phone_authorization/phoneAuthorization.js"></script>
+          <script src="app/application/privacy_policy/privacyPolicy.controller.js"></script>
+          <script src="app/application/privacy_policy/privacyPolicy.js"></script>
+          <script src="app/application/terms_of_service/termsOfService.controller.js"></script>
+          <script src="app/application/terms_of_service/termsOfService.js"></script>
+          <script src="app/athletes/athletes.js"></script>
+          <script src="app/athletes/create/createAthlete.controller.js"></script>
+          <script src="app/athletes/dashboard/athletesDashboard.controller.js"></script>
+          <script src="app/athletes/slider/athletesSlider.controller.js"></script>
+          <script src="app/athletes/update/updateAthlete.controller.js"></script>
+          <script src="app/auth/login/auth.controller.js"></script>
+          <script src="app/auth/resetPassword/resetPassword.controller.js"></script>
+          <script src="app/auth/resetPassword/resetPassword.js"></script>
+          <script src="app/auth/verify/email.controller.js"></script>
+          <script src="app/auth/verify/email.js"></script>
+          <script src="app/commerce/cart/cart.js"></script>
+          <script src="app/commerce/cart/index/cart.controller.js"></script>
+          <script src="app/commerce/cart/review/cartReview.controller.js"></script>
+          <script src="app/commerce/checkout/payments/creditcard/creditCard.controller.js"></script>
+          <script src="app/commerce/checkout/payments/loan/apply/loanApply.controller.js"></script>
+          <script src="app/commerce/checkout/payments/loan/index/loanIndex.controller.js"></script>
+          <script src="app/commerce/checkout/payments/loan/payment/loanPayment.controller.js"></script>
+          <script src="app/commerce/checkout/payments/loan/sign-contract/loanSignContract.controller.js"></script>
+          <script src="app/commerce/checkout/payments/payment.js"></script>
+          <script src="app/commerce/checkout/payments/templates/loanBarController.js"></script>
+          <script src="app/commerce/checkout/payments/templates/paymentState.controller.js"></script>
+          <script src="app/commerce/checkout/success/thankYou.js"></script>
+          <script src="app/teams/dashboard/teamsDashboard.controller.js"></script>
+          <script src="app/teams/profile/teamProfile.controller.js"></script>
+          <script src="app/teams/teams.js"></script>
+          <script src="app/user/account/account.controller.js"></script>
+          <script src="app/user/account/account.js"></script>
+          <script src="app/user/bankAccounts/bankAccountCreate.controller.js"></script>
+          <script src="app/user/bankAccounts/bankAccounts.js"></script>
+          <script src="app/user/billingHistory/billingHistory.controller.js"></script>
+          <script src="app/user/billingHistory/billingHistory.js"></script>
+          <script src="app/user/cards/cards.js"></script>
+          <script src="app/user/enrollments/enrollments.controller.js"></script>
+          <script src="app/user/enrollments/enrollments.js"></script>
+          <script src="app/user/payments/payments.js"></script>
+          <script src="app/user/payments/userPayments.controller.js"></script>
+          <script src="app/user/payments/verifyBankAccount/verifyBankAccount.controller.js"></script>
+          <script src="app/user/templates/userBar.controller.js"></script>
+          <script src="components/application/alertDirective/alertDirective.directive.js"></script>
+          <script src="components/application/applicationContactService/contact.service.js"></script>
+          <script src="components/application/cleanerFilter/cleaner.filter.js"></script>
+          <script src="components/application/configService/applicationConfig.service.js"></script>
+          <script src="components/application/contactUsDirective/contactUs.directive.js"></script>
+          <script src="components/application/flashService/flash.service.js"></script>
+          <script src="components/application/footerBar/footerBar.directive.js"></script>
+          <script src="components/application/loadingDirective/loading.directive.js"></script>
+          <script src="components/application/modalFactory/modal.factory.js"></script>
+          <script src="components/application/navBar/navBar.controller.js"></script>
+          <script src="components/application/navBar/navBar.directive.js"></script>
+          <script src="components/application/percentageFilter/percentage.filter.js"></script>
+          <script src="components/application/welcomeBar/welcomeBar.controller.js"></script>
+          <script src="components/application/welcomeBar/welcomeBar.directive.js"></script>
+          <script src="components/auth/authService/auth.service.js"></script>
+          <script src="components/auth/authService/user.service.js"></script>
+          <script src="components/auth/facebookDirective/facebookBtn.controller.js"></script>
+          <script src="components/auth/facebookDirective/facebookBtn.directive.js"></script>
+          <script src="components/auth/passwordDirective/password.directive.js"></script>
+          <script src="components/auth/passwordDirective/passwordConfirmation.directive.js"></script>
+          <script src="components/auth/passwordDirective/passwordValidation.directive.js"></script>
+          <script src="components/auth/sessionService/sessionService.service.js"></script>
+          <script src="components/carouselOnChangeDirective/onCarouselChange.directive.js"></script>
+          <script src="components/commerce/cart.service.js"></script>
+          <script src="components/commerce/commerce.service.js"></script>
+          <script src="components/commerce/loanService/loan.service.js"></script>
+          <script src="components/commerce/productOptionsDirective/productOptions.controller.js"></script>
+          <script src="components/commerce/productOptionsDirective/productOptions.directive.js"></script>
+          <script src="components/payment/createBankAccountDirective/createBankAccount.controller.js"></script>
+          <script src="components/payment/createBankAccountDirective/createBankAccount.directive.js"></script>
+          <script src="components/payment/createCardDirective/createCard.controller.js"></script>
+          <script src="components/payment/createCardDirective/createCard.directive.js"></script>
+          <script src="components/payment/payment.service.js"></script>
+          <script src="components/teams/listTeamsDirective/listTeams.controller.js"></script>
+          <script src="components/teams/listTeamsDirective/listTeams.directive.js"></script>
+          <script src="components/teams/teams.service.js"></script>
+          <!-- endinjector -->
+          <!-- injector:test -->
+          <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+          <script src="e2e/e2e.mock.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
 </body>
