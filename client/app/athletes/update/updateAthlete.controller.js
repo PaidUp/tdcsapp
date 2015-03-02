@@ -69,7 +69,7 @@ angular.module('convenienceApp')
       AuthService.updateEmail($scope.user.email, $scope.user._id).then(function () {
         FlashService.addAlert({
           type: 'success',
-          templateUrl: 'components/application/alert_directive/alerts/update_profile_success.html',
+          templateUrl: 'components/application/alertDirective/alerts/updateProfileSuccess.html',
           timeout: 5000
         });
       }).catch(function (err) {
@@ -86,7 +86,7 @@ angular.module('convenienceApp')
       UserService.updateUser($scope.user).then(function () {
         FlashService.addAlert({
           type: 'success',
-          templateUrl: 'components/application/alert_directive/alerts/update_profile_success.html',
+          templateUrl: 'components/application/alertDirective/alerts/updateProfileSuccess.html',
           timeout: 5000
         });
       }).catch(function (err) {

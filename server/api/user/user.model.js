@@ -3,17 +3,67 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
+var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var TDError = require('../../components/TD/Error');
 
 var UserSchema = new Schema({
-  name: String,
+  firstName: { type: String, required: true},
+  lastName: { type: String, required: true},
+  birthDate: { type: Date },
+  createdBy: String,
+  createAt: {type: Date, default: new Date()},
+  updateAt: {type: Date, default: new Date()},
+  BPCustomerId: String,
+  mageCustomerId: String,
+  teams: [UserTeamSchema],
+
   email: { type: String, lowercase: true },
   role: {
     type: String,
     default: 'user'
   },
+  verify: {
+    token: String,
+    updatedAt: String,
+    status: String,
+    email: String
+  },
+  resetPassword : {
+    status : String,
+    token : String,
+    updatedAt : String
+  },
+  roles: [RoleSchema],
   hashedPassword: String,
   provider: String,
-  salt: String
+  salt: String,
+  facebook: {
+    id: String,
+    email:String
+  },
+  github: {},
+  contacts:{
+    type: Array
+  },
+  addresses:{
+    type: Array
+  },
+/*
+  UserTeamSchema:{
+    type: Array
+  },
+*/
+  gender: String,
+  payment: {}
+});
+
+var RoleSchema = new Schema({
+  role: {type: String, default: "user"}
+});
+
+var UserTeamSchema = new Schema({
+  sku: {type: String},
+  name: {type: String}
 });
 
 /**
@@ -58,6 +108,7 @@ UserSchema
 UserSchema
   .path('email')
   .validate(function(email) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
     return email.length;
   }, 'Email cannot be blank');
 
@@ -65,6 +116,7 @@ UserSchema
 UserSchema
   .path('hashedPassword')
   .validate(function(hashedPassword) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
     return hashedPassword.length;
   }, 'Password cannot be blank');
 
@@ -81,7 +133,7 @@ UserSchema
       }
       respond(true);
     });
-}, 'The specified email address is already in use.');
+  }, 'The specified email address is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;
@@ -93,11 +145,8 @@ var validatePresenceOf = function(value) {
 UserSchema
   .pre('save', function(next) {
     if (!this.isNew) return next();
-
-    if (!validatePresenceOf(this.hashedPassword))
-      next(new Error('Invalid password'));
-    else
-      next();
+    this.update_at = new Date();
+    next();
   });
 
 /**
@@ -136,7 +185,33 @@ UserSchema.methods = {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-  }
-};
+  },
 
+  /**
+   * Add a Role to the User
+   * @param role
+   */
+  addRole: function(roleName) {
+    if(! this.hasRole(roleName)) {
+      this.roles.push(roleName);
+      return true;
+    }
+    else {
+      return false;
+    }
+  },
+
+  hasRole: function(roleName) {
+    if(this.roles.indexOf(roleName) > -1) {
+      return true;
+    }
+    return false;
+  },
+
+  getFullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+
+};
+//UserSchema.set('versionKey',false);
 module.exports = mongoose.model('User', UserSchema);

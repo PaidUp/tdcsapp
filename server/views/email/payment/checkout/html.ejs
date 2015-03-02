@@ -1,0 +1,88 @@
+
+<% include ../../head %>
+                      <div id="headlineText">
+
+                            <br />
+                            <br />
+                            <br />
+                            <p>
+                              Thanks for your order!
+                            </p>
+                            <!-- datos de orden -->
+                            Order Id: <%= orderId %>
+                            <br />
+                            <br />
+                            <% if(paymentMethod === 'directdebit') { %>
+                            Payment method: Bank Account Debit - Loan.
+                        <br />
+                        <br />
+                            Please make sure to visit your bank in 3-4 days<br />
+                            and validate the 2 small deposits we made to your account. <br />
+                            We must have this to ensure your account is in good standing<br />
+                            and so your athlete can play ball.
+                            <% } else { %>
+                            Payment method: Credit card.<br />
+                            Credit card account last 4 digits used for payment: <br /><%= last4Digits %>
+                            <% } %>
+                            <br />
+                            <br />
+                            Payment total amount: $ <%= amount %>
+                            <br />
+                            <br />
+                            <br />
+                            <!-- datos de orden -->
+                          </div>
+                        </td>
+      <!--                  <td class="w30" width="30"></td>-->
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </td>
+              </tr>
+
+              <% if(typeof token != "undefined") { %>
+
+                <tr>
+                  <td height="30" bgcolor="#ffffff"></td>
+                </tr>
+
+                <tr id="simple-content-row">
+                  <td bgcolor="#ffffff">
+                    <table align="left" class="tableEmail" cellpadding="0" cellspacing="0" border="0">
+                      <tbody>
+                        <tr>
+                          <!-- <td class="w30" width="30"></td> -->
+                          <td>
+                            <repeater>
+
+                              <layout label="Text only">
+                                <table class="tableEmail" cellpadding="0" cellspacing="0" border="0">
+                                  <tbody>
+                                    <tr>
+                                      <td class="activateUrl">
+                                        <!-- If you can't see this email correctly <a href="">click here</a> -->
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td height="10"></td>
+                                    </tr>
+                                  </tbody></table>
+                              </layout>
+
+                            </repeater>
+                          </td>
+                          <!-- <td class="w30" width="30"></td> -->
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td height="15" bgcolor="#ffffff"></td>
+                </tr>
+
+              <% } %>
+
+<% include ../../footer %>

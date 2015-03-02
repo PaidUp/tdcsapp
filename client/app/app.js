@@ -96,7 +96,7 @@ angular.module('convenienceApp', [
           if (currentUser.verify && currentUser.verify.status !== 'verified') {
             FlashService.addAlert({
               type:'warning',
-              templateUrl: 'components/application/alert_directive/alerts/verify_email.html'
+              templateUrl: 'components/application/alertDirective/alerts/verifyEmail.html'
             });
           }
           if (currentUser.payment &&
@@ -104,7 +104,7 @@ angular.module('convenienceApp', [
               currentUser.payment.verify.status !== 'succeeded') {
             FlashService.addAlert({
               type:'warning',
-              templateUrl: 'components/application/alert_directive/alerts/verify_bank_account.html'
+              templateUrl: 'components/application/alertDirective/alerts/verifyBankAccount.html'
             });
           }
         }

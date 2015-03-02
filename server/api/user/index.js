@@ -2,16 +2,18 @@
 
 var express = require('express');
 var controller = require('./user.controller');
-var config = require('../../config/environment');
-var auth = require('../../auth/auth.service');
+var authService = require('../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', auth.hasRole('admin'), controller.index);
-router.delete('/:id', auth.hasRole('admin'), controller.destroy);
-router.get('/me', auth.isAuthenticated(), controller.me);
-router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
-router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/', controller.create);
+router.post('/create', controller.create);
+// router.get('/current', authService.isAuthenticated(), controller.me);
+// router.post('/update', authService.isAuthenticated(), controller.update);
 
+// router.use('/contact', require('./contact/index'));
+// router.use('/address', require('./address/index'));
+// router.use('/relation', require('./relation/index'));
+
+
+// router.get('/:id', authService.isAuthenticated(), controller.getUser);
 module.exports = router;

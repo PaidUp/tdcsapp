@@ -237,10 +237,10 @@ angular.module('convenienceApp')
     };
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan_apply_bar.html'
+        url: 'app/commerce/checkout/payments/templates/loanApplyBar.html'
       } ,
       right:{
-        url: 'app/commerce/checkout/payments/templates/loan_apply_state_bar.html'
+        url: 'app/commerce/checkout/payments/templates/loanApplyStateBar.html'
       }
     });
   });

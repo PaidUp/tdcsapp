@@ -9,7 +9,7 @@ angular.module('convenienceApp')
         $state.go('main', {}, { location: true, reload: true, inherit: false, notify: true });
         FlashService.addAlert({
           type: 'success',
-          templateUrl:'components/application/alert_directive/alerts/verify_email_success.html',
+          templateUrl:'components/application/alertDirective/alerts/verifyEmailSuccess.html',
           timeout: 10000
         });
       },

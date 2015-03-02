@@ -4,7 +4,7 @@ angular.module('convenienceApp')
   .controller('EnrollmentsCtrl', function ($scope, $rootScope, CommerceService, FlashService, TeamService) {
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/user/templates/user_bar.html'
+        url: 'app/user/templates/userBar.html'
       } ,
       right:{
         url: ''

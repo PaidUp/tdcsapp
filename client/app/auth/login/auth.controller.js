@@ -92,7 +92,7 @@ angular.module('convenienceApp')
           if ($rootScope.currentUser.verify && $rootScope.currentUser.verify.status !== 'verified') {
             FlashService.addAlert({
               type:'warning',
-              templateUrl: 'components/application/alert_directive/alerts/verify_email.html'
+              templateUrl: 'components/application/alertDirective/alerts/verifyEmail.html'
             });
           }
         };
@@ -128,7 +128,7 @@ angular.module('convenienceApp')
             $scope.modal.showContent('verifyEmail');
             FlashService.addAlert({
               type:'warning',
-              templateUrl: 'components/application/alert_directive/alerts/verify_email.html'
+              templateUrl: 'components/application/alertDirective/alerts/verifyEmail.html'
             });
             $state.go('athletes');
           }, error);

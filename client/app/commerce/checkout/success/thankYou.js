@@ -5,7 +5,7 @@ angular.module('convenienceApp')
     $stateProvider
       .state('thank-you', {
         url: '/commerce/checkout/success',
-        templateUrl: 'app/commerce/checkout/success/thank_you.html',
+        templateUrl: 'app/commerce/checkout/success/thankYou.html',
         auth: true,
         controller: function ($scope, $rootScope, $state) {
           if ($state.previous.name === 'payment-loan-payment') {

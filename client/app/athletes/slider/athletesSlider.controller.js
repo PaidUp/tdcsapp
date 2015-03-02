@@ -6,10 +6,10 @@ angular.module('convenienceApp')
     $scope.fullDetails = false;
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/athletes/templates/my_athletes_title.html'
+        url: 'app/athletes/templates/myAthletesTitle.html'
       } ,
       right:{
-        url: 'app/athletes/create/create_athlete.html'
+        url: 'app/athletes/create/createAthlete.html'
       }
     });
 

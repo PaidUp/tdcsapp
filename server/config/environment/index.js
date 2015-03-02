@@ -26,7 +26,7 @@ var all = {
 
   // Secret for session, you will want to change this and make it an environment variable
   secrets: {
-    session: 'tdcs-app-secret'
+    session: 'convenience-secret'
   },
 
   // List of user roles
@@ -34,12 +34,194 @@ var all = {
 
   // MongoDB connection options
   mongo: {
+    uri: 'mongodb://localhost/convenience-dev',
     options: {
       db: {
         safe: true
       }
     }
   },
+
+  facebook: {
+    clientID:     process.env.FACEBOOK_ID || 'id',
+    clientSecret: process.env.FACEBOOK_SECRET || 'secret',
+    callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
+  },
+
+  // Email system
+  emailService:{
+    service: 'Mailjet',
+    auth: {
+      user: '2d88e00f7419463d83ee5900780c10d6',
+      pass: '9ada702c0dc7be15af45942eeb68eba2'
+    }
+  },
+  emailTemplateRoot:path.normalize(__dirname + '/../../../server/views/email'),
+  emailOptions:{
+    from: 'Convenience Select <ourteam@convenienceselect.com>',
+    subject: 'Default Subject'
+  },
+  emailVars: {
+    companyName : "Convenience Select",
+    baseUrl : "http://localhost:9000"
+  },
+  emailContacts : {
+    contact : 'email@email.com',
+    admin : 'email@email.com',
+    developer : 'email@email.com'
+  },
+
+  // contract data
+  contractData: {
+    contractTemplateRoot: path.normalize(__dirname + '/../../../server/views/loan'),
+    convenienceSelect: {
+      state: 'Texas',
+      creditor: 'Convenience Select, LLC',
+      address: '11200 Woodland Hills Trl',
+      city: 'Austin',
+      zip: '78732',
+      phone: '(888) 419-8479',
+      lateChargeDays: '10',
+      lateChargePercentage: '5%',
+      paymentWithin: '10',
+      interestRate: '18% per year',
+      agreeToAFeedOf: '$30',
+      reInitDebitTimes: 'two',
+      calendarDaysAferDebit: 'ten',
+      CellPhoneNumber: 6466623303,
+      unsubscribeEmailTo: 'ourteam@convenienceselect.com',
+      customerServiceTelephoneNumber: '(888) 419-8479',
+      signedAt: 'Convenience Select, LLC'
+    },
+    clientData: {
+      DisputesTelephoneNumber: '(888) 419-8479',
+      canSendMailAt: '11200 Woodland Hills Trl. Autin, TX 78732',
+      canCallYouAt: '(888) 419-8479'
+    }
+  },
+
+  // Commerce settings
+  commerce: {
+    magento: {
+      host: 'develop.convenienceselect.com',
+      port: 8888,
+      path: '/api/xmlrpc/',
+      login: 'magento',
+      pass: 'Sv38SJVR'
+    },
+    category: {
+      teams: 3,
+      merchandise: 4
+    },
+    products: {
+      fee: {
+        id: 9,
+        sku: "fee"
+      },
+      interest: {
+        id: 10,
+        sku: "interest"
+      }
+    },
+    testing: {
+      teamId: 2
+    },
+    defaultAddress:
+    [
+        {
+          mode: "billing",
+          firstName: "cs firstName",
+          lastName: "cs lastName",
+          address1: "801 east 11th st",
+          address2: "801 east 11th st",
+          city: "Austin",
+          state: "TX",
+          zipCode: "78702",
+          country: "US",
+          telephone: "+1 320123245"
+        },
+        {
+          mode: "shipping",
+          firstName: "firstName cs",
+          lastName: "lastName cs",
+          address1: "801 east 11th st",
+          address2: "801 east 11th st",
+          city: "Austin",
+          state: "TX",
+          zipCode: "78702",
+          country: "US",
+          telephone: "+1 320123245"
+        }
+    ],
+    shippingMethod: 'freeshipping_freeshipping',
+    paymentMethod: 'purchaseorder'
+  },
+  balanced: {
+    api: "ak-test-p8Ob9vp9GnqWNwFf6CeLLokeQsf76RIe",
+    marketplace: "TEST-MP2OaM2stYkoWBlGFd0M8YV7",
+    appearsOnStatementAs: "Conv. Select"
+  },
+  loan:{
+    defaults: {
+      interestRate: 8.99,
+      periodDuration: 1,
+      periodType: 'minutes',
+      billingFormat: 'MM/DD hh:mm',
+      billingDate: '',
+      billingDelay: 3,
+      billingDelayType: 'minutes'
+    },
+    application: {
+      user:{
+        encryptKey:'PZ3oXv2v6Pq5HAPFI9NFbQ=='
+      }
+    },
+    contract: {
+      htmlPdfOptions: {
+        timeout: 60000,
+        "format": "A4",
+        "orientation": "portrait",
+        // Page options
+        "border": "0",
+        "header": {
+          "height": "45mm",
+          "contents": '<div style="text-align: right;">CS</div>'
+        },
+        "footer": {
+          "height": "28mm",
+          "contents": '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>'
+        },
+
+        "type": "pdf",
+        "quality": "10",
+
+        "directory": path.normalize(__dirname + '/../../..') + "/media/docs/"
+      }
+    }
+  },
+  notifications:{
+    reminderNoPaymentAdded:{
+      period:'minutes',
+      value:2
+    },
+    reminderNoBankAccountVerified:{
+      period:'days',
+      value:2
+    },
+    reminderChargeAccount:{
+      period:'days',
+      value:1
+    }
+  },
+
+  cronjob: {
+    pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid'
+  },
+  nodePass:{
+    user:{
+      token:'NodeUserTOKEN'
+    }
+  }
 
 };
 
