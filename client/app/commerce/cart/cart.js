@@ -10,7 +10,7 @@ angular.module('convenienceApp')
         auth: true
       }).state('cart-review', {
         url: '/commerce/cart/review',
-        templateUrl: 'app/commerce/cart/review/cartReview.html',
+        templateUrl: 'app/commerce/cart/review/cart-review.html',
         controller: 'CartReviewCtrl',
         auth: true
       });

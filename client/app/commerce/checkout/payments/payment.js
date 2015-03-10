@@ -5,27 +5,27 @@ angular.module('convenienceApp')
     $stateProvider
       .state('payment-loan-index', {
         url: '/payment/loan',
-        templateUrl: 'app/commerce/checkout/payments/loan/index/loanIndex.html',
+        templateUrl: 'app/commerce/checkout/payments/loan/index/loan-index.html',
         controller: 'LoanIndexCtrl',
         auth: true
       }).state('payment-loan-apply', {
         url: '/payment/loan/apply',
-        templateUrl: 'app/commerce/checkout/payments/loan/apply/loanApply.html',
+        templateUrl: 'app/commerce/checkout/payments/loan/apply/loan-apply.html',
         controller: 'LoanApplyCtrl',
         auth: true
       }).state('payment-loan-sign-contract', {
-        url: '/payment/loan/sign_contract',
-        templateUrl: 'app/commerce/checkout/payments/loan/signContract/loanSignContract.html',
+        url: '/payment/loan/signcontract',
+        templateUrl: 'app/commerce/checkout/payments/loan/sign-contract/loan-sign-contract.html',
         controller: 'LoanSignContractCtrl',
         auth: true
       }).state('payment-loan-payment', {
         url: '/payment/loan/payment',
-        templateUrl: 'app/commerce/checkout/payments/loan/payment/loanPayment.html',
+        templateUrl: 'app/commerce/checkout/payments/loan/payment/loan-payment.html',
         controller: 'LoanPaymentCtrl',
         auth: true
       }).state('payment-credit-card', {
         url: '/payment/creditcard',
-        templateUrl: 'app/commerce/checkout/payments/creditCard/creditCard.html',
+        templateUrl: 'app/commerce/checkout/payments/credit-card/credit-card.html',
         controller: 'CreditCardCtrl',
         auth: true
       });

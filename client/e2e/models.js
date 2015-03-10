@@ -42,8 +42,8 @@ var models = function () {
   this.bankDetails = {
     routingNumber: '123123123',
     accountNumber: '1234567890',
-    valueVerifyAccount: 2,
-    valueVerifyAccountError: 1
+    valueVerifyAccount: 1,
+    valueVerifyAccountError: 2
   };
 
   this.creditCardDetails = {

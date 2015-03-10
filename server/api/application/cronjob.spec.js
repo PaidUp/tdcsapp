@@ -20,8 +20,8 @@ describe('Cronjob workflow OK', function (){
             var userFake = {firstName:modelSpec.firstName,lastName:modelSpec.lastName};
             request(app)
             .post('/api/v1/user/create')
-            .expect(200)
             .send(userFake)
+            .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
                 assert(res.body.userId);
@@ -31,7 +31,12 @@ describe('Cronjob workflow OK', function (){
         });
 
         it('add credentials to fake user', function(done){
-            var credentialFake = {userId: modelSpec.userId,email: modelSpec.email,password: modelSpec.password,rememberMe: true};
+            var credentialFake = {
+                userId: modelSpec.userId, 
+                email: modelSpec.email,
+                password: modelSpec.password,
+                rememberMe: true
+            };
             request(app)
             .post('/api/v1/auth/local/signup')
             .send(credentialFake)
@@ -45,34 +50,34 @@ describe('Cronjob workflow OK', function (){
             });
         });
 
-        it('Create fake child to userFake', function(done){
-            var userFake = {token:modelSpec.token,firstName:modelSpec.firstName,lastName:modelSpec.lastName, gender:modelSpec.gender};
-            request(app)
-            .post('/api/v1/user/create')
-            .set('Authorization', "Bearer "+modelSpec.token)
-            .expect(200)
-            .send(userFake)
-            .end(function(err, res) {
-                if (err) return done(err);
-                assert(res.body.userId);
-                modelSpec.childId = res.body.userId;
-                done();
-            });
-        });
+        // it('Create fake child to userFake', function(done){
+        //     var userFake = {token:modelSpec.token,firstName:modelSpec.firstName,lastName:modelSpec.lastName, gender:modelSpec.gender};
+        //     request(app)
+        //     .post('/api/v1/user/create')
+        //     .set('Authorization', "Bearer "+modelSpec.token)
+        //     .expect(200)
+        //     .send(userFake)
+        //     .end(function(err, res) {
+        //         if (err) return done(err);
+        //         assert(res.body.userId);
+        //         modelSpec.childId = res.body.userId;
+        //         done();
+        //     });
+        // });
 
-        it('Create relationFake', function(done){
-            var relationFake = {token:modelSpec.token,sourceUserId:modelSpec.userId,targetUserId:modelSpec.childId, type:modelSpec.typeRelation};
-            request(app)
-            .post('/api/v1/user/relation/create')
-            .set('Authorization', "Bearer "+modelSpec.token)
-            .expect(200)
-            .send(relationFake)
-            .end(function(err, res) {
-                if (err) return done(err);
-                assert(res.body);
-                done();
-            });
-        });
+        // it('Create relationFake', function(done){
+        //     var relationFake = {token:modelSpec.token,sourceUserId:modelSpec.userId,targetUserId:modelSpec.childId, type:modelSpec.typeRelation};
+        //     request(app)
+        //     .post('/api/v1/user/relation/create')
+        //     .set('Authorization', "Bearer "+modelSpec.token)
+        //     .expect(200)
+        //     .send(relationFake)
+        //     .end(function(err, res) {
+        //         if (err) return done(err);
+        //         assert(res.body);
+        //         done();
+        //     });
+        // });
     });
 
     describe('Prepare loan', function (){

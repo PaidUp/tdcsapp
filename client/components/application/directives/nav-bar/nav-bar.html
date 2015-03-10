@@ -1,0 +1,84 @@
+<nav class="nav-bar navbar-default" role="navigation">
+  <div class="container">
+    <div class="row">
+      <div class="navbar-header">
+        <button class="navbar-toggle btn btn-default"
+          data-target=".navbar-collapse"
+          data-toggle="collapse"
+          type="button">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a ui-sref="main" class="navbar-brand"  ng-hide="isLoggedIn()">
+          <img src="assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
+        </a>
+        <a ui-sref="athletes" class="navbar-brand"  ng-show="isLoggedIn()">
+          <img src="assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse mobile-right" id="nav-no-float">
+
+        <ul class="nav navbar-nav">
+          <li class="my-athletes" ng-show="isLoggedIn()">
+            <a href="" ui-sref="athletes">My Athlete(s)</a>
+          </li>
+          <li ng-show="isLoggedIn()">
+            <a href="" ui-sref="teams-dashboard">Teams</a>
+          </li>
+          <li ng-show="!isLoggedIn()">
+            <ng-include src="'app/auth/login/auth.html'">
+            </ng-include>
+          </li>
+          <!-- <li ng-show="isLoggedIn()">
+            <a href="" ng-click="logout()">Log out</a>
+          </li> -->
+          <li ng-show="isLoggedIn()">
+            <hr class="visible-xs">
+            <div class="divider-vertical hidden-xs"></div>
+          </li>
+          <li class="dropdown" ng-show="isLoggedIn()">
+            <a href="" class="dropdown-toggle">
+              <span class="glyphicon glyphicon-user"></span>
+              {{currentUser.firstName + " " + currentUser.lastName}}
+              <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+              <li>
+                <a href="" ui-sref="user-account">
+                  <span class="glyphicon glyphicon-user"></span>
+                  Profile
+                </a>
+              </li>
+              <!-- <li>
+                <a href="#">
+                  <span class="glyphicon glyphicon-cog"></span>
+                  Settings
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <span class="glyphicon glyphicon-usd"></span>
+                  Billing
+                </a>
+              </li> -->
+              <li>
+                <a id="signout" href="#" ng-click="logout()">
+                  <span class="glyphicon glyphicon-off"></span>
+                  Sign Out
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li ng-show="isLoggedIn()">
+            <a ui-sref="cart">
+              <i class="fa fa-shopping-cart cart" ng-class="{ 'text-CS': itemCount && itemCount > 0 }"></i>
+              <!-- <div class="shopping-cart">{{itemCount}}</div> -->
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -5,7 +5,7 @@ angular.module('convenienceApp')
     $stateProvider
       .state('user-card-create', {
         url: '/user/card/create',
-        templateUrl: 'app/user/cards/userCardCreate.html',
+        templateUrl: 'app/user/cards/user-card-create.html',
         auth: true
       });
   });

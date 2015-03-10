@@ -5,17 +5,17 @@ angular.module('convenienceApp')
     $stateProvider
       .state('teams-dashboard', {
         url: '/teams/dashboard',
-        templateUrl: 'app/teams/dashboard/teamsDashboard.html',
+        templateUrl: 'app/teams/dashboard/teams-dashboard.html',
         controller: 'TeamsDashboardCtrl',
         auth: true
       }).state('teams-profile-athlete', {
         url: '/teams/profile/:teamId/athlete/:athleteId',
-        templateUrl: 'app/teams/profile/teamProfile.html',
+        templateUrl: 'app/teams/profile/team-profile.html',
         controller: 'TeamsProfileCtrl',
         auth: true
       }).state('teams-profile', {
         url: '/teams/profile/:teamId',
-        templateUrl: 'app/teams/profile/teamProfile.html',
+        templateUrl: 'app/teams/profile/team-profile.html',
         controller: 'TeamsProfileCtrl',
         auth: true
       });

@@ -2,9 +2,10 @@
 
 angular.module('convenienceApp')
   .controller('AccountCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, ModalService) {
+
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/user/templates/userBar.html'
+        url: 'app/user/templates/user-bar.html'
       } ,
       right:{
         url: ''
@@ -71,7 +72,7 @@ angular.module('convenienceApp')
     $scope.sendAlertUpdateProfileSuccess = function () {
       FlashService.addAlert({
         type: 'success',
-        templateUrl: 'components/application/alertDirective/alerts/updateProfileSuccess.html',
+        templateUrl: 'components/application/directives/alert/alerts/update-profile-success.html',
         timeout: 5000
       });
     };
@@ -115,7 +116,7 @@ angular.module('convenienceApp')
           delete $scope.user.confirmNewPassword;
           FlashService.addAlert({
             type: 'success',
-            templateUrl: 'components/application/alertDirective/alerts/updatePasswordSuccess.html',
+            templateUrl: 'components/application/directives/alert/alerts/update-password-success.html',
             timeout: 5000
           });
         }).catch(function (err){

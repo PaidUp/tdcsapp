@@ -20,7 +20,7 @@ var userTestBad = {
 };
 
 describe('user.controller', function() {
-  it.only('/create firstName, lastName', function(done) {
+  it('/create firstName, lastName', function(done) {
     request(app)
       .post('/api/v1/user/create')
       .send(userTest)
@@ -34,70 +34,70 @@ describe('user.controller', function() {
       });
   });
 
-  it('/create fail without firstName', function(done) {
-    request(app)
-      .post('/api/v1/user/create')
-      .send({lastName:userTest.lastName})
-      .expect(400)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        assert.equal(res.body.message, 'First name is not accepted');
-        done();
-      });
-  });
+  // it('/create fail without firstName', function(done) {
+  //   request(app)
+  //     .post('/api/v1/user/create')
+  //     .send({lastName:userTest.lastName})
+  //     .expect(400)
+  //     .expect('Content-Type', 'application/json')
+  //     .end(function(err, res) {
+  //       if (err) return done(err);
+  //       assert.equal(res.body.message, 'First name is not accepted');
+  //       done();
+  //     });
+  // });
 
-  it('/create fail without lastName', function(done) {
-    request(app)
-      .post('/api/v1/user/create')
-      .send({firstName:userTest.firstName})
-      .expect(400)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        assert.equal(res.body.message, 'Last name is not accepted');
-        done();
-      });
-  });
+  // it('/create fail without lastName', function(done) {
+  //   request(app)
+  //     .post('/api/v1/user/create')
+  //     .send({firstName:userTest.firstName})
+  //     .expect(400)
+  //     .expect('Content-Type', 'application/json')
+  //     .end(function(err, res) {
+  //       if (err) return done(err);
+  //       assert.equal(res.body.message, 'Last name is not accepted');
+  //       done();
+  //     });
+  // });
 
-  it('/create fail firstName with number', function(done) {
-    request(app)
-      .post('/api/v1/user/create')
-      .send(userTestBad)
-      .expect(400)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        assert.equal(res.body.message, 'First name is not accepted');
-        done();
-      });
-  });
+  // it('/create fail firstName with number', function(done) {
+  //   request(app)
+  //     .post('/api/v1/user/create')
+  //     .send(userTestBad)
+  //     .expect(400)
+  //     .expect('Content-Type', 'application/json')
+  //     .end(function(err, res) {
+  //       if (err) return done(err);
+  //       assert.equal(res.body.message, 'First name is not accepted');
+  //       done();
+  //     });
+  // });
 
-  it('/create athlete fail birthDate is future', function(done) {
-    request(app)
-      .post('/api/v1/user/create')
-      .send({firstName:'jesse',lastName:'cogollo',birthDate:'2015-07-29'})
-      .expect(400)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        assert.equal(res.body.message, 'Birthdate is not accepted');
-        done();
-      });
-  });
+  // it('/create athlete fail birthDate is future', function(done) {
+  //   request(app)
+  //     .post('/api/v1/user/create')
+  //     .send({firstName:'jesse',lastName:'cogollo',birthDate:'2015-07-29'})
+  //     .expect(400)
+  //     .expect('Content-Type', 'application/json')
+  //     .end(function(err, res) {
+  //       if (err) return done(err);
+  //       assert.equal(res.body.message, 'Birthdate is not accepted');
+  //       done();
+  //     });
+  // });
 
-  it('/create fail birthDate is invalid', function(done) {
-    request(app)
-      .post('/api/v1/user/create')
-      .send({firstName:'jesse',lastName:'cogollo',birthDate:'1987-15-29'})
-      .expect(400)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        assert.equal(res.body.message, 'Birthdate is not accepted');
-        done();
-      });
-  });
+  // it('/create fail birthDate is invalid', function(done) {
+  //   request(app)
+  //     .post('/api/v1/user/create')
+  //     .send({firstName:'jesse',lastName:'cogollo',birthDate:'1987-15-29'})
+  //     .expect(400)
+  //     .expect('Content-Type', 'application/json')
+  //     .end(function(err, res) {
+  //       if (err) return done(err);
+  //       assert.equal(res.body.message, 'Birthdate is not accepted');
+  //       done();
+  //     });
+  // });
 /*
   it('/current', function(done) {
     request(app)

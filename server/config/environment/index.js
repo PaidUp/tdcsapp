@@ -217,11 +217,10 @@ var all = {
   cronjob: {
     pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid'
   },
-  nodePass:{
-    user:{
-      token:'NodeUserTOKEN'
-    }
-  }
+  
+  TDTokens:{
+    user:'TDUserToken-CHANGE-ME!'
+  },
 
 };
 
