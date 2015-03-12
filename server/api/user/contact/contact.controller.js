@@ -1,56 +1,34 @@
 var _ = require('lodash');
 var mongoose = require('mongoose');
-var TDUserService = require('TDCore').userService;
-var config = require('../../../config/environment');
+var contactService = require('./contact.service');
 
 exports.create = function(req, res, next) {
-  TDUserService.contactCreate(req.body, config.TDTokens.user, req.body.userId, function (err, data){
-  	console.log('data contactCreate', data);
+  contactService.create(req.body, function (data){
     res.json(data);
   });
 };
 
 exports.list = function(req, res, next) {
-  TDUserService.contactList(req.params, config.TDTokens.user, req.params.id, function (err, data){
-  	console.log('data contactList', data);
+  var user = { userId: req.params.id };
+  contactService.list(user, function (data){
     res.json(data);
   });
 };
 
 exports.load = function(req, res, next) {
-  TDUserService.contactLoad(
-    req.body, 
-    config.TDTokens.user, 
-    req.body.userId, 
-    req.body.contactId, 
-    function (err, data){
-      res.json(data);
-    }
-  );
+  contactService.load(req.params,  function (data){
+    res.json(data);
+  });
 };
 
-// exports.update = function(req, res, next) {
-//   // console.log('Contact Update');
-//   // console.log('req.body.userId', req.body.userId);
-//   TDUserService.contactUpdate(
-//     req.body, 
-//     config.TDTokens.user, 
-//     req.body.userId, 
-//     req.body.contactId, 
-//     function (err, data){
-//       res.json(data);
-//     }
-//   );
-// };
+exports.update = function(req, res, next) {
+  contactService.update(req.body, function (data){
+    res.json(data);
+  });
+};
 
 // exports.delete = function(req, res, next) {
-//   TDUserService.contactDelete(
-//     req.body, 
-//     config.TDTokens.user, 
-//     req.body.userId, 
-//     req.body.contactId, 
-//     function (err, data){
-//       res.json(data);
-//     }
-//   );
+//   TDUserService.delete(req.body, function (data){
+//     res.json(data);
+//   });
 // };

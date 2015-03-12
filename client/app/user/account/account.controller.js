@@ -28,7 +28,7 @@ angular.module('convenienceApp')
 
     UserService.getContactList($scope.user._id).then(function(data){
       angular.forEach(data, function (contactInfo) {
-        UserService.getContact(contactInfo.contactId).then(function (contact){
+        UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
           if (contact.label === 'shipping') {
             $scope.oldShippingPhone = contact;
             $scope.shipping.phone = contact.value;
@@ -41,9 +41,9 @@ angular.module('convenienceApp')
       $scope.sendAlertErrorMsg(err.data.message);
     });
 
-    UserService.listAddresses().then(function (data) {
+    UserService.listAddresses($scope.user._id).then(function (data) {
       angular.forEach(data, function (address) {
-        UserService.getAddress(address.addressId).then(function (addressObj) {
+        UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
           if (addressObj.type === 'shipping') {
             $scope.oldShippingAddress = addressObj;
             $scope.shipping.address = angular.extend({}, addressObj);

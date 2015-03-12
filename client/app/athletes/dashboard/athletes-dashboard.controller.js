@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, FlashService, $state, ModalFactory) {
+  .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
+    
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
+    $scope.user = angular.extend({}, AuthService.getCurrentUser());
+
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/athletes/templates/my-athletes-title.html'
@@ -14,7 +17,7 @@ angular.module('convenienceApp')
       }
     });
 
-    UserService.listRelations().then(function (data) {
+    UserService.listRelations($scope.user._id).then(function (data) {
       if(data.length==0){
         $scope.isChildCharged = true;
         return;
@@ -23,22 +26,25 @@ angular.module('convenienceApp')
       //   $state.go('athletes-slider',{athleteId: data[0].targetUserId});
       //   return;
       // }
-      angular.forEach(data, function (relation) {
-        if (relation.type === 'child') {
-          UserService.getUser(relation.targetUserId).then(function (user) {
-            if (user.teams) {
-              user.team = user.teams[0];
+      UserService.getUser($scope.user._id).then(function (users) {
+        angular.forEach(users, function (user) {
+          angular.forEach(data, function (relation) {
+            if (relation.type === 'child' && relation.targetUserId === user._id) {
+              if (user.teams){
+                user.team = user.teams[0];
+              }
+              $scope.athletes.push(user);
             }
-            $scope.athletes.push(user);
-          }).catch(function (err) {
-            FlashService.addAlert({
-              type: 'danger',
-              msg: err.data.message,
-              timeout: 10000
-            });
           });
-        }
+        });
+      }). catch(function (err) {
+        FlashService.addAlert({
+          type: 'danger',
+          msg: err.data.message,
+          timeout: 10000
+        });
       });
+
     }).catch(function (err) {
       FlashService.addAlert({
         type: 'danger',

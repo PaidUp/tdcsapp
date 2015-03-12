@@ -1,13 +1,68 @@
 'use strict';
 
-var User = require('../user.model.js');
-var Address = require('./address.model');
+var TDUserService = require('TDCore').userService;
+var config = require('../../../config/environment');
+ 
+function create(data, cb) {
+  TDUserService.addressCreate(data, config.TDTokens.user, data.userId, function (err, data){
+    if(err) return cb(err);
+    return cb(data);
+  });
+};
 
-function validateTypeAddressSync(contact) {
-  if(contact != 'shipping' && contact != 'billing' && contact != 'other'){
-    return false;
-  }
-  return true;
-}
+function list(data, cb) {
+  TDUserService.addressList(
+    data, 
+    config.TDTokens.user, 
+    data.userId, 
+    function (err, data){
+      if(err) return cb(err);
+    	return cb(data);
+    }
+  );
+};
 
-exports.validateTypeAddressSync = validateTypeAddressSync;
+function load(data, cb) {
+  TDUserService.addressLoad(
+    data, 
+    config.TDTokens.user, 
+    data.id, 
+    data.addressId, 
+    function (err, data){
+      if(err) return cb(err);
+      return cb(data);
+    }
+  );
+};
+
+function update(data, cb) {
+  TDUserService.addressUpdate(
+    data, 
+    config.TDTokens.user, 
+    data.userId, 
+    data.addressId, 
+    function (err, data){
+      if(err) return cb(err);
+      return cb(data);
+    }
+  );
+};
+
+// function delete(data, cb) {
+//   TDUserService.addressDelete(
+//     data, 
+//     config.TDTokens.user, 
+//     data.userId, 
+//     data.addressId, 
+//     function (data){
+//       if(err) return cb(err);
+//       return cb(data);
+//     }
+//   );
+// };
+
+exports.create = create;
+exports.list = list;
+exports.load = load;
+exports.update = update;
+// exports.delete = delete;

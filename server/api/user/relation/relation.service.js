@@ -1,26 +1,22 @@
 'use strict';
 
 var mongoose = require('mongoose');
-var Relation = require('./relation.model.js');
+var TDUserService = require('TDCore').userService;
+var config = require('../../../config/environment');
 
-function save(relation, cb) {
-  relation.save(function(err, data) {
-    if(err) {
-      return cb(err);
-    }
-    return cb(null, data);
+function create(data, cb) {
+  TDUserService.relationCreate(data, config.TDTokens.user, function (err, data) {
+    if(err) return cb(err);
+    return cb(data);
   });
-}
+};
 
-function find(filter,fields, cb) {
-  Relation.find(filter,fields, function(err, data) {
-      if(err) {
-        return cb(err);
-      }
-      return cb(null, data);
-    }
-  );
-}
+function list(data, cb) {
+  TDUserService.relationList(data, config.TDTokens.user, data.id, function (err, data) {
+    if(err) return cb(err);
+    return cb(data);
+  });
+};
 
-exports.save = save;
-exports.find = find;
+exports.create = create;
+exports.list = list;

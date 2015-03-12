@@ -43,7 +43,8 @@ angular.module('convenienceApp')
       $rootScope.alerts.splice(index, 1);
     };
     $scope.resendEmail = function(){
-      AuthService.resendEmail();
+      $scope.user = angular.extend({}, AuthService.getCurrentUser());
+      AuthService.resendEmail($scope.user._id);
     };
 
     $scope.contactUs = function (form, contactInfo) {

@@ -1,52 +1,34 @@
 var _ = require('lodash');
 var mongoose = require('mongoose');
-var TDUserService = require('TDCore').userService;
-var config = require('../../../config/environment');
+var addressService = require('./address.service');
 
 exports.create = function(req, res, next) {
-  TDUserService.addressCreate(req.body, config.TDTokens.user, req.body.userId, function (err, data){
+  addressService.create(req.body, function (data){
     res.json(data);
   });
 };
 
 exports.list = function(req, res, next) {
-  TDUserService.addressList(req.params, config.TDTokens.user, req.params.id, function (err, data){
+  var user = { userId: req.params.id };
+  addressService.list(user, function (data){
     res.json(data);
   });
 };
 
-// exports.load = function(req, res, next) {
-//   TDUserService.addressLoad(
-//     req.body, 
-//     config.TDTokens.user, 
-//     req.body.userId, 
-//     req.body.addressId, 
-//     function (err, data){
-//       res.json(data);
-//     }
-//   );
-// };
+exports.load = function(req, res, next) {
+  addressService.load(req.params, function (data){
+    res.json(data);
+  });
+};
 
-// exports.update = function(req, res, next) {
-//   TDUserService.addressUpdate(
-//     req.body, 
-//     config.TDTokens.user, 
-//     req.body.userId, 
-//     req.body.addressId, 
-//     function (err, data){
-//       res.json(data);
-//     }
-//   );
-// };
+exports.update = function(req, res, next) {
+  addressService.update(req.body, function (data){
+    res.json(data);
+  });
+};
 
 // exports.delete = function(req, res, next) {
-//   TDUserService.addressDelete(
-//     req.body, 
-//     config.TDTokens.user, 
-//     req.body.userId, 
-//     req.body.addressId, 
-//     function (err, data){
-//       res.json(data);
-//     }
-//   );
+//   TDUserService.addressDelete(req.body, function (data){
+//     res.json(data);
+//   });
 // };

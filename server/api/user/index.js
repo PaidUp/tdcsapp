@@ -12,8 +12,7 @@ router.post('/update', controller.update);
 
 router.use('/contact', require('./contact/index'));
 router.use('/address', require('./address/index'));
-// router.use('/relation', require('./relation/index'));
+router.use('/relation', require('./relation/index'));
 
-
-// router.get('/:id', controller.getUser);
+router.post('/:id', controller.find);
 module.exports = router;

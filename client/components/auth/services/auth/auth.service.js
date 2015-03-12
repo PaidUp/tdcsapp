@@ -164,10 +164,14 @@ angular.module('convenienceApp')
         error(error);
       },
 
-      resendEmail: function(){
-        $http.get('/api/v1/auth/verify-request').
-        success().
-        error();
+      resendEmail: function(userId, successFn, errorFn){
+        var success = successFn || angular.noop;
+        var error = errorFn || angular.noop;
+        $http.get('/api/v1/auth/verify-request/'+userId)
+        .success(function(data){
+          //console.log(data);
+        })
+        .error(error);
       },
 
       updateEmail: function(email, userId){

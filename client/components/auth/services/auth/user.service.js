@@ -5,7 +5,9 @@ angular.module('convenienceApp')
     // ============= User Service =============
       var User = $resource('/api/v1/user/:action/:userId',{
         userId: ''
-      }, {});
+      }, {
+        post: { method:'POST', isArray: true }
+      });
 
       this.save = function (user, successFn, errorFn) {
         var success = successFn || angular.noop;
@@ -19,10 +21,10 @@ angular.module('convenienceApp')
         // return User.get({token: token}, cb);
       };
 
-      this.getUser = function (userId) {
-        return User.get({
+      this.getUser = function (userId) { //change name
+        return User.post({
           userId: userId
-        }).$promise;
+        }, {}).$promise;
       };
 
       this.updateUser = function (user) {
@@ -31,9 +33,10 @@ angular.module('convenienceApp')
     // ============= END Service =============
 
     // ============= User Contact Info Service =============
-      var UserContactInfo = $resource('/api/v1/user/contact/:action/:contactId',{
+      var UserContactInfo = $resource('/api/v1/user/contact/:action/:userId/:contactId',{
         contactId: ''
       },{
+        post: { method:'POST', isArray: true },
         update: { method:'PUT' }
       });
 
@@ -41,17 +44,18 @@ angular.module('convenienceApp')
         return UserContactInfo.save({action: 'create'}, contactInfo).$promise;
       };
 
-      this.getContactList = function (contactId) {
-        return UserContactInfo.query({
+      this.getContactList = function (contactId) { //change name
+        return UserContactInfo.post({
           action: 'list',
           contactId: contactId
-        }).$promise;
+        }, {}).$promise;
       };
 
-      this.getContact = function (contactId) {
+      this.getContact = function (userId, contactId) {
         return UserContactInfo.get({
           action: 'load',
-          contactId: contactId
+          contactId: contactId,
+          userId: userId
         }).$promise;
       };
 
@@ -318,9 +322,10 @@ angular.module('convenienceApp')
         return state;
       };
 
-      var UserAddress = $resource('/api/v1/user/address/:action/:addressId',{
+      var UserAddress = $resource('/api/v1/user/address/:action/:userId/:addressId',{
         addressId: ''
       },{
+        post: { method:'POST', isArray: true },
         update: { method:'PUT' }
       });
 
@@ -328,13 +333,17 @@ angular.module('convenienceApp')
         return UserAddress.save({action: 'create'}, address).$promise;
       };
 
-      this.listAddresses = function () {
-        return UserAddress.query({action: 'list'}).$promise;
+      this.listAddresses = function (addressId) {
+        return UserAddress.post({
+          action: 'list',
+          addressId: addressId
+        }, {}).$promise;
       };
 
-      this.getAddress = function (addressId) {
+      this.getAddress = function (userId, addressId) {
         return UserAddress.get({
           action: 'load',
+          userId: userId,
           addressId: addressId
         }).$promise;
       };
@@ -356,7 +365,7 @@ angular.module('convenienceApp')
     // ============= END User Address Service =============
 
     // ============= User Relation Service =============
-      var UserRelation = $resource('/api/v1/user/relation/:action/:relationId',{
+      var UserRelation = $resource('/api/v1/user/relation/:action/:userId/:relationId',{
         relationId: ''
       },{});
 
@@ -368,8 +377,11 @@ angular.module('convenienceApp')
         }).$promise;
       };
 
-      this.listRelations = function () {
-        return UserRelation.query({action: 'list'}).$promise;
+      this.listRelations = function (userId) {
+        return UserRelation.query({
+          action: 'list',
+          userId: userId
+        }).$promise;
       };
     // ============= END User Relation Service =============
     });
