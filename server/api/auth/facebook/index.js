@@ -9,7 +9,8 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
 	TDAuthService.init(config.connections.user);
   TDAuthService.facebook(req.body, function (err, data) {
-    res.json(data);
+    if(err) res.json(402, err);
+    res.json(200, data);
   });
 });
 
