@@ -229,7 +229,7 @@ var all = {
       isHttp: false,
       host: 'localhost',
       port: 9005,
-      token: 'TDPaymentToken-CHANGE-ME!'
+      token: 'nodePaymentPass'
     }
   }
 };

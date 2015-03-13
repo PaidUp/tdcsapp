@@ -64,7 +64,6 @@ exports.listBanks = function (req, res) {
     }
 
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",
@@ -72,19 +71,16 @@ exports.listBanks = function (req, res) {
         });
       }
       paymentService.listBanks(userPrepared.BPCustomerId, function (err, dataBanks) {
-
         if (err) {
           console.log(err);
         } else {
           if(dataBanks.bankAccounts.length === 0){
             userPrepared.payment = {};
-            /**
             userService.save(userPrepared, function(err, user){
               if(err){
                 return res.json(500,err);
               }
             });
-            */
           }
           return res.json(200, camelize(dataBanks));
         }

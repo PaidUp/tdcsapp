@@ -20,9 +20,10 @@ function setConnection(){
 function createCustomer(user, cb) {
   setConnection();
   var customer = {
-    name: user.firstName + " " + user.lastName,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
-    id:  user.id
+    id:  user._id
   }
   tdPaymentService.createCustomer(customer, function(err, data){
     if(err) return cb(err);
@@ -94,7 +95,7 @@ function listCustomerBanks(customerId, cb) {
 }
 
 function listCards(customerId, cb) {
-  paymentAdapter.listCards(customerId, function(err, data){
+  tdPaymentService.listCards(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -181,7 +182,12 @@ function createOrder(merchantId, description, cb) {
 }
 
 function listBanks (customerId, cb) {
-  tdPaymentService.listBanks(customerId, function(err, data){
+  setConnection();
+  console.log('lst banks step 1');
+  tdPaymentService.listCustomerBanks(customerId, function(err, data){
+    console.log('step list bank1');
+    console.log('err', err);
+    console.log('data', data);
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -195,9 +201,11 @@ function listBanks (customerId, cb) {
 function prepareUser(user, cb) {
   if(! user.BPCustomerId) {
     createCustomer(user, function(err, data) {
+
       if (err) return cb(err);
       user.BPCustomerId = data.id;
       userService.save(user,function(err, data){
+        console.log('createCustomer save', data);
         if (err) return cb(err);
         return cb(null, data);
       });

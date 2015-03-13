@@ -28,8 +28,19 @@ function update (data, cb) {
 };
 
 function find (data, cb) {
+  console.log('step 1');
   TDUserService.init(config.connections.user);
-  TDUserService.find(data, data.userId, function(err, data){
+  console.log('step 2');
+  TDUserService.find(data, function(err, data){
+    console.log('step 3', err);
+    if(err) return cb(err);
+    return cb(null,data);
+  });
+};
+
+function save (data, cb) {
+  TDUserService.init(config.connections.user);
+  TDUserService.save(data, function(err, data){
     if(err) return cb(err);
     return cb(null,data);
   });
@@ -39,3 +50,4 @@ exports.create = create;
 exports.current = current;
 exports.update = update;
 exports.find = find;
+exports.save = save;
