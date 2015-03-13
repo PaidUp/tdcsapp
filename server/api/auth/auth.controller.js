@@ -1,7 +1,5 @@
 'use strict';
 
-var passport = require('passport');
-var jwt = require('jsonwebtoken');
 var authService = require('./auth.service');
 
 exports.logout = function(req, res, next) {

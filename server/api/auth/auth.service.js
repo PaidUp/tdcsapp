@@ -1,14 +1,8 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var passport = require('passport');
 var TDAuthService = require('TDCore').authService;
 var config = require('../../config/environment');
 
-/**
- * Attaches the user object to the request if authenticated
- * Otherwise returns 403
- */
 function logout(data, token, cb) {
   TDAuthService.logout(data, config.TDTokens.user, token, function (err, data) {
     if(err) return cb(err);

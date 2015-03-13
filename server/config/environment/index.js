@@ -213,15 +213,25 @@ var all = {
       value:1
     }
   },
-
   cronjob: {
     pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid'
   },
-  
   TDTokens:{
-    user:'TDUserToken-CHANGE-ME!'
-  },
-
+    user: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9001,
+      token: 'TDUserToken-CHANGE-ME!'
+    },
+    payment: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9005,
+      token: 'TDPaymentToken-CHANGE-ME!'
+    }
+  }
 };
 
 // Export the config object based on the NODE_ENV

@@ -1,7 +1,6 @@
 'use strict';
 
 var express = require('express');
-var config = require('../../config/environment');
 var authController = require('./auth.controller');
 
 var router = express.Router();
