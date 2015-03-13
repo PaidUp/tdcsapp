@@ -8,15 +8,17 @@ var router = express.Router();
 
 router.post('/signup', function(req, res, next) {
 	TDAuthService.init(config.connections.user);
-  TDAuthService.signup(req.body, function(err, data){
-    res.json(data);
+  TDAuthService.signup(req.body, function (err, data){
+  	if(err) res.json(402, err);
+    res.json(200, data);
   });
 });
 
 router.post('/login', function(req, res, next) {
   TDAuthService.init(config.connections.user);
-  TDAuthService.login(req.body, function(err, data){
-    res.json(data);
+  TDAuthService.login(req.body, function (err, data){
+  	if(err) res.json(402, err);
+    res.json(200, data);
   });
 });
 

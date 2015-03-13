@@ -37,6 +37,18 @@ var models = function () {
     monthlyGrossIncome: '1234'
   };
 
+  this.userCredentials = {
+    newPassword: 'Qwerty1q#!',
+    address: {
+      address1: this.userLoan.address.address1,
+      address2: this.userLoan.address.address2,
+      city: this.userLoan.address.city,
+      stateIndex: 6,
+      zipCode: this.userLoan.address.zipCode
+    },
+    phone: '3006004143'
+  };
+
   this.teamName = 'Austin Boom';
 
   this.bankDetails = {

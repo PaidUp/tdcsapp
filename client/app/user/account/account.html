@@ -122,7 +122,8 @@
                   </div>
                   <div class="row">
                     <div class="col-sm-6">
-                      <select name="state"
+                      <select id="state"
+                              name="state"
                               ng-model="shipping.address.state"
                               class="form-control"
                               ng-class="{ 'has-error': shippingForm.state.$invalid && shippingForm.$dirty && submitted }"
