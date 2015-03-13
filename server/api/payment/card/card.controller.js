@@ -43,18 +43,13 @@ exports.listCards = function(req, res){
     if(err){
       return handleError(res, err);
     }
-    console.log('card ctrl 0');
     paymentService.prepareUser(dataUser[0], function(err, userPrepared){
-      console.log('card ctrl 11');
-      console.log(userPrepared);
-
       if(!userPrepared.BPCustomerId){
         return res.json(400,{
               "code": "ValidationError",
               "message": "user without BPCustomerId"
         });
       }
-      console.log('card ctrl 1');
       paymentService.listCards(userPrepared.BPCustomerId, function(err, dataCards){
         if(err){
           return res.json(400,{
@@ -68,7 +63,6 @@ exports.listCards = function(req, res){
               "message": "User without cards"
           });
         }
-        console.log('card ctrl', dataCards);
         return res.json(200, camelize(dataCards));
       });
     });
@@ -116,8 +110,6 @@ exports.getCard = function(req, res){
 }
 
 function handleError(res, err) {
-  console.log('he' , err);
-
   var httpErrorCode = 500;
   var errors = [];
 

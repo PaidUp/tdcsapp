@@ -28,11 +28,8 @@ function update (data, cb) {
 };
 
 function find (data, cb) {
-  console.log('step 1');
   TDUserService.init(config.connections.user);
-  console.log('step 2');
   TDUserService.find(data, function(err, data){
-    console.log('step 3', err);
     if(err) return cb(err);
     return cb(null,data);
   });

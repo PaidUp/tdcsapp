@@ -81,7 +81,7 @@ function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function associateBank(customerId, bankId, cb) {
-  tdPaymentService.associateBank(customerId, bankId, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -102,7 +102,7 @@ function listCards(customerId, cb) {
 }
 
 function createBankVerification(bankId, cb) {
-  tdPaymentService.createBankVerification(bankId, function(err, data){
+  tdPaymentService.createBankVerification({bankId : bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -183,11 +183,7 @@ function createOrder(merchantId, description, cb) {
 
 function listBanks (customerId, cb) {
   setConnection();
-  console.log('lst banks step 1');
   tdPaymentService.listCustomerBanks(customerId, function(err, data){
-    console.log('step list bank1');
-    console.log('err', err);
-    console.log('data', data);
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -205,7 +201,6 @@ function prepareUser(user, cb) {
       if (err) return cb(err);
       user.BPCustomerId = data.id;
       userService.save(user,function(err, data){
-        console.log('createCustomer save', data);
         if (err) return cb(err);
         return cb(null, data);
       });
@@ -435,6 +430,10 @@ function getUserDefaultBankId(user, cb) {
   // Check bank accounts
   listBanks(user.BPCustomerId, function(err, data){
     if(err) return cb(err);
+    console.log('data');
+    console.log(data);
+    console.log('err');
+    console.log(err);
     if(data.bankAccounts.length == 0) {
       // error
       return cb({name: 'not-available-payment'}, null);

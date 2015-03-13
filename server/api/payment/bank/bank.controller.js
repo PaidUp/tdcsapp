@@ -27,6 +27,7 @@ exports.create = function (req, res) {
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
+      console.log('prepareUser', userPrepared);
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",
