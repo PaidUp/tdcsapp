@@ -8,7 +8,7 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res, next) {
-  relationService.list(req.params, function (data) {
+  relationService.list(req.params.id, function (data) {
     res.json(data);
   });
 };

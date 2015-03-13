@@ -1,28 +1,28 @@
 'use strict';
 
 var _ = require('lodash');
-var TDUserService = require('./user.service');
+var userService = require('./user.service');
 
 exports.create = function(req, res) {
-  TDUserService.create(req.body, function (data){
+  userService.create(req.body, function (data){
     res.json(data);
   });
 };
 
 exports.current = function(req, res, next) {
-  TDUserService.current(req.query, function (data){
+  userService.current(req.query, function (data){
     res.json(data);
   });
 };
 
 exports.update = function(req, res, next) {
-  TDUserService.update(req.body, function (data){
+  userService.update(req.body, function (data){
     res.json(data);
   });
 };
 
 exports.find = function(req, res, next) {
-  TDUserService.find(req.body, function (data){
+  userService.find(req.body, function (data){
     res.json(data);
   });
 };

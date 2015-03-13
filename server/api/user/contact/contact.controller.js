@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var mongoose = require('mongoose');
 var contactService = require('./contact.service');
 
 exports.create = function(req, res, next) {

@@ -642,8 +642,8 @@ module.exports = function (grunt) {
         generalTasks.push('protractor:creditPath');
       }else if (target2 === 'verifyBankAccount'){
         generalTasks.push('protractor:verifyBankAccountPath');
-      }else if (target2 === 'test'){
-        generalTasks.push('protractor:testDemoPath');
+      }else if (target2 === 'credentials'){
+        generalTasks.push('protractor:credentialPaths');
       }else{
         generalTasks.push('protractor:loanPath');
         generalTasks.push('protractor:creditPath');

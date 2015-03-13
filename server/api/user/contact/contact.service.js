@@ -4,48 +4,34 @@ var TDUserService = require('TDCore').userService;
 var config = require('../../../config/environment');
 
 function create(data, cb) {
-  TDUserService.contactCreate(data, config.TDTokens.user, data.userId, function (err, data){
+  TDUserService.init(config.TDTokens.user);
+  TDUserService.contactCreate(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(data);
   });
 };
 
 function list(data, cb) {
-  TDUserService.contactList(
-    data, 
-    config.TDTokens.user, 
-    data.userId, 
-    function (err, data){
-      if(err) return cb(err);
-      return cb(data);
-    }
-  );
+  TDUserService.init(config.TDTokens.user);
+  TDUserService.contactList(data, data.userId, function (err, data){
+    if(err) return cb(err);
+    return cb(data);
+  });
 };
 
 function load(data, cb) {
-  TDUserService.contactLoad(
-    data, 
-    config.TDTokens.user, 
-    data.userId, 
-    data.contactId, 
-    function (err, data){
-      if(err) return cb(err);
-      return cb(data);
-    }
-  );
+  TDUserService.init(config.TDTokens.user);
+  TDUserService.contactLoad(data.userId, data.contactId, function (err, data){
+    if(err) return cb(err);
+    return cb(data);
+  });
 };
 
 function update(data, cb) {
-  TDUserService.contactUpdate(
-    data, 
-    config.TDTokens.user, 
-    data.userId, 
-    data.contactId, 
-    function (err, data){
-      if(err) return cb(err);
-      return cb(data);
-    }
-  );
+  TDUserService.contactUpdate(data, data.userId, data.contactId, function (err, data){
+    if(err) return cb(err);
+    return cb(data);
+  });
 };
 
 // function delete(data, cb) {

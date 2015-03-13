@@ -37,7 +37,10 @@ exports.config = {
     ],
     creditPath: ['client/e2e/credit/credit.workflow.spec.js'],
     verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
-    testDemoPath: ['client/e2e/test/test.spec.js'],
+    credentialPaths: {
+      addressPath: 'client/e2e/user/credentials/address.spec.js',
+      contactPath: 'client/e2e/user/credentials/contact.spec.js'
+    },
     sadPath: []
   },
 

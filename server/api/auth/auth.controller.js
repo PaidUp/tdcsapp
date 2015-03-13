@@ -3,13 +3,13 @@
 var authService = require('./auth.service');
 
 exports.logout = function(req, res, next) {
-  authService.logout(req.body, req.query.token, function (data) {
+  authService.logout(req.query.token, function (data) {
     res.json(data);
   });
 };
 
 exports.verifyRequest = function(req, res, next) {
-  authService.verifyRequest(req.params, function (data) {
+  authService.verifyRequest(req.params.id, function (data) {
     res.json(data);
   });
 };
