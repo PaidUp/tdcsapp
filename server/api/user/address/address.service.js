@@ -2,9 +2,9 @@
 
 var TDUserService = require('TDCore').userService;
 var config = require('../../../config/environment');
- 
+
 function create(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.addressCreate(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -12,7 +12,7 @@ function create(data, cb) {
 };
 
 function list(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.addressList(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -20,7 +20,7 @@ function list(data, cb) {
 };
 
 function load(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.addressLoad(data.id, data.addressId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -28,7 +28,7 @@ function load(data, cb) {
 };
 
 function update(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.addressUpdate(data, data.userId, data.addressId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -38,9 +38,9 @@ function update(data, cb) {
 // function delete(data, cb) {
 //  TDUserService.init(config.TDTokens.user);
 //   TDUserService.addressDelete(
-//     data, 
-//     data.userId, 
-//     data.addressId, 
+//     data,
+//     data.userId,
+//     data.addressId,
 //     function (data){
 //       if(err) return cb(err);
 //       return cb(data);

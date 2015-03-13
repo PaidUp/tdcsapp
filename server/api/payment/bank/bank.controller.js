@@ -22,11 +22,11 @@ exports.create = function (req, res) {
   var filter = {
     _id: req.user._id
   };
-  userService.findOne(filter, function (err, dataUser) {
+  userService.find(filter, function (err, dataUser) {
     if (err) {
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser, function (err, userPrepared) {
+    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",
@@ -58,12 +58,12 @@ exports.listBanks = function (req, res) {
   var filter = {
     _id: req.user._id
   };
-  userService.findOne(filter, function (err, dataUser) {
+  userService.find(filter, function (err, dataUser) {
     if (err) {
       return handleError(res, err);
     }
 
-    paymentService.prepareUser(dataUser, function (err, userPrepared) {
+    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
 
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
@@ -78,11 +78,13 @@ exports.listBanks = function (req, res) {
         } else {
           if(dataBanks.bankAccounts.length === 0){
             userPrepared.payment = {};
-            userService.save(userPrepared, function(err, userx){
+            /**
+            userService.save(userPrepared, function(err, user){
               if(err){
                 return res.json(500,err);
               }
             });
+            */
           }
           return res.json(200, camelize(dataBanks));
         }

@@ -31,7 +31,7 @@ exports.associate = function (req, res) {
         if(err){
           return handleError(res, err);
         }
-          return res.json(200, {});        
+          return res.json(200, {});
       });
     });
   });
@@ -39,11 +39,11 @@ exports.associate = function (req, res) {
 
 exports.listCards = function(req, res){
   var filter= {_id:req.user._id};
-  userService.findOne(filter,function(err, dataUser){
+  userService.find(filter,function(err, dataUser){
     if(err){
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser, function(err, userPrepared){
+    paymentService.prepareUser(dataUser[0], function(err, userPrepared){
       if(!userPrepared.BPCustomerId){
         return res.json(400,{
               "code": "ValidationError",
@@ -107,4 +107,21 @@ exports.getCard = function(req, res){
 
 		});
 	});
+}
+
+function handleError(res, err) {
+  console.log('he' , err);
+
+  var httpErrorCode = 500;
+  var errors = [];
+
+  if (err.name === "ValidationError") {
+    httpErrorCode = 400;
+  }
+
+  return res.json(httpErrorCode, {
+    code: err.name,
+    message: err.message,
+    errors: err.errors
+  });
 }

@@ -216,7 +216,7 @@ var all = {
   cronjob: {
     pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid'
   },
-  TDTokens:{
+  connections:{
     user: {
       urlPrefix: '/api/v1',
       isHttp: false,

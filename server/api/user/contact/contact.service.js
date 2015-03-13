@@ -4,7 +4,7 @@ var TDUserService = require('TDCore').userService;
 var config = require('../../../config/environment');
 
 function create(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.contactCreate(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -12,7 +12,7 @@ function create(data, cb) {
 };
 
 function list(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.contactList(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -20,7 +20,7 @@ function list(data, cb) {
 };
 
 function load(data, cb) {
-  TDUserService.init(config.TDTokens.user);
+  TDUserService.init(config.connections.user);
   TDUserService.contactLoad(data.userId, data.contactId, function (err, data){
     if(err) return cb(err);
     return cb(data);
@@ -36,10 +36,10 @@ function update(data, cb) {
 
 // function delete(data, cb) {
 //   TDUserService.contactDelete(
-//     data, 
-//     config.TDTokens.user, 
-//     data.userId, 
-//     data.contactId, 
+//     data,
+//     config.TDTokens.user,
+//     data.userId,
+//     data.contactId,
 //     function (err, data){
 //       if(err) return cb(err);
 //       return cb(data);

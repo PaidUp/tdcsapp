@@ -10,15 +10,21 @@ var logger = require('../../config/logger');
 var async = require('async');
 var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
+var tdPaymentService = require('TDCore').paymentService;
+var config = require('../../config/environment');
+
+function setConnection(){
+  tdPaymentService.init(config.connections.payment);
+};
 
 function createCustomer(user, cb) {
-
+  setConnection();
   var customer = {
     name: user.firstName + " " + user.lastName,
     email: user.email,
-    meta: { csId: user.id}
+    id:  user.id
   }
-  paymentAdapter.createCustomer(customer, function(err, data){
+  tdPaymentService.createCustomer(customer, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -74,7 +80,7 @@ function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function associateBank(customerId, bankId, cb) {
-  paymentAdapter.associateBank(customerId, bankId, function(err, data){
+  tdPaymentService.associateBank(customerId, bankId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -95,7 +101,7 @@ function listCards(customerId, cb) {
 }
 
 function createBankVerification(bankId, cb) {
-  paymentAdapter.createBankVerification(bankId, function(err, data){
+  tdPaymentService.createBankVerification(bankId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -175,7 +181,7 @@ function createOrder(merchantId, description, cb) {
 }
 
 function listBanks (customerId, cb) {
-  paymentAdapter.listBanks(customerId, function(err, data){
+  tdPaymentService.listBanks(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
