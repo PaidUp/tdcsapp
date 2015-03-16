@@ -212,8 +212,9 @@ angular.module('convenienceApp')
           }).catch(function() {
             cb(false);
           });
+        } else {
+          cb(true);
         }
-        cb(true);
       },
 
       /**

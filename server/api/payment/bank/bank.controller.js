@@ -142,7 +142,7 @@ exports.verify = function (req, res) {
             if(bank.bankAccountVerifications[0].attemptsRemaining <= 0){
               return res.json(400, {
                 "code": "ValidationError",
-                "message": "Has exceeded number max to attempts",
+                "message": "You have exceeded the max number of attempts",
                 "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
                 "attempts": bank.bankAccountVerifications[0].attempts
               });
