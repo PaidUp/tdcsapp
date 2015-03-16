@@ -75,7 +75,6 @@ exports.listBanks = function (req, res) {
       }
       paymentService.listBanks(userPrepared.BPCustomerId, function (err, dataBanks) {
         if (err) {
-          console.log(err);
         } else {
           if(dataBanks.bankAccounts.length === 0){
             userPrepared.payment = {};
@@ -85,7 +84,6 @@ exports.listBanks = function (req, res) {
               }
             });
           }
-          console.log(dataBanks);
           return res.json(200, camelize(dataBanks));
         }
       });
