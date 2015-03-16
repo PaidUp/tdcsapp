@@ -20,9 +20,6 @@ angular.module('convenienceApp')
 
     AuthService.isLoggedInAsync(function(loggedIn) {
       $scope.user = angular.extend({}, AuthService.getCurrentUser()); 
-
-      console.log('Estoy en isLoggedInAsync', $scope.user);
-
       UserService.listRelations($scope.user._id).then(function (data) {
         if(data.length==0){
           $scope.isChildCharged = true;
