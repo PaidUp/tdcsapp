@@ -17,6 +17,7 @@ exports.list = function(req, res, next) {
 };
 
 exports.load = function(req, res, next) {
+  console.log('req.params');
   contactService.load(req.params,  function (err, data){
     if(err) res.json(402, err);
     res.json(200, data);
