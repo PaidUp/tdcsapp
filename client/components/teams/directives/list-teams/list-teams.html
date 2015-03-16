@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <div class="thumbnail col-xs-6 col-sm-3 col-md-3 col-lg-2" ng-repeat="team in teams" ng-click="selectTeam(team)">
+        <img ng-src="{{team.getImage('small_image').url}}" alt="">
+        <div class="caption">
+            <h4 class="center team-name">{{team.attributes.name}}</h4>
+            <h6 class="center">{{team.attributes.location}}</h6>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="container empty-car text-CS" ng-show="teams.length === 0">
+  <loading></loading>
+</div>

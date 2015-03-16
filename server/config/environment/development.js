@@ -5,8 +5,9 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/tdcsapp-dev'
+    uri: 'mongodb://localhost/convenience-dev'
   },
 
   seedDB: true
+
 };

@@ -1,0 +1,163 @@
+<form ng-submit="createCard()" name="createCardForm" novalidate>
+  <div class="row">
+    <div class="col-sm-4 text-right">
+      <label>Name on Card</label>
+    </div>
+    <div class="col-sm-4"  ng-class="{ 'has-error': createCardForm.nameOnCard.$invalid && submitted }">
+      <div class="form-group">
+        <input type="text"
+                class="form-control"
+                placeholder="Name on Card"
+                name="nameOnCard"
+                ng-model="card.nameOnCard"
+                required
+                ng-required="true">
+        <div class="text-CS text-center" ng-show="createCardForm.nameOnCard.$error.required && submitted">
+          <small class="text-CS">Name on Card is required</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label>Card Number</label>
+      </div>
+      <div class="col-sm-4" ng-class="{ 'has-error': createCardForm.cardNumber.$invalid && submitted }">
+        <div class="form-group">
+          <input type="text"
+                  class="form-control"
+                  placeholder="Card Number"
+                  name="cardNumber"
+                  ng-model="card.cardNumber"
+                  placeholder="Card Number"
+                  required
+                  ng-required="true"
+                  ng-change="validateInput()">
+          <div class="text-CS text-center" ng-show="createCardForm.cardNumber.$error.format">
+            <small class="text-CS">Invalid Card Number</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label>Expiration</label>
+      </div>
+      <div class="col-sm-4">
+
+        <div class="row">
+          <div class="col-sm-6" ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
+
+            <div class="form-group">
+
+              <input type="text"
+                      class="form-control"
+                      id="month"
+                      placeholder="MM"
+                      name="month"
+                      ng-model="card.expirationDate.month"
+                      required
+                      ng-required="true"
+                      ng-change="validateInput()"
+                      ng-pattern="/^\d{1,2}$/">
+            </div>
+
+          </div>
+          <div class="col-sm-6" ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
+
+            <div class="form-group">
+
+              <input type="text"
+                  class="form-control"
+                  id="year"
+                  placeholder="YYYY"
+                  name="year"
+                  ng-model="card.expirationDate.year"
+                  required
+                  ng-required="true"
+                  ng-change="validateInput()"
+                  ng-pattern="/^\d{4}$/">
+
+            </div>
+
+          </div>
+
+          <div class="text-CS col-sm-12 text-center" ng-show="(createCardForm.$error.expiration || createCardForm.year.$error.pattern || createCardForm.month.$error.pattern) && submitted">
+            <small class="text-CS">Invalid Expiration Date</small>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-sm-4 text-right">
+      <label>Security Code</label>
+    </div>
+    <div class="col-sm-4" ng-class="{ 'has-error': createCardForm.securityCode.$invalid && submitted }">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+
+            <div class="form-group">
+              <input type="text"
+                      class="form-control"
+                      placeholder="Security Code"
+                      name="securityCode"
+                      ng-model="card.securityCode"
+                      required
+                      ng-required="true"
+                      ng-maxlength="4"
+                      ng-minlength="3"
+                      ng-pattern="/^\d{3,4}$/">
+              <div class="text-CS text-center" ng-show="(createCardForm.securityCode.$error.maxlength || createCardForm.securityCode.$error.minlength || createCardForm.securityCode.$error.number || createCardForm.securityCode.$error.pattern) && submitted">
+                <small class="text-CS">Invalid Security Code</small>
+              </div>
+              <div class="text-CS text-center" ng-show="createCardForm.securityCode.$error.required && submitted">
+                <small class="text-CS">Card Security Code is required</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="needZipcode">
+    <div class="col-sm-4 text-right">
+      <label>Zip Code</label>
+    </div>
+    <div class="col-sm-4"  ng-class="{ 'has-error': createCardForm.zipCode.$invalid && submitted }">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group">
+            <input type="text" class="form-control" required ng-required="true" name="zipCode" placeholder="Zip code" ng-model="card.zipCode" ng-maxlength="5" ng-minlength="5" ng-pattern="/^\d{5}$/">
+            <div class="text-CS text-center" ng-show="(createCardForm.zipCode.$error.maxlength || createCardForm.zipCode.$error.minlength || createCardForm.zipCode.$error.pattern) && submitted">
+              <small class="text-CS">Invalid Zip code</small>
+            </div>
+            <div class="text-CS text-center" ng-show="createCardForm.zipCode.$error.required && submitted">
+              <small class="text-CS">Zip Code is required</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4">
+      <br>
+      <br>
+      <button type="submit" class="btn btnSignUp btn-block btn-lg">Create card</button>
+    </div>
+  </div>
+</form>
+
+<div class="container empty-car text-CS" ng-show="loading">
+  <loading></loading>
+</div>

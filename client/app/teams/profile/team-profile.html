@@ -1,0 +1,98 @@
+<div class="container empty-car" ng-show="!team">
+  <loading></loading>
+</div>
+ <div class="container team-Profile">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <div class="row">
+        <div class="col-sm-6">
+          <img ng-src="{{team.getImage('image').url}}" alt="" class="width-100">
+
+        </div>
+        <div class="col-sm-6">
+          <h2 class="text-CS">{{team.attributes.name}}</h2>
+            <div ng-bind-html="team.attributes.description"> </div>
+          <br>
+          <form name="teamSelectionForm" ng-submit="enrollNow()" novalidate>
+            <label for="athleteSelect">Enrolling Athlete</label><br>
+            <select class="form-control"
+                    id="select-athlete"
+                    name="athleteSelect"
+                    ng-model="athlete"
+                    ng-options="child as child.firstName for child in athletes track by child._id"
+                    required
+                    ng-required="true">
+                    <option value="" disabled>Select an Athlete</option>
+            </select>
+            <div class="text-CS text-center" ng-show="teamSelectionForm.athleteSelect.$error.required && submitted">
+              <small class="text-CS">Athlete is required</small>
+            </div>
+            <br>
+            <div ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions" class="magento-custom-options">
+              <!-- <custom-options ng-model="optionModel"
+                              type="customOption.type"
+                              title="customOption.title"
+                              isrequired="customOption.isRequire === '1'"
+                              options="customOption.values"
+                              ng-click="changeCustomOptions(customOption, optionModel)">
+              </custom-options> -->
+              <div ng-if="customOption.type === 'drop_down'" class="customDropDown">
+                <label>{{customOption.title}}</label>
+                <select id="select{{indexCustomOp}}"
+                        class="form-control"
+                        ng-model="optionModel"
+                        name="select{{customOption.optionId}}"
+                        ng-required="customOption.isRequire === '1'"
+                        ng-options="option as option.title for option in customOption.values track by option.valueId"
+                        ng-change="changeCustomOptions(customOption, optionModel)">
+                </select>
+                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
+                  <small class="text-CS">{{customOption.title}} is required</small>
+                </div>
+              </div>
+              <div ng-if="customOption.type === 'radio'" id="radio{{indexCustomOp}}">
+                <label>{{customOption.title}}</label>
+                <br>
+                <label class="radio-inline" ng-repeat="(indexRadioOp, item) in customOption.values">
+                  <input  id="radio{{indexRadioOp}}"
+                          type="radio"
+                          name="radio{{customOption.optionId}}"
+                          ng-value="item"
+                          ng-model="optionModel"
+                          ng-required="customOption.isRequire === '1'"
+                          ng-change="changeCustomOptions(customOption, optionModel)">
+                  <div><strong>{{item.title}}</strong></div>
+                </label>
+                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.radio{{customOption.optionId}}.$error.required && submitted">
+                  <small class="text-CS">{{customOption.title}} is required</small>
+                </div>
+              </div>
+              <br>
+            </div>
+            <br>
+            <br>
+            <br>
+            <button type="submit" class="btn btnSignUp btn-block btn-enroll">
+              <strong class="pull-left">Enroll Now</strong> <strong><span>cost<span>{{team.attributes.price | currency}}</span></span></strong>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4 team-coach-small">
+          <div class="coach-image img-circle" ng-show="team.getImage('coach_picture')">
+            <img ng-src="{{team.getImage('coach_picture').url}}" alt="">
+          </div>
+          <div class="coach-info">
+            <div ng-bind-html="team.attributes.coachInformation">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

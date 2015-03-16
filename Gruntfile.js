@@ -1,4 +1,4 @@
-// Generated on 2015-02-26 using generator-angular-fullstack 2.0.13
+// Generated on 2014-11-18 using generator-angular-fullstack 2.0.13
 'use strict';
 
 module.exports = function (grunt) {
@@ -300,7 +300,7 @@ module.exports = function (grunt) {
     ngtemplates: {
       options: {
         // This should be the name of your apps angular module
-        module: 'tdcsAppApp',
+        module: 'convenienceApp',
         htmlmin: {
           collapseBooleanAttributes: true,
           collapseWhitespace: true,
@@ -417,6 +417,10 @@ module.exports = function (grunt) {
       unit: {
         configFile: 'karma.conf.js',
         singleRun: true
+      },
+      e2e: {
+        configFile: 'karma-e2e.conf.js',
+        singleRun: true
       }
     },
 
@@ -437,6 +441,55 @@ module.exports = function (grunt) {
             browser: 'chrome'
           }
         }
+      },
+      loanPath: {
+        options: {
+          args: {
+            suite: 'loanPath'
+          }
+        }
+      },
+      verifyBankAccountPath: {
+        options: {
+          args: {
+            suite: 'verifyBankAccountPath'
+          }
+        }
+      },
+      addCredentialsPath: {
+        options: {
+          args: {
+            suite: 'addCredentialsPath'
+          }
+        }
+      },
+      addChildrenPath: {
+        options: {
+          args: {
+            suite: 'addChildrenPath'
+          }
+        }
+      },
+      changePasswordPath: {
+        options: {
+          args: {
+            suite: 'changePasswordPath'
+          }
+        }
+      },
+      testFlowPath: {
+        options: {
+          args: {
+            suite: 'testFlowPath'
+          }
+        }
+      },
+      sadPath: {
+        options: {
+          args: {
+            suite: 'sadPath'
+          }
+        }
       }
     },
 
@@ -451,6 +504,23 @@ module.exports = function (grunt) {
     },
 
     injector: {
+      mocke2e: {
+        files: {
+          '<%= yeoman.client %>/index.html': [
+            '{.tmp,<%= yeoman.client %>}/bower_components/angular-mocks/angular-mocks.js',
+            '{.tmp,<%= yeoman.client %>}/e2e/e2e.mock.js'
+          ]
+        },
+        options: {
+          transform: function(filePath) {
+            filePath = filePath.replace('/client/', '');
+            filePath = filePath.replace('/.tmp/', '');
+            return '<script src="' + filePath + '"></script>';
+          },
+          starttag: '<!-- injector:test -->',
+          endtag: '<!-- endinjector -->'
+        },
+      },
       options: {
 
       },
@@ -547,7 +617,7 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
-  grunt.registerTask('test', function(target) {
+  grunt.registerTask('test', function(target, target2) {
     if (target === 'server') {
       return grunt.task.run([
         'env:all',
@@ -568,7 +638,7 @@ module.exports = function (grunt) {
     }
 
     else if (target === 'e2e') {
-      return grunt.task.run([
+      var generalTasks = [
         'clean:server',
         'env:all',
         'env:test',
@@ -576,9 +646,34 @@ module.exports = function (grunt) {
         'injector',
         'wiredep',
         'autoprefixer',
-        'express:dev',
-        'protractor'
-      ]);
+        'express:dev'
+      ];
+
+
+      if (target2 === 'loan') {
+        generalTasks.push('protractor:loanPath');
+      }else if (target2 === 'credit'){
+        generalTasks.push('protractor:creditPath');
+      }else if (target2 === 'verifyBankAccount'){
+        generalTasks.push('protractor:verifyBankAccountPath');
+      }else if (target2 === 'addCredentials'){
+        generalTasks.push('protractor:addCredentialsPath');
+      }else if (target2 === 'addChild'){
+        generalTasks.push('protractor:addChildrenPath');
+      }else if (target2 === 'changePassword'){
+        generalTasks.push('protractor:changePasswordPath');
+      }else if (target2 === 'testFlow'){
+        generalTasks.push('protractor:testFlowPath');
+      }else{
+        generalTasks.push('protractor:testFlowPath');
+        // generalTasks.push('protractor:addCredentialsPath');
+        // generalTasks.push('protractor:addChildrenPath');
+        // generalTasks.push('protractor:changePasswordPath');
+        // generalTasks.push('protractor:loanPath');
+        // generalTasks.push('protractor:creditPath');
+      }
+
+      return grunt.task.run(generalTasks);
     }
 
     else grunt.task.run([

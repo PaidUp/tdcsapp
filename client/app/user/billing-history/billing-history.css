@@ -1,0 +1,29 @@
+.download-pdf{
+  color: #ffffff;
+  margin-top: 9px;
+}
+.download-pdf a{
+  color: #c6614a;
+  text-transform: uppercase;
+}
+.billing-history-table thead > tr > th{
+  text-align: center;
+  border: 2px solid #fff;
+  background-color: #f9f9f9;
+  font-size: 12px;
+}
+.billing-history-table > thead:first-child > tr:first-child > th{
+  border-top: 1px solid #fff;
+}
+.billing-history-table tbody > tr > td{
+  border: 2px solid #fff;
+  background-color: #f9f9f9;
+  font-size: 12px;
+}
+.billing-history-table tbody > tr > td:first-child, .billing-history-table tbody > tr > td:last-child{
+  text-align: center;
+  vertical-align: middle;
+}
+.more-transactions-btn{
+  color: #a1acb5;
+}
