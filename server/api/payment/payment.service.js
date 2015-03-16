@@ -32,55 +32,63 @@ function createCustomer(user, cb) {
 }
 
 function createCard(cardDetails, cb) {
-  paymentAdapter.createCard(cardDetails, function(err, data){
+  setConnection();
+  tdPaymentService.createCard(cardDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function associateCard(customerId, cardId, cb) {
-  paymentAdapter.associateCard(customerId, cardId, function(err, data){
+  setConnection();
+  tdPaymentService.associateCard(customerId, cardId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function createBank(bankDetails, cb) {
-  paymentAdapter.createBank(bankDetails, function(err, data){
+  setConnection();
+  tdPaymentService.createBank(bankDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function associateBank(customerId, bankId, cb) {
-  paymentAdapter.associateBank(customerId, bankId, function(err, data){
+  setConnection();
+  tdPaymentService.associateBank(customerId, bankId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function createOrder(merchantCustomerId, description, cb) {
-  paymentAdapter.createOrder(merchantCustomerId, description, function(err, data){
+  setConnection();
+  tdPaymentService.createOrder(merchantCustomerId, description, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, cb) {
-  paymentAdapter.debitCard(cardId, amount, description, appearsOnStatementAs, orderId, function(err, data){
+  setConnection();
+  tdPaymentService.debitCard(cardId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, cb) {
-  paymentAdapter.debitBank(bankId, amount, description, appearsOnStatementAs, orderId, function(err, data){
+  setConnection();
+  tdPaymentService.debitBank(bankId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function associateBank(customerId, bankId, cb) {
+  setConnection();
   tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -88,13 +96,15 @@ function associateBank(customerId, bankId, cb) {
 }
 
 function listCustomerBanks(customerId, cb) {
-  paymentAdapter.listCustomerBanks(customerId, function(err, data){
+  setConnection();
+  tdPaymentService.listCustomerBanks(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function listCards(customerId, cb) {
+  setConnection();
   tdPaymentService.listCards(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -102,6 +112,7 @@ function listCards(customerId, cb) {
 }
 
 function createBankVerification(bankId, cb) {
+  setConnection();
   tdPaymentService.createBankVerification({bankId : bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -109,14 +120,16 @@ function createBankVerification(bankId, cb) {
 }
 
 function loadBankVerification(verificationId, cb) {
-  paymentAdapter.loadBankVerification(verificationId, function(err, data){
+  setConnection();
+  tdPaymentService.loadBankVerification(verificationId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function deleteBankAccount(customerId, bankId, cb) {
-  paymentAdapter.deleteBankAccount(bankId, function(err, data){
+  setConnection();
+  tdPaymentService.deleteBankAccount(bankId, function(err, data){
     if(err) return cb(err);
     listBanks(customerId, function(err, dataBanks){
       if(dataBanks.bankAccounts.length === 0){
@@ -135,14 +148,16 @@ function deleteBankAccount(customerId, bankId, cb) {
 }
 
 function confirmBankVerification(verificationId, amount1, amount2, cb) {
-  paymentAdapter.confirmBankVerification(verificationId, amount1, amount2, function(err, data){
+  setConnection();
+  tdPaymentService.confirmBankVerification(verificationId, amount1, amount2, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function updateOrderDescription(orderId, description, cb) {
-  paymentAdapter.updateOrderDescription(orderId, description, function(err, data){
+  setConnection();
+  tdPaymentService.updateOrderDescription(orderId, description, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -168,9 +183,10 @@ function collectPendingOrders(cb) {
 }
 
 function createOrder(merchantId, description, cb) {
+  setConnection();
   var transactionData = {};
 
-  paymentAdapter.fetchCustomer(merchantId, function (err, data) {
+  tdPaymentService.fetchCustomer(merchantId, function (err, data) {
     if (err) return cb(err);
     paymentAdapter.createOrder(merchantId, description, function (err, data) {
       if (err) return cb(err);
@@ -212,7 +228,8 @@ function prepareUser(user, cb) {
 }
 
 function prepareCard(userId, cardId, cb) {
-  paymentAdapter.fetchCard(cardId, function(err, creditCard){
+  setConnection();
+  tdPaymentService.fetchCard(cardId, function(err, creditCard){
     if(err) return cb(err);
       if(creditCard.cards[0].links.customer === null) {
         associateCard(userId, cardId, function (err, data) {
@@ -227,7 +244,8 @@ function prepareCard(userId, cardId, cb) {
 }
 
 function prepareBank(userId, bankId, cb) {
-  paymentAdapter.fetchBank(bankId, function(err, bank){
+  setConnection();
+  tdPaymentService.fetchBank(bankId, function(err, bank){
     if(bank.bankAccounts[0].links.customer === null) {
       associateBank(userId, bankId, function (err, data) {
         if(err) return cb(err);
@@ -248,14 +266,16 @@ function fetchBank(bankId, cb){
 }
 
 function fetchCard(cardId, cb){
-  paymentAdapter.fetchCard(cardId, function(err, creditCard){
+  setConnection();
+  tdPaymentService.fetchCard(cardId, function(err, creditCard){
       if(err) return cb(err);
       return cb(null, creditCard);
   });
 }
 
 function fetchDebit(debitId, cb){
-  paymentAdapter.fetchDebit(debitId, function(err, bank){
+  setConnection();
+  tdPaymentService.fetchDebit(debitId, function(err, bank){
     if(err) return cb(err);
     return cb(null, bank);
   });
@@ -430,10 +450,6 @@ function getUserDefaultBankId(user, cb) {
   // Check bank accounts
   listBanks(user.BPCustomerId, function(err, data){
     if(err) return cb(err);
-    console.log('data');
-    console.log(data);
-    console.log('err');
-    console.log(err);
     if(data.bankAccounts.length == 0) {
       // error
       return cb({name: 'not-available-payment'}, null);
