@@ -15,11 +15,11 @@ exports.associate = function (req, res) {
   }
   var cardId = req.body.cardId;
   var filter= {_id:req.user._id};
-  userService.findOne(filter,function(err, dataUser){
+  userService.find(filter,function(err, dataUser){
     if(err){
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser, function(err, userPrepared){
+    paymentService.prepareUser(dataUser[0], function(err, userPrepared){
       if(!userPrepared.BPCustomerId){
       return res.json(400, {
           "code": "ValidationError",
@@ -77,11 +77,11 @@ exports.getCard = function(req, res){
 		});
 	}
 	var filter= {_id:req.user._id};
-  	userService.findOne(filter,function(err, dataUser){
+  	userService.find(filter,function(err, dataUser){
     	if(err){
 	      	return handleError(res, err);
 	    }
-	    paymentService.prepareUser(dataUser, function(err, userPrepared){
+	    paymentService.prepareUser(dataUser[0], function(err, userPrepared){
 	      	if(!userPrepared.BPCustomerId){
 	        	return res.json(400,{
 	            	"code": "ValidationError",
