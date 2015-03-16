@@ -1,6 +1,6 @@
 'use strict';
 
-var TDAuthService = require('TDCore').authService;
+var tdAuthService = require('TDCore').authService;
 var config = require('../../config/environment');
 var compose = require('composable-middleware');
 var tdUserService = require('TDCore').userService;
@@ -53,56 +53,56 @@ function getTokenFromRequest(req) {
 };
 
 function logout(token, cb) {
-  TDAuthService.init(config.connections.user);
-  TDAuthService.logout(token, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.logout(token, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function verifyRequest(userId, cb) {
-  TDAuthService.init(config.connections.user);
-  TDAuthService.verifyRequest(userId, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.verifyRequest(userId, function (err, data) {
     if(err) return cb(err);
     return cb(null,data);
   });
 };
 
 function verify(data, cb) {
-  TDAuthService.init(config.connections.user);
-  TDAuthService.verify(data, data.userId, function (err, data){
+  tdAuthService.init(config.connections.user);
+  tdAuthService.verify(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function passwordResetRequest(data, cb){
-  TDAuthService.init(config.connections.user);
-  TDAuthService.passwordResetRequest(data, config.connections.user, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.passwordResetRequest(data, config.connections.user, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function passwordReset(data, cb){
-  TDAuthService.init(config.connections.user);
-  TDAuthService.passwordReset(req.body, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.passwordReset(req.body, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function emailUpdate(data, cb){
-  TDAuthService.init(config.connections.user);
-  TDAuthService.emailUpdate(data, data.userId, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.emailUpdate(data, data.userId, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function passwordUpdate(data, cb){
-  TDAuthService.init(config.connections.user);
-  TDAuthService.passwordUpdate(data, data.userId, function (err, data) {
+  tdAuthService.init(config.connections.user);
+  tdAuthService.passwordUpdate(data, data.userId, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });

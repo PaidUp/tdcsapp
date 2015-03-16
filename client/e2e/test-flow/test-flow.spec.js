@@ -84,9 +84,9 @@ describe('Convenience Select test flow', function() {
     });
   });
 
-  it('go to payments', function() {
-    payments.goToPayment();
-  });
+  // it('go to payments', function() {
+  //   payments.goToPayment();
+  // });
 
   it('sign out', function(){
     user.signOut();
