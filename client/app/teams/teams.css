@@ -1,0 +1,118 @@
+.teams .thumbnail img {
+    width: 100%;
+}
+
+.teams .thumbnail {
+    padding: 6px 6px 0 6px;
+    border: none;
+    margin: 0 0 10px 0;
+}
+
+.teams .col-xs-12 {
+    padding: 15px;
+}
+
+.teams .header {
+  text-align: left;
+}
+.team-Profile{
+  margin-top: 30px;
+  color: #a1acb5;
+}
+.team-Profile h2{
+  margin-top: 0px;
+}
+.team-Profile .radio-inline{
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.team-Profile .radio-inline input[type="radio"]{
+  width: 40px;
+  height: 40px;
+  margin-left: 0px;
+  opacity: 0;
+}
+.team-Profile .radio-inline input[type="radio"] + div{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  color: #a1acb5;
+  font-size: 14px;
+  text-transform: uppercase;
+  background-color: #f9f9f9;
+  border: 1px solid #a1acb5;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+.team-Profile .radio-inline input[type="radio"]:checked + div{
+  color: #ffffff;
+  background-color: #ff805d;
+  border: 1px solid #ff805d;
+}
+.btn-enroll{
+  text-align: left;
+  padding:0px 15px;
+  height: 40px;
+  line-height: 40px;
+  text-transform: uppercase;
+  text-align: right;
+}
+.btn-enroll span{
+  color: #c6614a;
+  font-size: 10px;
+}
+.btn-enroll span span{
+  padding-left: 5px;
+  color: #ffffff;
+  font-size: 22px;
+}
+.team-coach-small{
+  margin: 15px;
+}
+.coach-image{
+  float: left;
+  margin: 0px;
+  margin-right: 15px;
+  border: 1px solid #a1acb5;
+  width: 58px;
+  height: 58px;
+  background-color: #a1acb5;
+  overflow: hidden;
+}
+.coach-image img{
+  width: 100%;
+}
+.coach-info{
+  float: left;
+  line-height: 13px;
+}
+.coach-name{
+  color: #494c4e;
+}
+.overlay{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 2000;
+}
+.loadingContainer{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0px 0px -150px;
+  padding: 30px 0px;
+  font-size: 32px;
+  width: 300px;
+  height: auto;
+  background-color: #ffffff;
+  color: #6c737c;
+}

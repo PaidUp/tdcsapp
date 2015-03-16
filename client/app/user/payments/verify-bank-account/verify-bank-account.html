@@ -1,0 +1,62 @@
+<div class="message" name="{{ msg }}"></div>
+<div class="container">
+  <div class="row">
+    <di class="col-sm-8 col-sm-offset-2">
+      <h4>Enter deposit amounts</h4>
+      Once you have checked the 2 deposit we made into your <strong>Bank Account {{bankAccount.accountNumber}}</strong>, please enter theme below. <br>
+      <br>
+      <small>Note: the deposits show up on your bank account statement about 2-3 business days after you linked your account</small> <br>
+      <br>
+    </di>
+  </div>
+</div>
+<div class="width-100 height-100 bg-Block">
+  <div class="container verify-bank">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <h4 class="text-CS">
+          Bank Account
+        </h4>
+        {{bankAccount.accountType}} <br>
+        Bank Account {{bankAccount.accountNumber}} <br>
+        <br>
+        <strong>Deposit Amounts</strong> <br>
+        Enter only 2 digits in each field <!-- <strong><a href="">WHAT IS THIS</a></strong> -->
+        <div class="text-CS" ng-show="attemptsRemaining > 0">
+          <small class="text-CS">Remaining attempts: {{attemptsRemaining}}</small>
+        </div>
+        <div class="row">
+          <form name="verifyBankAccountForm" ng-submit="verifyBankAccount()" novalidate>
+            <div class="col-sm-4">
+              <div class="form-group has-feedback">
+                <span class="inputLeftNumbers">$ 0.</span>
+                <input class="form-control" type="text" name="deposit1" ng-model="deposit1" required ng-required="true" ng-change="validateDeposit('deposit1')">
+                <div class="text-CS text-center" ng-show="verifyBankAccountForm.deposit1.$error.required && submitted">
+                  <small class="text-CS">Desposit Amount is required</small>
+                </div>
+                <div class="text-CS text-center" ng-show="!verifyBankAccountForm.deposit1.$error.required &&verifyBankAccountForm.deposit1.$error.deposit && submitted">
+                  <small class="text-CS">Desposit Amount is invalid Must be an Integer</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group has-feedback">
+                <span class="inputLeftNumbers">$ 0.</span>
+                <input class="form-control" type="text" name="deposit2" ng-model="deposit2" required ng-required="true" ng-change="validateDeposit('deposit2')">
+                <div class="text-CS text-center" ng-show="verifyBankAccountForm.deposit2.$error.required && submitted">
+                  <small class="text-CS">Desposit Amount is required</small>
+                </div>
+                <div class="text-CS text-center" ng-show="!verifyBankAccountForm.deposit2.$error.required &&verifyBankAccountForm.deposit2.$error.deposit && submitted">
+                  <small class="text-CS">Desposit Amount is invalid Must be an Integer</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <button class="btn btnSignUp btn-block btn-lg btn-verifyAccount"  type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

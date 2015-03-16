@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="col-sm-6 col-sm-offset-3">
+    <div class="row text-center" ng-if="athletes.length > 0">
+        <div class="col-sm-4 athlete-card" ng-repeat="athlete in athletes" ng-click="selectAthlete(athlete)">
+            <img src="/assets/images/avatar.jpg" alt="" class="img-circle">
+            <h2 class="header">{{athlete.firstName}} {{athlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete(athlete)"></span> --></h2>
+            <p ng-show="!athlete.team" class="header">
+                {{athlete.firstName}} doesn't have team yet
+            </p>
+            <p ng-show="athlete.team" class="header">
+              <strong>{{athlete.team.name}}</strong>
+            </p>
+        </div>
+    </div>
+    <div class="row" ng-show="athletes.length === 0 && isChildCharged">
+      <div class="col-sm-12 text-center">
+        <h3 class="text-CS">Click the button below to get started!</h3>
+        <!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sapien nibh, luctus quis diam eu, molestie porta tortor. Donec fringilla --> <br>
+        <br>
+      </div>
+      <div class="col-sm-6 col-sm-offset-3">
+        <button type="button" id="add-athlete-btn" class="btn btnSignUp btn-block btn-md" ng-click="modalFactory.CreateAthleteModal()">Add Athlete</button>
+        <br>
+      </div>
+      <div class="col-sm-12">
+        <img src="assets/images/dashboard_bg.jpg" class="width-100">
+      </div>
+      <div class="clearfix"></div>
+      <br>
+    </div>
+  </div>
+</div>

@@ -1,28 +1,35 @@
 'use strict';
 
-angular.module('tdcsAppApp', [
+angular.module('convenienceApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'angulartics',
+  'angulartics.mixpanel',
+  'facebook',
+  'angularNumberPicker',
+  'ui.mask'
 ])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider, FacebookProvider, $uiViewScrollProvider) {
+    $analyticsProvider.virtualPageviews(false);
+    $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
+    FacebookProvider.init('717631811625048');
     $httpProvider.interceptors.push('authInterceptor');
   })
 
-  .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+  .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
     return {
       // Add authorization token to headers
       request: function (config) {
         config.headers = config.headers || {};
-        if ($cookieStore.get('token')) {
-          config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
+        if (SessionService.getCurrentSession()) {
+          config.headers.Authorization = 'Bearer ' + SessionService.getCurrentSession();
         }
         return config;
       },
@@ -30,9 +37,25 @@ angular.module('tdcsAppApp', [
       // Intercept 401s and redirect you to login
       responseError: function(response) {
         if(response.status === 401) {
-          $location.path('/login');
-          // remove any stale tokens
-          $cookieStore.remove('token');
+          // due to circular dependency i can't add AuthService or CartService so
+          // i need to make a logout event broadcast
+          $rootScope.$emit('logout', {});
+          $rootScope.$emit('bar-welcome', {
+            left:{
+              url: ''
+            } ,
+            right:{
+              url: ''
+            }
+          });
+          FlashService.addAlert({
+            type:'warning',
+            msg: 'Session has expired.',
+            timeout: 10000
+          });
+
+          $location.path('/');
+          // remove any state tokens
           return $q.reject(response);
         }
         else {
@@ -42,12 +65,48 @@ angular.module('tdcsAppApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $state, AuthService, $analytics, FlashService) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
-      Auth.isLoggedInAsync(function(loggedIn) {
-        if (next.authenticate && !loggedIn) {
-          $location.path('/login');
+      //Mixpanel page tracker
+      $analytics.pageTrack(next.url);
+
+      AuthService.isLoggedInAsync(function(loggedIn) {
+        if (next.auth && !loggedIn) {
+          $rootScope.$emit('logout', {});
+          $rootScope.$emit('bar-welcome', {
+            left:{
+              url: ''
+            },
+            right:{
+              url: ''
+            }
+          });
+          $state.go('main');
+          event.preventDefault();
+        }
+      });
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+      $state.previous = fromState;
+      AuthService.isLoggedInAsync(function(loggedIn) {
+        if (loggedIn) {
+          var currentUser = AuthService.getCurrentUser();
+          if (currentUser.verify && currentUser.verify.status !== 'verified') {
+            FlashService.addAlert({
+              type:'warning',
+              templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
+            });
+          }
+          if (currentUser.payment &&
+              currentUser.payment.verify &&
+              currentUser.payment.verify.status !== 'succeeded') {
+            FlashService.addAlert({
+              type:'warning',
+              templateUrl: 'components/application/directives/alert/alerts/verify-bank-account.html'
+            });
+          }
         }
       });
     });

@@ -1,0 +1,27 @@
+<!-- <div ng-if="type === 'drop_down'">
+  <label>{{title}}</label>
+  <select class="form-control"
+          ng-model="ngModel"
+          ng-required="isrequired"
+          ng-options="option as option.title for option in options track by option.valueId"
+          ng-click="changeCustomOptions(ngModel)">
+  </select>
+</div> -->
+<!--
+  Commented for strange scope behavior, it doesn't work as expected and has
+  random behavior in different browsers, TECHNICAL DEV
+  it's now directly in view
+-->
+<!-- <div ng-if="type === 'radio'">
+  <strong>{{title}}</strong>
+  <br>
+  <label class="radio-inline" ng-repeat="item in options">
+    <input type="radio"
+            name="radioButton"
+            ng-value="item"
+            ng-model="ngModel"
+            ng-required="isrequired"
+            ng-change="changeCustomOptions(ngModel)">
+    <div><strong>{{item.title}}</strong></div>
+  </label>
+</div> -->

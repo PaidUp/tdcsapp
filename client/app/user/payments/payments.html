@@ -1,0 +1,96 @@
+<div class="message" name="{{ msg }}"></div>
+<div class="container payments-container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+      <h4 class="text-CS pull-left">Bank Account</h4>
+      <br>
+      <br>
+      <strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
+      <table class="table table-payment-methods">
+        <thead>
+          <!-- <td width="15%" class="text-center"><strong>{{'primary' | uppercase}}</strong></td> -->
+          <td><strong>{{'details' | uppercase}}</strong></td>
+        </thead>
+        <tbody>
+          <tr ng-show="(!loadingCards && !loadingBanks) && bankAccounts.length === 0">
+            <td>
+              You don't have a bank account yet.
+            </td>
+          </tr>
+          <tr ng-repeat="account in bankAccounts">
+            <!-- <td width="15%" class="text-center">
+              <div class="radio center-block">
+                <label>
+                  <input type="radio"
+                          name="primaryAccount"
+                          ng-value="true"
+                          ng-model="account.primary"
+                          required
+                          ng-required="true">
+                  <div></div>
+                </label>
+              </div>
+            </td> -->
+            <td>
+              <strong>{{account.bankName}}</strong> <br>
+              {{account.accountNumber}}
+              <span class="text-CS" ng-show="account.state === 'pending'">
+                <strong>{{'not verified' | uppercase}}</strong>
+              </span>
+              <a class="pull-right verify-bank" href="" ng-click="verifyAccount(account)" ng-show="account.state === 'pending'">
+                <strong>{{'verify now' | uppercase}}</strong>
+              </a>
+              <span class="text-CS" ng-show="account.state === 'failed'" >
+                <strong>{{'The account can not be validated' | uppercase}}</strong>
+              </span>
+              <a class="pull-right remove-bank" href="" ng-click="deleteBankAccount($index, account)" ng-show="account.state === 'failed'">
+                <strong>{{'remove' | uppercase}}</strong>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 class="text-CS">Credit / Debit card</h4>
+      <strong class="pull-right"> + <a ui-sref="user-card-create" href="">ADD NEW CARD</a></strong>
+      <table class="table table-payment-methods">
+        <thead>
+          <!-- <td><strong>{{'primary' | uppercase}}</strong></td> -->
+          <td><strong>{{'details' | uppercase}}</strong></td>
+        </thead>
+        <tbody>
+          <tr ng-show="(!loadingCards && !loadingBanks) && cards.length === 0">
+            <td>
+              You don't have a credit / debit card yet.
+            </td>
+          </tr>
+          <tr ng-repeat="card in cards">
+            <!-- <td>
+              <div class="radio center-block">
+                <label>
+                  <input type="radio"
+                          name="primaryCard"
+                          ng-value="true"
+                          ng-model="card.primary"
+                          required
+                          ng-required="true">
+                  <div></div>
+                </label>
+              </div>
+            </td> -->
+            <!-- <td></td> -->
+            <td>
+              <!-- <img ng-src="{{card.logo}}" alt="Card Logo" class="pull-left"> -->
+              <strong>{{card.bankName}}</strong><br>
+              {{card.number}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="container empty-car text-CS" ng-show="loadingCards && loadingBanks">
+  <loading></loading>
+</div>

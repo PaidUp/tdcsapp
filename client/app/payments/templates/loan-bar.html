@@ -1,0 +1,11 @@
+<div class="loan-tabs" ng-controller="LoanBarCtrl">
+  <strong>How would you like to pay?</strong>
+  <div class="clearfix"></div>
+  <tabset>
+    <tab ng-repeat="tab in tabs"
+          heading="{{tab.heading}}"
+          ui-sref="{{tab.state}}"
+          active="tab.active">
+    </tab>
+  </tabset>
+</div>

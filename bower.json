@@ -14,7 +14,13 @@
     "font-awesome": ">=4.1.0",
     "lodash": "~2.4.1",
     "angular-socket-io": "~0.6.0",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "angulartics": "~0.17.2",
+    "moment": "~2.9.0",
+    "angular-facebook": "~0.2.3",
+    "moment-range": "~1.0.7",
+    "angular-number-picker": "~1.0.2",
+    "angular-ui-utils": "~0.2.2"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

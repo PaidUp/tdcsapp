@@ -1,0 +1,45 @@
+'use strict';
+
+var paymentService = require('../../payment/payment.service');
+var userService = require('../../user/user.service');
+var loanService = require('../../loan/loan.service');
+var logger = require('../../../config/logger');
+var userLoanService = require('../../loan/application/user/user.service');
+var commerceService = require('../commerce.service');
+var async = require('async');
+
+exports.listOrders = function (req, res) {
+  var user = req.user;
+  commerceService.getUserOrders(user, function (err, orders) {
+    if (err) {
+      return handleError(res, err);
+    }
+    async.eachSeries(orders, function (order, callback) {
+      if (err) {
+        callback(err);
+      }
+      userService.findOne({_id: order.athleteId}, function (err, athlete) {
+        if (err) {
+          callback(err);
+        }
+        order.athlete = athlete;
+        callback();
+      });
+    }, function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, orders);
+    });
+  });
+}
+
+function handleError(res, err) {
+  var httpErrorCode = 500;
+  var errors = [];
+
+  if(err.name === "ValidationError") {
+    httpErrorCode = 400;
+  }
+  logger.log('error', err);
+
+  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+}

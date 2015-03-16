@@ -1,0 +1,91 @@
+<div class="bannerLoanSignContract hidden-print">
+  <div class="container">
+
+    <div class="col-sm-8 col-sm-offset-2">
+      <h3><strong>Your payment plan</strong></h3>
+
+      <div class="row loan-plan-sign-contract">
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.loanAmount | currency}}
+              <span class="text-CS clearfix">loan amount</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.term}}
+              <span class="text-CS clearfix">term</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.apr + '%'}}
+              <span class="text-CS clearfix">apr</span>
+            </strong>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="item">
+            <strong>
+              {{paymentPlan.monthlyPayment | currency}}
+              <span class="text-CS clearfix">monthly payment</span>
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <h3>
+        <strong>Payment Schedule</strong>
+        <small class="hidden-print">
+          <small class="pull-right">
+            <strong>
+              <a href="javascript:window.print()" target="blank">PRINT</a>
+            </strong>
+          </small>
+        </small>
+      </h3>
+
+      <div class="clearfix"></div>
+      <table class="table table-payment-schedule">
+        <thead>
+          <td width="15%"><strong>#</strong></td>
+          <td><strong>{{'payment amount' | uppercase}}</strong></td>
+          <td width="60%"><strong>{{'payment due date' | uppercase}}</strong></td>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(index, payment) in paymentSchedule">
+            <td>{{index + 1}}</td>
+            <td>{{payment.installment | currency}}</td>
+            <td>{{prettify(payment.paymentDay)}}</td>
+            <!-- <td>{{payment.paymentDay}}</td> -->
+          </tr>
+        </tbody>
+      </table>
+
+      <br>
+
+      <h3><strong>Payment Info</strong></h3>
+
+      We electronically debit your bank account for the amount you owe on your due dates from the bank account information you provide. <br>
+      <br>
+      Before we can debit your account, we must verify that you own it. Convenience Select will make two (2) small deposits into your bank account. in 4 days, please log into your bank account and validate those amounts. Come back to the Convenience Select site and enter the amounts. Once you’ve confirmed, we will debit your account on the scheduled dates. <br>
+      <br>
+
+    </div>
+  </div>
+</div>
+
+<create-bank-account user="user"></create-bank-account>

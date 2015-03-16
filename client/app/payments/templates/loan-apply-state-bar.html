@@ -1,0 +1,8 @@
+<strong ng-controller="PaymentStateCtrl">
+   <ul class="state-bar pull-right">
+    <li ng-repeat="(index, state) in states" ng-class="{'active' : state.active}">
+      <div>{{index + 1}}</div>
+      {{state.title}}
+    </li>
+  </ul>
+</strong>

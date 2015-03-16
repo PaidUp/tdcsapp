@@ -1,0 +1,127 @@
+<div class="container text-center">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="row" ng-if="athlete">
+      <div ng-controller="CarouselDemoCtrl" ng-if="athlete && athletes.length > 1">
+        <carousel interval="-1" on-carousel-change="onSlideChanged(nextSlide, direction)">
+          <slide ng-repeat="(index, childAthlete) in athletes" active="childAthlete.active">
+            <div class="row" ng-click="selectAthlete(childAthlete, index, true)">
+              <div class="col-sx-4">
+                <h2 class="header">{{childAthlete.firstName}} {{childAthlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete()"></span> --></h2>
+                <p ng-click="toggleDetails()" ng-show="!fullDetails">{{'view full details' | uppercase}}</p>
+                <div ng-show="fullDetails">
+                  {{contactInfo.value}}
+                </div>
+                <p ng-show="!athlete.team" class="header">
+                    {{childAthlete.firstName}} doesn't have team yet
+                </p>
+              </div>
+            </div>
+          </slide>
+        </carousel>
+      </div>
+      <div class="row" ng-if="athlete && athletes.length === 1">
+        <div class="col-sm-4 col-sm-offset-4 athlete-card">
+          <h2 class="header">{{athlete.firstName}} {{athlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete()"></span> --></h2>
+          <p ng-show="!athlete.team" class="header">
+              {{athlete.firstName}} doesn't have team yet
+          </p>
+          <p ng-show="athlete.team" class="header">
+            <strong>{{athlete.team.name}}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container teams" ng-show="athlete">
+  <p class="header"> Here are some popular teams nearby!</p>
+  <list-teams team="team" ng-click="selectTeamForAthlete()"></list-teams>
+</div>
+
+<!--
+<div class="row" ng-if="athlete && athlete.team">
+  <div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <div ng-controller="TabsCtrl">
+        <tabset>
+          <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+          </tab>
+        </tabset>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="row bg-Block border-gray-top" ng-if="athlete && athlete.team">
+  <div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div class="row">
+            <div class="col-sm-4">
+
+              <div class="dropdown">
+                <smal><a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                  <strong>UPCOMING EVENTS</strong>
+                  <span class="caret"></span>
+                </a></smal>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+                </ul>
+              </div>
+
+            </div>
+
+            <div class="col-sm-8">
+
+              <div ng-controller="DatepickerCtrl">
+                <span class="input-group-btn">
+                  <div class="input-group pull-right date-search">
+                    <input type="text" class="form-control" ng-show="search" placeholder="search">
+                    <span class="input-group-btn">
+                      <button class="btn glyphicon glyphicon-search" type="button" ng-click="search=true" ng-hide="search"></button>
+                    </span>
+                  </div>
+                  <div class="btn datePicker pull-right" ng-click="open($event)" datepicker-popup="yyyy/MM/dd" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions"><i class="glyphicon glyphicon-calendar"></i> <span  datepicker-popup="yyyy/MM/dd" ng-model="dt">{{dt | date : 'MMMM yyyy'}}</span></div>
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <br>
+
+      <div class="col-sm-12">
+        <div ng-controller="AccordionCtrl" class="athletes-acordion">
+          <accordion>
+            <accordion-group ng-repeat="group in groups">
+              <accordion-heading>
+                <div class="accordionHeaddingDate pull-left">
+                  <strong><small>OCT</small><br>20</strong>
+                </div>
+                <div class="accordionHeaddingContent">
+                  <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                  <strong>Intensive training</strong><br>
+                  <small><span class="text-CS"><strong>8AM - 12PM</strong></span><strong> @ MAIN ARENA</strong></small>
+                </div>
+              </accordion-heading>
+              {{group.content}}
+            </accordion-group>
+          </accordion>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+ -->
