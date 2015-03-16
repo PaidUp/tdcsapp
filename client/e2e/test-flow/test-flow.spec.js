@@ -6,6 +6,7 @@ var signuppo = require('../page_objects/signup.po.js');
 var user = require('../user/user.helper.spec.js');
 var credentials = require('../page_objects/credentials.po.js');
 var addAthlete = require('../page_objects/add-athlete.po.js');
+var payments = require('../user/payments/payments.helper.spec.js');
 
 describe('Convenience Select test flow', function() {
 
@@ -81,6 +82,10 @@ describe('Convenience Select test flow', function() {
       element(by.css('.btnSignUp')).click();
 
     });
+  });
+
+  it('go to payments', function() {
+    payments.goToPayment();
   });
 
   it('sign out', function(){
