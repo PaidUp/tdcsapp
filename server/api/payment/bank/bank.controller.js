@@ -30,7 +30,6 @@ exports.create = function (req, res) {
 
 
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      console.log('prepareUser', userPrepared);
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",
@@ -45,7 +44,6 @@ exports.create = function (req, res) {
           if (err) {
             return handleError(res, err);
           }
-          console.log('user prepared', userPrepared);
           paymentService.setUserDefaultBank(userPrepared, function (err, data) {
             if (err) {
               return handleError(res, err);
@@ -87,6 +85,7 @@ exports.listBanks = function (req, res) {
               }
             });
           }
+          console.log(dataBanks);
           return res.json(200, camelize(dataBanks));
         }
       });
@@ -123,11 +122,11 @@ exports.verify = function (req, res) {
   var filter = {
     _id: req.user._id
   };
-  userService.findOne(filter, function (err, dataUser) {
+  userService.find(filter, function (err, dataUser) {
     if (err) {
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser, function (err, userPrepared) {
+    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",
@@ -169,8 +168,8 @@ exports.verify = function (req, res) {
           var filter = {
             _id: req.user._id
           };
-          userService.findOne(filter, function (err, dataUser) {
-            paymentService.setUserDefaultBank(dataUser, function (err, data) {
+          userService.find(filter, function (err, dataUser) {
+            paymentService.setUserDefaultBank(dataUser[0], function (err, data) {
               if (err) {
                 return handleError(res, err);
               }
@@ -230,11 +229,11 @@ exports.getBank = function (req, res) {
   var filter = {
     _id: req.user._id
   };
-  userService.findOne(filter, function (err, dataUser) {
+  userService.find(filter, function (err, dataUser) {
     if (err) {
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser, function (err, userPrepared) {
+    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.BPCustomerId) {
         return res.json(400, {
           "code": "ValidationError",

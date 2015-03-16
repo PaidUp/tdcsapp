@@ -129,11 +129,11 @@ function loadBankVerification(verificationId, cb) {
 
 function deleteBankAccount(customerId, bankId, cb) {
   setConnection();
-  tdPaymentService.deleteBankAccount(bankId, function(err, data){
+  tdPaymentService.deleteBankAccount({bankId:bankId}, function(err, data){
     if(err) return cb(err);
     listBanks(customerId, function(err, dataBanks){
       if(dataBanks.bankAccounts.length === 0){
-        userService.findOne({BPCustomerId:customerId}, function(err, user){
+        userService.find({BPCustomerId:customerId}, function(err, user){
           user.payment = {};
           userService.save(user, function(err, dataUpdateUser){
             if(err){
@@ -149,7 +149,7 @@ function deleteBankAccount(customerId, bankId, cb) {
 
 function confirmBankVerification(verificationId, amount1, amount2, cb) {
   setConnection();
-  tdPaymentService.confirmBankVerification(verificationId, amount1, amount2, function(err, data){
+  tdPaymentService.confirmBankVerification({verificationId:verificationId, amount1:amount1, amount2:amount2}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -259,7 +259,8 @@ function prepareBank(userId, bankId, cb) {
 }
 
 function fetchBank(bankId, cb){
-  paymentAdapter.fetchBank(bankId, function(err, bank){
+  setConnection();
+  tdPaymentService.fetchBank(bankId, function(err, bank){
       if(err) return cb(err);
       return cb(null, bank);
   });
@@ -466,7 +467,6 @@ function getUserDefaultBankId(user, cb) {
 }
 
 function setUserDefaultBank(user, cb) {
-  console.log('user....', user);
   getUserDefaultBankId(user, function(err, data){
     if(err && (err.name == 'not-bank-verified')) {
       user.payment = {verify:{status:'pending'}};
