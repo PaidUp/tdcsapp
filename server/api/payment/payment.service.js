@@ -466,6 +466,7 @@ function getUserDefaultBankId(user, cb) {
 }
 
 function setUserDefaultBank(user, cb) {
+  console.log('user....', user);
   getUserDefaultBankId(user, function(err, data){
     if(err && (err.name == 'not-bank-verified')) {
       user.payment = {verify:{status:'pending'}};

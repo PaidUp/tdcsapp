@@ -26,6 +26,9 @@ exports.create = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
+    //TODO validate dataUser
+
+
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       console.log('prepareUser', userPrepared);
       if (!userPrepared.BPCustomerId) {
@@ -42,7 +45,8 @@ exports.create = function (req, res) {
           if (err) {
             return handleError(res, err);
           }
-          paymentService.setUserDefaultBank(dataUser, function (err, data) {
+          console.log('user prepared', userPrepared);
+          paymentService.setUserDefaultBank(userPrepared, function (err, data) {
             if (err) {
               return handleError(res, err);
             }
