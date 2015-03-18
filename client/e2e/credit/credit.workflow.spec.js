@@ -1,15 +1,15 @@
 'use strict';
 
-var signuppo = require('../page_objects/signup.po.js');
-var addAthlete = require('../page_objects/add-athlete.po.js');
+var signuppo = require('../page-objects/signup.po.js');
+var addAthlete = require('../page-objects/add-athlete.po.js');
 var models = require('../models');
 var Utils = require('../utils/utils');
 var Async = require('async');
-var selectTeamForAthlete = require('../page_objects/selectTeamForAthlete.po');
-var loanApply = require('../page_objects/apply.po');
-var signContract = require('../page_objects/signContract.po');
-var loanPayment = require('../page_objects/loanPayment.po');
-var creditCardPayment = require('../page_objects/creditCardPayment.po');
+var selectTeamForAthlete = require('../page-objects/select-team-for-athlete.po');
+var loanApply = require('../page-objects/apply.po');
+var signContract = require('../page-objects/sign-contract.po');
+var loanPayment = require('../page-objects/loan-payment.po');
+var creditCardPayment = require('../page-objects/credit-card-payment.po');
 
 describe('Credit Workflow', function() {
 

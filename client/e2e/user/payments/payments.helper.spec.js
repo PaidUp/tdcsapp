@@ -1,7 +1,7 @@
 'use strict';
 
 var models = require('../../models');
-var loanPayment = require('../../page_objects/loanPayment.po');
+var loanPayment = require('../../page-objects/loan-payment.po');
 
 exports.goToPayment = function() {
   element(by.css('.dropdown')).click();
