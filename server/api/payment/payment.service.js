@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 var config = require('../../config/environment');
 var paymentAdapter = require('./payment.adapter');
-var commerceAdapter = require('../commerce/commerce.adapter');
+var commerceService = require('../commerce/commerce.service');
 var userService = require('../user/user.service');
 var mongoose = require('mongoose');
 var logger = require('../../config/logger');
@@ -11,14 +11,10 @@ var async = require('async');
 var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
 var tdPaymentService = require('TDCore').paymentService;
+tdPaymentService.init(config.connections.payment);
 var config = require('../../config/environment');
 
-function setConnection(){
-  tdPaymentService.init(config.connections.payment);
-};
-
 function createCustomer(user, cb) {
-  setConnection();
   var customer = {
     firstName: user.firstName,
     lastName: user.lastName,
@@ -32,7 +28,6 @@ function createCustomer(user, cb) {
 }
 
 function createCard(cardDetails, cb) {
-  setConnection();
   tdPaymentService.createCard(cardDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -40,7 +35,6 @@ function createCard(cardDetails, cb) {
 }
 
 function associateCard(customerId, cardId, cb) {
-  setConnection();
   tdPaymentService.associateCard(customerId, cardId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -48,7 +42,6 @@ function associateCard(customerId, cardId, cb) {
 }
 
 function createBank(bankDetails, cb) {
-  setConnection();
   tdPaymentService.createBank(bankDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -56,7 +49,6 @@ function createBank(bankDetails, cb) {
 }
 
 function associateBank(customerId, bankId, cb) {
-  setConnection();
   tdPaymentService.associateBank(customerId, bankId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -64,7 +56,6 @@ function associateBank(customerId, bankId, cb) {
 }
 
 function createOrder(merchantCustomerId, description, cb) {
-  setConnection();
   tdPaymentService.createOrder(merchantCustomerId, description, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -72,7 +63,6 @@ function createOrder(merchantCustomerId, description, cb) {
 }
 
 function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, cb) {
-  setConnection();
   tdPaymentService.debitCard(cardId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -80,7 +70,6 @@ function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, cb) {
-  setConnection();
   tdPaymentService.debitBank(bankId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -88,7 +77,6 @@ function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function associateBank(customerId, bankId, cb) {
-  setConnection();
   tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -96,7 +84,6 @@ function associateBank(customerId, bankId, cb) {
 }
 
 function listCustomerBanks(customerId, cb) {
-  setConnection();
   tdPaymentService.listCustomerBanks(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -104,7 +91,6 @@ function listCustomerBanks(customerId, cb) {
 }
 
 function listCards(customerId, cb) {
-  setConnection();
   tdPaymentService.listCards(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -164,11 +150,11 @@ function updateOrderDescription(orderId, description, cb) {
 }
 
 function collectPendingOrders(cb) {
-  commerceAdapter.orderList({status: "pending"}, function(err, data) {
+  commerceService.orderList({status: "pending"}, function(err, data) {
     var orderList = [];
     if (err) return cb(err);
     async.eachSeries(data, function (order, callback) {
-      commerceAdapter.orderLoad(order.incrementId, function (err, data) {
+      commerceService.orderLoad(order.incrementId, function (err, data) {
         if (err) return cb(err);
         orderList.push(data);
         callback();
@@ -298,7 +284,7 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
         createOrder(merchantId, orderId, function(err, BPOrderId) {
           if(err) return cb(err);
           logger.info('2d) Report BP Order to Magento.');
-          commerceAdapter.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
+          commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
             logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
             debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, BPOrderId, function(err, data) {
@@ -308,7 +294,7 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
                 // 2e) Create Magento transaction
                 var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
                   paymentMethod: "creditcard", number: cardDetails.cards[0].number, brand : cardDetails.cards[0].brand};
-                commerceAdapter.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
+                commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
@@ -341,7 +327,7 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
         createOrder(merchantId, orderId, function(err, BPOrderId) {
           if(err) return cb(err);
           logger.info('2d) Report BP Order to Magento.');
-          commerceAdapter.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
+          commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
             if (err) return cb(err);
             logger.info('2e) Debit BP bank account, order.');
             // 2d) Debit BP credit card
@@ -353,7 +339,7 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
                 var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
                   paymentMethod: "directdebit", account: bankDetails.bankAccounts[0].accountNumber,
                   bankName: bankDetails.bankAccounts[0].bankName, accountType: bankDetails.bankAccounts[0].accountType};
-                commerceAdapter.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
+                commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
@@ -380,8 +366,8 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
       if (err) {
         logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"
-        commerceAdapter.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
-          commerceAdapter.orderHold(order.incrementId, function(err, data){
+        commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
+          commerceService.orderHold(order.incrementId, function(err, data){
             //TODO
             paymentEmailService.sendFinalEmailCreditCard(user, amount, order.incrementId, function(error, data){
               logger.log('info', 'send email final email ' + data );
@@ -395,7 +381,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
         // Debit succeed
         logger.info('3) Success, add a comment and mark order as "processing"');
         // 3) Add a comment and mark order as "processing"
-        commerceAdapter.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
+        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
           if (err) return cb(err);
           //TODO
           paymentEmailService.sendProcessedEmailCreditCard(user, amount, resultDebit.number, order.incrementId, function(err, data){
@@ -412,8 +398,8 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"
-        commerceAdapter.addCommentToOrder(order.incrementId, defaultBankError.name, null, function (err, result) {
-          commerceAdapter.orderHold(order.incrementId, function(err, data){
+        commerceService.addCommentToOrder(order.incrementId, defaultBankError.name, null, function (err, result) {
+          commerceService.orderHold(order.incrementId, function(err, data){
             return cb(defaultBankError);
           });
         });
@@ -425,8 +411,8 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
           if (err) {
             logger.info('Failed, add a comment and mark order as "on hold"');
             // 3) Add a comment and mark order as "processing"
-            commerceAdapter.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
-              commerceAdapter.orderHold(order.incrementId, function(err, data){
+            commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
+              commerceService.orderHold(order.incrementId, function(err, data){
                 return cb(err);
               });
             });
@@ -435,7 +421,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
             // Debit succeed
             logger.info('3) Success, add a comment and mark order as "processing"');
             // 3) Add a comment and mark order as "processing"
-            commerceAdapter.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
+            commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
               if (err) return cb(err);
               return cb(null, resultDebit.BPOrderId);
             });
@@ -445,7 +431,6 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
     });
   }
 }
-
 
 function getUserDefaultBankId(user, cb) {
   // Check bank accounts

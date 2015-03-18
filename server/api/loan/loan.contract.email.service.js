@@ -9,7 +9,7 @@ var userLoanService = require('./application/user/user.service');
 var moment = require('moment');
 var loanService = require('./loan.service');
 var contractService = require('./loan.contract.service');
-var commerceAdapter = require('../commerce/commerce.adapter');
+var commerceService = require('../commerce/commerce.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 //2
@@ -25,12 +25,12 @@ function sendContractEmail (loanUser, loan, cb) {
   emailVars.name = loanUser.firstName;
   emailVars.userId = loanUser._id;
 
-  commerceAdapter.orderLoad(loan.orderId, function (err, magentoOrder) {
+  commerceService.orderLoad(loan.orderId, function (err, magentoOrder) {
     var team = 'Convenience Select';
     if(!err && magentoOrder){
       team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
     }
-     
+
     emailTemplates(config.emailTemplateRoot, function (err, template) {
 
       if (err) return cb(err);

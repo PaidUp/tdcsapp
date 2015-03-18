@@ -1,58 +1,48 @@
 'use strict';
 var config = require('../../../config/environment');
-var commerceAdapter = require('../commerce.adapter');
-/**
- * Save User model
- * Otherwise returns 403
- */
+var TDCommerceService = require('TDCore').commerceService;
+TDCommerceService.init(config.connections.commerce);
+
 function cartCreate(cb) {
-  commerceAdapter.cartCreate(function(err, cartId) {
-    if(err) {return cb(err);}
-    commerceAdapter.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAdress) {
-    	if(err) {return cb(err);}
-  	});
+  TDCommerceService.cartCreate(function (err, cartId){
+    if(err) return cb(err);
+    TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAdress) {
+      if(err) {return cb(err);}
+    });
     return cb(null, cartId);
   });
 }
 
 function cartList(cartId,cb) {
-  commerceAdapter.cartList(cartId,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
+  TDCommerceService.cartList(cartId, function(err, data) {
+    if(err) return cb(err);
     return cb(null, data);
   });
 }
 
-function cartAdd(shoppingCartProductEntity,cb) {
-  commerceAdapter.cartAdd(shoppingCartProductEntity,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
+function cartAdd(shoppingCartProductEntity, cb) {
+  TDCommerceService.cartAdd(shoppingCartProductEntity,function(err, data) {
+    if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function cartRemove(shoppingCartProductEntity,cb) {
-  commerceAdapter.cartRemove(shoppingCartProductEntity,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
+  TDCommerceService.cartRemove(shoppingCartProductEntity,function(err, data) {
+    if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function cartAddress(shoppingCartAddressEntity,cb) {
-  commerceAdapter.cartAddress(shoppingCartAddressEntity,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
+  TDCommerceService.cartAddress(shoppingCartAddressEntity,function(err, data) {
+    if(err) return cb(err);
     return cb(null, data);
   });
 }
 
 function cartView(shoppingCartId,cb) {
-  commerceAdapter.cartView(shoppingCartId,function(err, data) {
+  TDCommerceService.cartView(shoppingCartId,function(err, data) {
     if(err) {
       return cb(err);
     }
@@ -61,7 +51,7 @@ function cartView(shoppingCartId,cb) {
 }
 
 function cartTotals(shoppingCartId,cb) {
-  commerceAdapter.cartTotals(shoppingCartId,function(err, data) {
+  TDCommerceService.cartTotals(shoppingCartId,function(err, data) {
     if(err) {
       return cb(err);
     }
@@ -73,10 +63,10 @@ function prepareMerchantProducts(shoppingCart, cb) {
   var products = [];
 
   // TODO
-  // check on every product if it has a different BPMerchant
+  // check on every product if it has a different Merchant (provider or BPMerchantId)
 
   var product = shoppingCart.items[1];
-  commerceAdapter.catalogProductInfo(product.productId, function(err, data){
+  TDCommerceService.catalogProductInfo(product.productId, function(err, data){
     products.push({
       productId : data.productId,
       productSku: data.sku,
@@ -96,9 +86,9 @@ exports.addLoanInterest = function(cartId, amount, cb){
       qty: 1
     }]
   };
-  commerceAdapter.cartAdd(shoppingCartProductEntityArray, function(err, data) {
+  TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
-    commerceAdapter.updateCartProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
+    TDCommerceService.updateCartProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
       if(err) return cb(err);
       return cb(null, data);
     })
@@ -114,12 +104,11 @@ exports.addFee = function(cartId, cb){
       qty: 1
     }]
   };
-  commerceAdapter.cartAdd(shoppingCartProductEntityArray, function(err, data) {
+  TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 }
-
 
 exports.cartCreate = cartCreate;
 exports.cartList = cartList;

@@ -5,8 +5,7 @@ var logger = require('../../config/logger');
 var LoanJS = require('loanjs');
 var loan = require('./loan.model');
 var config = require('../../config/environment');
-var commerceAdapter = require('../user/user.service');
-var commerceAdapter = require('../commerce/commerce.adapter');
+var commerceService = require('../commerce/commerce.service');
 var paymentService = require('../payment/payment.service');
 var userService = require('../user/user.service');
 var paymentEmailService = require('../payment/payment.email.service');
@@ -77,7 +76,7 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
   logger.log('info', 'Charging loan: ' + loan.id + ' scheduled payment: ' + (scheduledIndex + 1));
   var amount = loan.schedule[scheduledIndex].installment;
   // Get Magento Order
-  commerceAdapter.orderLoad(loan.orderId, function(err,order){
+  commerceService.orderLoad(loan.orderId, function(err,order){
     userService.findOne({_id:order.userId}, function(err, user){
       paymentService.capture(order, user, order.products[0].BPCustomerId, amount, order.paymentMethod, function(captureErr, data){
         if (captureErr) {

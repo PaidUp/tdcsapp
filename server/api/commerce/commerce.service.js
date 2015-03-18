@@ -1,13 +1,14 @@
 'use strict';
 
-var commerceAdapter = require('./commerce.adapter');
 var paymentService = require('../payment/payment.service');
 var loanService = require('../loan/loan.service');
 var async = require('async');
+var TDCommerceService = require('TDCore').commerceService;
+TDCommerceService.init(config.connections.commerce);
 
 function getUserOrders(user, cb) {
   var orders = [];
-  commerceAdapter.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
+  TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
     }
@@ -27,7 +28,7 @@ function getUserOrders(user, cb) {
 }
 
 function getOrder(user, orderId, cb) {
-  commerceAdapter.orderLoad(orderId, function (err, magentoOrder) {
+  TDCommerceService.orderLoad(orderId, function (err, magentoOrder) {
     if (err) return cb(err);
     if (magentoOrder.paymentMethod === 'directdebit') {
       loanService.findOne({orderId: orderId}, function (err, loan) {
@@ -71,7 +72,7 @@ function getOrder(user, orderId, cb) {
 function getUsertransactions(user, cb) {
   var transactions = [];
 
-  commerceAdapter.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
+  TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
     }
@@ -80,7 +81,7 @@ function getUsertransactions(user, cb) {
         if (err) {
           return cb(err);
         }
-        commerceAdapter.transactionList(order.incrementId, function (err, orderTransactions) {
+        TDCommerceService.transactionList(order.incrementId, function (err, orderTransactions) {
           if (err) {
             return cb(err);
           }
@@ -99,6 +100,30 @@ function getUsertransactions(user, cb) {
   });
 }
 
+function addCommentToOrder(orderId, comment, status, cb) {
+  TDCommerceService.orderCommentAdd(orderId, comment, status, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
+function addTransactionToOrder(orderId, transactionId, details, cb) {
+  TDCommerceService.transactionCreate(orderId, transactionId, details, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
+function orderHold(orderId, cb) {
+  TDCommerceService.orderHold(orderId, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
+exports.addCommentToOrder = addCommentToOrder;
+exports.addTransactionToOrder = addTransactionToOrder;
+exports.orderHold = orderHold;
 exports.getUserOrders = getUserOrders;
 exports.getOrder = getOrder;
 exports.getUsertransactions = getUsertransactions;
