@@ -1,35 +1,35 @@
 'use strict';
 
-var TDUserService = require('TDCore').userService;
+var tdUserService = require('TDCore').userService;
 var config = require('../../../config/environment');
 
 function create(data, cb) {
-  TDUserService.init(config.connections.user);
-  TDUserService.addressCreate(data, data.userId, function (err, data){
+  tdUserService.init(config.connections.user);
+  tdUserService.addressCreate(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function list(data, cb) {
-  TDUserService.init(config.connections.user);
-  TDUserService.addressList(data, data.userId, function (err, data){
+  tdUserService.init(config.connections.user);
+  tdUserService.addressList(data, data.userId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function load(data, cb) {
-  TDUserService.init(config.connections.user);
-  TDUserService.addressLoad(data.id, data.addressId, function (err, data){
+  tdUserService.init(config.connections.user);
+  tdUserService.addressLoad(data.id, data.addressId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
 function update(data, cb) {
-  TDUserService.init(config.connections.user);
-  TDUserService.addressUpdate(data, data.userId, data.addressId, function (err, data){
+  tdUserService.init(config.connections.user);
+  tdUserService.addressUpdate(data, data.userId, data.addressId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });

@@ -92,17 +92,17 @@ function passwordReset(data, cb){
   });
 };
 
-function emailUpdate(data, cb){
+function emailUpdate(data, userId, cb){
   tdAuthService.init(config.connections.user);
-  tdAuthService.emailUpdate(data, data.userId, function (err, data) {
+  tdAuthService.emailUpdate(data, userId, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 };
 
-function passwordUpdate(data, cb){
+function passwordUpdate(data, userId, cb){
   tdAuthService.init(config.connections.user);
-  tdAuthService.passwordUpdate(data, data.userId, function (err, data) {
+  tdAuthService.passwordUpdate(data, userId, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });

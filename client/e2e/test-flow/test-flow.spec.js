@@ -2,10 +2,10 @@
 
 var models = require('../models');
 var Utils = require('../utils/utils');
-var signuppo = require('../page_objects/signup.po.js');
+var signuppo = require('../page-objects/signup.po.js');
 var user = require('../user/user.helper.spec.js');
-var credentials = require('../page_objects/credentials.po.js');
-var addAthlete = require('../page_objects/add-athlete.po.js');
+var credentials = require('../page-objects/credentials.po.js');
+var addAthlete = require('../page-objects/add-athlete.po.js');
 var payments = require('../user/payments/payments.helper.spec.js');
 
 describe('Convenience Select test flow', function() {

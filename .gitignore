@@ -1,9 +1,3 @@
-node_modules
-public
-.tmp
-.idea
-client/bower_components
-dist
 /server/config/local.env.jsnode_modules
 server/config/environment/development.js
 var/logs/*.log
@@ -64,3 +58,6 @@ server/config/environment/index.js
 Icon?
 ehthumbs.db
 Thumbs.db
+=======
+/server/config/local.env.js
+var/logs/*
