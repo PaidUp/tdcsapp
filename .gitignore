@@ -10,7 +10,7 @@ public
 commerce/var
 commerce/media
 commerce/app/etc/local.xml
-#node_modules
+node_modules
 
 # path to emails #
 ######################
