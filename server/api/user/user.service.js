@@ -27,9 +27,9 @@ function update (data, cb) {
   });
 };
 
-function find (data, cb) {
+function find (filter, cb) {
   tdUserService.init(config.connections.user);
-  tdUserService.find(data, function(err, data){
+  tdUserService.find(filter, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });

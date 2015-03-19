@@ -22,9 +22,7 @@ angular.module('convenienceApp')
       };
 
       this.getUser = function (userId) { //change name
-        return User.post({
-          userId: userId
-        }, {}).$promise;
+        return User.post({}, {_id: userId}).$promise;
       };
 
       this.updateUser = function (user) {
@@ -378,6 +376,7 @@ angular.module('convenienceApp')
       };
 
       this.listRelations = function (userId) {
+        console.log('userId', userId);
         return UserRelation.query({
           action: 'list',
           userId: userId
