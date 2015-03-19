@@ -6,7 +6,7 @@ TDCommerceService.init(config.connections.commerce);
 function cartCreate(cb) {
   TDCommerceService.cartCreate(function (err, cartId){
     if(err) return cb(err);
-    TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAdress) {
+    TDCommerceService.cartAddress(config.commerce.defaultAddress,function(err, dataAdress) {
       if(err) {return cb(err);}
     });
     return cb(null, cartId);
@@ -34,8 +34,8 @@ function cartRemove(shoppingCartProductEntity,cb) {
   });
 }
 
-function cartAddress(shoppingCartAddressEntity,cb) {
-  TDCommerceService.cartAddress(shoppingCartAddressEntity,function(err, data) {
+function cartAddress(cartId, shoppingCartAddressEntity, cb) {
+  TDCommerceService.cartAddress(cartId, shoppingCartAddressEntity,function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
