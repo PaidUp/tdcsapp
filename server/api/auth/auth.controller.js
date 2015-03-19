@@ -10,7 +10,7 @@ exports.logout = function(req, res, next) {
 };
 
 exports.verifyRequest = function(req, res, next) {
-  authService.verifyRequest(req.params.id, function (err, data) {
+  authService.verifyRequest(req.params.userId, function (err, data) {
     if(err) res.json(402, err);
     res.json(200, data);
   });
@@ -38,14 +38,14 @@ exports.passwordReset = function(req, res, next) {
 };
 
 exports.emailUpdate = function(req, res, next) {
-  authService.emailUpdate(req.body, function (data) {
+  authService.emailUpdate(req.body, req.params.userId, function (err, data) {
     if(err) res.json(402, err);
     res.json(200, data);
   });
 };
 
 exports.passwordUpdate = function(req, res, next) {
-  authService.passwordUpdate(req.body, function (data) { 
+  authService.passwordUpdate(req.body, req.params.userId, function (err, data) { 
     if(err) res.json(402, err);
     res.json(200, data);
   });

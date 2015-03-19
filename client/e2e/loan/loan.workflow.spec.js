@@ -1,64 +1,59 @@
 'use strict';
 
-var signuppo = require('../page-objects/signup.po.js');
-
-var Async = require('async');
-var selectTeamForAthlete = require('../page-objects/select-team-for-athlete.po');
-var loanApply = require('../page-objects/apply.po');
-var signContract = require('../page-objects/sign-contract.po');
-var loanPayment = require('../page-objects/loan-payment.po');
-var verifyBankAccount = require('../page-objects/verify-bank-account.po');
-
 var Utils = require('../utils/utils');
 var models = require('../models');
 var user = require('../user/user.helper.spec.js');
 var athlete = require('../athletes/athlete.helper.spec.js');
+var teamspo = require('../page-objects/teams.po');
+var loanpo = require('../page-objects/loan.po');
 
+describe('Loan Workflow', function () {
 
-describe('Loan Workflow', function() {
+  beforeEach(function () {});
 
-  beforeEach(function() {});
-
-  it("should be signed in", function() {
+  it("should be signed in", function () {
     user.signupUserEmail(models.signup);
   });
 
-  it("should register a child", function() {
-    var athleteModel = models.athlete;
-    athlete.addAthlete(athleteModel);
+  it("should register a child", function () {
+    element(by.css('.my-athletes')).click();
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/athletes/dashboard');
+      var athleteModel = models.athlete;
+      athlete.addAthlete(athleteModel);
+    });
   });
 
-  // it("should select a team for a selected child", function() {
-  //   element.all(by.repeater('athlete in athletes')).get(0).click();
-  //   browser.waitForAngular();
+  // it("should select a team for a selected child", function () {
+  //   athlete.selectAthlete();
+  //   athlete.selectTeam(models.teamName);
+
   //   browser.getLocationAbsUrl().then(function (url) {
-  //     // console.log(Utils.getIdFromURL(url));
-  //     var athleteId = Utils.getIdFromURL(url);
-  //     expect(url).toEqual('/athletes/slider/'+athleteId);
+  //     // url -> /teams/profile/:teamId/athlete/:athleteId
+  //     var ids = Utils.getIdsfromUrl(url, [2, 4]);
+  //     var teamId = ids[0];
+  //     expect(athleteId).toEqual(ids[1]);
+  //     expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
+
+  //     var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
+  //     expect(athleteFirstName).toEqual(models.athlete.firstName);
+  //     expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
   //     browser.wait(function () {
-  //       return element(by.css('.container.teams')).isDisplayed();
+  //       return element(by.css('.magento-custom-options')).isDisplayed();
   //     }, 10000);
-  //     expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
-  //     var team = element(by.cssContainingText('.team-name', models.teamName));
-  //     expect(team).toBeDefined();
-  //     team.click();
-  //     browser.waitForAngular();
+
+  //     teamspo.fillFormTeamForAthlete();
+
   //     browser.getLocationAbsUrl().then(function (url) {
-  //       // url -> /teams/profile/:teamId/athlete/:athleteId
-  //       var ids = Utils.getIdsfromUrl(url, [2, 4]);
-  //       var teamId = ids[0];
-  //       expect(athleteId).toEqual(ids[1]);
-  //       expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
-
-  //       var athletefirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
-  //       expect(athletefirstName).toEqual(models.athlete.firstName);
-  //       expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
-
-  //       browser.wait(function () {
-  //         return element(by.css('.magento-custom-options')).isDisplayed();
-  //       }, 10000);
-  //       selectTeamForAthlete.fillFormOptions();
+  //       expect(url).toEqual('/commerce/cart/index');
+  //       expect(browser.manage().getCookie('cartId')).toBeDefined();
+  //       expect(browser.manage().getCookie('userId')).toBeDefined();
+  //       element(by.id('proceed-to-checkout')).click();
+  //       browser.getLocationAbsUrl().then(function (url) {
+  //         expect(url).toEqual('/payment/loan');
+  //       });
   //     });
+      
   //   });
   // });
 
@@ -73,7 +68,7 @@ describe('Loan Workflow', function() {
   //     expect(name).toEqual(userLoan.firstname);
   //     expect(lastName).toEqual(userLoan.lastname);
 
-  //     loanApply.fillForm(userLoan);
+  //     loanpo.fillFormApplyLoan(userLoan);
 
   //     element(by.css('form[name=loanApplyForm]')).submit();
   //     // browser.waitForAngular();
@@ -84,15 +79,15 @@ describe('Loan Workflow', function() {
   // });
 
   // it("should sign the loan contract", function() {
-  //   signContract.setData();
+  //   loanpo.setData();
 
   //   expect(element(by.binding('contractHTML')).getText()).not.toEqual('');
-  //   expect(signContract.loanAmount).not.toEqual('');
-  //   expect(signContract.term).not.toEqual('');
-  //   expect(signContract.apr).not.toEqual('');
-  //   expect(signContract.monthlyPayment).not.toEqual('');
+  //   expect(loanpo.loanAmount).not.toEqual('');
+  //   expect(loanpo.term).not.toEqual('');
+  //   expect(loanpo.apr).not.toEqual('');
+  //   expect(loanpo.monthlyPayment).not.toEqual('');
 
-  //   signContract.fillForm(models.userLoan);
+  //   loanpo.fillFormSignContract(models.userLoan);
 
   //   element(by.css('form[name=signContractForm]')).submit();
   //   // browser.waitForAngular();
@@ -102,16 +97,16 @@ describe('Loan Workflow', function() {
   // });
 
   // it("should place a payment", function() {
-  //   loanPayment.setData();
+  //   loanpo.setData();
 
-  //   expect(loanPayment.loanAmount).not.toEqual('');
-  //   expect(loanPayment.term).not.toEqual('');
-  //   expect(loanPayment.apr).not.toEqual('');
-  //   expect(loanPayment.monthlyPayment).not.toEqual('');
+  //   expect(loanpo.loanAmount).not.toEqual('');
+  //   expect(loanpo.term).not.toEqual('');
+  //   expect(loanpo.apr).not.toEqual('');
+  //   expect(loanpo.monthlyPayment).not.toEqual('');
 
   //   expect(element.all(by.repeater('(index, payment) in paymentSchedule')).count()).toBeGreaterThan(0);
 
-  //   loanPayment.fillForm(models.bankDetails);
+  //   loanpo.fillFormPayment(models.bankDetails);
 
   //   // this is because we need to ng-blur to take effect
   //   // element(by.id('check-img')).click();
@@ -240,5 +235,9 @@ describe('Loan Workflow', function() {
   //   var alert = element.all(by.repeater('alert in alerts'));
   //   expect(alert.count()).toEqual(1);
   // });
+  
+  it('should sign out', function(){
+    user.signOut();
+  });
 
 });

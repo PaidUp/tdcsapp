@@ -36,7 +36,6 @@ function find (data, cb) {
 };
 
 function save (data, cb) {
-  //console.log('data save', data);
   tdUserService.init(config.connections.user);
   tdUserService.save(data, function(err, data){
     if(err) return cb(err);

@@ -448,7 +448,6 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
 
 
 function getUserDefaultBankId(user, cb) {
-  console.log('user get id', user);
   // Check bank accounts
   listBanks(user.BPCustomerId, function(err, data){
     if(err) return cb(err);
@@ -468,7 +467,6 @@ function getUserDefaultBankId(user, cb) {
 }
 
 function setUserDefaultBank(user, cb) {
-  //console.log('user set', user);
   getUserDefaultBankId(user, function(err, data){
     if(err && (err.name == 'not-bank-verified')) {
       user.payment = {verify:{status:'pending'}};
@@ -491,7 +489,6 @@ function setUserDefaultBank(user, cb) {
     else {
       user.payment = {verify:{status:'succeeded'}};
       userService.save(user, function(err, dataUpdateUser){
-        //console.log('dataUpdateUser', dataUpdateUser);
         if(err){
           return cb(err);
         }
