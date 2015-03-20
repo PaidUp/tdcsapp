@@ -8,6 +8,7 @@ var logger = require('../../../config/logger');
 // Creates a new cart in the DB.
 exports.create = function(req, res) {
   cartService.cartCreate(function(err, cartId){
+    console.log('create controller',cartId);
     cartService.addFee(cartId, function(err, data) {
       res.json(200, {cartId: cartId});
     })
@@ -15,13 +16,14 @@ exports.create = function(req, res) {
 }
 
 exports.add = function(req, res) {
+  console.log('add controller',req.body);
   if(!req.body && !req.body.products  && !req.body.cartId) {
     return res.json(400, {
       "code": "ValidationError",
       "message": "Cart Id and products are required"
     });
   }
-  cartService.cartAdd(req.body,function(err, cartAdd){
+  cartService.cartAdd(req.body, function (err, cartAdd){
     if(err) return handleError(res, err);
     res.json(200, cartAdd);
   });
@@ -61,6 +63,7 @@ exports.address = function(req, res) {
 }
 
 exports.view = function(req, res) {
+  console.log('req.params', req.params );
   if(!req.params && !req.params.id) {
     return res.json(400, {
       "code": "ValidationError",

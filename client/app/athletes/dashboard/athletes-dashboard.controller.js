@@ -2,13 +2,11 @@
 
 angular.module('convenienceApp')
   .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
-    
-    
+  
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
     
-
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/athletes/templates/my-athletes-title.html'
@@ -32,7 +30,6 @@ angular.module('convenienceApp')
         angular.forEach(data, function (relation) {
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (user) {
-              console.log('user',user[0]);
               if (user[0].teams){
                 user[0].team = user.teams[0];
               }

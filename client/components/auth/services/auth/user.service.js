@@ -376,7 +376,6 @@ angular.module('convenienceApp')
       };
 
       this.listRelations = function (userId) {
-        console.log('userId', userId);
         return UserRelation.query({
           action: 'list',
           userId: userId

@@ -45,7 +45,6 @@ angular.module('convenienceApp')
         angular.forEach(data, function (relation) {
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (athlete) {
-              console.log('athlete', athlete);
               $scope.athletes.push(athlete[0]);
               if (data.length === 1) {
                 $scope.athlete = athlete[0];
