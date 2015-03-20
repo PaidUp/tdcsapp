@@ -30,8 +30,6 @@ function handleError(res, err) {
   return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
 }
 
-
-
 exports.generatePDF = function (req, res) {
   var html = req.html;
   wkhtmltopdf(html, { pageSize: 'letter', output: filename, footerRight:'[page]/[toPage]' }, function (code, signal) {

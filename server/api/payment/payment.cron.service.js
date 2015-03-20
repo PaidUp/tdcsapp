@@ -4,7 +4,6 @@ var _ = require('lodash');
 var path = require('path');
 var config = require('../../config/environment');
 var paymentService = require('./payment.service');
-var commerceAdapter = require('../commerce/commerce.adapter');
 var loanService = require('../loan/loan.service');
 var userService = require('../user/user.service');
 var async = require('async');
@@ -255,7 +254,7 @@ exports.sendTomorrowChargeLoan = function(cb){
             loan.notifications = [];
           }
           var noticationsLength = loan.notifications.length;
-          
+
           var index = 0;
           async.eachSeries(loan.schedule, function(schedule, callbackSchedule){
             var isnotified = false;
