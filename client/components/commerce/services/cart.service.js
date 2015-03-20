@@ -61,7 +61,6 @@ angular.module('convenienceApp')
     };
 
     this.getCart = function (cartId) {
-      console.log('cartId', cartId.cartId);
       return Cart.get({
         action: 'view',
         cartId: cartId.cartId
