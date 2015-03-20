@@ -4,6 +4,7 @@ var paymentService = require('../payment/payment.service');
 var loanService = require('../loan/loan.service');
 var async = require('async');
 var TDCommerceService = require('TDCore').commerceService;
+var config = require('../../config/environment')
 TDCommerceService.init(config.connections.commerce);
 
 function getUserOrders(user, cb) {
