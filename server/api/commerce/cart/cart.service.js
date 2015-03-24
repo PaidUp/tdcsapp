@@ -104,7 +104,6 @@ exports.addLoanInterest = function (cartId, amount, cb){
 }
 
 exports.addFee = function (cartId, cb){
-  console.log('Service cart addFee cartId', cartId);
   var shoppingCartProductEntityArray = {
     cartId: cartId.cartId,
     products : [{

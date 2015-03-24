@@ -1,14 +1,14 @@
 'use strict';
 
-// var loanService = require('./loan.service');
+var loanService = require('./loan.service');
 //var loanApplicationService = require('./application/loanApplication.service');
 
-// exports.simulate = function (req, res) {
-// 	loanService.simulate(req.body, function (err, dataSimulate) {
-// 		if (err) return res.json(409, err);
-// 		res.json(200, dataSimulate);
-// 	});
-// };
+exports.simulate = function (req, res) {
+	loanService.simulate(req.body, function (err, dataSimulate) {
+		if (err) return res.json(409, err);
+		res.json(200, dataSimulate);
+	});
+};
 
 // exports.create = function (req, res) {
 
