@@ -4,7 +4,7 @@ angular.module('convenienceApp')
   .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService, CartService, $state, PaymentService, ApplicationConfigService) {
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-bar.html'
+        url: 'app/payments/templates/loan-bar.html'
       } ,
       right:{
         url: ''

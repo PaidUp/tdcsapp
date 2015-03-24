@@ -71,7 +71,7 @@ angular.module('convenienceApp')
     this.getTotals = function (cartId) {
       return Cart.query({
         action: 'totals',
-        cartId: cartId
+        cartId: cartId.cartId
       }).$promise;
     };
 

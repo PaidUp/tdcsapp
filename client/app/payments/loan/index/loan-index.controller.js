@@ -4,7 +4,7 @@ angular.module('convenienceApp')
   .controller('LoanIndexCtrl', function ($rootScope, $scope, CartService, TeamService, $state, LoanService, FlashService) {
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-bar.html'
+        url: 'app/payments/templates/loan-bar.html'
       } ,
       right:{
         url: ''

@@ -6,7 +6,7 @@ var logger = require('../../../config/environment');
 var logger = require('../../../config/logger');
 
 // Creates a new cart in the DB.
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   cartService.cartCreate(function(err, cartId){
     cartService.addFee(cartId, function(err, data) {
       res.json(200, {cartId: cartId});
@@ -14,7 +14,7 @@ exports.create = function(req, res) {
   });
 }
 
-exports.add = function(req, res) {
+exports.add = function (req, res) {
   if(!req.body && !req.body.products  && !req.body.cartId) {
     return res.json(400, {
       "code": "ValidationError",
@@ -27,7 +27,7 @@ exports.add = function(req, res) {
   });
 }
 
-exports.remove = function(req, res) {
+exports.remove = function (req, res) {
   if(!req.body && !req.body.products  && !req.body.cartId) {
     return res.json(400, {
       "code": "ValidationError",
@@ -40,7 +40,7 @@ exports.remove = function(req, res) {
   });
 }
 
-exports.list = function(req, res) {
+exports.list = function (req, res) {
   if(!req.params && !req.params.id) {
     return res.json(400, {
       "code": "ValidationError",
@@ -53,14 +53,14 @@ exports.list = function(req, res) {
   });
 }
 
-exports.address = function(req, res) {
+exports.address = function (req, res) {
   cartService.cartAddress(req.body,function(err, cartAddress){
     if(err) return handleError(res, err);
     res.json(200, cartAddress);
   });
 }
 
-exports.view = function(req, res) {
+exports.view = function (req, res) {
   if(!req.params && !req.params.id) {
     return res.json(400, {
       "code": "ValidationError",
@@ -73,7 +73,7 @@ exports.view = function(req, res) {
   });
 }
 
-exports.totals = function(req, res) {
+exports.totals = function (req, res) {
   if(!req.params && !req.params.id) {
     return res.json(400, {
       "code": "ValidationError",
@@ -86,7 +86,7 @@ exports.totals = function(req, res) {
   });
 }
 
-function handleError(res, err) {
+function handleError (res, err) {
   logger.info(err, err);
   var httpErrorCode = 500;
   var errors = [];

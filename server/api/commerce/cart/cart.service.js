@@ -1,20 +1,19 @@
 'use strict';
 var config = require('../../../config/environment');
 var TDCommerceService = require('TDCore').commerceService;
-//TDCommerceService.init(config.connections.commerce);
 
-function cartCreate(cb) {
+function cartCreate (cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartCreate(function (err, cartId){
     if(err) return cb(err);
-    TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAdress) {
+    TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAddress) {
       if(err) {return cb(err);}
     });
     return cb(null, cartId);
   });
 }
 
-function cartList(cartId, cb) {
+function cartList (cartId, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartList(cartId, function(err, data) {
     if(err) return cb(err);
@@ -22,15 +21,15 @@ function cartList(cartId, cb) {
   });
 }
 
-function cartAdd(shoppingCartProductEntity, cb) {
+function cartAdd (shoppingCartProductEntity, cb) {
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.cartAdd(shoppingCartProductEntity.cartId, shoppingCartProductEntity, function(err, data) {
+  TDCommerceService.cartAdd(shoppingCartProductEntity, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
-function cartRemove(shoppingCartProductEntity,cb) {
+function cartRemove (shoppingCartProductEntity,cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartRemove(shoppingCartProductEntity,function(err, data) {
     if(err) return cb(err);
@@ -38,7 +37,7 @@ function cartRemove(shoppingCartProductEntity,cb) {
   });
 }
 
-function cartAddress(cartId, shoppingCartAddressEntity, cb) {
+function cartAddress (cartId, shoppingCartAddressEntity, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartAddress(cartId, shoppingCartAddressEntity, function(err, data) {
     if(err) return cb(err);
@@ -46,7 +45,7 @@ function cartAddress(cartId, shoppingCartAddressEntity, cb) {
   });
 }
 
-function cartView(shoppingCartId, cb) {
+function cartView (shoppingCartId, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartView(shoppingCartId,function(err, data) {
     if(err) {
@@ -56,7 +55,7 @@ function cartView(shoppingCartId, cb) {
   });
 }
 
-function cartTotals(shoppingCartId,cb) {
+function cartTotals (shoppingCartId,cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartTotals(shoppingCartId,function(err, data) {
     if(err) {
@@ -66,7 +65,7 @@ function cartTotals(shoppingCartId,cb) {
   });
 }
 
-function prepareMerchantProducts(shoppingCart, cb) {
+function prepareMerchantProducts (shoppingCart, cb) {
   var products = [];
 
   // TODO
@@ -85,7 +84,7 @@ function prepareMerchantProducts(shoppingCart, cb) {
   });
 }
 
-exports.addLoanInterest = function(cartId, amount, cb){
+exports.addLoanInterest = function (cartId, amount, cb){
   var shoppingCartProductEntityArray = {
     cartId : cartId,
     products : [{
@@ -104,9 +103,10 @@ exports.addLoanInterest = function(cartId, amount, cb){
   });
 }
 
-exports.addFee = function(cartId, cb){
+exports.addFee = function (cartId, cb){
+  console.log('Service cart addFee cartId', cartId);
   var shoppingCartProductEntityArray = {
-    cartId: cartId,
+    cartId: cartId.cartId,
     products : [{
       product_id: config.commerce.products.fee.id,
       sku: config.commerce.products.fee.sku,
@@ -114,7 +114,7 @@ exports.addFee = function(cartId, cb){
     }]
   };
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.cartAdd(cartId, shoppingCartProductEntityArray, function(err, data) {
+  TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });

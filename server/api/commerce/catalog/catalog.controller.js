@@ -12,7 +12,6 @@ exports.list = function(req, res) {
       "message": "Category Id is required"
     });
   }
-  console.log('req.params', req.params);
   var categoryId = 0;
   if(req.params.categoryId == 'teams') {
     categoryId = config.commerce.category.teams;
