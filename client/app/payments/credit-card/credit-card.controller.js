@@ -70,9 +70,9 @@ angular.module('convenienceApp')
       });
     };
 
-    UserService.listAddresses().then(function (data) {
+    UserService.listAddresses($scope.user._id).then(function (data) {
       angular.forEach(data, function (address) {
-        UserService.getAddress(address.addressId).then(function (addressObj) {
+        UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
           if (addressObj.type === 'billing') {
             $scope.oldBillingAddress = addressObj;
             $scope.billing.address = angular.extend({}, addressObj);

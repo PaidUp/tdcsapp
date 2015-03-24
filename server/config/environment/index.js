@@ -244,7 +244,14 @@ var all = {
       host: 'localhost',
       port: 9002,
       token: 'TDCommerceToken-CHANGE-ME!'
-    }
+    },
+    userLoan: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9010,
+      token: 'TDUserToken-CHANGE-ME!'
+    },
   }
 };
 

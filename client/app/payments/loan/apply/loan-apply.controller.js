@@ -133,9 +133,9 @@ angular.module('convenienceApp')
       }
     };
 
-    UserService.listAddresses().then(function (data) {
+    UserService.listAddresses($scope.user._id).then(function (data) {
       angular.forEach(data, function (address) {
-        UserService.getAddress(address.addressId).then(function (addressObj) {
+        UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
           if (addressObj.type === 'billing') {
             $scope.oldBillingAddress = addressObj;
             $scope.billing.address = angular.extend({}, addressObj);
@@ -237,10 +237,10 @@ angular.module('convenienceApp')
     };
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-apply-bar.html'
+        url: 'app/payments/templates/loan-apply-bar.html'
       } ,
       right:{
-        url: 'app/commerce/checkout/payments/templates/loan-apply-state-bar.html'
+        url: 'app/payments/templates/loan-apply-state-bar.html'
       }
     });
   });
