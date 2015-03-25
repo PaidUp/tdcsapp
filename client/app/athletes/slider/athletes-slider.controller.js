@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesSliderCtrl', function ($scope, $rootScope, UserService, FlashService, $state, $stateParams) {
+  .controller('AthletesSliderCtrl', function ($scope, $rootScope, UserService, FlashService, AuthService, $state, $stateParams) {
     $scope.athletes =[];
     $scope.user = angular.copy(AuthService.getCurrentUser());
     $scope.fullDetails = false;
