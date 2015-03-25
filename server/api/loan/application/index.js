@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.use('/user', require('./user/index'));
 
-// router.post('/create', authService.isAuthenticated(), controller.create);//2, create user loan. /payment/loan/apply
+router.post('/create', authService.isAuthenticated(), controller.create);//2, create user loan. /payment/loan/apply
 // router.post('/state', authService.isAuthenticated(), controller.state);//3 /payment/loan/signcontract - modal
 // router.post('/sign', authService.isAuthenticated(), controller.sign);//4 /payment/loan/signcontract
 // router.post('/payment', authService.isAuthenticated(), controller.payment);//5 /payment/loan/payment

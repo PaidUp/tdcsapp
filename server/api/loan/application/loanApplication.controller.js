@@ -15,34 +15,21 @@ var loanApplicationService = require('./loanApplication.service');
 // };
 
 exports.simulate = function(req, res) {
-  console.log('req.body', req.body);
   loanApplicationService.simulate(req.body, function (err, dataSimulate) {
     if (err) return res.json(409, err);
     res.json(200, dataSimulate);
   });
 };
 
-// exports.create = function(req, res) {
-//   var interestRate = config.loan.defaults.interestRate;
-//   var isValidIncomeType = loanApplicationService.isValidIncomeType(req.body.incomeType);
-//   if(!isValidIncomeType){
-//     return res.json(400, {
-//       "code": "ValidationError",
-//       "message": "Income type is not accepted"
-//     });
-//   };
-//   var applicationData = new loanApplication(req.body);
-//   applicationData.state = STATE.APPLIED;
-//   applicationData.applicantUserId = req.user._id;
-//   applicationData.meta = req.body.meta;
-//   applicationData.interestRate = interestRate;
-//   loanApplicationService.save(applicationData, function(err, data){
-//     if(err){
-//       return res.json(409,err);
-//     }
-//     return res.json(200,{applicationId:data.id});
-//   });
-// };
+exports.create = function(req, res) {
+	console.log('req.body', req.body);
+  loanApplicationService.save(req.body, function (err, data){
+  	console.log('err', err);
+  	console.log('data', data);
+  	if (err) return res.json(409, err);
+  	res.json(200, data);
+  });
+};
 
 // exports.state = function(req, res) {
 //   //TODO

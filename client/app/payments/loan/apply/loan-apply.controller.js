@@ -133,21 +133,23 @@ angular.module('convenienceApp')
       }
     };
 
-    UserService.listAddresses($scope.user._id).then(function (data) {
-      angular.forEach(data, function (address) {
-        UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
-          if (addressObj.type === 'billing') {
-            $scope.oldBillingAddress = addressObj;
-            $scope.billing.address = angular.extend({}, addressObj);
-          }
-        }).catch(function (err) {
-          $scope.sendAlertErrorMsg(err.data.message);
+    AuthService.isLoggedInAsync(function (loggedIn) {
+      UserService.listAddresses($scope.user._id).then(function (data) {
+        angular.forEach(data, function (address) {
+          UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
+            if (addressObj.type === 'billing') {
+              $scope.oldBillingAddress = addressObj;
+              $scope.billing.address = angular.extend({}, addressObj);
+            }
+          }).catch(function (err) {
+            $scope.sendAlertErrorMsg(err.data.message);
+          });
         });
+      }).catch(function (err) {
+        $scope.sendAlertErrorMsg(err.data.message);
       });
-    }).catch(function (err) {
-      $scope.sendAlertErrorMsg(err.data.message);
     });
-
+    
     UserService.getContactList($scope.user._id).then(function(data){
       angular.forEach(data, function (contactInfo) {
         UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
