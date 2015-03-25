@@ -21,7 +21,7 @@ function list(data, cb) {
 
 function load(data, cb) {
   tdUserService.init(config.connections.user);
-  tdUserService.contactLoad(data.userId, data.contactId, function (err, data){
+  tdUserService.contactLoad(data.id, data.contactId, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
