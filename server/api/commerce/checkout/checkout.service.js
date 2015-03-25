@@ -7,7 +7,7 @@ var tdCommerceService = require('TDCore').commerceService;
 
 exports.placeOrder = function(user, cartId, addresses, orderData, cb){
   tdCommerceService.init(config.connections.commerce);
-  tdCommerceService.prepareCustomer(user, function(err, customer) {
+  tdCommerceService.customerCreate(user, function(err, customer) {
     if(err) {return cb(err);}
     tdCommerceService.cartAddress(cartId, addresses, function(err, data) {
       if(err) {return cb(err);}

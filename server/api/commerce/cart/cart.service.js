@@ -73,7 +73,7 @@ function prepareMerchantProducts (shoppingCart, cb) {
 
   var product = shoppingCart.items[1];
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.catalogProductInfo(product.productId, function(err, data){
+  TDCommerceService.catalogProduct(product.productId, function(err, data){
     products.push({
       productId : data.productId,
       productSku: data.sku,
