@@ -142,10 +142,10 @@ angular.module('convenienceApp')
 
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-sign-contract-bar.html'
+        url: 'app/payments/templates/loan-sign-contract-bar.html'
       } ,
       right:{
-        url: 'app/commerce/checkout/payments/templates/loan-apply-state-bar.html'
+        url: 'app/payments/templates/loan-apply-state-bar.html'
       }
     });
   });

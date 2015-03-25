@@ -23,7 +23,6 @@ var paymentEmailService = require('../payment/payment.email.service');
 
 var config = require('../../config/environment');
 var tdLoanService = require('TDCore').loanService;
-var tdLoanApplicationService = require('TDCore').loanApplicationService;
 
 
 function simulate (dataSimulate, cb) {
