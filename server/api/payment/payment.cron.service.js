@@ -255,7 +255,7 @@ exports.sendTomorrowChargeLoan = function(cb){
             loan.notifications = [];
           }
           var noticationsLength = loan.notifications.length;
-          
+
           var index = 0;
           async.eachSeries(loan.schedule, function(schedule, callbackSchedule){
             var isnotified = false;

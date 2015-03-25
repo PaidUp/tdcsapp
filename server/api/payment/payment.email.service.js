@@ -53,12 +53,12 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
     // get the user data with the userId
     var filter = {_id: userId};
 
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
-      if (!user) return cb(false);
+      if (!user[0]) return cb(false);
 
-      var userFirstName = user.firstName;
-      var userEmail = user.email;
+      var userFirstName = user[0].firstName;
+      var userEmail = user[0].email;
 
       getNameTeamFromOrder(orderId, function(err,team){
 
@@ -174,21 +174,21 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
     // get the user data with the userId
     var filter = {_id: userId};
 
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
-      if (!user) return cb(false);
+      if (!user[0]) return cb(false);
 
       var userEmail;
       var schedule = requestObject.schedule;
       var accountNumber;
       var bankId;
-      var userFirstName = user.firstName;
+      var userFirstName = user[0].firstName;
 
       // find email in contacts to set the send to var
       userEmail = user.email;
 
-      getNameTeamFromOrder(requestObject.orderId, function(err,team){      
-        paymentService.getUserDefaultBankId(user, function (err, bankId) {
+      getNameTeamFromOrder(requestObject.orderId, function(err,team){
+        paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
 
           if (err === null) {
 
@@ -340,7 +340,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
   emailVars.amount = parseFloat(amount).toFixed(2);
   emailVars.accountLast4Digits = numberCreditCard;
 
-  getNameTeamFromOrder(orderId, function(err,team){  
+  getNameTeamFromOrder(orderId, function(err,team){
     emailTemplates(config.emailTemplateRoot, function (err, template) {
 
       if (err) return cb(err);
