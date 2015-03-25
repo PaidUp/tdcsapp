@@ -18,7 +18,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
         if(err) {return cb(err);}
         tdCommerceService.cartUpdateCustomer(cartId.cartId, userPrepared, function(err, data) {
           if(err) {return cb(err);}
-          tdCommerceService.cartSetShipping({cartId:cartId.cartId,shippingMethod:config.commerce.shippingMethod},function(err, dataShipping) {
+          tdCommerceService.cartSetShipping(cartId.cartId,config.commerce.shippingMethod,function(err, dataShipping) {
             if(err) {return cb(err);}
             tdCommerceService.cartSetPayment(cartId.cartId, orderData.payment, function(err, dataPayment) {
               if(err) {return cb(err);}
