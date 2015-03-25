@@ -3,6 +3,7 @@
 angular.module('convenienceApp')
   .controller('AthletesSliderCtrl', function ($scope, $rootScope, UserService, FlashService, $state, $stateParams) {
     $scope.athletes =[];
+    $scope.user = angular.copy(AuthService.getCurrentUser());
     $scope.fullDetails = false;
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -62,7 +63,7 @@ angular.module('convenienceApp')
     $scope.toggleDetails = function () {
       if ($scope.fullDetails) {
         $scope.fullDetails = false;
-        UserService.getContact($scope.athletes.contacts[0].contactId).then(function (data) {
+        UserService.getContact($scope.user._id, $scope.athletes.contacts[0].contactId).then(function (data) {
           $scope.contactInfo = data;
         });
       } else {

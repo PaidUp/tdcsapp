@@ -17,6 +17,7 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.oldBillingAddress = null;
     $scope.oldPhone = null;
+    $scope.user = angular.copy(AuthService.getCurrentUser());
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -89,7 +90,7 @@ angular.module('convenienceApp')
     
     UserService.getContactList($scope.user._id).then(function(data){
       angular.forEach(data, function (contactInfo) {
-        UserService.getContact(contactInfo.contactId).then(function (contact){
+        UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
           if (contact.label === 'shipping') {
             $scope.oldPhone = contact;
             $scope.billing.phone = contact.value;

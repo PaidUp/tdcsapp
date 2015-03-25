@@ -26,7 +26,7 @@ angular.module('convenienceApp')
 
       UserService.getContactList($stateParams.athleteId).then(function (data) {
         angular.forEach(data, function (contactInfo) {
-          UserService.getContact(contactInfo.contactId).then(function (contact) {
+          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact) {
             if (contact.type === 'telephone') {
               $scope.oldPhone = contact;
               $scope.user.phone = contact.value;
