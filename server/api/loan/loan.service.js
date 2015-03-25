@@ -38,34 +38,29 @@ function simulate (dataSimulate, cb) {
 // 	return false;
 // }
 
-// function save(loan, cb) {
-//   loan.save(function(err, data) {
-//     if(err) {
-//       return cb(err);
-//     }
-//     return cb(null, data);
-//   });
-// }
+function save(loan, cb) {
+  tdLoanService.init(config.connections.loan);
+  tdLoanService.save(loan, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
-// function findOne(filter, cb) {
-//   loan.findOne(filter, function(err, data) {
-//       if(err) {
-//         return cb(err);
-//       }
-//       return cb(null, data);
-//     }
-//   );
-// }
+function findOne(filter, cb) {
+  tdLoanService.init(config.connections.loan);
+  tdLoanService.find(filter, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data[0]);
+  });
+}
 
-// function find(filter, cb) {
-//   loan.find(filter, function(err, data) {
-//       if(err) {
-//         return cb(err);
-//       }
-//       return cb(null, data);
-//     }
-//   );
-// }
+function find(filter, cb) {
+  tdLoanService.init(config.connections.loan);
+  tdLoanService.find(filter, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
 // function captureLoanSchedule(loan, scheduledIndex, cb) {
 //   logger.log('info', 'Charging loan: ' + loan.id + ' scheduled payment: ' + (scheduledIndex + 1));

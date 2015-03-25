@@ -42,7 +42,7 @@ exports.simulate = function (req, res) {
 //   });
 // };
 
-// exports.getloan = function (req, res) {
+exports.getloan = function (req, res) {
 
 // 	var loanId = req.params.id;
 // 	var filter = { _id: loanId};
@@ -62,7 +62,7 @@ exports.simulate = function (req, res) {
 
 // 		return res.json(200, data);
 // 	});
-// };
+};
 
 
 // function handleError(res, err) {
