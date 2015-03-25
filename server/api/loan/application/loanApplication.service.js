@@ -1,6 +1,5 @@
 'use strict';
 
-var loanApplicationModel = require('./loanApplication.model');
 var aba = require('ABAValidator').ABAValidator;
 var tdLoanApplicationService = require('TDCore').loanApplicationService;
 var config = require('../../../config/environment');
@@ -22,29 +21,29 @@ function simulate (dataSimulate, cb) {
   });
 }
 
+function state (dataState, cb) {
+  tdLoanApplicationService.init(config.connections.loan);
+  tdLoanApplicationService.state(dataState, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
-// function validateState(state) {
-//     if(state === 'APPLIED' || state === 'ACCEPTED_CREDIT_CHECK' || state === 'DENIED_CREDIT_CHECK' || state === 'SIGNED' || state === 'APPROVED'){
-//         return true;
-//     }
-//     return false;
-// }
+function payment (dataPayment, cb) {
+  tdLoanApplicationService.init(config.connections.loan);
+  tdLoanApplicationService.payment(dataPayment, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
-// function sign(user, cb) {
-//     return cb(null, true);
-// }
-
-// function payment(user, cb) {
-//     return cb(null, true);
-// }
-
-// function isValidIncomeType(incomeType){
-// 	if(typeof incomeType === 'string' && incomeType != ''){
-// 		return true;
-// 	}
-// 	return false;
-// }
-
+function contract (dataContract, cb) {
+  tdLoanApplicationService.init(config.connections.loan);
+  tdLoanApplicationService.contract(dataContract, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
 function findOne(filter, cb){
   tdLoanApplicationService.init(config.connections.loan);
@@ -69,9 +68,11 @@ function findOne(filter, cb){
 
 exports.save = save;
 exports.simulate = simulate;
+exports.state = state;
+exports.contract = contract;
 //exports.validateState = validateState;
-//exports.sign = sign;
-///exports.payment = payment;
+exports.sign = sign;
+exports.payment = payment;
 //exports.isValidIncomeType = isValidIncomeType;
 exports.findOne = findOne;
 //exports.validateABA = validateABA;
