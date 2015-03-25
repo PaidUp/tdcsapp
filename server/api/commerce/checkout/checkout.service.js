@@ -11,13 +11,13 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
     if(err) {return cb(err);}
     tdCommerceService.cartAddress(cartId, addresses, function(err, data) {
       if(err) {return cb(err);}
-      tdCommerceService.cartCustomer(cartId, customer, function(err, data) {
+      tdCommerceService.cartUpdateCustomer(cartId.cartId, customer, function(err, data) {
         if(err) {return cb(err);}
-        tdCommerceService.setShipping(cartId,function(err, dataShipping) {
+        tdCommerceService.cartSetShipping(cartId,function(err, dataShipping) {
           if(err) {return cb(err);}
-          tdCommerceService.setPayment(cartId, orderData.payment, function(err, dataPayment) {
+          tdCommerceService.cartSetPayment(cartId, orderData.payment, function(err, dataPayment) {
             if(err) {return cb(err);}
-            tdCommerceService.placeOrder(cartId, function(err, dataOrderId) {
+            tdCommerceService.cartPlace(cartId, function(err, dataOrderId) {
               if(err) {return cb(err);}
               tdCommerceService.addCommentToOrder(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                 if(err) {return cb(err);}
