@@ -1,5 +1,6 @@
 'use strict';
 
+
 // var logger = require('../../config/logger');
 // var loan = require('./loan.model');
 // var commerceAdapter = require('../user/user.service');
@@ -8,9 +9,22 @@
 // var userService = require('../user/user.service');
 // var paymentEmailService = require('../payment/payment.email.service');
 
+var moment = require('moment');
+var logger = require('../../config/logger');
+var LoanJS = require('loanjs');
+var loan = require('./loan.model');
+var config = require('../../config/environment');
+//var commerceAdapter = require('../user/user.service');
+var commerceAdapter = require('../commerce/commerce.adapter');
+var paymentService = require('TDCore').paymentService; //require('../payment/payment.service');
+var loanService = require('TDCore').loanService; //require('../payment/payment.service');
+var userService = require('../user/user.service');
+var paymentEmailService = require('../payment/payment.email.service');
+
 var config = require('../../config/environment');
 var tdLoanService = require('TDCore').loanService;
 var tdLoanApplicationService = require('TDCore').loanApplicationService;
+
 
 function simulate (dataSimulate, cb) {
   tdLoanService.init(config.connections.loan);

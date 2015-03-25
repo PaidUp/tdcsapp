@@ -2,16 +2,15 @@
 
 var loanApplicationModel = require('./loanApplication.model');
 var aba = require('ABAValidator').ABAValidator;
+var tdLoanApplicationService = require('TDCore').loanApplicationService;
 
 function save(loanApplication, cb) {
-	
-    loanApplication.save(function(err, data){
-    	if(err) {
-        	return cb(err);
-      	}
-    	return cb(null, data);
-    });
-    
+	tdLoanApplicationService.save(loanApplication , function(err , data){
+    if(err) {
+      return cb(err);
+    }
+    return cb(null, data);
+  });
 }
 
 function validateState(state) {
@@ -37,13 +36,12 @@ function isValidIncomeType(incomeType){
 }
 
 function findOne(filter, cb) {
-  loanApplicationModel.findOne(filter, function(err, data) {
-      if(err) {
-        return cb(err);
-      }
-      return cb(null, data);
+  tdLoanApplicationService.find(filter, function(err , data){
+    if(err) {
+      return cb(err);
     }
-  );
+    return cb(null, data[0]);
+  });
 }
 
 function validateABA(abaNum) {

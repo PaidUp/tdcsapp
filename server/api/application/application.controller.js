@@ -3,10 +3,9 @@
 var _ = require('lodash');
 var applicationService = require('./application.service');
 var logger = require('../../config/logger');
-//var cronjobService = require('./cronjob.service');
+var cronjobService = require('./cronjob.service');
 
 exports.contact = function(req, res) {
-	console
 	var data = req.body;
 	applicationService.emailContact(data, function(err, data) {
 		if(err){
@@ -21,10 +20,10 @@ exports.config = function(req, res) {
       res.json(200,data);
   });
 }
-/**
+
 exports.cron = function(req, res) {
   cronjobService.run(function(err, data){
     res.json(200, data);
   });
 }
-*/
+
