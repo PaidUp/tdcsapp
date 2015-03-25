@@ -87,7 +87,7 @@ exports.place = function(req, res) {
 }
 
 function placeOrder(user, cartId, addresses, orderData, cb) {
-  cartService.cartView(cartId, function (err, shoppingCart) {
+  cartService.cartView(cartId.cartId, function (err, shoppingCart) {
     if (err) return cb(err);
     cartService.prepareMerchantProducts(shoppingCart, function (err, merchantProducts) {
       if (err) return cb(err);
@@ -101,8 +101,8 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             name: shoppingCart.items[1].name,
             sku: shoppingCart.items[1].sku
           };
-          userService.findOne({_id:orderData.athleteId}, function(err, child){
-            child.teams.push(team);
+          userService.find({_id:orderData.athleteId}, function(err, child){
+            child[0].teams.push(team);
             var acountNumber;
             var action;
             if (orderData.paymentMethod==='directdebit') {
@@ -120,7 +120,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
 
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
 
-              userService.save(child, function(err, userAthlete) {
+              userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
 
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
