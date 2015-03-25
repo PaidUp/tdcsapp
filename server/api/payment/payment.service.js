@@ -11,10 +11,10 @@ var async = require('async');
 var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
 var tdPaymentService = require('TDCore').paymentService;
-tdPaymentService.init(config.connections.payment);
-var config = require('../../config/environment');
+
 
 function createCustomer(user, cb) {
+  tdPaymentService.init(config.connections.payment);
   var customer = {
     firstName: user.firstName,
     lastName: user.lastName,
@@ -28,6 +28,7 @@ function createCustomer(user, cb) {
 }
 
 function createCard(cardDetails, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.createCard(cardDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -35,6 +36,7 @@ function createCard(cardDetails, cb) {
 }
 
 function associateCard(customerId, cardId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.associateCard(customerId, cardId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -42,6 +44,7 @@ function associateCard(customerId, cardId, cb) {
 }
 
 function createBank(bankDetails, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.createBank(bankDetails, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -49,6 +52,7 @@ function createBank(bankDetails, cb) {
 }
 
 function associateBank(customerId, bankId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.associateBank(customerId, bankId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -56,6 +60,7 @@ function associateBank(customerId, bankId, cb) {
 }
 
 function createOrder(merchantCustomerId, description, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.createOrder(merchantCustomerId, description, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -63,6 +68,7 @@ function createOrder(merchantCustomerId, description, cb) {
 }
 
 function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.debitCard(cardId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -70,6 +76,7 @@ function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.debitBank(bankId, amount, description, appearsOnStatementAs, orderId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -77,6 +84,7 @@ function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, c
 }
 
 function associateBank(customerId, bankId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -84,6 +92,7 @@ function associateBank(customerId, bankId, cb) {
 }
 
 function listCustomerBanks(customerId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.listCustomerBanks(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -91,6 +100,7 @@ function listCustomerBanks(customerId, cb) {
 }
 
 function listCards(customerId, cb) {
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.listCards(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -98,7 +108,7 @@ function listCards(customerId, cb) {
 }
 
 function createBankVerification(bankId, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.createBankVerification({bankId : bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -106,7 +116,6 @@ function createBankVerification(bankId, cb) {
 }
 
 function loadBankVerification(verificationId, cb) {
-  setConnection();
   tdPaymentService.loadBankVerification(verificationId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -114,7 +123,7 @@ function loadBankVerification(verificationId, cb) {
 }
 
 function deleteBankAccount(customerId, bankId, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.deleteBankAccount({bankId:bankId}, function(err, data){
     if(err) return cb(err);
     listBanks(customerId, function(err, dataBanks){
@@ -134,7 +143,7 @@ function deleteBankAccount(customerId, bankId, cb) {
 }
 
 function confirmBankVerification(verificationId, amount1, amount2, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.confirmBankVerification({verificationId:verificationId, amount1:amount1, amount2:amount2}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -142,7 +151,7 @@ function confirmBankVerification(verificationId, amount1, amount2, cb) {
 }
 
 function updateOrderDescription(orderId, description, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.updateOrderDescription(orderId, description, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -169,7 +178,7 @@ function collectPendingOrders(cb) {
 }
 
 function createOrder(merchantId, description, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   var transactionData = {};
 
   tdPaymentService.fetchCustomer(merchantId, function (err, data) {
@@ -184,7 +193,7 @@ function createOrder(merchantId, description, cb) {
 }
 
 function listBanks (customerId, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.listCustomerBanks(customerId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
@@ -197,7 +206,7 @@ function listBanks (customerId, cb) {
  * @param cb
  */
 function prepareUser(user, cb) {
-  if(! user.BPCustomerId) {
+  if(!user.BPCustomerId) {
     createCustomer(user, function(err, data) {
 
       if (err) return cb(err);
@@ -214,7 +223,7 @@ function prepareUser(user, cb) {
 }
 
 function prepareCard(userId, cardId, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchCard(cardId, function(err, creditCard){
     if(err) return cb(err);
       if(creditCard.cards[0].links.customer === null) {
@@ -230,7 +239,7 @@ function prepareCard(userId, cardId, cb) {
 }
 
 function prepareBank(userId, bankId, cb) {
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchBank(bankId, function(err, bank){
     if(bank.bankAccounts[0].links.customer === null) {
       associateBank(userId, bankId, function (err, data) {
@@ -245,7 +254,7 @@ function prepareBank(userId, bankId, cb) {
 }
 
 function fetchBank(bankId, cb){
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchBank(bankId, function(err, bank){
       if(err) return cb(err);
       return cb(null, bank);
@@ -253,7 +262,7 @@ function fetchBank(bankId, cb){
 }
 
 function fetchCard(cardId, cb){
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchCard(cardId, function(err, creditCard){
       if(err) return cb(err);
       return cb(null, creditCard);
@@ -261,7 +270,7 @@ function fetchCard(cardId, cb){
 }
 
 function fetchDebit(debitId, cb){
-  setConnection();
+  tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchDebit(debitId, function(err, bank){
     if(err) return cb(err);
     return cb(null, bank);
