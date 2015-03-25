@@ -9,7 +9,7 @@ function create(data, cb) {
     if(err) return cb(err);
     return cb(null, data);
   });
-};
+}
 
 function list(data, cb) {
   tdUserService.init(config.connections.user);
@@ -17,7 +17,7 @@ function list(data, cb) {
     if(err) return cb(err);
     return cb(null, data);
   });
-};
+}
 
 function load(data, cb) {
   tdUserService.init(config.connections.user);
@@ -25,7 +25,7 @@ function load(data, cb) {
     if(err) return cb(err);
     return cb(null, data);
   });
-};
+}
 
 function update(data, cb) {
   tdUserService.init(config.connections.user);
@@ -33,7 +33,7 @@ function update(data, cb) {
     if(err) return cb(err);
     return cb(null, data);
   });
-};
+}
 
 // function delete(data, cb) {
 //  TDUserService.init(config.TDTokens.user);

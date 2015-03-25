@@ -3,15 +3,7 @@
 var userService = require('./user.service');
 
 exports.create = function(req, res) {
-	//TODO
-	/*
-	* /api/v1/loan/application/user/create POST
-	* request: applicationId, firstName, lastName, address, phone, email, dob, ssn
-	* response: true
-	*/
-	console.log(req.body);
 	userService.create(req.body, function (err, data){
-		console.log(data);
     if(err) res.json(402, err);
     res.json(200, data);
   });

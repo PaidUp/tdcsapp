@@ -4,7 +4,6 @@ var config = require('../../../../config/environment');
 var tdUserService = require('TDCore').userService;
 
 function create (user, cb) {
-	console.log('config.connections.userLoan', config.connections.userLoan);
   tdUserService.init(config.connections.userLoan);
   tdUserService.create(user, function (err, data){
     if(err) return cb(err);

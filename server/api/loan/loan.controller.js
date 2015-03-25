@@ -1,7 +1,6 @@
 'use strict';
 
 var loanService = require('./loan.service');
-//var loanApplicationService = require('./application/loanApplication.service');
 
 exports.simulate = function (req, res) {
 	loanService.simulate(req.body, function (err, dataSimulate) {
