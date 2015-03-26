@@ -31,19 +31,26 @@ exports.selectAthlete = function () {
 };
 
 exports.selectTeam = function (teamName) {
-  // browser.getLocationAbsUrl().then(function (url) {
-  //   var athleteId = Utils.getIdFromURL(url);
-  //   expect(url).toEqual('/athletes/slider/'+athleteId);
+  browser.getLocationAbsUrl().then(function (url) {
+    var athleteId = Utils.getIdFromURL(url);
+    expect(url).toEqual('/athletes/slider/'+athleteId);
     
-  //   browser.wait(function () {
-  //     return element(by.css('.container.teams')).isDisplayed();
-  //   }, 10000);
+    browser.wait(function () {
+      return element(by.css('.container.teams')).isDisplayed();
+    }, 10000);
     
-  //   expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
-  //   var team = element(by.cssContainingText('.team-name', teamName));
-  //   expect(team).toBeDefined();
-  //   team.click();
-  //   browser.waitForAngular();
-  // }
-}
+    expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
+    var team = element(by.cssContainingText('.team-name', teamName));
+    expect(team).toBeDefined();
+    team.click();
+    browser.waitForAngular();
+
+    browser.getLocationAbsUrl().then(function (url) {
+      var ids = Utils.getIdsfromUrl(url, [2, 4]);
+      var teamId = ids[0];
+      expect(athleteId).toEqual(ids[1]);
+      expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
+    });
+  });
+};
 
