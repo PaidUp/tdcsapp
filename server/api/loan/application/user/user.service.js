@@ -26,15 +26,13 @@ function create (user, cb) {
 //   return true;
 // }
 
-// function findOne(filter, cb) {
-//   loanUser.findOne(filter, function(err, data) {
-//       if(err) {
-//         return cb(err);
-//       }
-//       return cb(null, data);
-//     }
-//   );
-// }
+function findOne(filter, cb) {
+  tdUserService.init(config.connections.userLoan);
+  tdUserService.find(filter, function (err, data) {
+    if(err) {return cb(err);}
+    return cb(null, data);
+  });
+}
 
 // function validateOnlyLetterSync(word) {
 //   if(!regExp.test(word) || word === '' || word === undefined || word === null){
@@ -59,9 +57,9 @@ function create (user, cb) {
 // }
 
 exports.create = create;
+exports.findOne = findOne;
 // exports.validateFirstNameSync = validateFirstNameSync;
 // exports.validateLastNameSync = validateLastNameSync;
-// exports.findOne = findOne;
 // exports.validateOnlyLetterSync = validateOnlyLetterSync;
 // exports.encryptSSN = encryptSSN;
 // exports.decryptSSN = decryptSSN;

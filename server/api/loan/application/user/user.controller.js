@@ -10,23 +10,17 @@ exports.create = function(req, res) {
 };
 
 
-// exports.getUser = function(req, res, next) {
-//   if(!req.params.id){
-//   	return res.json(400, {
-// 	      "code": "ValidationError",
-// 	      "message": "User loan Id is required"
-// 	    });
-//   }
-//   var filter = {_id:req.params.id};
-//   userService.findOne(filter, function(err, userLoan) {
-//     if(err) return handleError(res, err);
-//     if (!userLoan) return res.json(404,{
-//       "code": "ValidationError",
-//       "message": "User Id does not exist"
-//     });
-//     res.json(200,userLoan);
-//   });
-// };
+exports.getUser = function(req, res, next) {
+  var filter = {_id: req.body.id};
+  userService.findOne(filter, function(err, userLoan) {
+    if(err) return handleError(res, err);
+    if (!userLoan) return res.json(404,{
+      "code": "ValidationError",
+      "message": "User Id does not exist"
+    });
+    res.json(200, userLoan);
+  });
+};
 
 
 // function handleError(res, err) {

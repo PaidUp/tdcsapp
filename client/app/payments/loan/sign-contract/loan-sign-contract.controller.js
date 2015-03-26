@@ -36,11 +36,12 @@ angular.module('convenienceApp')
 
     var cartId = CartService.getCurrentCartId();
     if (cartId) {
-
-      LoanService.getContract().then(function (html) {
-        $scope.contractHTML = html.html;
-      });
-
+      LoanService.verifyApplicationState().then(function (applicationState) {
+        loanUserId = applicationState.meta[0].userId;
+        LoanService.getContract(loanUserId).then(function (html) {
+          $scope.contractHTML = html.html;
+        });
+       }); 
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {
