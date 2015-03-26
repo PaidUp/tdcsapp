@@ -94,14 +94,19 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
       orderData.products = merchantProducts;
       checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId) {
         if (err) return cb(err);
-        logger.log('info', magentoOrderId);
+        console.log('magentoOrderId', magentoOrderId);
+        console.log('err', err);
         paymentService.prepareUser(user, function (err, user) {
+          console.log('user', user);
+          console.log('err', err);
           if(err) logger.log('error',err);
           var team = {
             name: shoppingCart.items[1].name,
             sku: shoppingCart.items[1].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
+            console.log('child', child);
+            console.log('err', err);
             child[0].teams.push(team);
             var acountNumber;
             var action;

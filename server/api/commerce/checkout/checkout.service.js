@@ -3,23 +3,26 @@
 var loanService = require('../../loan/loan.service')
 var config = require('../../../config/environment');
 var tdCommerceService = require('TDCore').commerceService;
-
+var tdUserService = require('TDCore').userService;
 
 exports.placeOrder = function(user, cartId, addresses, orderData, cb){
   tdCommerceService.init(config.connections.commerce);
-  tdCommerceService.prepareCustomer(user, function(err, customer) {
+  tdCommerceService.customerCreate(user, function(err, customer) {
     if(err) {return cb(err);}
-    tdCommerceService.cartAddress(cartId, addresses, function(err, data) {
+    user.mageCustomerId = customer;
+    tdUserService.init(config.connections.user);
+    tdUserService.save(user, function(err, userPrepared){
       if(err) {return cb(err);}
-      tdCommerceService.cartCustomer(cartId, customer, function(err, data) {
+      tdCommerceService.init(config.connections.commerce);
+      tdCommerceService.cartAddress(cartId, addresses, function(err, data) {
         if(err) {return cb(err);}
-        tdCommerceService.setShipping(cartId,function(err, dataShipping) {
+        tdCommerceService.cartUpdateCustomer(cartId.cartId, userPrepared, function(err, data) {
           if(err) {return cb(err);}
-          tdCommerceService.setPayment(cartId, orderData.payment, function(err, dataPayment) {
+          tdCommerceService.cartSetShipping(cartId.cartId,config.commerce.shippingMethod,function(err, dataShipping) {
             if(err) {return cb(err);}
             tdCommerceService.cartSetPayment(cartId.cartId, {method: config.commerce.paymentMethod,po_number: orderData.payment}, function(err, dataPayment) {
               if(err) {return cb(err);}
-              tdCommerceService.addCommentToOrder(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
+              tdCommerceService.cartPlace(cartId.cartId, function(err, dataOrderId) {
                 if(err) {return cb(err);}
                 tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                   if(err) {return cb(err);}
@@ -33,5 +36,4 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
     });
   });
 }
-
 
