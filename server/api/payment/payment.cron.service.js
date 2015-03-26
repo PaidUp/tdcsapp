@@ -13,15 +13,18 @@ var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 
 exports.collectOneTimePayments = function (cb) {
+  logger.log('info', 'into collectOneTimePayments');
   var results = [];
 
   // 1) Load "pending" magento orders with all "comments"
   paymentService.collectPendingOrders(function (err, data) {
-    //logger.log('info', 'Magento pending orders: '+ data.length + ' found.');
+    logger.log('info', 'err: '+ err);
+    console.log('data',data);
     async.eachSeries(data, function (order, callback) {
       if (order.paymentMethod === 'creditcard' && order.payment === 'onetime') {
-        userService.findOne({_id : order.userId}, function (err, user){
-          paymentService.capture(order, user, order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
+        userService.find({_id : order.userId}, function (err, user){
+          console.log('user', user);
+          paymentService.capture(order, user[0], order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
             if (err) callback(err);
             callback();
           });

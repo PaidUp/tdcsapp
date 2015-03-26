@@ -4,7 +4,8 @@ var paymentService = require('../payment/payment.service');
 var loanService = require('../loan/loan.service');
 var async = require('async');
 var TDCommerceService = require('TDCore').commerceService;
-var config = require('../../config/environment')
+var config = require('../../config/environment');
+var logger = require('../../config/logger');
 TDCommerceService.init(config.connections.commerce);
 
 function getUserOrders(user, cb) {
@@ -124,7 +125,9 @@ function orderHold(orderId, cb) {
 
 function orderList(filter, cb){
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.orderList(filter, function (err, data) {
+  TDCommerceService.orderList({filter : filter}, function (err, data) {
+    logger.log('info', 'data '+data);
+    logger.log('info', 'err '+err);
     if (err) return cb(err);
     return cb(null,data);
   });
