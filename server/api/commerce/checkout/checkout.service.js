@@ -17,7 +17,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
           if(err) {return cb(err);}
           tdCommerceService.setPayment(cartId, orderData.payment, function(err, dataPayment) {
             if(err) {return cb(err);}
-            tdCommerceService.placeOrder(cartId, function(err, dataOrderId) {
+            tdCommerceService.cartSetPayment(cartId.cartId, {method: config.commerce.paymentMethod,po_number: orderData.payment}, function(err, dataPayment) {
               if(err) {return cb(err);}
               tdCommerceService.addCommentToOrder(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                 if(err) {return cb(err);}
