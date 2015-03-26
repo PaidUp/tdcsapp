@@ -22,6 +22,8 @@ function list(data, cb) {
 function load(data, cb) {
   tdUserService.init(config.connections.user);
   tdUserService.addressLoad(data.id, data.addressId, function (err, data){
+    console.log('data', data);
+    console.log('err', err);
     if(err) return cb(err);
     return cb(null, data);
   });

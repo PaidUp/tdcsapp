@@ -37,6 +37,8 @@ exports.state = function(req, res) {
 };
 
 exports.sign = function(req, res) {
+  console.log('req.body', req.body);
+  req.body.userId = req.user._id;
   loanApplicationService.sign(req.body, function (err, data){
     if (err) return res.json(409, err);
     res.json(200, data);

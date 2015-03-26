@@ -41,26 +41,26 @@ function findOne(filter, cb) {
 //   return true;
 // }
 
-// var encryptKey = config.loan.application.user.encryptKey;
-// function encryptSSN(ssn){
-//   var encrypted = new Blind({ encryptKey: encryptKey }).encrypt(ssn);
-//   return encrypted;
-// }
+var encryptKey = config.loan.application.user.encryptKey;
+function encryptSSN(ssn){
+  var encrypted = new Blind({ encryptKey: encryptKey }).encrypt(ssn);
+  return encrypted;
+}
 
-// function decryptSSN(encryptedSSN){
-//   var decrypted = new Blind({ encryptKey: encryptKey }).decrypt(encryptedSSN);
-//   return decrypted;
-// }
+function decryptSSN(encryptedSSN){
+  var decrypted = new Blind({ encryptKey: encryptKey }).decrypt(encryptedSSN);
+  return decrypted;
+}
 
-// function verifySSN(ssn){
-//   return isValidSSN(ssn);
-// }
+function verifySSN(ssn){
+  return isValidSSN(ssn);
+}
 
 exports.create = create;
 exports.findOne = findOne;
 // exports.validateFirstNameSync = validateFirstNameSync;
 // exports.validateLastNameSync = validateLastNameSync;
 // exports.validateOnlyLetterSync = validateOnlyLetterSync;
-// exports.encryptSSN = encryptSSN;
-// exports.decryptSSN = decryptSSN;
-// exports.verifySSN = verifySSN;
+exports.encryptSSN = encryptSSN;
+exports.decryptSSN = decryptSSN;
+exports.verifySSN = verifySSN;
