@@ -108,24 +108,24 @@ angular.module('convenienceApp')
     };
 
     // contract HTML
-    this.getContract = function (loanUserId) {
+    this.getContract = function (applicationId, loanUserId) {
       var deferred = $q.defer();
-      var loanUser;
+      var loanUser = {};
       this.getLoanApplicationUser(loanUserId).then(function (user) {
         loanUser = user[0];
+        LoanApplication.save(
+          {action: 'contract'}, 
+          {
+            applicationId: applicationId,
+            loanUser: loanUser
+          }
+        ).$promise.then(function (resp) {
+          deferred.resolve(resp);
+        }).catch(function (err) {
+          deferred.reject(err);
+        });
       });
       
-      LoanApplication.save(
-        {action: 'contract'}, 
-        {
-          applicationId: this.getLoanApplicationId(),
-          loanUser: loanUser
-        }
-      ).$promise.then(function (resp) {
-        deferred.resolve(resp);
-      }).catch(function (err) {
-        deferred.reject(err);
-      });
       return deferred.promise;
     };
 
@@ -134,8 +134,4 @@ angular.module('convenienceApp')
     this.getLoanSimulation = function (simulationData) {
       return LoanSimulation.save(simulationData).$promise;
     };
-
-    
-
-    
   });

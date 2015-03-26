@@ -6,6 +6,7 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.contractHTML = '';
     var loanUserId;
+    var applicationId;
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -38,7 +39,8 @@ angular.module('convenienceApp')
     if (cartId) {
       LoanService.verifyApplicationState().then(function (applicationState) {
         loanUserId = applicationState.meta[0].userId;
-        LoanService.getContract(loanUserId).then(function (html) {
+        applicationId = LoanService.getLoanApplicationId();
+        LoanService.getContract(applicationId, loanUserId).then(function (html) {
           $scope.contractHTML = html.html;
         });
        }); 

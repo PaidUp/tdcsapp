@@ -45,7 +45,6 @@ function payment (dataPayment, cb) {
 }
 
 function contract (dataContract, cb) {
-  console.log('contract dataContract', dataContract);
   tdLoanApplicationService.init(config.connections.loan);
   tdLoanApplicationService.contract(dataContract, function (err, data){
     if(err) return cb(err);
@@ -54,10 +53,8 @@ function contract (dataContract, cb) {
 }
 
 function findOne(filter, cb){
-  console.log('filter', filter);
   tdLoanApplicationService.init(config.connections.loan);
   tdLoanApplicationService.find(filter, function (err, data){
-    console.log('data', data);
     if(err) {
       return cb(err);
     }
