@@ -122,9 +122,27 @@ function orderHold(orderId, cb) {
   });
 }
 
+function orderList(filter, cb){
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.orderList(filter, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
+function orderLoad(orderId, cb){
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.orderLoad(orderId, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
 exports.orderHold = orderHold;
 exports.getUserOrders = getUserOrders;
 exports.getOrder = getOrder;
 exports.getUsertransactions = getUsertransactions;
+exports.orderList = orderList;
+exports.orderLoad = orderLoad;
