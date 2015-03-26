@@ -14,8 +14,7 @@ var team = function () {
           element(by.id(select)).isPresent().then(function (isPresent) {
             if (isPresent) {
               var selectAthlete = element(by.id(select)).all(by.options(
-                'option as option.title for option in 
-                 customOption.values track by option.valueId'
+                'option as option.title for option in customOption.values track by option.valueId'
               ));
               Utils.selectItem(selectAthlete, { chopFirst: true }).then(function (athlete) {
                 athlete.click();
