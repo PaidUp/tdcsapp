@@ -22,44 +22,41 @@ exports.simulate = function(req, res) {
 };
 
 exports.create = function(req, res) {
-	console.log('req.body', req.body);
-  loanApplicationService.save(req.body, function (err, data){
-  	console.log('err', err);
-  	console.log('data', data);
+  req.body.userId = req.user._id;
+  loanApplicationService.create(req.body, function (err, data){
   	if (err) return res.json(409, err);
   	res.json(200, data);
   });
 };
 
 exports.state = function(req, res) {
-   loanApplicationService.state(req.body, function(err, data){
+   loanApplicationService.state(req.body, function (err, data){
      if (err) return res.json(409, err);
      res.json(200, data);
    });
 };
 
 exports.sign = function(req, res) {
-  loanApplicationService.sign(req.body, function(err, data){
+  loanApplicationService.sign(req.body, function (err, data){
     if (err) return res.json(409, err);
     res.json(200, data);
   });
 };
 
 exports.payment = function(req, res) {
-  loanApplicationService.payment(req.body, function(err, data){
+  loanApplicationService.payment(req.body, function (err, data){
     if (err) return res.json(409, err);
     res.json(200, data);
   });
 };
 
 exports.application = function(req, res) {
-  var filter = {_id:req.params.id}
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  loanApplicationService.findOne(req.params.id, function (err, applicationData){
      if(!applicationData){
-     return res.json(400, {
-       "code": "ValidationError",
-       "message": "loan Application not exist."
-     });
+       return res.json(400, {
+         "code": "ValidationError",
+         "message": "loan Application not exist."
+       });
     };
   res.json(200,applicationData);
   });
@@ -78,7 +75,8 @@ exports.application = function(req, res) {
 
 
 exports.getcontract = function (req, res) {
-  loanApplicationService.contract(req.body, function(err, data){
+  req.body.userId = req.user._id;
+  loanApplicationService.contract(req.body, function (err, data){
     if (err) return res.json(409, err);
     res.json(200, data);
   });

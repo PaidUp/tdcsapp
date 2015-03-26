@@ -6,6 +6,7 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.contractHTML = '';
     var loanUserId;
+    var applicationId;
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -36,11 +37,13 @@ angular.module('convenienceApp')
 
     var cartId = CartService.getCurrentCartId();
     if (cartId) {
-
-      LoanService.getContract().then(function (html) {
-        $scope.contractHTML = html.html;
-      });
-
+      LoanService.verifyApplicationState().then(function (applicationState) {
+        loanUserId = applicationState.meta[0].userId;
+        applicationId = LoanService.getLoanApplicationId();
+        LoanService.getContract(applicationId, loanUserId).then(function (html) {
+          $scope.contractHTML = html.html;
+        });
+       }); 
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {

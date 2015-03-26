@@ -4,6 +4,13 @@ var aba = require('ABAValidator').ABAValidator;
 var tdLoanApplicationService = require('TDCore').loanApplicationService;
 var config = require('../../../config/environment');
 
+function create (loanApplication, cb) {
+  tdLoanApplicationService.init(config.connections.loan);
+  tdLoanApplicationService.create(loanApplication, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
 
 function save (loanApplication, cb) {
   tdLoanApplicationService.init(config.connections.loan);
@@ -47,11 +54,11 @@ function contract (dataContract, cb) {
 
 function findOne(filter, cb){
   tdLoanApplicationService.init(config.connections.loan);
-  tdLoanApplicationService.find(filter, function(err , data){
+  tdLoanApplicationService.find(filter, function (err, data){
     if(err) {
       return cb(err);
     }
-    return cb(null, data[0]);
+    return cb(null, data);
   });
 }
 
@@ -66,6 +73,7 @@ function findOne(filter, cb){
 //   return true;
 // }
 
+exports.create = create;
 exports.save = save;
 exports.simulate = simulate;
 exports.state = state;
