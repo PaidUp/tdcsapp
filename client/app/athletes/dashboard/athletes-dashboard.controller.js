@@ -31,7 +31,7 @@ angular.module('convenienceApp')
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (user) {
               if (user[0].teams){
-                user[0].team = user.teams[0];
+                user[0].team = user[0].teams[0];
               }
               $scope.athletes.push(user[0]);
             }). catch(function (err) {

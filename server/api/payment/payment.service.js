@@ -37,7 +37,7 @@ function createCard(cardDetails, cb) {
 
 function associateCard(customerId, cardId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateCard(customerId, cardId, function(err, data){
+  tdPaymentService.associateCard({customerId:customerId, cardId:cardId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });

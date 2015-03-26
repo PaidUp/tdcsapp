@@ -94,19 +94,13 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
       orderData.products = merchantProducts;
       checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId) {
         if (err) return cb(err);
-        console.log('magentoOrderId', magentoOrderId);
-        console.log('err', err);
         paymentService.prepareUser(user, function (err, user) {
-          console.log('user', user);
-          console.log('err', err);
           if(err) logger.log('error',err);
           var team = {
             name: shoppingCart.items[1].name,
             sku: shoppingCart.items[1].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
-            console.log('child', child);
-            console.log('err', err);
             child[0].teams.push(team);
             var acountNumber;
             var action;
@@ -115,29 +109,22 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             } else {
               action = 'fetchCard';
             };
-            paymentService[action](orderData.cardId, function(response, account){
+            paymentService[action](orderData.cardId, function(err, account){
               var accountNumber;
               if (orderData.paymentMethod==='directdebit') {
                 accountNumber = '';
               }else{
                 accountNumber = account.cards[0].number;
               }
-
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
-
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
-
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
                   if(err) logger.log('error',err);
-                  
                 });
                 return cb(null, magentoOrderId);
               });
-
             });
-
-
           });
         });
       });
