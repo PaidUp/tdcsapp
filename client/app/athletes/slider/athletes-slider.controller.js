@@ -95,7 +95,7 @@ angular.module('convenienceApp')
       $state.go('teams-profile-athlete',{
         // teamId: $scope.athlete.team.product_id,
         teamId: $scope.team.attributes.productId,
-        athleteId: $scope.athlete._id
+        athleteId: $scope.athlete[0]._id
       });
     };
 

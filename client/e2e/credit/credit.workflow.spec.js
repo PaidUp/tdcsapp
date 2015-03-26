@@ -19,7 +19,7 @@ describe('Credit Workflow', function () {
   });
 
   it("should register a child", function () {
-    lement(by.css('.my-athletes')).click();
+    element(by.css('.my-athletes')).click();
 
     browser.getLocationAbsUrl().then(function (url) {
       expect(url).toEqual('/athletes/dashboard');
@@ -28,49 +28,49 @@ describe('Credit Workflow', function () {
     });
   });
 
-  // it("should select a team for a selected child", function () {
-  //   athlete.selectAthlete();
-  //   athlete.selectTeam(models.teamName);
+  it("should select a team for a selected child", function () {
+    athlete.selectAthlete();
+    athlete.selectTeam(models.teamName);
 
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     var athleteId = Utils.getIdFromURL(url);
-  //     expect(url).toEqual('/athletes/slider/'+athleteId);
-  //     browser.wait(function () {
-  //       return element(by.css('.container.teams')).isDisplayed();
-  //     }, 10000);
+    browser.getLocationAbsUrl().then(function (url) {
+      var athleteId = Utils.getIdFromURL(url);
+      expect(url).toEqual('/athletes/slider/'+athleteId);
+      browser.wait(function () {
+        return element(by.css('.container.teams')).isDisplayed();
+      }, 10000);
 
-  //     expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
-  //     var team = element(by.cssContainingText('.team-name', models.teamName));
-  //     team.click();
-  //     browser.waitForAngular();
+      expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
+      var team = element(by.cssContainingText('.team-name', models.teamName));
+      team.click();
+      browser.waitForAngular();
 
-  //     browser.getLocationAbsUrl().then(function (url) {
-  //       var ids = Utils.getIdsfromUrl(url, [2, 4]);
-  //       var teamId = ids[0];
-  //       expect(athleteId).toEqual(ids[1]);
-  //       expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
+      browser.getLocationAbsUrl().then(function (url) {
+        var ids = Utils.getIdsfromUrl(url, [2, 4]);
+        var teamId = ids[0];
+        expect(athleteId).toEqual(ids[1]);
+        expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
        
-  //       var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
-  //       expect(athleteFirstName).toEqual(models.athlete.firstName);
-  //       expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
-  //       browser.wait(function () {
-  //         return element(by.css('.magento-custom-options')).isDisplayed();
-  //       }, 10000);
+        var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
+        expect(athleteFirstName).toEqual(models.athlete.firstName);
+        expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
+        browser.wait(function () {
+          return element(by.css('.magento-custom-options')).isDisplayed();
+        }, 10000);
 
-  //       teamspo.fillFormTeamForAthlete();
+        teamspo.fillFormTeamForAthlete();
 
-  //       browser.getLocationAbsUrl().then(function (url) {
-  //         expect(url).toEqual('/commerce/cart/index');
-  //         expect(browser.manage().getCookie('cartId')).toBeDefined();
-  //         expect(browser.manage().getCookie('userId')).toBeDefined();
-  //         element(by.id('proceed-to-checkout')).click();
-  //         browser.getLocationAbsUrl().then(function (url) {
-  //           expect(url).toEqual('/payment/loan');
-  //         });
-  //       });
-  //     });
-  //   });
-  // });
+        browser.getLocationAbsUrl().then(function (url) {
+          expect(url).toEqual('/commerce/cart/index');
+          expect(browser.manage().getCookie('cartId')).toBeDefined();
+          expect(browser.manage().getCookie('userId')).toBeDefined();
+          element(by.id('proceed-to-checkout')).click();
+          browser.getLocationAbsUrl().then(function (url) {
+            expect(url).toEqual('/payment/loan');
+          });
+        });
+      });
+    });
+  });
 
   // it("should go to credit card payment", function() {
   //   var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
