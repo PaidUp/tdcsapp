@@ -77,14 +77,14 @@ describe('Credit Workflow', function () {
 
     element(by.css('form[name=checkoutForm]')).submit();
 
-    // browser.wait(function () {
-    //   return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
-    // }, 15000);
-    // browser.getLocationAbsUrl().then(function (url) {
-    //   expect(url).toEqual('/commerce/checkout/success');
-    //   var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
-    //   expect(thankyouTitle).toEqual('Thanks for your order!');
-    // });
+    browser.wait(function () {
+      return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
+    }, 15000);
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/commerce/checkout/success');
+      var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
+      expect(thankyouTitle).toEqual('Thanks for your order!');
+    });
   });
 
   // we could not check the existence of the credit card,
