@@ -109,7 +109,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             } else {
               action = 'fetchCard';
             };
-            paymentService[action](orderData.cardId, function(response, account){
+            paymentService[action](orderData.cardId, function(err, account){
               var accountNumber;
               if (orderData.paymentMethod==='directdebit') {
                 accountNumber = '';
