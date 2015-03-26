@@ -2,12 +2,11 @@
 
 
 var logger = require('../../config/logger');
-var LoanJS = require('loanjs');
 var loan = require('./loan.model');
 var config = require('../../config/environment');
 //var commerceAdapter = require('../user/user.service');
 //var commerceAdapter = require('../commerce/commerce.adapter');
-var paymentService = require('TDCore').paymentService; //require('../payment/payment.service');
+var paymentService = require('../payment/payment.service');
 var loanService = require('TDCore').loanService; //require('../payment/payment.service');
 var userService = require('../user/user.service');
 var paymentEmailService = require('../payment/payment.email.service');
@@ -51,6 +50,14 @@ function findOne(filter, cb) {
   tdLoanService.find(filter, function (err, data){
     if(err) return cb(err);
     return cb(null, data[0]);
+  });
+}
+
+function create(dataCreate, cb) {
+  tdLoanService.init(config.connections.loan);
+  tdLoanService.create(dataCreate, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
   });
 }
 
@@ -106,9 +113,10 @@ function find(filter, cb) {
 // }
 
 exports.simulate = simulate;
-// exports.save = save;
-// exports.findOne = findOne;
-// exports.find = find;
-// exports.isValidNumberPayments = isValidNumberPayments;
+exports.save = save;
+exports.findOne = findOne;
+exports.find = find;
+exports.create = create;
+//exports.isValidNumberPayments = isValidNumberPayments;
 // exports.isValidAmount = isValidAmount;
 // exports.captureLoanSchedule = captureLoanSchedule;
