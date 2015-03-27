@@ -101,8 +101,8 @@ angular.module('convenienceApp')
 
             var addressBilling = {
               mode: 'billing',
-              firstName: loanUser.firstName,
-              lastName: loanUser.lastName,
+              firstName: loanUser[0].firstName,
+              lastName: loanUser[0].lastName,
               address1: loanAddress.address1,
               address2: loanAddress.address2,
               city: loanAddress.city,
