@@ -85,17 +85,17 @@ angular.module('convenienceApp')
             // get loan address for billing
             var i;
             var loanAddress;
-            for (i=0; i<loanUser.addresses.length; i++){
-              if (loanUser.addresses[i].type === 'loan') {
-                loanAddress = loanUser.addresses[i];
+            for (i=0; i<loanUser[0].addresses.length; i++){
+              if (loanUser[0].addresses[i].type === 'loan') {
+                loanAddress = loanUser[0].addresses[i];
               };
             };
             // get telephone address for billing
             var i;
             var loanTelephone;
-            for (i=0; i<loanUser.contacts.length; i++){
-              if (loanUser.contacts[i].type === 'telephone') {
-                loanTelephone = loanUser.contacts[i].value;
+            for (i=0; i<loanUser[0].contacts.length; i++){
+              if (loanUser[0].contacts[i].type === 'telephone') {
+                loanTelephone = loanUser[0].contacts[i].value;
               };
             };
 
