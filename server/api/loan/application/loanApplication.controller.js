@@ -53,10 +53,6 @@ exports.sign = function(req, res) {
       });
     } 
   });
-  loanApplicationService.sign(req.body, function (err, data){
-    if (err) return res.json(409, err);
-    res.json(200, data);
-  });
 };
 
 exports.payment = function(req, res) {
