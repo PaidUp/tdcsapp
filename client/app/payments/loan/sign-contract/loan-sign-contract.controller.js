@@ -80,7 +80,7 @@ angular.module('convenienceApp')
           user = loanUser[0];
           var signedContract = angular.copy($scope.signContract);
           signedContract.applicationId = LoanService.getLoanApplicationId();
-          LoanService.signContract(signedContract, user._id).then(function () {
+          LoanService.signContract(signedContract, user).then(function () {
 
             // get loan address for billing
             var i;
