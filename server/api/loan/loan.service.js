@@ -6,6 +6,7 @@ var loan = require('./loan.model');
 var config = require('../../config/environment');
 //var commerceAdapter = require('../user/user.service');
 //var commerceAdapter = require('../commerce/commerce.adapter');
+var commerceService = require('../commerce/commerce.service');
 var paymentService = require('../payment/payment.service');
 var loanService = require('TDCore').loanService; //require('../payment/payment.service');
 var userService = require('../user/user.service');
@@ -69,48 +70,53 @@ function find(filter, cb) {
   });
 }
 
-// function captureLoanSchedule(loan, scheduledIndex, cb) {
-//   logger.log('info', 'Charging loan: ' + loan.id + ' scheduled payment: ' + (scheduledIndex + 1));
-//   var amount = loan.schedule[scheduledIndex].installment;
-//   // Get Magento Order
-//   commerceAdapter.orderLoad(loan.orderId, function(err,order){
-//     userService.findOne({_id:order.userId}, function(err, user){
-//       paymentService.capture(order, user, order.products[0].BPCustomerId, amount, order.paymentMethod, function(captureErr, data){
-//         if (captureErr) {
-//           // Stop loan
-//           logger.log('info', 'Stopping loan: ' + loan.id);
-//           loan.state = 'delinquent';
-//           loan.schedule[scheduledIndex].state = 'failed';
-//           loan.markModified('schedule');
-//           save(loan, function (err, dataLoan) {
-//             if(captureErr.name === 'not-bank-verified') {
-//               paymentEmailService.sendFinalEmail(user, amount, loan.orderId, function (error, data) {
-//                 logger.log('info', 'Send email capture failed. ');
-//                 return cb(err);
-//               });
-//             }else{//captureErr.name === 'not-available-payment'
-//               logger.info('loose... '+ captureErr.name);
-//               return cb(captureErr);
-//             }
-//           });
-//         }
-//         else {
-//           // All good, schedule captured
-//           loan.schedule[scheduledIndex].state = 'paid';
-//           loan.markModified('schedule');
-//           save(loan, function (err, dataLoan) {
-//             paymentEmailService.sendProcessedEmail(user, amount, loan.orderId, function(err, data){
-//               logger.log('info', 'Send email capture processed. ');
-//             });
-//             return cb(err);
-//           });
-//           return cb(null, data);
-//         }
-//       });
-//     });
-//   });
+function captureLoanSchedule(loan, scheduledIndex, cb) {
+  logger.log('info', 'Charging loan: ' + loan.id + ' scheduled payment: ' + (scheduledIndex + 1));
+  var amount = loan.schedule[scheduledIndex].installment;
+  // Get Magento Order
+  commerceService.orderLoad(loan.orderId, function(err,order){
+    userService.find({_id:order.userId}, function(err, user){
+       paymentService.capture(order, user[0], order.products[0].BPCustomerId, amount, order.paymentMethod, function(captureErr, data){
+         console.log('captureErr', captureErr);
+         console.log('data', data);
+         console.log('order.paymentMethod', order.paymentMethod);
 
-// }
+
+         if (captureErr) {
+           // Stop loan
+           logger.log('info', 'Stopping loan: ' + loan.id);
+           loan.state = 'delinquent';
+           loan.schedule[scheduledIndex].state = 'failed';
+           //loan.markModified('schedule');
+           save(loan, function (err, dataLoan) {
+             if(captureErr.name === 'not-bank-verified') {
+               paymentEmailService.sendFinalEmail(user[0], amount, loan.orderId, function (error, data) {
+                 logger.log('info', 'Send email capture failed. ');
+                 return cb(err);
+               });
+             }else{//captureErr.name === 'not-available-payment'
+               logger.info('loose... '+ captureErr.name);
+               return cb(captureErr);
+             }
+           });
+         }
+         else {
+           // All good, schedule captured
+           loan.schedule[scheduledIndex].state = 'paid';
+           loan.markModified('schedule');
+           save(loan, function (err, dataLoan) {
+             paymentEmailService.sendProcessedEmail(user, amount, loan.orderId, function(err, data){
+               logger.log('info', 'Send email capture processed. ');
+             });
+             return cb(err);
+           });
+           return cb(null, data);
+         }
+       });
+     });
+   });
+
+ }
 
 exports.simulate = simulate;
 exports.save = save;
@@ -119,4 +125,4 @@ exports.find = find;
 exports.create = create;
 //exports.isValidNumberPayments = isValidNumberPayments;
 // exports.isValidAmount = isValidAmount;
-// exports.captureLoanSchedule = captureLoanSchedule;
+exports.captureLoanSchedule = captureLoanSchedule;

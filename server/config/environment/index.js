@@ -251,7 +251,7 @@ var all = {
       host: 'localhost',
       port: 9010,
       token: 'TDUserToken-CHANGE-ME!'
-    },
+    }
   }
 };
 

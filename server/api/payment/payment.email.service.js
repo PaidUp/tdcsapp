@@ -166,8 +166,8 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
   //    schedule: ''
   //  };
 
-  var filter = {_id:requestObject.loan.applicationId};
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  //var filter = {_id:requestObject.loan.applicationId};
+  loanApplicationService.findOne(requestObject.loan.applicationId, function(err, applicationData){
 
     var userId = applicationData.applicantUserId;
 

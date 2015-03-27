@@ -53,7 +53,7 @@ function createBank(bankDetails, cb) {
 
 function associateBank(customerId, bankId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateBank(customerId, bankId, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -61,7 +61,7 @@ function associateBank(customerId, bankId, cb) {
 
 function createOrder(merchantCustomerId, description, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.createOrder(merchantCustomerId, description, function(err, data){
+  tdPaymentService.createOrder({merchantCustomerId:merchantCustomerId, description:description}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -69,7 +69,8 @@ function createOrder(merchantCustomerId, description, cb) {
 
 function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.debitCard(cardId, amount, description, appearsOnStatementAs, orderId, function(err, data){
+  tdPaymentService.debitCard({cardId:cardId, amount:amount, description:description,
+    appearsOnStatementAs:appearsOnStatementAs, orderId:orderId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -77,7 +78,10 @@ function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, c
 
 function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.debitBank(bankId, amount, description, appearsOnStatementAs, orderId, function(err, data){
+  tdPaymentService.debitBank({bankId:bankId,
+    amount:amount, description:description,
+    appearsOnStatementAs:appearsOnStatementAs,
+    orderId:orderId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -152,7 +156,7 @@ function confirmBankVerification(verificationId, amount1, amount2, cb) {
 
 function updateOrderDescription(orderId, description, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.updateOrderDescription(orderId, description, function(err, data){
+  tdPaymentService.updateOrderDescription({orderId:orderId, description:description}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -179,16 +183,9 @@ function collectPendingOrders(cb) {
 
 function createOrder(merchantId, description, cb) {
   tdPaymentService.init(config.connections.payment);
-  var transactionData = {};
-
-  tdPaymentService.fetchCustomer(merchantId, function (err, data) {
-    if (err) return cb(err);
-    paymentAdapter.createOrder(merchantId, description, function (err, data) {
-      if (err) return cb(err);
-      transactionData.order = data;
-      var orderId = data.orders[0].id;
-      return cb(null, orderId);
-    });
+  tdPaymentService.createOrder({merchantId:merchantId, description:description}, function (err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
   });
 }
 
@@ -280,9 +277,9 @@ function fetchDebit(debitId, cb){
 function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
-  userService.findOne({_id: userId}, function (err, user) {
+  userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
-    prepareUser(user, function (err, user) {
+    prepareUser(user[0], function (err, user) {
       if(err) return cb(err);
       logger.info('2b) Associate BP customer credit card');
       // 2b) Associate BP customer credit card
@@ -323,13 +320,19 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
 function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
-  userService.findOne({_id: userId}, function (err, user) {
+  userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
-    prepareUser(user, function (err, user) {
+
+    console.log('userId +++' , userId);
+
+    var BPCustomerId = user[0].BPCustomerId;
+    console.log('BPCustomerId +++' , BPCustomerId);
+
+    prepareUser(user[0], function (err, user) {
       if(err) return cb(err);
       logger.info('2b) Associate BP customer bank account');
       // 2b) Associate BP customer credit card
-      prepareBank(user.BPCustomerId, bankId, function (err, bankDetails) {
+      prepareBank(BPCustomerId, bankId, function (err, bankDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
         // 2c) Create BP Order
@@ -370,7 +373,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
 
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user.id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
+    debitOrderCreditCard(order.incrementId, user._id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
       // Debit failed
       if (err) {
         logger.info('Failed, add a comment and mark order as "on hold"');
@@ -404,6 +407,9 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
   }
   else if(paymentMethod == "directdebit") {
     getUserDefaultBankId(user, function(defaultBankError, paymentId){
+      console.log('err ',defaultBankError);
+      console.log('paymentId',paymentId);
+
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"
@@ -415,7 +421,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
       }
       else {
         // Debit order
-        debitOrderDirectDebit(order.incrementId, user.id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
+        debitOrderDirectDebit(order.incrementId, user._id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
           // Debit failed
           if (err) {
             logger.info('Failed, add a comment and mark order as "on hold"');

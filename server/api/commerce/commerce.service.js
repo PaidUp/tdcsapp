@@ -8,8 +8,13 @@ var config = require('../../config/environment');
 var logger = require('../../config/logger');
 TDCommerceService.init(config.connections.commerce);
 
+var ORDER_STATUS = {
+  HOLD  : 'hold'
+}
+
 function getUserOrders(user, cb) {
   var orders = [];
+  TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
@@ -30,6 +35,7 @@ function getUserOrders(user, cb) {
 }
 
 function getOrder(user, orderId, cb) {
+  TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderLoad(orderId, function (err, magentoOrder) {
     if (err) return cb(err);
     if (magentoOrder.paymentMethod === 'directdebit') {
@@ -73,7 +79,7 @@ function getOrder(user, orderId, cb) {
 
 function getUsertransactions(user, cb) {
   var transactions = [];
-
+  TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
@@ -103,6 +109,9 @@ function getUsertransactions(user, cb) {
 }
 
 function addCommentToOrder(orderId, comment, status, cb) {
+  console.log('addCommentToOrder');
+  console.log('conection', config.connections.commerce);
+  TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderCommentAdd(orderId, comment, status, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
@@ -110,6 +119,7 @@ function addCommentToOrder(orderId, comment, status, cb) {
 }
 
 function addTransactionToOrder(orderId, transactionId, details, cb) {
+  TDCommerceService.init(config.connections.commerce);
   TDCommerceService.transactionCreate(orderId, transactionId, details, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
@@ -117,7 +127,8 @@ function addTransactionToOrder(orderId, transactionId, details, cb) {
 }
 
 function orderHold(orderId, cb) {
-  TDCommerceService.orderHold(orderId, function (err, data) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.orderUpdateStatus(orderId, ORDER_STATUS.HOLD, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
   });
@@ -126,8 +137,6 @@ function orderHold(orderId, cb) {
 function orderList(filter, cb){
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderList({filter : filter}, function (err, data) {
-    logger.log('info', 'data '+data);
-    logger.log('info', 'err '+err);
     if (err) return cb(err);
     return cb(null,data);
   });

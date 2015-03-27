@@ -52,9 +52,9 @@ function contract (dataContract, cb) {
   });
 }
 
-function findOne(filter, cb){
+function findOne(applicationId, cb){
   tdLoanApplicationService.init(config.connections.loan);
-  tdLoanApplicationService.find(filter, function (err, data){
+  tdLoanApplicationService.find(applicationId, function (err, data){
     if(err) {
       return cb(err);
     }

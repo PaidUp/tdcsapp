@@ -48,7 +48,7 @@ exports.collectLoanPayments = function (period, cb) {
   var currentDate = moment();
   // List active loans
   loanService.find({state: 'active'}, function(err, loans) {
-
+    console.log('loans' , loans);
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
       var payments = [];
@@ -67,6 +67,7 @@ exports.collectLoanPayments = function (period, cb) {
               }
               break;
             case 'minutes':
+              console.log('enter in minutes');
               if (currentDate.hour() === paymentDate.hour() &&
                 currentDate.minute() === paymentDate.minute()) {
                 payments.push(loan.schedule.indexOf(paymentScheduled));
@@ -321,11 +322,12 @@ exports.sendTomorrowChargeLoan = function(cb){
 }
 
 function ValidateBankAccount(applicationId, cb){
-  var filterLoanApp = {_id:applicationId};
-  loanApplicationService.findOne(filterLoanApp, function(err, applicationData){
+  //var filterLoanApp = {_id:applicationId};
+  loanApplicationService.findOne(applicationId, function(err, applicationData){
+    console.log('applicationData', applicationData);
     var filterUser = {_id: applicationData.applicantUserId};
-    userService.findOne(filterUser, function (err, user) {
-      paymentService.getUserDefaultBankId(user, function (err, bankId) {
+    userService.find(filterUser, function (err, user) {
+      paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
         if(err){
           return cb(err);
         }
