@@ -42,8 +42,6 @@ function sign (user, cb) {
 //   return true;
 // }
 
-
-
 // function validateOnlyLetterSync(word) {
 //   if(!regExp.test(word) || word === '' || word === undefined || word === null){
 //     return false;
@@ -53,6 +51,7 @@ function sign (user, cb) {
 
 exports.create = create;
 exports.findOne = findOne;
+exports.sign = sign;
 // exports.validateFirstNameSync = validateFirstNameSync;
 // exports.validateLastNameSync = validateLastNameSync;
 // exports.validateOnlyLetterSync = validateOnlyLetterSync;
