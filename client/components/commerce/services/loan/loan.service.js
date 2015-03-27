@@ -57,9 +57,19 @@ angular.module('convenienceApp')
       return LoanApplication.save({action: 'state'}, applicationInfo).$promise;
     };
 
-    this.signContract = function (userInfo) {
+    this.signContract = function (userInfo, loanUser) {
       var deferred = $q.defer();
-      LoanApplication.save({action: 'sign'}, userInfo).$promise.then(function (resp) {
+      LoanApplication.save({action: 'sign'}, {
+        applicationId: userInfo.applicationId,
+        loanUser: {
+          userId: loanUser._id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          ssn: userInfo.ssn,
+          addresses: loanUser.addresses,
+          contacts: loanUser.contacts
+        }
+      }).$promise.then(function (resp) {
         LoanService.setLoanId(resp.loanId);
         deferred.resolve();
       }).catch(function (err) {

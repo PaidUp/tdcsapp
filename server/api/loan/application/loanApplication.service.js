@@ -62,6 +62,16 @@ function findOne(applicationId, cb){
   });
 }
 
+function sign (data, cb){
+  tdLoanApplicationService.init(config.connections.loan);
+  tdLoanApplicationService.sign(data, function (err, data){
+    if(err) {
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+}
+
 // function validateABA(abaNum) {
 //   return aba.validate(abaNum);
 // }
@@ -79,7 +89,7 @@ exports.simulate = simulate;
 exports.state = state;
 exports.contract = contract;
 //exports.validateState = validateState;
-//exports.sign = sign;
+exports.sign = sign;
 exports.payment = payment;
 //exports.isValidIncomeType = isValidIncomeType;
 exports.findOne = findOne;

@@ -1,6 +1,7 @@
 'use strict';
 
 var loanApplicationService = require('./loanApplication.service');
+var userService = require('./user/user.service');
 
 // var config = require('../../../config/environment/index');
 // var contractEmail = require('../loan.contract.email.service');
@@ -37,9 +38,20 @@ exports.state = function(req, res) {
 };
 
 exports.sign = function(req, res) {
-  loanApplicationService.sign(req.body, function (err, data){
+  req.body.userId = req.user._id;
+  userService.sign(req.body.loanUser, function (err, sign){
     if (err) return res.json(409, err);
-    res.json(200, data);
+    if (sign.isCorrect) {
+      loanApplicationService.sign(req.body, function (err, data){
+        if (err) return res.json(409, err);
+        res.json(200, data);
+      });
+    }else {
+      res.json(400, {
+        "code": "ValidationError",
+        "message": "sign is not accepted"
+      });
+    } 
   });
 };
 
