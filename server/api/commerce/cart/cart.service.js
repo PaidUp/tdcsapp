@@ -96,7 +96,7 @@ exports.addLoanInterest = function (cartId, amount, cb){
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
-    TDCommerceService.updateCartProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
+    TDCommerceService.cartUpdateProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
       if(err) return cb(err);
       return cb(null, data);
     })
