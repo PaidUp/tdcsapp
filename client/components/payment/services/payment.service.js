@@ -9,7 +9,6 @@ angular.module('convenienceApp')
     var CardPayment = $resource('/api/v1/payment/card/:action', {}, {});
 
     this.sendPayment = function (payment) {
-      console.log('payment', payment);
       return Payment.save(payment).$promise;
     };
 
