@@ -9,7 +9,6 @@ var athlete = require('../athletes/athlete.helper.spec.js');
 var teamspo = require('../page-objects/teams.po');
 var loanpo = require('../page-objects/loan.po');
 
-
 describe('Credit Workflow', function () {
 
   beforeEach(function () {});
@@ -20,7 +19,6 @@ describe('Credit Workflow', function () {
 
   it("should register a child", function () {
     element(by.css('.my-athletes')).click();
-
     browser.getLocationAbsUrl().then(function (url) {
       expect(url).toEqual('/athletes/dashboard');
       var athleteModel = models.athlete;
@@ -50,7 +48,6 @@ describe('Credit Workflow', function () {
         expect(url).toEqual('/payment/loan');
       });
     });
-    
   });
 
   it("should go to credit card payment", function() {

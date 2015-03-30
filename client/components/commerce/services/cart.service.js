@@ -36,7 +36,6 @@ angular.module('convenienceApp')
     this.addProductToCart = function (products, userId) {
       var cartId = this.getCurrentCartId();
       var deferred = $q.defer();
-
       Cart.save({action: 'add'}, {
         cartId: cartId,
         products: products

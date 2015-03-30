@@ -50,19 +50,19 @@ exports.place = function(req, res) {
   }
   // Process order
   if (req.body.payment == "loan") {
-    loanService.findOne({_id: req.body.loanId}, function(err,loan){
+    loanService.findOne({_id: req.body.loanId}, function (err,loan){
       cartService.addLoanInterest(req.body.cartId, loan.interestSum, function (err, data) {
         if (err) return handleError(res, err);
-        placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function(err, magentoOrderId){
+        placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function (err, magentoOrderId){
           if (err) return handleError(res, err);
-          loanService.findOne({_id: req.body.loanId}, function(err, loan) {
+          loanService.findOne({_id: req.body.loanId}, function (err, loan) {
             loan.orderId = magentoOrderId;
-            loanService.save(loan, function(err, dataLoan){
+            loanService.save(loan, function (err, dataLoan){
               var filter = {_id:loan.applicationId};
-              loanApplicationService.findOne(filter, function(err, dataApploan){
+              loanApplicationService.findOne(filter._id, function (err, dataApploan) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
-                userLoanService.findOne(filterUserLoan, function(err, dataUserLoan){
-                  contractEmail.sendContractEmail(dataUserLoan, dataLoan, function(err, dataEmail) {
+                userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
+                  contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {
                     if(err){
                       logger.info(err, err);
                     }

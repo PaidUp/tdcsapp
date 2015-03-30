@@ -84,6 +84,7 @@ function getContractHtml (loanUser, loan, cb) {
 };
 
 function setContractData (loanUser, loan) {
+  console.log('loanUser', loanUser);
   // dinamic data for the email
 
   var contractTemplate = {};

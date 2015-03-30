@@ -39,7 +39,7 @@ angular.module('convenienceApp')
       });
     };
 
-    AuthService.isLoggedInAsync(function(loggedIn) {
+    AuthService.isLoggedInAsync(function (loggedIn) {
       $scope.user = angular.extend({}, AuthService.getCurrentUser());
       UserService.listRelations($scope.user._id).then(function (data) {
         angular.forEach(data, function (relation) {

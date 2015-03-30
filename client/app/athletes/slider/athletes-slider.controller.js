@@ -44,8 +44,8 @@ angular.module('convenienceApp')
       //   });
       // });
       UserService.getUser($stateParams.athleteId).then(function (athlete) {
-        $scope.athletes.push(athlete);
-        $scope.selectAthlete(athlete);
+        $scope.athletes.push(athlete[0]);
+        $scope.selectAthlete(athlete[0]);
         if ($scope.athlete.teams) {
           $scope.athlete.team = $scope.athlete.teams[0];
         }
@@ -95,7 +95,7 @@ angular.module('convenienceApp')
       $state.go('teams-profile-athlete',{
         // teamId: $scope.athlete.team.product_id,
         teamId: $scope.team.attributes.productId,
-        athleteId: $scope.athlete[0]._id
+        athleteId: $scope.athlete._id
       });
     };
 

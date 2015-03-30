@@ -24,104 +24,96 @@ describe('Loan Workflow', function () {
     });
   });
 
-  // it("should select a team for a selected child", function () {
-  //   athlete.selectAthlete();
-  //   athlete.selectTeam(models.teamName);
+  it("should select a team for a selected child", function () {
+    athlete.selectAthlete();
+    athlete.selectTeam(models.teamName);
+     
+    var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
+    expect(athleteFirstName).toEqual(models.athlete.firstName);
+    expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
+    browser.wait(function () {
+      return element(by.css('.magento-custom-options')).isDisplayed();
+    }, 10000);
 
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     // url -> /teams/profile/:teamId/athlete/:athleteId
-  //     var ids = Utils.getIdsfromUrl(url, [2, 4]);
-  //     var teamId = ids[0];
-  //     expect(athleteId).toEqual(ids[1]);
-  //     expect(url).toEqual('/teams/profile/' + teamId + '/athlete/' + athleteId);
+    teamspo.fillFormTeamForAthlete();
 
-  //     var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
-  //     expect(athleteFirstName).toEqual(models.athlete.firstName);
-  //     expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
-  //     browser.wait(function () {
-  //       return element(by.css('.magento-custom-options')).isDisplayed();
-  //     }, 10000);
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/commerce/cart/index');
+      expect(browser.manage().getCookie('cartId')).toBeDefined();
+      expect(browser.manage().getCookie('userId')).toBeDefined();
+      element(by.id('proceed-to-checkout')).click();
+      browser.getLocationAbsUrl().then(function (url) {
+        expect(url).toEqual('/payment/loan');
+      });
+    });
+  });
 
-  //     teamspo.fillFormTeamForAthlete();
+  it("should apply to loan", function () {
+    var userLoan = models.userLoan;
 
-  //     browser.getLocationAbsUrl().then(function (url) {
-  //       expect(url).toEqual('/commerce/cart/index');
-  //       expect(browser.manage().getCookie('cartId')).toBeDefined();
-  //       expect(browser.manage().getCookie('userId')).toBeDefined();
-  //       element(by.id('proceed-to-checkout')).click();
-  //       browser.getLocationAbsUrl().then(function (url) {
-  //         expect(url).toEqual('/payment/loan');
-  //       });
-  //     });
-      
-  //   });
-  // });
+    element(by.css('.loan-apply-btn')).click();
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/payment/loan/apply');
+      var name = element(by.model('user.firstName')).getAttribute('value');
+      var lastName = element(by.model('user.lastName')).getAttribute('value');
+      expect(name).toEqual(userLoan.firstname);
+      expect(lastName).toEqual(userLoan.lastname);
 
-  // it("should apply to loan", function() {
-  //   var userLoan = models.userLoan;
+      loanpo.fillFormApplyLoan(userLoan);
 
-  //   element(by.css('.loan-apply-btn')).click();
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     expect(url).toEqual('/payment/loan/apply');
-  //     var name = element(by.model('user.firstName')).getAttribute('value');
-  //     var lastName = element(by.model('user.lastName')).getAttribute('value');
-  //     expect(name).toEqual(userLoan.firstname);
-  //     expect(lastName).toEqual(userLoan.lastname);
+      element(by.css('form[name=loanApplyForm]')).submit();
+      // browser.waitForAngular();
+      browser.getLocationAbsUrl().then(function (url) {
+        expect(url).toEqual('/payment/loan/signcontract');
+      });
+    });
+  });
 
-  //     loanpo.fillFormApplyLoan(userLoan);
+  it("should sign the loan contract", function () {
+    loanpo.setData();
 
-  //     element(by.css('form[name=loanApplyForm]')).submit();
-  //     // browser.waitForAngular();
-  //     browser.getLocationAbsUrl().then(function (url) {
-  //       expect(url).toEqual('/payment/loan/signcontract');
-  //     });
-  //   });
-  // });
+    expect(element(by.binding('contractHTML')).getText()).not.toEqual('');
+    expect(loanpo.loanAmount).not.toEqual('');
+    expect(loanpo.term).not.toEqual('');
+    expect(loanpo.apr).not.toEqual('');
+    expect(loanpo.monthlyPayment).not.toEqual('');
 
-  // it("should sign the loan contract", function() {
-  //   loanpo.setData();
+    loanpo.fillFormSignContract(models.userLoan);
 
-  //   expect(element(by.binding('contractHTML')).getText()).not.toEqual('');
-  //   expect(loanpo.loanAmount).not.toEqual('');
-  //   expect(loanpo.term).not.toEqual('');
-  //   expect(loanpo.apr).not.toEqual('');
-  //   expect(loanpo.monthlyPayment).not.toEqual('');
+    element(by.css('form[name=signContractForm]')).submit();
+    browser.waitForAngular();
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/payment/loan/payment');
+    });
+  });
 
-  //   loanpo.fillFormSignContract(models.userLoan);
+  it("should place a payment", function () {
+    loanpo.setData();
 
-  //   element(by.css('form[name=signContractForm]')).submit();
-  //   // browser.waitForAngular();
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     expect(url).toEqual('/payment/loan/payment');
-  //   });
-  // });
+    expect(loanpo.loanAmount).not.toEqual('');
+    expect(loanpo.term).not.toEqual('');
+    expect(loanpo.apr).not.toEqual('');
+    expect(loanpo.monthlyPayment).not.toEqual('');
 
-  // it("should place a payment", function() {
-  //   loanpo.setData();
+    expect(element.all(by.repeater('(index, payment) in paymentSchedule')).count()).toBeGreaterThan(0);
 
-  //   expect(loanpo.loanAmount).not.toEqual('');
-  //   expect(loanpo.term).not.toEqual('');
-  //   expect(loanpo.apr).not.toEqual('');
-  //   expect(loanpo.monthlyPayment).not.toEqual('');
+    loanpo.fillFormPayment(models.bankDetails);
 
-  //   expect(element.all(by.repeater('(index, payment) in paymentSchedule')).count()).toBeGreaterThan(0);
+    // this is because we need to ng-blur to take effect
+    // element(by.id('check-img')).click();
+    // element(by.css('form[name=paymentForm]')).submit();
+    element(by.id('payment-btn')).click();
+    browser.wait(function () {
+      return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
+    }, 15000);
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/commerce/checkout/success');
+      var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
+      expect(thankyouTitle).toEqual('Thanks for your order!');
+    });
+  });
 
-  //   loanpo.fillFormPayment(models.bankDetails);
-
-  //   // this is because we need to ng-blur to take effect
-  //   // element(by.id('check-img')).click();
-  //   // element(by.css('form[name=paymentForm]')).submit();
-  //   element(by.id('payment-btn')).click();
-  //   browser.wait(function () {
-  //     return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
-  //   }, 15000);
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     expect(url).toEqual('/commerce/checkout/success');
-  //     var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
-  //     expect(thankyouTitle).toEqual('Thanks for your order!');
-  //   });
-  // });
-
+  // Verify bank account
   // it("should have a bank account", function() {
 
   //   // browser.get('/user/payments');
