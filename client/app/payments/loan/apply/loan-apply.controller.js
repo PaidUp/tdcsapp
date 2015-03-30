@@ -148,21 +148,21 @@ angular.module('convenienceApp')
       }).catch(function (err) {
         $scope.sendAlertErrorMsg(err.data.message);
       });
-    });
     
-    UserService.getContactList($scope.user._id).then(function(data){
-      angular.forEach(data, function (contactInfo) {
-        UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
-          if (contact.label === 'shipping') {
-            $scope.oldPhone = contact;
-            $scope.billing.phone = contact.value;
-          }
-        }).catch(function (err) {
-          $scope.sendAlertErrorMsg(err.data.message);
+      UserService.getContactList($scope.user._id).then(function(data){
+        angular.forEach(data, function (contactInfo) {
+          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
+            if (contact.label === 'shipping') {
+              $scope.oldPhone = contact;
+              $scope.billing.phone = contact.value;
+            }
+          }).catch(function (err) {
+            $scope.sendAlertErrorMsg(err.data.message);
+          });
         });
+      }).catch(function (err) {
+        $scope.sendAlertErrorMsg(err.data.message);
       });
-    }).catch(function (err) {
-      $scope.sendAlertErrorMsg(err.data.message);
     });
 
     $scope.updateAddress = function (address) {

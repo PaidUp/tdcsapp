@@ -46,7 +46,6 @@ exports.collectLoanPayments = function (period, cb) {
   var currentDate = moment();
   // List active loans
   loanService.find({state: 'active'}, function(err, loans) {
-    console.log('loans' , loans);
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
       var payments = [];

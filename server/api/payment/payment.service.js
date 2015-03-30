@@ -323,10 +323,7 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
 
-    console.log('userId +++' , userId);
-
     var BPCustomerId = user[0].BPCustomerId;
-    console.log('BPCustomerId +++' , BPCustomerId);
 
     prepareUser(user[0], function (err, user) {
       if(err) return cb(err);

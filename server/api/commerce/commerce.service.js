@@ -109,8 +109,6 @@ function getUsertransactions(user, cb) {
 }
 
 function addCommentToOrder(orderId, comment, status, cb) {
-  console.log('addCommentToOrder');
-  console.log('conection', config.connections.commerce);
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderCommentAdd(orderId, comment, status, function (err, data) {
     if (err) return cb(err);

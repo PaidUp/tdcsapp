@@ -77,11 +77,6 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
   commerceService.orderLoad(loan.orderId, function(err,order){
     userService.find({_id:order.userId}, function(err, user){
        paymentService.capture(order, user[0], order.products[0].BPCustomerId, amount, order.paymentMethod, function(captureErr, data){
-         console.log('captureErr', captureErr);
-         console.log('data', data);
-         console.log('order.paymentMethod', order.paymentMethod);
-
-
          if (captureErr) {
            // Stop loan
            logger.log('info', 'Stopping loan: ' + loan.id);

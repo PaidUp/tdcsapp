@@ -40,7 +40,7 @@ angular.module('convenienceApp')
       $cookieStore.remove('loanId');
     };
 
-    var Loan = $resource('/api/v1/loan/:loanId', {}, {});
+    var Loan = $resource('/api/v1/loan/find/loanId/:loanId', {}, {});
     this.getLoan = function () {
       return Loan.get({loanId: this.getLoanId()}).$promise;
     };
