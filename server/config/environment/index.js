@@ -250,7 +250,7 @@ var all = {
       isHttp: false,
       host: 'localhost',
       port: 9010,
-      token: 'TDUserToken-CHANGE-ME!'
+      token: 'TDUserLoanToken-CHANGE-ME!'
     }
   }
 };
