@@ -23,7 +23,6 @@
     "jsonwebtoken": "^0.3.0",
     "loanjs": "0.0.8",
     "lodash": "~2.4.1",
-    "magento": "0.0.4",
     "method-override": "~1.0.0",
     "moment": "^2.9.0",
     "mongoose": "~3.8.8",
