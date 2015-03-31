@@ -22,8 +22,8 @@ function sendContractEmail (loanUser, loan, cb) {
   var userPhone = contractTemplate.searchData.userPhone;
   var userEmail = contractTemplate.searchData.userEmail;
 
-  emailVars.name = loanUser.firstName;
-  emailVars.userId = loanUser._id;
+  emailVars.name = loanUser[0].firstName;
+  emailVars.userId = loanUser[0]._id;
 
   commerceService.orderLoad(loan.orderId, function (err, magentoOrder) {
     var team = 'Convenience Select';
