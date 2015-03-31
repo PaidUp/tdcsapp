@@ -84,41 +84,39 @@ function getContractHtml (loanUser, loan, cb) {
 };
 
 function setContractData (loanUser, loan) {
-  console.log('loanUser', loanUser);
   // dinamic data for the email
-
   var contractTemplate = {};
   contractTemplate.searchData = {};
   var searchData = {};
 
   // find loan address
   var i;
-  for (i = 0; i < loanUser.addresses.length; i++) {
-    if (loanUser.addresses[i].type === 'loan') {
-      contractTemplate.searchData.userAddressLoan = loanUser.addresses[i];
+  for (i = 0; i < loanUser[0].addresses.length; i++) {
+    if (loanUser[0].addresses[i].type === 'loan') {
+      contractTemplate.searchData.userAddressLoan = loanUser[0].addresses[i];
       break;
     }
   };
 
   // find loan phone number
   var i;
-  for (i = 0; i < loanUser.contacts.length; i++) {
-    if (loanUser.contacts[i].type === 'telephone') {
-      contractTemplate.searchData.userPhone = loanUser.contacts[i].value;
+  for (i = 0; i < loanUser[0].contacts.length; i++) {
+    if (loanUser[0].contacts[i].type === 'telephone') {
+      contractTemplate.searchData.userPhone = loanUser[0].contacts[i].value;
       break;
     }
   };
 
   // find loan mail
   var i;
-  for (i = 0; i < loanUser.contacts.length; i++) {
-    if (loanUser.contacts[i].type === 'email') {
-      contractTemplate.searchData.userEmail = loanUser.contacts[i].value;
+  for (i = 0; i < loanUser[0].contacts.length; i++) {
+    if (loanUser[0].contacts[i].type === 'email') {
+      contractTemplate.searchData.userEmail = loanUser[0].contacts[i].value;
       break;
     }
   };
 
-  var ssn = userLoanService.decryptSSN(loanUser.ssn);
+  var ssn = userLoanService.decryptSSN(loanUser[0].ssn);
   var last4snn = ssn.substring(ssn.length - 4, ssn.length);
   var todayNow = new moment().format("MMMM DD, YYYY");
 
@@ -128,7 +126,6 @@ function setContractData (loanUser, loan) {
   for (i=0; i<loan.schedule.length; i++) {
     loan.schedule[i].paymentDay = new moment(loan.schedule[i].paymentDay).format("dddd, MMMM Do YYYY");
   };
-
   contractTemplate.contractData.platform = {
     date: todayNow,
     contractNo: loan.orderId,
@@ -144,19 +141,19 @@ function setContractData (loanUser, loan) {
     effectiveDate: todayNow,
     schedule: loan.schedule
   };
-
+  
   contractTemplate.contractData.client = {
-    borrower: loanUser.firstName + ', ' + loanUser.lastName,
+    borrower: loanUser[0].firstName + ', ' + loanUser[0].lastName,
     address: contractTemplate.searchData.userAddressLoan.address1,
     city: contractTemplate.searchData.userAddressLoan.city,
     state: contractTemplate.searchData.userAddressLoan.state,
     zip: contractTemplate.searchData.userAddressLoan.zipCode,
     phone: contractTemplate.searchData.userPhone,
-    name: loanUser.firstName,
-    lastName: loanUser.lastName,
+    name: loanUser[0].firstName,
+    lastName: loanUser[0].lastName,
     last4ssn: last4snn
   };
-
+  
   return contractTemplate;
 
 };

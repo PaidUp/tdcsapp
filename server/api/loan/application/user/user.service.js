@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require('../../../../config/environment');
+var Blind = require('blind');
 var tdUserService = require('TDCore').userService;
 
 function create (user, cb) {
@@ -49,9 +50,32 @@ function sign (user, cb) {
 //   return true;
 // }
 
+var encryptKey = config.loan.application.user.encryptKey;
+function encryptSSN(ssn){
+  var encrypted = new Blind({ encryptKey: encryptKey }).encrypt(ssn);
+  return encrypted;
+}
+
+function decryptSSN(encryptedSSN){
+  var decrypted = new Blind({ encryptKey: encryptKey }).decrypt(encryptedSSN);
+  return decrypted;
+}
+
+function verifySSN(ssn) {
+  return isValidSSN(ssn);
+}
+
+function getlast4ssn(encryptedSSN){
+  var last4snn = decryptSSN(encryptedSSN);
+  return last4snn.substring(last4snn.length - 4, last4snn.length);
+}
+
 exports.create = create;
 exports.findOne = findOne;
 exports.sign = sign;
+exports.encryptSSN = encryptSSN;
+exports.decryptSSN = decryptSSN;
+exports.getlast4ssn = getlast4ssn;
 // exports.validateFirstNameSync = validateFirstNameSync;
 // exports.validateLastNameSync = validateLastNameSync;
 // exports.validateOnlyLetterSync = validateOnlyLetterSync;

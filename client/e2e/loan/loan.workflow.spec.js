@@ -6,6 +6,8 @@ var user = require('../user/user.helper.spec.js');
 var athlete = require('../athletes/athlete.helper.spec.js');
 var teamspo = require('../page-objects/teams.po');
 var loanpo = require('../page-objects/loan.po');
+var payments = require('../user/payments/payments.helper.spec.js');
+var verifyBankAccount = require('../page-objects/verify-bank-account.po');
 
 describe('Loan Workflow', function () {
 
@@ -113,120 +115,182 @@ describe('Loan Workflow', function () {
     });
   });
 
-  // Verify bank account
-  // it("should have a bank account", function() {
+  it('should have a bank account', function() {
+    payments.goToPayment();
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+  });
 
-  //   // browser.get('/user/payments');
-  //   element(by.css('.dropdown')).click();
-  //   var ProfileLink = element(by.css('.dropdown .dropdown-menu')).element(by.css('li > a'));
-  //   expect(ProfileLink.getText()).toEqual('Profile');
-  //   ProfileLink.click();
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     expect(url).toEqual('/user/account');
-  //     var tabs = element(by.css('.user-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
-  //     // console.log('TABS:\n');
-  //     // tabs.each(function(tab) {
-  //     //   tab.getWebElement().getInnerHtml().then(function (html) {
-  //     //     console.log(html)
-  //     //   });
-  //     // });
-  //     // 1 is the array index where we can find the User Payment Methods Tab
-  //     expect(tabs.count()).toEqual(3);
-  //     tabs.get(1).click();
+  it('should validate first failed attempt to verify bank account', function(){
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+    expect(
+      bankAccounts.get(0).
+      element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
+    ).toBe(true);
 
-  //     browser.getLocationAbsUrl().then(function (url) {
-  //       expect(url).toEqual('/user/payments');
-  //     });
-  //   });
-  // });
+    bankAccounts.get(0).element(by.css('.verify-bank')).click();
 
-  // it('should verify bank account with pending status', function() {
-  //   var bankAccounts = element.all(by.repeater('account in bankAccounts'));
-  //   expect(bankAccounts.count()).toEqual(1);
-  //   expect(
-  //     bankAccounts.get(0).
-  //     element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
-  //   ).toBe(true);
-  //   bankAccounts.get(0).element(by.css('.verify-bank')).click();
+    browser.getLocationAbsUrl().then(function (url) {
+      var ids = Utils.getIdsfromUrl(url, [3, 5]);
+      var bankId = ids[0];
+      var verificationId = ids[1];
+      expect(url).toEqual('/user/payments/bank/' + bankId + '/verify/' + verificationId);
+
+      verifyBankAccount.verifyAccount(
+        models.bankDetails.valueVerifyAccountError, 
+        models.bankDetails.valueVerifyAccountError
+      );
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).isDisplayed()
+      ).toBe(true);
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).getText()
+      ).toEqual('Remaining attempts: 2');
+
+      expect(
+        element(by.css('.message')).getAttribute('name')
+      ).toEqual('Your bank account has not been verified');
+    });
+  });
+
+  it('should validate second failed attempt to verify bank account', function(){
+
+    payments.goToPayment();
+
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+    expect(
+      bankAccounts.get(0).
+      element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
+    ).toBe(true);
+
+    bankAccounts.get(0).element(by.css('.verify-bank')).click();
+
+    browser.getLocationAbsUrl().then(function (url) {
+      var ids = Utils.getIdsfromUrl(url, [3, 5]);
+      var bankId = ids[0];
+      var verificationId = ids[1];
+      expect(url).toEqual('/user/payments/bank/' + bankId + '/verify/' + verificationId);
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).isDisplayed()
+      ).toBe(true);
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).getText()
+      ).toEqual('Remaining attempts: 2');
+
+      verifyBankAccount.verifyAccount(
+        models.bankDetails.valueVerifyAccountError, 
+        models.bankDetails.valueVerifyAccountError
+      );
+
+      expect(
+        element(by.css('.message')).getAttribute('name')
+      ).toEqual('Your bank account has not been verified');
+    });
+  });
+
+  it('should validate third failed attempt to verify bank account', function(){
+
+    payments.goToPayment();
+
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+    expect(
+      bankAccounts.get(0).
+      element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
+    ).toBe(true);
+
+    bankAccounts.get(0).element(by.css('.verify-bank')).click();
+
+    browser.getLocationAbsUrl().then(function (url) {
+      var ids = Utils.getIdsfromUrl(url, [3, 5]);
+      var bankId = ids[0];
+      var verificationId = ids[1];
+      expect(url).toEqual('/user/payments/bank/' + bankId + '/verify/' + verificationId);
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).isDisplayed()
+      ).toBe(true);
+
+      expect(
+        element(by.css('[ng-show="attemptsRemaining > 0"]')).getText()
+      ).toEqual('Remaining attempts: 1');
+
+      verifyBankAccount.verifyAccount(
+        models.bankDetails.valueVerifyAccountError, 
+        models.bankDetails.valueVerifyAccountError
+      );
+
+      expect(
+        element(by.css('.message')).getAttribute('name')
+      ).toEqual('You have exceeded the max number of attempts');
+    });
+  });
+
+  it('should remove bank account with failed status', function() {
+
+    payments.goToPayment();
+
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+    expect(
+      bankAccounts.get(0).
+      element(by.css('[ng-show="account.state === \'failed\'"]')).isDisplayed()
+    ).toBe(true);
+
+    bankAccounts.get(0).element(by.css('.remove-bank')).click();
+
+    expect(
+      element(by.css('.message')).getAttribute('name')
+    ).toEqual('The bank account has been removed successfully');
+
+    expect(bankAccounts.count()).toEqual(0);
+    var alert = element.all(by.repeater('alert in alerts'));
+    expect(alert.count()).toEqual(1);
+  });
+
+  it('should verify bank account with pending status successfully', function() {
+
+    payments.goToPayment();
+    payments.createNewBankAccount(models.bankDetails);
+
+    var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+    expect(bankAccounts.count()).toEqual(1);
+    expect(
+      bankAccounts.get(0).
+      element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
+    ).toBe(true);
+
+    bankAccounts.get(0).element(by.css('.verify-bank')).click();
     
-  //   browser.getLocationAbsUrl().then(function (url) {
-  //     var ids = Utils.getIdsfromUrl(url, [3, 5]);
-  //     var bankId = ids[0];
-  //     var verificationId = ids[1];
-  //     expect(url).toEqual('/user/payments/bank/' + bankId + '/verify/' + verificationId);
-  //   });
-  // });
+    browser.getLocationAbsUrl().then(function (url) {
+      var ids = Utils.getIdsfromUrl(url, [3, 5]);
+      var bankId = ids[0];
+      var verificationId = ids[1];
+      expect(url).toEqual('/user/payments/bank/' + bankId + '/verify/' + verificationId);
 
-  // it('should validate first attempt to verify bank account', function(){
-  //   verifyBankAccount.verifyAccount(models.bankDetails);
+      verifyBankAccount.verifyAccount(
+        models.bankDetails.valueVerifyAccount, 
+        models.bankDetails.valueVerifyAccount
+      );
+        
+      expect(browser.getLocationAbsUrl()).toEqual('/athletes/dashboard');
+      payments.goToPayment();
 
-  //   expect(
-  //     element(by.css('[ng-show="attemptsRemaining > 0"]')).isDisplayed()
-  //   ).toBe(true);
-
-  //   expect(
-  //     element(by.css('.message')).getAttribute('name')
-  //   ).toEqual('Your bank account has not been verified');
-  // });
-
-  // it('should clean form and verify required fields', function(){
-  //   verifyBankAccount.clearFormVerifyAccount();
-
-  //   expect(
-  //     element(
-  //       by.css('[ng-show="verifyBankAccountForm.deposit1.$error.required && submitted"]')
-  //     ).isDisplayed()
-  //   ).toBe(true);
-
-  //   expect(
-  //     element(
-  //       by.css('[ng-show="verifyBankAccountForm.deposit2.$error.required && submitted"]')
-  //     ).isDisplayed()
-  //   ).toBe(true);
-  // });
-
-  // it('should validate second attempt to verify bank account', function(){
-  //   verifyBankAccount.verifyAccount(models.bankDetails);
-
-  //   expect(
-  //     element(by.css('[ng-show="attemptsRemaining > 0"]')).isDisplayed()
-  //   ).toBe(true);
-
-  //   expect(
-  //     element(by.css('.message')).getAttribute('name')
-  //   ).toEqual('Your bank account has not been verified');
-
-  //   verifyBankAccount.clearFormVerifyAccount();
-  // });
-
-  // it('should validate third attempt to verify bank account', function(){
-  //   verifyBankAccount.verifyAccount(models.bankDetails);
-
-  //   expect(
-  //     element(by.css('.message')).getAttribute('name')
-  //   ).toEqual('Has exceeded number max to attempts');
-
-  //   expect(browser.getLocationAbsUrl()).toEqual('/user/payments');
-  // });
-  
-  // it('should remove bank account with failed status', function() {
-  //   var bankAccounts = element.all(by.repeater('account in bankAccounts'));
-  //   expect(bankAccounts.count()).toEqual(1);
-
-  //   expect(
-  //     bankAccounts.get(0).
-  //     element(by.css('[ng-show="account.state === \'failed\'"]')).isDisplayed()
-  //   ).toBe(true);
-  //   bankAccounts.get(0).element(by.css('.remove-bank')).click();
-
-  //   expect(
-  //     element(by.css('.message')).getAttribute('name')
-  //   ).toEqual('The bank account has been removed successfully');
-
-  //   expect(bankAccounts.count()).toEqual(0);
-  //   var alert = element.all(by.repeater('alert in alerts'));
-  //   expect(alert.count()).toEqual(1);
-  // });
+      var bankAccounts = element.all(by.repeater('account in bankAccounts'));
+      expect(bankAccounts.count()).toEqual(1);
+      expect(
+        bankAccounts.get(0).
+        element(by.css('[ng-show="account.state === \'pending\'"]')).isDisplayed()
+      ).toBe(false);
+     
+    });
+  });
   
   it('should sign out', function(){
     user.signOut();
