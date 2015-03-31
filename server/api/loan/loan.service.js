@@ -98,7 +98,7 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
          else {
            // All good, schedule captured
            loan.schedule[scheduledIndex].state = 'paid';
-           loan.markModified('schedule');
+           //loan.markModified('schedule');
            save(loan, function (err, dataLoan) {
              paymentEmailService.sendProcessedEmail(user, amount, loan.orderId, function(err, data){
                logger.log('info', 'Send email capture processed. ');

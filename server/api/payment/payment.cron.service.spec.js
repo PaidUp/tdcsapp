@@ -45,7 +45,7 @@ describe('payment.cron.service', function() {
     });
   });
 
-  it('sendTomorrowChargeLoan', function(done) {
+  it.skip('sendTomorrowChargeLoan', function(done) {
     paymentCronService.sendTomorrowChargeLoan(function (err, data) {
       if (err) done(err);
       assert.equal(true, data);

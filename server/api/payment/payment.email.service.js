@@ -46,7 +46,6 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
 };
 
 exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
-
   var filter = {_id:applicationId};
   loanApplicationService.findOne(filter, function(err, applicationData){
     var userId = applicationData.applicantUserId;
@@ -110,7 +109,7 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
     // get the user data with the userId
     var filter = {_id: userId};
 
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
       if (!user) return cb(false);
 
@@ -119,11 +118,11 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
       var bankId;
       var acountNumberLast4Digits;
       var userFirstName = user.firstName;
-      userEmail = user.email;
+      userEmail = user[0].email;
 
       getNameTeamFromOrder(orderId, function(err,team){
 
-        paymentService.getUserDefaultBankId(user, function (err, bankId) {
+        paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
 
           paymentService.fetchBank(bankId, function (errTemplate, account) {
             userAccountNumber = account.bankAccounts[0].accountNumber;
@@ -285,14 +284,12 @@ exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
 };
 
 exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
-
   var emailVars = config.emailVars;
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
 
   paymentService.getUserDefaultBankId(user, function (err, bankId) {
-
       paymentService.fetchBank(bankId, function (response, account) {
         emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
 

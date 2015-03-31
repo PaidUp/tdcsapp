@@ -181,11 +181,11 @@ function collectPendingOrders(cb) {
   });
 }
 
-function createOrder(merchantId, description, cb) {
+function createOrder(merchantCustomerId, description, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.createOrder({merchantId:merchantId, description:description}, function (err, data) {
+  tdPaymentService.createOrder({merchantCustomerId:merchantCustomerId, description:description}, function (err, data) {
     if(err) return cb(err);
-    return cb(null, data);
+    return cb(null, data.orders[0].id);
   });
 }
 
@@ -404,9 +404,6 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
   }
   else if(paymentMethod == "directdebit") {
     getUserDefaultBankId(user, function(defaultBankError, paymentId){
-      console.log('err ',defaultBankError);
-      console.log('paymentId',paymentId);
-
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"

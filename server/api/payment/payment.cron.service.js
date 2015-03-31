@@ -64,7 +64,6 @@ exports.collectLoanPayments = function (period, cb) {
               }
               break;
             case 'minutes':
-              console.log('enter in minutes');
               if (currentDate.hour() === paymentDate.hour() &&
                 currentDate.minute() === paymentDate.minute()) {
                 payments.push(loan.schedule.indexOf(paymentScheduled));
@@ -121,7 +120,6 @@ exports.sendRemindToAddPaymentMethod = function(cb){
   loanService.find({state: 'active'}, function(err, loans) {
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
-
       ValidateBankAccount(loan.applicationId, function(err, bankId){
         if(!err){
           mainCallback();
@@ -147,7 +145,6 @@ exports.sendRemindToAddPaymentMethod = function(cb){
               };
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
-
                   paymentEmailService.sendRemindToAddPaymentMethod(loan.applicationId,loan.orderId,function(err, data){
                     logger.log('info', 'send email remind to add payment method. ');
                     //Sent email.
@@ -248,7 +245,6 @@ exports.sendTomorrowChargeLoan = function(cb){
   loanService.find({state: 'active'}, function(err, loans) {
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
-
       ValidateBankAccount(loan.applicationId, function(err, bankId){
         if(!err){
           if(!loan.notifications){
@@ -321,7 +317,6 @@ exports.sendTomorrowChargeLoan = function(cb){
 function ValidateBankAccount(applicationId, cb){
   //var filterLoanApp = {_id:applicationId};
   loanApplicationService.findOne(applicationId, function(err, applicationData){
-    console.log('applicationData', applicationData);
     var filterUser = {_id: applicationData.applicantUserId};
     userService.find(filterUser, function (err, user) {
       paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
