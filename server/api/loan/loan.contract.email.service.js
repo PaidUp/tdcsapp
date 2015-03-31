@@ -116,8 +116,7 @@ function setContractData (loanUser, loan) {
     }
   };
 
-  var ssn = userLoanService.decryptSSN(loanUser[0].ssn);
-  var last4snn = ssn.substring(ssn.length - 4, ssn.length);
+  var last4snn = loanUser[0].ssn;
   var todayNow = new moment().format("MMMM DD, YYYY");
 
   contractTemplate.contractData = config.contractData;
@@ -153,7 +152,6 @@ function setContractData (loanUser, loan) {
     lastName: loanUser[0].lastName,
     last4ssn: last4snn
   };
-  
   return contractTemplate;
 
 };

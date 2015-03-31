@@ -409,8 +409,6 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
   }
   else if(paymentMethod == "directdebit") {
     getUserDefaultBankId(user, function(defaultBankError, paymentId){
-      console.log('err ',defaultBankError);
-      console.log('paymentId',paymentId);
 
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
