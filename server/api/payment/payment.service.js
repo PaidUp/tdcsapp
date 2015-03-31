@@ -251,11 +251,16 @@ function prepareBank(userId, bankId, cb) {
 }
 
 function fetchBank(bankId, cb){
-  tdPaymentService.init(config.connections.payment);
-  tdPaymentService.fetchBank(bankId, function(err, bank){
-      if(err) return cb(err);
-      return cb(null, bank);
-  });
+  if(!bankId){
+    return cb(null, null);
+  }else{
+    tdPaymentService.init(config.connections.payment);
+    tdPaymentService.fetchBank(bankId, function(err, bank){
+        if(err) return cb(err);
+        return cb(null, bank);
+    });
+  }
+  
 }
 
 function fetchCard(cardId, cb){
