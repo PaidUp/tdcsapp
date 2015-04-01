@@ -102,13 +102,12 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
   var userFirstName;
   var userEmail;
 
-  var filter = {_id:applicationId};
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  //var filter = {_id:applicationId};
+  //console.log('filter' , filter);
+  loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
-
     // get the user data with the userId
     var filter = {_id: userId};
-
     userService.find(filter, function (err, user) {
       if (err) return cb(err);
       if (!user) return cb(false);
@@ -117,7 +116,7 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
       var schedule;
       var bankId;
       var acountNumberLast4Digits;
-      var userFirstName = user.firstName;
+      var userFirstName = user[0].firstName;
       userEmail = user[0].email;
 
       getNameTeamFromOrder(orderId, function(err,team){
@@ -184,7 +183,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
       var userFirstName = user[0].firstName;
 
       // find email in contacts to set the send to var
-      userEmail = user.email;
+      userEmail = user[0].email;
 
       getNameTeamFromOrder(requestObject.orderId, function(err,team){
       paymentService.getUserDefaultBankId(user[0], function (err, bankId) {

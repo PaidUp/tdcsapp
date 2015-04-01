@@ -12,7 +12,7 @@ var fs = require("fs");
 describe('payment.cron.service', function() {
   this.timeout(60000);
 
-  it('collectCreditCardPayments', function(done) {
+  it.skip('collectCreditCardPayments', function(done) {
     this.timeout(20000);
     paymentCronService.collectOneTimePayments(function(err, data){
       if(err) done(err);
@@ -21,7 +21,7 @@ describe('payment.cron.service', function() {
     });
   });
 
-  it('collectLoanPayments', function(done) {
+  it.skip('collectLoanPayments', function(done) {
     paymentCronService.collectLoanPayments('minutes', function (err, data) {
       if (err) done(err);
       assert.equal(true, data);
@@ -29,7 +29,7 @@ describe('payment.cron.service', function() {
     });
   });
 
-  it('sendRemindToAddPaymentMethod', function(done) {
+  it.skip('sendRemindToAddPaymentMethod', function(done) {
     paymentCronService.sendRemindToAddPaymentMethod(function (err, data) {
       if (err) done(err);
       assert.equal(true, data);
@@ -37,7 +37,7 @@ describe('payment.cron.service', function() {
     });
   });
 
-  it('sendRemindToVerifyAccount', function(done) {
+  it.skip('sendRemindToVerifyAccount', function(done) {
     paymentCronService.sendRemindToVerifyAccount(function (err, data) {
       if (err) done(err);
       assert.equal(true, data);
@@ -45,7 +45,7 @@ describe('payment.cron.service', function() {
     });
   });
 
-  it.skip('sendTomorrowChargeLoan', function(done) {
+  it('sendTomorrowChargeLoan', function(done) {
     paymentCronService.sendTomorrowChargeLoan(function (err, data) {
       if (err) done(err);
       assert.equal(true, data);

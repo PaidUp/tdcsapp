@@ -260,7 +260,7 @@ function fetchBank(bankId, cb){
         return cb(null, bank);
     });
   }
-  
+
 }
 
 function fetchCard(cardId, cb){

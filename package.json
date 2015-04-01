@@ -7,6 +7,7 @@
     "TDCore": "https://github.com/talosdigital/TDCore/tarball/master",
     "async": "^0.9.0",
     "balanced-official": "^1.4.0",
+    "blind": "^1.0.0",
     "body-parser": "~1.5.0",
     "camelize": "^1.0.0",
     "composable-middleware": "^0.3.0",
