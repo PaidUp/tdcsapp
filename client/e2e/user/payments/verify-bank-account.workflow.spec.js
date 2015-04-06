@@ -2,8 +2,8 @@
 
 var models = require('../../models');
 var Utils = require('../../utils/utils');
-var signuppo = require('../../page_objects/signup.po.js');
-var verifyBankAccount = require('../../page_objects/verifyBankAccount.po');
+var signuppo = require('../../page-objects/signup.po.js');
+var verifyBankAccount = require('../../page-objects/verify-bank-account.po');
 var user = require('../user.helper.spec.js');
 var payments = require('./payments.helper.spec.js');
 

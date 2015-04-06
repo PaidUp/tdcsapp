@@ -64,10 +64,10 @@ angular.module('convenienceApp')
 
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-payment-bar.html'
+        url: 'app/payments/templates/loan-payment-bar.html'
       } ,
       right:{
-        url: 'app/commerce/checkout/payments/templates/loan-apply-state-bar.html'
+        url: 'app/payments/templates/loan-apply-state-bar.html'
       }
     });
 

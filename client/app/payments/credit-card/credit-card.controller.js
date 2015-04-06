@@ -4,7 +4,7 @@ angular.module('convenienceApp')
   .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService, CartService, $state, PaymentService, ApplicationConfigService) {
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-bar.html'
+        url: 'app/payments/templates/loan-bar.html'
       } ,
       right:{
         url: ''
@@ -17,6 +17,7 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.oldBillingAddress = null;
     $scope.oldPhone = null;
+    $scope.user = angular.copy(AuthService.getCurrentUser());
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -70,34 +71,36 @@ angular.module('convenienceApp')
       });
     };
 
-    UserService.listAddresses().then(function (data) {
-      angular.forEach(data, function (address) {
-        UserService.getAddress(address.addressId).then(function (addressObj) {
-          if (addressObj.type === 'billing') {
-            $scope.oldBillingAddress = addressObj;
-            $scope.billing.address = angular.extend({}, addressObj);
-          }
-        }).catch(function (err) {
-          $scope.sendAlertErrorMsg(err.data.message);
+    AuthService.isLoggedInAsync(function (loggedIn) {
+      UserService.listAddresses($scope.user._id).then(function (data) {
+        angular.forEach(data, function (address) {
+          UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
+            if (addressObj.type === 'billing') {
+              $scope.oldBillingAddress = addressObj;
+              $scope.billing.address = angular.extend({}, addressObj);
+            }
+          }).catch(function (err) {
+            $scope.sendAlertErrorMsg(err.data.message);
+          });
         });
+      }).catch(function (err) {
+        $scope.sendAlertErrorMsg(err.data.message);
       });
-    }).catch(function (err) {
-      $scope.sendAlertErrorMsg(err.data.message);
-    });
-
-    UserService.getContactList($scope.user._id).then(function(data){
-      angular.forEach(data, function (contactInfo) {
-        UserService.getContact(contactInfo.contactId).then(function (contact){
-          if (contact.label === 'shipping') {
-            $scope.oldPhone = contact;
-            $scope.billing.phone = contact.value;
-          }
-        }).catch(function (err) {
-          $scope.sendAlertErrorMsg(err.data.message);
+    
+      UserService.getContactList($scope.user._id).then(function(data){
+        angular.forEach(data, function (contactInfo) {
+          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
+            if (contact.label === 'shipping') {
+              $scope.oldPhone = contact;
+              $scope.billing.phone = contact.value;
+            }
+          }).catch(function (err) {
+            $scope.sendAlertErrorMsg(err.data.message);
+          });
         });
+      }).catch(function (err) {
+        $scope.sendAlertErrorMsg(err.data.message);
       });
-    }).catch(function (err) {
-      $scope.sendAlertErrorMsg(err.data.message);
     });
 
     $scope.updateAddress = function (address) {

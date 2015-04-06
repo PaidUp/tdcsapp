@@ -229,7 +229,28 @@ var all = {
       isHttp: false,
       host: 'localhost',
       port: 9005,
-      token: 'nodePaymentPass'
+      token: 'TDPaymentToken-CHANGE-ME!'
+    },
+    loan: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9004,
+      token: 'TDLoanToken-CHANGE-ME!'
+    },
+    commerce: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9002,
+      token: 'TDCommerceToken-CHANGE-ME!'
+    },
+    userLoan: {
+      urlPrefix: '/api/v1',
+      isHttp: false,
+      host: 'localhost',
+      port: 9010,
+      token: 'TDUserLoanToken-CHANGE-ME!'
     }
   }
 };

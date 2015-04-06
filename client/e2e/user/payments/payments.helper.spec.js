@@ -1,7 +1,7 @@
 'use strict';
 
 var models = require('../../models');
-var loanPayment = require('../../page_objects/loanPayment.po');
+var loan = require('../../page-objects/loan.po');
 
 exports.goToPayment = function() {
   element(by.css('.dropdown')).click();
@@ -30,7 +30,7 @@ exports.createNewBankAccount = function(bankDetails){
   browser.getLocationAbsUrl().then(function (url) {
     expect(url).toEqual('/user/bank/account/create');
 
-    loanPayment.fillForm(bankDetails);
+    loan.fillFormPayment(bankDetails);
     element(by.id('payment-btn')).click();
 
     browser.wait(function () {

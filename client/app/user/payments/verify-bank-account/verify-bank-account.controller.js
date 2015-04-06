@@ -48,7 +48,7 @@ angular.module('convenienceApp')
         $scope.verifyBankAccountForm.deposit2.$setValidity('deposit', true);
       }
     };
-    console.log();
+   
     $scope.verifyBankAccount = function () {
       $scope.submitted = true;
       if ($scope.verifyBankAccountForm.$valid) {

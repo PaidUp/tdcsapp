@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, FlashService, ContactService, $state, $stateParams, TeamService, CartService) {
+  .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService, ContactService, $state, $stateParams, TeamService, CartService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -39,26 +39,29 @@ angular.module('convenienceApp')
       });
     };
 
-    UserService.listRelations().then(function (data) {
-      angular.forEach(data, function (relation) {
-        if (relation.type === 'child') {
-          UserService.getUser(relation.targetUserId).then(function (athlete) {
-            $scope.athletes.push(athlete);
-            if (data.length === 1) {
-              $scope.athlete = athlete;
-              return;
-            } else if ($stateParams.athleteId === athlete._id) {
-              $scope.athlete = athlete;
-            }
-          }).catch(function (err) {
-            $scope.sendAlertErrorMsg(err.data.message);
-          });
-        }
+    AuthService.isLoggedInAsync(function (loggedIn) {
+      $scope.user = angular.extend({}, AuthService.getCurrentUser());
+      UserService.listRelations($scope.user._id).then(function (data) {
+        angular.forEach(data, function (relation) {
+          if (relation.type === 'child') {
+            UserService.getUser(relation.targetUserId).then(function (athlete) {
+              $scope.athletes.push(athlete[0]);
+              if (data.length === 1) {
+                $scope.athlete = athlete[0];
+                return;
+              } else if ($stateParams.athleteId === athlete[0]._id) {
+                $scope.athlete = athlete[0];
+              }
+            }).catch(function (err) {
+              $scope.sendAlertErrorMsg(err.data.message);
+            });
+          }
+        });
+      }).catch(function (err) {
+        $scope.sendAlertErrorMsg(err.data.message);
       });
-    }).catch(function (err) {
-      $scope.sendAlertErrorMsg(err.data.message);
     });
-
+    
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;

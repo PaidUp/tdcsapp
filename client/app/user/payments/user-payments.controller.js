@@ -2,6 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('UserPaymentsCtrl', function ($rootScope, $scope, $state, PaymentService, FlashService, AuthService) {
+
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/user/templates/user-bar.html'
@@ -42,10 +43,6 @@ angular.module('convenienceApp')
         bankId: account.id,
         verifyId: account.links.bankAccountVerification
       });
-    };
-
-    $scope.removeAccount = function (account) {
-
     };
 
     $scope.deleteBankAccount = function(index, account){

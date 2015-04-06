@@ -14,5 +14,5 @@ router.use('/contact', require('./contact/index'));
 router.use('/address', require('./address/index'));
 router.use('/relation', require('./relation/index'));
 
-router.post('/:id', authService.isAuthenticated(), controller.find);
+router.post('/', authService.isAuthenticated(), controller.find);
 module.exports = router;

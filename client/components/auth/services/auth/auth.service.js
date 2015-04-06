@@ -145,10 +145,9 @@ angular.module('convenienceApp')
       },
 
       updatePassword: function(oldPassword, newPassword, userId) {
-        return $http.post('/api/v1/auth/password/update',{
+        return $http.post('/api/v1/auth/password/update/userId/'+ userId, {
           currentPassword: oldPassword,
-          newPassword: newPassword,
-          userId: userId
+          newPassword: newPassword
         });
       },
 
@@ -167,7 +166,7 @@ angular.module('convenienceApp')
       resendEmail: function(userId, successFn, errorFn){
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;
-        $http.get('/api/v1/auth/verify-request/'+userId)
+        $http.get('/api/v1/auth/verify-request/userId/'+userId)
         .success(function(data){
           //console.log(data);
         })
@@ -175,7 +174,7 @@ angular.module('convenienceApp')
       },
 
       updateEmail: function(email, userId){
-        return $http.post('/api/v1/auth/email/update',{
+        return $http.post('/api/v1/auth/email/update/userId/'+userId,{
           email: email,
           userId: userId
         });
