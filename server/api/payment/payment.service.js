@@ -133,8 +133,8 @@ function deleteBankAccount(customerId, bankId, cb) {
     listBanks(customerId, function(err, dataBanks){
       if(dataBanks.bankAccounts.length === 0){
         userService.find({BPCustomerId:customerId}, function(err, user){
-          user.payment = {};
-          userService.save(user, function(err, dataUpdateUser){
+          user[0].payment = {};
+          userService.save(user[0], function(err, dataUpdateUser){
             if(err){
               return cb(err);
             }
