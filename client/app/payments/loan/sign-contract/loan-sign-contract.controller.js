@@ -6,6 +6,7 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.contractHTML = '';
     var loanUserId;
+    var applicationId;
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -36,11 +37,13 @@ angular.module('convenienceApp')
 
     var cartId = CartService.getCurrentCartId();
     if (cartId) {
-
-      LoanService.getContract().then(function (html) {
-        $scope.contractHTML = html.html;
-      });
-
+      LoanService.verifyApplicationState().then(function (applicationState) {
+        loanUserId = applicationState.meta[0].userId;
+        applicationId = LoanService.getLoanApplicationId();
+        LoanService.getContract(applicationId, loanUserId).then(function (html) {
+          $scope.contractHTML = html.html;
+        });
+       }); 
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {
@@ -74,32 +77,32 @@ angular.module('convenienceApp')
         $scope.loading = true;
         var user;
         LoanService.getLoanApplicationUser(loanUserId).then(function (loanUser) {
-          user = loanUser;
+          user = loanUser[0];
           var signedContract = angular.copy($scope.signContract);
           signedContract.applicationId = LoanService.getLoanApplicationId();
-          LoanService.signContract(signedContract).then(function () {
+          LoanService.signContract(signedContract, user).then(function () {
 
             // get loan address for billing
             var i;
             var loanAddress;
-            for (i=0; i<loanUser.addresses.length; i++){
-              if (loanUser.addresses[i].type === 'loan') {
-                loanAddress = loanUser.addresses[i];
+            for (i=0; i<loanUser[0].addresses.length; i++){
+              if (loanUser[0].addresses[i].type === 'loan') {
+                loanAddress = loanUser[0].addresses[i];
               };
             };
             // get telephone address for billing
             var i;
             var loanTelephone;
-            for (i=0; i<loanUser.contacts.length; i++){
-              if (loanUser.contacts[i].type === 'telephone') {
-                loanTelephone = loanUser.contacts[i].value;
+            for (i=0; i<loanUser[0].contacts.length; i++){
+              if (loanUser[0].contacts[i].type === 'telephone') {
+                loanTelephone = loanUser[0].contacts[i].value;
               };
             };
 
             var addressBilling = {
               mode: 'billing',
-              firstName: loanUser.firstName,
-              lastName: loanUser.lastName,
+              firstName: loanUser[0].firstName,
+              lastName: loanUser[0].lastName,
               address1: loanAddress.address1,
               address2: loanAddress.address2,
               city: loanAddress.city,
@@ -142,10 +145,10 @@ angular.module('convenienceApp')
 
     $rootScope.$emit('bar-welcome', {
       left:{
-        url: 'app/commerce/checkout/payments/templates/loan-sign-contract-bar.html'
+        url: 'app/payments/templates/loan-sign-contract-bar.html'
       } ,
       right:{
-        url: 'app/commerce/checkout/payments/templates/loan-apply-state-bar.html'
+        url: 'app/payments/templates/loan-apply-state-bar.html'
       }
     });
   });

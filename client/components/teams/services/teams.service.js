@@ -19,14 +19,14 @@ var Team = function(args) {
 angular.module('convenienceApp')
   .service('TeamService', function ($resource, $q) {
 
-    var Teams = $resource('/api/v1/commerce/catalog/category/teams', {}, {});
+    var Teams = $resource('/api/v1/commerce/catalog/category/:categoryId', {}, {});
     var TeamApi = $resource('/api/v1/commerce/catalog/product/:productId', {}, {});
     var TeamService = this;
     this.getTeams = function () {
       var teams = [];
 
       var deferred = $q.defer();
-      Teams.query(function (teamsResponse) {
+      Teams.query({categoryId:'teams'},function (teamsResponse) {
         teamsResponse.forEach(function (teamItem) {
           TeamService.getTeam(teamItem.productId).then(function (team) {
             if(team) {

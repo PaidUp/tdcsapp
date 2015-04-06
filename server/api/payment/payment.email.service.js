@@ -9,7 +9,7 @@ var loanService = require('../loan/loan.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 var paymentService = require('./payment.service');
 var moment = require('moment');
-var commerceAdapter = require('../commerce/commerce.adapter');
+var commerceService = require('../commerce/commerce.service');
 var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
@@ -46,19 +46,18 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
 };
 
 exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
-
   var filter = {_id:applicationId};
   loanApplicationService.findOne(filter, function(err, applicationData){
     var userId = applicationData.applicantUserId;
     // get the user data with the userId
     var filter = {_id: userId};
 
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
-      if (!user) return cb(false);
+      if (!user[0]) return cb(false);
 
-      var userFirstName = user.firstName;
-      var userEmail = user.email;
+      var userFirstName = user[0].firstName;
+      var userEmail = user[0].email;
 
       getNameTeamFromOrder(orderId, function(err,team){
 
@@ -103,14 +102,13 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
   var userFirstName;
   var userEmail;
 
-  var filter = {_id:applicationId};
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  //var filter = {_id:applicationId};
+  //console.log('filter' , filter);
+  loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
-
     // get the user data with the userId
     var filter = {_id: userId};
-
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
       if (!user) return cb(false);
 
@@ -118,12 +116,12 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
       var schedule;
       var bankId;
       var acountNumberLast4Digits;
-      var userFirstName = user.firstName;
-      userEmail = user.email;
+      var userFirstName = user[0].firstName;
+      userEmail = user[0].email;
 
       getNameTeamFromOrder(orderId, function(err,team){
 
-        paymentService.getUserDefaultBankId(user, function (err, bankId) {
+        paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
 
           paymentService.fetchBank(bankId, function (errTemplate, account) {
             userAccountNumber = account.bankAccounts[0].accountNumber;
@@ -166,29 +164,30 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
   //    schedule: ''
   //  };
 
-  var filter = {_id:requestObject.loan.applicationId};
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  //var filter = {_id:requestObject.loan.applicationId};
+  loanApplicationService.findOne(requestObject.loan.applicationId, function(err, applicationData){
 
     var userId = applicationData.applicantUserId;
 
     // get the user data with the userId
     var filter = {_id: userId};
 
-    userService.findOne(filter, function (err, user) {
+    userService.find(filter, function (err, user) {
       if (err) return cb(err);
-      if (!user) return cb(false);
+      if (!user[0]) return cb(false);
 
       var userEmail;
       var schedule = requestObject.schedule;
       var accountNumber;
       var bankId;
-      var userFirstName = user.firstName;
+      var userFirstName = user[0].firstName;
 
       // find email in contacts to set the send to var
-      userEmail = user.email;
+      userEmail = user[0].email;
 
-      getNameTeamFromOrder(requestObject.orderId, function(err,team){      
-        paymentService.getUserDefaultBankId(user, function (err, bankId) {
+      getNameTeamFromOrder(requestObject.orderId, function(err,team){
+      paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
+
 
           if (err === null) {
 
@@ -246,7 +245,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
         emailVars.accountLast4Digits = account.cards[0].number;
 
         // get the loan object
-        commerceAdapter.orderLoad(orderId, function (err, magentoOrder) {
+        commerceService.orderLoad(orderId, function (err, magentoOrder) {
 
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
@@ -284,19 +283,17 @@ exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
 };
 
 exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
-
   var emailVars = config.emailVars;
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
 
   paymentService.getUserDefaultBankId(user, function (err, bankId) {
-
       paymentService.fetchBank(bankId, function (response, account) {
         emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
 
         // get the loan object
-        commerceAdapter.orderLoad(orderId, function (err, magentoOrder) {
+        commerceService.orderLoad(orderId, function (err, magentoOrder) {
           var team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
@@ -340,7 +337,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
   emailVars.amount = parseFloat(amount).toFixed(2);
   emailVars.accountLast4Digits = numberCreditCard;
 
-  getNameTeamFromOrder(orderId, function(err,team){  
+  getNameTeamFromOrder(orderId, function(err,team){
     emailTemplates(config.emailTemplateRoot, function (err, template) {
 
       if (err) return cb(err);
@@ -423,7 +420,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
         emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
 
         // get the loan object
-        commerceAdapter.orderLoad(orderId, function (err, magentoOrder) {
+        commerceService.orderLoad(orderId, function (err, magentoOrder) {
 
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
@@ -463,7 +460,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
 };
 
 function getNameTeamFromOrder(orderId, cb){
-  commerceAdapter.orderLoad(orderId, function (err, magentoOrder) {
+  commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){
       cb(null, 'Convenience Select');
     }

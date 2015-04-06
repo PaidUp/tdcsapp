@@ -50,19 +50,19 @@ exports.place = function(req, res) {
   }
   // Process order
   if (req.body.payment == "loan") {
-    loanService.findOne({_id: req.body.loanId}, function(err,loan){
+    loanService.findOne({_id: req.body.loanId}, function (err,loan){
       cartService.addLoanInterest(req.body.cartId, loan.interestSum, function (err, data) {
         if (err) return handleError(res, err);
-        placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function(err, magentoOrderId){
+        placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function (err, magentoOrderId){
           if (err) return handleError(res, err);
-          loanService.findOne({_id: req.body.loanId}, function(err, loan) {
+          loanService.findOne({_id: req.body.loanId}, function (err, loan) {
             loan.orderId = magentoOrderId;
-            loanService.save(loan, function(err, dataLoan){
+            loanService.save(loan, function (err, dataLoan){
               var filter = {_id:loan.applicationId};
-              loanApplicationService.findOne(filter, function(err, dataApploan){
+              loanApplicationService.findOne(filter._id, function (err, dataApploan) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
-                userLoanService.findOne(filterUserLoan, function(err, dataUserLoan){
-                  contractEmail.sendContractEmail(dataUserLoan, dataLoan, function(err, dataEmail) {
+                userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
+                  contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {
                     if(err){
                       logger.info(err, err);
                     }
@@ -87,22 +87,21 @@ exports.place = function(req, res) {
 }
 
 function placeOrder(user, cartId, addresses, orderData, cb) {
-  cartService.cartView(cartId, function (err, shoppingCart) {
+  cartService.cartView(cartId.cartId, function (err, shoppingCart) {
     if (err) return cb(err);
     cartService.prepareMerchantProducts(shoppingCart, function (err, merchantProducts) {
       if (err) return cb(err);
       orderData.products = merchantProducts;
       checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId) {
         if (err) return cb(err);
-        logger.log('info', magentoOrderId);
         paymentService.prepareUser(user, function (err, user) {
           if(err) logger.log('error',err);
           var team = {
             name: shoppingCart.items[1].name,
             sku: shoppingCart.items[1].sku
           };
-          userService.findOne({_id:orderData.athleteId}, function(err, child){
-            child.teams.push(team);
+          userService.find({_id:orderData.athleteId}, function(err, child){
+            child[0].teams.push(team);
             var acountNumber;
             var action;
             if (orderData.paymentMethod==='directdebit') {
@@ -110,29 +109,22 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             } else {
               action = 'fetchCard';
             };
-            paymentService[action](orderData.cardId, function(response, account){
+            paymentService[action](orderData.cardId, function(err, account){
               var accountNumber;
               if (orderData.paymentMethod==='directdebit') {
                 accountNumber = '';
               }else{
                 accountNumber = account.cards[0].number;
               }
-
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
-
-              userService.save(child, function(err, userAthlete) {
+              userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
-
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
                   if(err) logger.log('error',err);
-                  
                 });
                 return cb(null, magentoOrderId);
               });
-
             });
-
-
           });
         });
       });

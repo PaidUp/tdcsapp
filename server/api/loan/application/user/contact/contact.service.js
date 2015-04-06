@@ -1,32 +1,41 @@
 'use strict';
 
-var User = require('../user.model.js');
-var Contact = require('./contact.model');
+var tdUserService = require('TDCore').userService;
+var config = require('../../../../../config/environment');
 
-function validateTypeContactSync(contact) {
-  if(contact != 'telephone' && contact != 'email'){
-    return false;
-  }
-  return true;
-}
+function create(data, cb) {
+  tdUserService.init(config.connections.userLoan);
+  tdUserService.contactCreate(data, data.userId, function (err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+};
 
-function findOneFilter(filter,fields, cb) {
-  User.findOne(filter,fields, function(err, data) {
-      if(err) {
-        return cb(err);
-      }
-      return cb(null, data);
-    }
-  );
-}
+// function validateTypeContactSync(contact) {
+//   if(contact != 'telephone' && contact != 'email'){
+//     return false;
+//   }
+//   return true;
+// }
 
-function validateTelephoneSync(telephone) {
-  if(typeof telephone != 'number'){
-  return false;
-  }
-  return true;
-}
+// function findOneFilter(filter,fields, cb) {
+//   User.findOne(filter,fields, function(err, data) {
+//       if(err) {
+//         return cb(err);
+//       }
+//       return cb(null, data);
+//     }
+//   );
+// }
 
-exports.validateTypeContactSync = validateTypeContactSync;
-exports.findOneFilter = findOneFilter;
-exports.validateTelephoneSync = validateTelephoneSync;
+// function validateTelephoneSync(telephone) {
+//   if(typeof telephone != 'number'){
+//   return false;
+//   }
+//   return true;
+// }
+
+exports.create = create;
+// exports.validateTypeContactSync = validateTypeContactSync;
+// exports.findOneFilter = findOneFilter;
+// exports.validateTelephoneSync = validateTelephoneSync;

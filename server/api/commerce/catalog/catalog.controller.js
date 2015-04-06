@@ -2,24 +2,34 @@
 
 var _ = require('lodash');
 var catalogService = require('./catalog.service');
+var config = require('../../../config/environment');
 
 // Creates a new user in the DB.
-exports.teamList = function(req, res) {
-  catalogService.categoryProducts('teams', function(err, dataService){
+exports.list = function(req, res) {
+  if(!req.params && !req.params.categoryId) {
+    return res.json(400, {
+      "code": "ValidationError",
+      "message": "Category Id is required"
+    });
+  }
+  var categoryId = 0;
+  if(req.params.categoryId == 'teams') {
+    categoryId = config.commerce.category.teams;
+  }
+  catalogService.catalogList(categoryId, function(err, dataService){
     if(err) return handleError(res, err);
     res.json(200, dataService);
   });
 }
 
 exports.catalogInfo = function(req, res) {
-  if(!req.params && !req.params.id) {
+  if(!req.params && !req.params.productId) {
     return res.json(400, {
       "code": "ValidationError",
       "message": "Product Id is required"
     });
   }
-  catalogService.catalogProductInfo(req.params.id, function(err, dataService){
-
+  catalogService.catalogProduct(req.params.productId, function(err, dataService){
     if(err) return handleError(res, err);
     res.json(200, dataService);
   });

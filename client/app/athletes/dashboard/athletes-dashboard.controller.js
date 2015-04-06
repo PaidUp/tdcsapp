@@ -2,13 +2,11 @@
 
 angular.module('convenienceApp')
   .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
-    
-    
+  
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
     
-
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/athletes/templates/my-athletes-title.html'
@@ -29,25 +27,22 @@ angular.module('convenienceApp')
         //   $state.go('athletes-slider',{athleteId: data[0].targetUserId});
         //   return;
         // }
-        UserService.getUser($scope.user._id).then(function (users) {
-          angular.forEach(users, function (user) {
-            angular.forEach(data, function (relation) {
-              if (relation.type === 'child' && relation.targetUserId === user._id) {
-                if (user.teams){
-                  user.team = user.teams[0];
-                }
-                $scope.athletes.push(user);
+        angular.forEach(data, function (relation) {
+          if (relation.type === 'child') {
+            UserService.getUser(relation.targetUserId).then(function (user) {
+              if (user[0].teams){
+                user[0].team = user[0].teams[0];
               }
+              $scope.athletes.push(user[0]);
+            }). catch(function (err) {
+              FlashService.addAlert({
+                type: 'danger',
+                msg: err.data.message,
+                timeout: 10000
+              });
             });
-          });
-        }). catch(function (err) {
-          FlashService.addAlert({
-            type: 'danger',
-            msg: err.data.message,
-            timeout: 10000
-          });
+          }
         });
-
       }).catch(function (err) {
         FlashService.addAlert({
           type: 'danger',

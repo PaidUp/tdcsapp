@@ -1,61 +1,51 @@
 'use strict';
 
-var signuppo = require('../page_objects/signup.po.js');
-var addAthlete = require('../page_objects/add-athlete.po.js');
-var models = require('../models');
+var creditCardPayment = require('../page-objects/credit-card-payment.po');
+
 var Utils = require('../utils/utils');
-var Async = require('async');
-var selectTeamForAthlete = require('../page_objects/selectTeamForAthlete.po');
-var loanApply = require('../page_objects/apply.po');
-var signContract = require('../page_objects/signContract.po');
-var loanPayment = require('../page_objects/loanPayment.po');
-var creditCardPayment = require('../page_objects/creditCardPayment.po');
+var models = require('../models');
+var user = require('../user/user.helper.spec.js');
+var athlete = require('../athletes/athlete.helper.spec.js');
+var teamspo = require('../page-objects/teams.po');
+var loanpo = require('../page-objects/loan.po');
 
-describe('Credit Workflow', function() {
+describe('Credit Workflow', function () {
 
-  beforeEach(function() {});
+  beforeEach(function () {});
 
-  it("should be signed in", function() {
-    // browser.get('/');
-    signuppo.openSignupModal();
-
-    var signupModel = models.signup;
-    signuppo.fillFormByEmail(signupModel);
-
-    element(by.css('#submit-email-login')).click();
-    browser.waitForAngular();
-    element(by.css('.verify-email-modal .close')).click();
+  it("should be signed in", function () {
+    user.signupUserEmail(models.signup);
   });
 
-  it("should register a child", function() {
-    element(by.css('button#add-athlete-btn')).click();
-    browser.waitForAngular();
-
-    var athleteModel = models.athlete;
-
-    addAthlete.fillForm(athleteModel);
-
-    element(by.css('button[type=submit]')).click();
-    browser.wait(function () {
-      return browser.isElementPresent(element(by.repeater('athlete in athletes')));
-    }, 10000);
-  });
-
-  it("should select a team for a selected child", function() {
-    element.all(by.repeater('athlete in athletes')).get(0).click();
-    browser.waitForAngular();
+  it("should register a child", function () {
+    element(by.css('.my-athletes')).click();
     browser.getLocationAbsUrl().then(function (url) {
-      browser.wait(function () {
-        return element(by.css('.container.teams')).isDisplayed();
-      }, 10000);
-      var team = element(by.cssContainingText('.team-name', models.teamName));
-      team.click();
-      browser.waitForAngular();
+      expect(url).toEqual('/athletes/dashboard');
+      var athleteModel = models.athlete;
+      athlete.addAthlete(athleteModel);
+    });
+  });
+
+  it("should select a team for a selected child", function () {
+    athlete.selectAthlete();
+    athlete.selectTeam(models.teamName);
+     
+    var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
+    expect(athleteFirstName).toEqual(models.athlete.firstName);
+    expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
+    browser.wait(function () {
+      return element(by.css('.magento-custom-options')).isDisplayed();
+    }, 10000);
+
+    teamspo.fillFormTeamForAthlete();
+
+    browser.getLocationAbsUrl().then(function (url) {
+      expect(url).toEqual('/commerce/cart/index');
+      expect(browser.manage().getCookie('cartId')).toBeDefined();
+      expect(browser.manage().getCookie('userId')).toBeDefined();
+      element(by.id('proceed-to-checkout')).click();
       browser.getLocationAbsUrl().then(function (url) {
-        browser.wait(function () {
-          return element(by.css('.magento-custom-options')).isDisplayed();
-        }, 10000);
-        selectTeamForAthlete.fillFormOptions();
+        expect(url).toEqual('/payment/loan');
       });
     });
   });
@@ -92,7 +82,6 @@ describe('Credit Workflow', function() {
       var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
       expect(thankyouTitle).toEqual('Thanks for your order!');
     });
-
   });
 
   // we could not check the existence of the credit card,
@@ -124,5 +113,9 @@ describe('Credit Workflow', function() {
 //      });
 //    });
 //  });
+
+  it('should sign out', function(){
+    user.signOut();
+  });
 
 });

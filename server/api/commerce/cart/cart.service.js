@@ -1,22 +1,53 @@
 'use strict';
 var config = require('../../../config/environment');
-var commerceAdapter = require('../commerce.adapter');
-/**
- * Save User model
- * Otherwise returns 403
- */
-function cartCreate(cb) {
-  commerceAdapter.cartCreate(function(err, cartId) {
-    if(err) {return cb(err);}
-    commerceAdapter.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAdress) {
-    	if(err) {return cb(err);}
-  	});
+var TDCommerceService = require('TDCore').commerceService;
+
+function cartCreate (cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartCreate(function (err, cartId){
+    if(err) return cb(err);
+    TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAddress) {
+      if(err) {return cb(err);}
+    });
     return cb(null, cartId);
   });
 }
 
-function cartList(cartId,cb) {
-  commerceAdapter.cartList(cartId,function(err, data) {
+function cartList (cartId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartList(cartId, function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function cartAdd (shoppingCartProductEntity, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartAdd(shoppingCartProductEntity, function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function cartRemove (shoppingCartProductEntity,cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartRemove(shoppingCartProductEntity,function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function cartAddress (cartId, shoppingCartAddressEntity, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartAddress(cartId, shoppingCartAddressEntity, function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function cartView (shoppingCartId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartView(shoppingCartId,function(err, data) {
     if(err) {
       return cb(err);
     }
@@ -24,8 +55,9 @@ function cartList(cartId,cb) {
   });
 }
 
-function cartAdd(shoppingCartProductEntity,cb) {
-  commerceAdapter.cartAdd(shoppingCartProductEntity,function(err, data) {
+function cartTotals (shoppingCartId,cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartTotals(shoppingCartId,function(err, data) {
     if(err) {
       return cb(err);
     }
@@ -33,50 +65,15 @@ function cartAdd(shoppingCartProductEntity,cb) {
   });
 }
 
-function cartRemove(shoppingCartProductEntity,cb) {
-  commerceAdapter.cartRemove(shoppingCartProductEntity,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
-    return cb(null, data);
-  });
-}
-
-function cartAddress(shoppingCartAddressEntity,cb) {
-  commerceAdapter.cartAddress(shoppingCartAddressEntity,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
-    return cb(null, data);
-  });
-}
-
-function cartView(shoppingCartId,cb) {
-  commerceAdapter.cartView(shoppingCartId,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
-    return cb(null, data);
-  });
-}
-
-function cartTotals(shoppingCartId,cb) {
-  commerceAdapter.cartTotals(shoppingCartId,function(err, data) {
-    if(err) {
-      return cb(err);
-    }
-    return cb(null, data);
-  });
-}
-
-function prepareMerchantProducts(shoppingCart, cb) {
+function prepareMerchantProducts (shoppingCart, cb) {
   var products = [];
 
   // TODO
-  // check on every product if it has a different BPMerchant
+  // check on every product if it has a different Merchant (provider or BPMerchantId)
 
   var product = shoppingCart.items[1];
-  commerceAdapter.catalogProductInfo(product.productId, function(err, data){
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.catalogProduct(product.productId, function(err, data){
     products.push({
       productId : data.productId,
       productSku: data.sku,
@@ -87,7 +84,7 @@ function prepareMerchantProducts(shoppingCart, cb) {
   });
 }
 
-exports.addLoanInterest = function(cartId, amount, cb){
+exports.addLoanInterest = function (cartId, amount, cb){
   var shoppingCartProductEntityArray = {
     cartId : cartId,
     products : [{
@@ -96,30 +93,31 @@ exports.addLoanInterest = function(cartId, amount, cb){
       qty: 1
     }]
   };
-  commerceAdapter.cartAdd(shoppingCartProductEntityArray, function(err, data) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
-    commerceAdapter.updateCartProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
+    TDCommerceService.cartUpdateProductPrice(cartId, config.commerce.products.interest.id, amount, function(err, data) {
       if(err) return cb(err);
       return cb(null, data);
     })
   });
 }
 
-exports.addFee = function(cartId, cb){
+exports.addFee = function (cartId, cb){
   var shoppingCartProductEntityArray = {
-    cartId : cartId,
+    cartId: cartId.cartId,
     products : [{
       product_id: config.commerce.products.fee.id,
       sku: config.commerce.products.fee.sku,
       qty: 1
     }]
   };
-  commerceAdapter.cartAdd(shoppingCartProductEntityArray, function(err, data) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartAdd(shoppingCartProductEntityArray, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
 }
-
 
 exports.cartCreate = cartCreate;
 exports.cartList = cartList;

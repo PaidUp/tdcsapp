@@ -34,6 +34,7 @@ angular.module('convenienceApp')
     };
 
     $scope.createCard = function () {
+      $scope.submitted = true
       if ($scope.createCardForm.$valid) {
         $scope.loading = true;
         var zipCode;
@@ -71,6 +72,8 @@ angular.module('convenienceApp')
             }
           }
         });
+      }else {
+        $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
       }
     };
   });

@@ -442,6 +442,13 @@ module.exports = function (grunt) {
           }
         }
       },
+      creditPath: {
+        options: {
+          args: {
+            suite: 'creditPath'
+          }
+        }
+      },
       loanPath: {
         options: {
           args: {

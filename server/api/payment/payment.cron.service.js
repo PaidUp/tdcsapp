@@ -4,7 +4,6 @@ var _ = require('lodash');
 var path = require('path');
 var config = require('../../config/environment');
 var paymentService = require('./payment.service');
-var commerceAdapter = require('../commerce/commerce.adapter');
 var loanService = require('../loan/loan.service');
 var userService = require('../user/user.service');
 var async = require('async');
@@ -14,15 +13,16 @@ var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 
 exports.collectOneTimePayments = function (cb) {
+  logger.log('info', 'into collectOneTimePayments');
   var results = [];
 
   // 1) Load "pending" magento orders with all "comments"
   paymentService.collectPendingOrders(function (err, data) {
-    //logger.log('info', 'Magento pending orders: '+ data.length + ' found.');
+    logger.log('info', 'err: '+ err);
     async.eachSeries(data, function (order, callback) {
       if (order.paymentMethod === 'creditcard' && order.payment === 'onetime') {
-        userService.findOne({_id : order.userId}, function (err, user){
-          paymentService.capture(order, user, order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
+        userService.find({_id : order.userId}, function (err, user){
+          paymentService.capture(order, user[0], order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
             if (err) callback(err);
             callback();
           });
@@ -46,7 +46,6 @@ exports.collectLoanPayments = function (period, cb) {
   var currentDate = moment();
   // List active loans
   loanService.find({state: 'active'}, function(err, loans) {
-
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
       var payments = [];
@@ -121,7 +120,6 @@ exports.sendRemindToAddPaymentMethod = function(cb){
   loanService.find({state: 'active'}, function(err, loans) {
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
-
       ValidateBankAccount(loan.applicationId, function(err, bankId){
         if(!err){
           mainCallback();
@@ -147,7 +145,6 @@ exports.sendRemindToAddPaymentMethod = function(cb){
               };
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
-
                   paymentEmailService.sendRemindToAddPaymentMethod(loan.applicationId,loan.orderId,function(err, data){
                     logger.log('info', 'send email remind to add payment method. ');
                     //Sent email.
@@ -248,14 +245,13 @@ exports.sendTomorrowChargeLoan = function(cb){
   loanService.find({state: 'active'}, function(err, loans) {
     // Collect pending schedule
     async.eachSeries(loans, function (loan, mainCallback) {
-
       ValidateBankAccount(loan.applicationId, function(err, bankId){
         if(!err){
           if(!loan.notifications){
             loan.notifications = [];
           }
           var noticationsLength = loan.notifications.length;
-          
+
           var index = 0;
           async.eachSeries(loan.schedule, function(schedule, callbackSchedule){
             var isnotified = false;
@@ -319,11 +315,11 @@ exports.sendTomorrowChargeLoan = function(cb){
 }
 
 function ValidateBankAccount(applicationId, cb){
-  var filterLoanApp = {_id:applicationId};
-  loanApplicationService.findOne(filterLoanApp, function(err, applicationData){
+  //var filterLoanApp = {_id:applicationId};
+  loanApplicationService.findOne(applicationId, function(err, applicationData){
     var filterUser = {_id: applicationData.applicantUserId};
-    userService.findOne(filterUser, function (err, user) {
-      paymentService.getUserDefaultBankId(user, function (err, bankId) {
+    userService.find(filterUser, function (err, user) {
+      paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
         if(err){
           return cb(err);
         }

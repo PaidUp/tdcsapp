@@ -5,9 +5,9 @@ var controller = require('./application.controller');
 
 var router = express.Router();
 
-//router.post('/contact', controller.contact);
+router.post('/contact', controller.contact);
 router.get('/config', controller.config);
-//router.get('/cron', controller.cron);
+router.get('/cron', controller.cron);
 
 //router.use('/report', require('./report/index'));
 

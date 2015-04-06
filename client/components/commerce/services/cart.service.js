@@ -36,7 +36,6 @@ angular.module('convenienceApp')
     this.addProductToCart = function (products, userId) {
       var cartId = this.getCurrentCartId();
       var deferred = $q.defer();
-
       Cart.save({action: 'add'}, {
         cartId: cartId,
         products: products
@@ -63,7 +62,7 @@ angular.module('convenienceApp')
     this.getCart = function (cartId) {
       return Cart.get({
         action: 'view',
-        cartId: cartId
+        cartId: cartId.cartId
       }).$promise;
       // return $cookieStore.get('cartId');
     };
@@ -71,7 +70,7 @@ angular.module('convenienceApp')
     this.getTotals = function (cartId) {
       return Cart.query({
         action: 'totals',
-        cartId: cartId
+        cartId: cartId.cartId
       }).$promise;
     };
 

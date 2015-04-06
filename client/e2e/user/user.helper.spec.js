@@ -1,20 +1,27 @@
 'use strict';
 
-var signuppo = require('../page_objects/signup.po.js');
+var signuppo = require('../page-objects/signup.po.js');
 
 exports.signupUserEmail = function(userModel) {
-
   signuppo.openSignupModal();
-
   signuppo.fillFormByEmail(userModel);
+
+  expect(signuppo.name).toEqual(userModel.firstname);
+  expect(signuppo.lastName).toEqual(userModel.lastname);
+  expect(signuppo.email).toEqual(userModel.fakeEmail);
+  expect(signuppo.password).toEqual(userModel.pass);
+  expect(signuppo.passwordConfirmation).toEqual(userModel.pass);
 
   element(by.css('#submit-email-login')).click();
   browser.waitForAngular();
-
   expect(browser.getLocationAbsUrl()).toEqual('/athletes/dashboard');
 
   element(by.css('.verify-email-modal .close')).click();
 
+  var addAthleteBtn = element(by.css('button#add-athlete-btn'));
+  expect(addAthleteBtn.getAttribute('innerText')).toEqual('Add Athlete');
+
+  expect(browser.manage().getCookie('token')).toBeDefined();
   expect(
     element(by.css('.dropdown > .dropdown-toggle')).getText()
   ).toEqual(userModel.firstname+' '+userModel.lastname);
