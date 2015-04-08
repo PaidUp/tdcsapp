@@ -26,50 +26,54 @@ angular.module('convenienceApp')
     $scope.modal = ModalService;
     $scope.states = UserService.getStates();
 
-    AuthService.isLoggedInAsync(function (loggedIn) {
-      UserService.getContactList($scope.user._id).then(function (data){
-        angular.forEach(data, function (contactInfo) {
-          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
-            if (contact.label === 'shipping') {
-              $scope.oldShippingPhone = contact;
-              $scope.shipping.phone = contact.value;
-            }
-          }).catch(function (err) {
-            $scope.sendAlertErrorMsg(err.data.message);
-          });
-        });
-      }).catch(function (err) {
-        $scope.sendAlertErrorMsg(err.data.message);
-      });
-
-      UserService.listAddresses($scope.user._id).then(function (data) {
-        angular.forEach(data, function (address) {
-          UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
-            if (addressObj.type === 'shipping') {
-              $scope.oldShippingAddress = addressObj;
-              $scope.shipping.address   = angular.extend({}, addressObj);
-            } else if (addressObj.type === 'billing') {
-              $scope.oldBillingAddress = addressObj;
-              $scope.billing.address   = angular.extend({}, addressObj);
-            }
-            if (Object.keys($scope.oldShippingAddress).length !== 0 &&
-                Object.keys($scope.oldBillingAddress).length !== 0) {
-              if ($scope.oldShippingAddress.address1 === $scope.oldBillingAddress.address1 &&
-                  $scope.oldShippingAddress.address2 === $scope.oldBillingAddress.address2 &&
-                  $scope.oldShippingAddress.city     === $scope.oldBillingAddress.city     &&
-                  $scope.oldShippingAddress.state    === $scope.oldBillingAddress.state    &&
-                  $scope.oldShippingAddress.zipCode  === $scope.oldBillingAddress.zipCode) {
-                $scope.sameBillingAsShiping = true;
+    $scope.load = function () {
+      AuthService.isLoggedInAsync(function (loggedIn) {
+        UserService.getContactList($scope.user._id).then(function (data){
+          angular.forEach(data, function (contactInfo) {
+            UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
+              if (contact.label === 'shipping') {
+                $scope.oldShippingPhone = contact;
+                $scope.shipping.phone = contact.value;
               }
-            }
-          }).catch(function (err) {
-            $scope.sendAlertErrorMsg(err.data.message);
+            }).catch(function (err) {
+              $scope.sendAlertErrorMsg(err.data.message);
+            });
           });
+        }).catch(function (err) {
+          $scope.sendAlertErrorMsg(err.data.message);
         });
-      }).catch(function (err) {
-        $scope.sendAlertErrorMsg(err.data.message);
+
+        UserService.listAddresses($scope.user._id).then(function (data) {
+          angular.forEach(data, function (address) {
+            UserService.getAddress($scope.user._id, address.addressId).then(function (addressObj) {
+              if (addressObj.type === 'shipping') {
+                $scope.oldShippingAddress = addressObj;
+                $scope.shipping.address   = angular.extend({}, addressObj);
+              } else if (addressObj.type === 'billing') {
+                $scope.oldBillingAddress = addressObj;
+                $scope.billing.address   = angular.extend({}, addressObj);
+              }
+              if (Object.keys($scope.oldShippingAddress).length !== 0 &&
+                  Object.keys($scope.oldBillingAddress).length !== 0) {
+                if ($scope.oldShippingAddress.address1 === $scope.oldBillingAddress.address1 &&
+                    $scope.oldShippingAddress.address2 === $scope.oldBillingAddress.address2 &&
+                    $scope.oldShippingAddress.city     === $scope.oldBillingAddress.city     &&
+                    $scope.oldShippingAddress.state    === $scope.oldBillingAddress.state    &&
+                    $scope.oldShippingAddress.zipCode  === $scope.oldBillingAddress.zipCode) {
+                  $scope.sameBillingAsShiping = true;
+                }
+              }
+            }).catch(function (err) {
+              $scope.sendAlertErrorMsg(err.data.message);
+            });
+          });
+        }).catch(function (err) {
+          $scope.sendAlertErrorMsg(err.data.message);
+        });
       });
-    });
+    };
+    
+    $scope.load();
     
     $scope.sendAlertUpdateProfileSuccess = function () {
       FlashService.addAlert({
@@ -142,7 +146,7 @@ angular.module('convenienceApp')
       }).catch(function (err) {
         $scope.sendAlertErrorMsg(err.data.message);
       });
-      $state.reload();
+      $scope.load();
     };
 
     $scope.createInfoPhone = function (phone, label) {
@@ -158,7 +162,7 @@ angular.module('convenienceApp')
       }).catch(function (err) {
         $scope.sendAlertErrorMsg(err.data.message);
       });
-      $state.reload();
+      $scope.load();
     };
 
     $scope.updateInfoPhone = function (phoneInfo) {
