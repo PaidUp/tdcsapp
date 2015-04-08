@@ -463,27 +463,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      addCredentialsPath: {
-        options: {
-          args: {
-            suite: 'addCredentialsPath'
-          }
-        }
-      },
-      addChildrenPath: {
-        options: {
-          args: {
-            suite: 'addChildrenPath'
-          }
-        }
-      },
-      changePasswordPath: {
-        options: {
-          args: {
-            suite: 'changePasswordPath'
-          }
-        }
-      },
       testFlowPath: {
         options: {
           args: {
@@ -663,21 +642,13 @@ module.exports = function (grunt) {
         generalTasks.push('protractor:creditPath');
       }else if (target2 === 'verifyBankAccount'){
         generalTasks.push('protractor:verifyBankAccountPath');
-      }else if (target2 === 'addCredentials'){
-        generalTasks.push('protractor:addCredentialsPath');
-      }else if (target2 === 'addChild'){
-        generalTasks.push('protractor:addChildrenPath');
-      }else if (target2 === 'changePassword'){
-        generalTasks.push('protractor:changePasswordPath');
       }else if (target2 === 'testFlow'){
         generalTasks.push('protractor:testFlowPath');
       }else{
-        generalTasks.push('protractor:testFlowPath');
-        // generalTasks.push('protractor:addCredentialsPath');
-        // generalTasks.push('protractor:addChildrenPath');
-        // generalTasks.push('protractor:changePasswordPath');
-        // generalTasks.push('protractor:loanPath');
-        // generalTasks.push('protractor:creditPath');
+        //generalTasks.push('protractor:testFlowPath');
+        generalTasks.push('protractor:loanPath');
+        generalTasks.push('protractor:verifyBankAccountPath');
+        generalTasks.push('protractor:creditPath');
       }
 
       return grunt.task.run(generalTasks);
