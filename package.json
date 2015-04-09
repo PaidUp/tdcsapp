@@ -20,6 +20,7 @@
     "express": "~4.0.0",
     "express-jwt": "^0.1.4",
     "express-session": "~1.0.2",
+    "faker": "^2.1.2",
     "fb": "^0.7.0",
     "jsonwebtoken": "^0.3.0",
     "loanjs": "0.0.8",
