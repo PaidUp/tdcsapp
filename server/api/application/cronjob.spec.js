@@ -14,7 +14,7 @@ var modelSpec = require('./cronjob.model.spec');
 
 describe('Cronjob workflow OK', function (){
     this.timeout(15000);
-    
+
     describe('Prepare user', function (){
         it('Create fake user', function(done){
             var userFake = {firstName:modelSpec.firstName,lastName:modelSpec.lastName};
@@ -32,7 +32,7 @@ describe('Cronjob workflow OK', function (){
 
         it('add credentials to fake user', function(done){
             var credentialFake = {
-                userId: modelSpec.userId, 
+                userId: modelSpec.userId,
                 email: modelSpec.email,
                 password: modelSpec.password,
                 rememberMe: true
@@ -81,7 +81,7 @@ describe('Cronjob workflow OK', function (){
     });
 
     describe('Prepare loan', function (){
-        
+
         it('createCart', function(done) {
             request(app)
                 .get('/api/v1/commerce/cart/create')
@@ -229,7 +229,7 @@ describe('Cronjob workflow OK', function (){
                     updateLoan(modelSpec.loanId, function(err, data){
                         done();
                     });
-                    
+
                 });
         });
     });
@@ -251,7 +251,7 @@ describe('Cronjob workflow OK', function (){
 
     describe('Add method payment', function (){
         this.timeout(30000);
-        
+
         it('createBank (front)', function (done) {
             var bankDetails = modelSpec.bankDetails();
 
@@ -288,7 +288,7 @@ describe('Cronjob workflow OK', function (){
             });
         });
     });
-    
+
     describe('RUN cronjob II', function (){
         this.timeout(60000);
         it('/cron', function(done) {
@@ -303,7 +303,7 @@ describe('Cronjob workflow OK', function (){
             });
         });
     });
-    
+
     describe('Verify method payment', function (){
         this.timeout(30000);
         it('Verify bank', function(done){
@@ -333,7 +333,7 @@ describe('Cronjob workflow OK', function (){
                     updateLoanTwo(modelSpec.loanId, function(err, data){
                         done();
                     });
-                    
+
                 });
         });
     });
@@ -384,7 +384,7 @@ function updateLoan(loanId, cb){
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
-    }); 
+    });
 }
 
 function updateLoanTwo(loanId, cb){
@@ -399,5 +399,5 @@ function updateLoanTwo(loanId, cb){
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
-    }); 
+    });
 }
