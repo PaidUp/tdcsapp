@@ -4,8 +4,8 @@ var should = require('should');
 var app = require('../../app');
 var request = require('supertest');
 var assert = require('chai').assert;
-var authEmailService = require('./auth.email.service');
-var User = require('../user/user.model');
+//var authEmailService = require('./auth.email.service');
+//var User = require('../user/user.model');
 var authService = require('./auth.service');
 var uuid = require('node-uuid');
 var authController = require('./auth.controller');
@@ -111,7 +111,7 @@ describe('auth.service', function(){
       if(err) done(err);
       assert.equal(data.verify.status, 'sent');
       done();
-    });    
+    });
   });
   /*
   it('verifyEmail', function(done){
@@ -131,7 +131,7 @@ describe('auth.service', function(){
       if(err) done(err);
       assert.equal(data.resetPassword.status, 'sent');
       done();
-    });    
+    });
   });
 /*
   it('verifyPasswordToken', function(done){
@@ -195,7 +195,7 @@ describe('auth/local', function(){
       done();
     });
   });
-  
+
   it('/login 200', function(done) {
     request(app)
     .post('/api/v1/auth/local/login')

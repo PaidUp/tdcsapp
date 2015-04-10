@@ -5,18 +5,6 @@ var userService = require('./user/user.service');
 var mixPanel = require('mixpanel');
 var mixpanel = mixPanel.init('ec0a4bdcce8b969299299e0710f4775a');
 
-// var config = require('../../../config/environment/index');
-// var contractEmail = require('../loan.contract.email.service');
-// var logger = require('../../../config/logger');
-
-// var STATE = {
-//   APPLIED: "APPLIED",
-//   ACCEPTED_CREDIT_CHECK: "ACCEPTED_CREDIT_CHECK",
-//   DENIED_CREDIT_CHECK: "DENIED_CREDIT_CHECK",
-//   SIGNED: "SIGNED",
-//   APPROVED:"APPROVED"
-// };
-
 exports.simulate = function(req, res) {
   mixpanel.track("simulateAppLoan", req.body);
   loanApplicationService.simulate(req.body, function (err, dataSimulate) {
@@ -51,8 +39,8 @@ exports.sign = function(req, res) {
     var mp = req.body;
     mp.distinct_id = req.user._id;
     mixpanel.track("signAppLoan", mp);
-  }  
-  userService.sign(req.body.loanUser, function (err, sign){
+  }
+  userService.sign(req.body, function (err, sign){
     if (err) return res.json(409, err);
     if (sign.isCorrect) {
       loanApplicationService.sign(req.body, function (err, data){
@@ -64,7 +52,7 @@ exports.sign = function(req, res) {
         "code": "ValidationError",
         "message": "sign is not accepted"
       });
-    } 
+    }
   });
 };
 
