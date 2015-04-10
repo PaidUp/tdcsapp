@@ -61,14 +61,12 @@ angular.module('convenienceApp')
       var deferred = $q.defer();
       LoanApplication.save({action: 'sign'}, {
         applicationId: userInfo.applicationId,
-        loanUser: {
-          userId: loanUser._id,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          ssn: userInfo.ssn,
-          addresses: loanUser.addresses,
-          contacts: loanUser.contacts
-        }
+        userId: loanUser._id,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
+        ssn: userInfo.ssn,
+        addresses: loanUser.addresses,
+        contacts: loanUser.contacts
       }).$promise.then(function (resp) {
         LoanService.setLoanId(resp.loanId);
         deferred.resolve();
