@@ -51,7 +51,6 @@ describe('loanService', function(){
         done(err);
       }
       else {
-        console.log(data);
         done();
       }
     });
