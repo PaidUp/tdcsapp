@@ -33,7 +33,6 @@ describe('loanService', function(){
     var initialDate = moment("2015-01-20 08:00:00");
 
     var loan = new LoanJS.Loan(amount, numberPayments, interestRate, false, periodDuration, periodType, initialDate);
-    console.log(loan);
     done();
 
   });
@@ -51,7 +50,6 @@ describe('loanService', function(){
         done(err);
       }
       else {
-        console.log(data);
         done();
       }
     });
