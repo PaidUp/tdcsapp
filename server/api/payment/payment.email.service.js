@@ -47,7 +47,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
 
 exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
   var filter = {_id:applicationId};
-  loanApplicationService.findOne(filter, function(err, applicationData){
+  loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
     // get the user data with the userId
     var filter = {_id: userId};

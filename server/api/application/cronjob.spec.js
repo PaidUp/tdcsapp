@@ -51,34 +51,34 @@ describe.only('Cronjob workflow OK', function (){
             });
         });
 
-        // it('Create fake child to userFake', function(done){
-        //     var userFake = {token:modelSpec.token,firstName:modelSpec.firstName,lastName:modelSpec.lastName, gender:modelSpec.gender};
-        //     request(app)
-        //     .post('/api/v1/user/create')
-        //     .set('Authorization', "Bearer "+modelSpec.token)
-        //     .expect(200)
-        //     .send(userFake)
-        //     .end(function(err, res) {
-        //         if (err) return done(err);
-        //         assert(res.body.userId);
-        //         modelSpec.childId = res.body.userId;
-        //         done();
-        //     });
-        // });
+         it('Create fake child to userFake', function(done){
+             var userFake = {token:modelSpec.token,firstName:modelSpec.firstName,lastName:modelSpec.lastName, gender:modelSpec.gender};
+             request(app)
+             .post('/api/v1/user/create')
+             .set('Authorization', "Bearer "+modelSpec.token)
+             .expect(200)
+             .send(userFake)
+             .end(function(err, res) {
+                 if (err) return done(err);
+                 assert(res.body.userId);
+                 modelSpec.childId = res.body.userId;
+                 done();
+             });
+         });
 
-        // it('Create relationFake', function(done){
-        //     var relationFake = {token:modelSpec.token,sourceUserId:modelSpec.userId,targetUserId:modelSpec.childId, type:modelSpec.typeRelation};
-        //     request(app)
-        //     .post('/api/v1/user/relation/create')
-        //     .set('Authorization', "Bearer "+modelSpec.token)
-        //     .expect(200)
-        //     .send(relationFake)
-        //     .end(function(err, res) {
-        //         if (err) return done(err);
-        //         assert(res.body);
-        //         done();
-        //     });
-        // });
+         it('Create relationFake', function(done){
+             var relationFake = {token:modelSpec.token,sourceUserId:modelSpec.userId,targetUserId:modelSpec.childId, type:modelSpec.typeRelation};
+             request(app)
+             .post('/api/v1/user/relation/create')
+             .set('Authorization', "Bearer "+modelSpec.token)
+             .expect(200)
+             .send(relationFake)
+             .end(function(err, res) {
+                 if (err) return done(err);
+                 assert(res.body);
+                 done();
+             });
+         });
     });
 
     describe('Prepare loan', function (){
@@ -170,7 +170,8 @@ describe.only('Cronjob workflow OK', function (){
         });
 
         it('createLoanApplication', function(done) {
-            var dataLoanApplication = {incomeType:"Employed (Military)",monthlyGrossIncome:"123456",amount:1650,numberPayments:6,meta:{userId:modelSpec.loanUserId}};
+          this.timeout(60000);
+          var dataLoanApplication = {incomeType:"Employed (Military)",monthlyGrossIncome:"123456",amount:1650,numberPayments:6,meta:{userId:modelSpec.loanUserId}};
             request(app)
               .post('/api/v1/loan/application/create')
               .set('Authorization', "Bearer "+modelSpec.token)
@@ -232,7 +233,7 @@ describe.only('Cronjob workflow OK', function (){
         it('getLoan', function(done) {
           this.timeout(60000);
             request(app)
-                .get('/api/v1/loan/'+modelSpec.loanId)
+                .get('/api/v1/loan/find/loanId/'+modelSpec.loanId)
                 .set('Authorization', "Bearer "+modelSpec.token)
                 .expect(200)
                 .end(function(err, res) {
@@ -247,9 +248,9 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     describe('RUN cronjob I', function (){
-        this.timeout(60000);
         it('/cron', function(done) {
-            request(app)
+          this.timeout(60000);
+          request(app)
             .get('/api/v1/application/cron')
             .expect(200)
             .expect('Content-Type', 'application/json')
@@ -262,10 +263,9 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     describe('Add method payment', function (){
-        this.timeout(30000);
-
         it('createBank (front)', function (done) {
-            var bankDetails = modelSpec.bankDetails();
+          this.timeout(60000);
+          var bankDetails = modelSpec.bankDetails();
 
             paymentService.createBank(bankDetails, function (err, data) {
                 if (err) done(err);
@@ -276,7 +276,8 @@ describe.only('Cronjob workflow OK', function (){
         });
 
         it('createBank (back)', function(done){
-            var bank = {bankId:modelSpec.bankId};
+          this.timeout(60000);
+          var bank = {bankId:modelSpec.bankId};
             request(app)
             .post('/api/v1/payment/bank/create')
             .set('Authorization', "Bearer "+modelSpec.token)
@@ -289,7 +290,8 @@ describe.only('Cronjob workflow OK', function (){
         });
 
         it('Associate bank', function(done){
-            request(app)
+          this.timeout(60000);
+          request(app)
             .get('/api/v1/payment/bank/list')
             .set('Authorization', "Bearer "+modelSpec.token)
             .expect(200)
@@ -302,9 +304,9 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     describe('RUN cronjob II', function (){
-        this.timeout(60000);
         it('/cron', function(done) {
-            request(app)
+          this.timeout(60000);
+          request(app)
             .get('/api/v1/application/cron')
             .expect(200)
             .expect('Content-Type', 'application/json')
@@ -317,9 +319,9 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     describe('Verify method payment', function (){
-        this.timeout(30000);
         it('Verify bank', function(done){
-            var bank = {verificationId:modelSpec.verificationId,deposit1:1,deposit2:1};
+          this.timeout(60000);
+          var bank = {verificationId:modelSpec.verificationId,deposit1:1,deposit2:1};
             request(app)
             .post('/api/v1/payment/bank/verify')
             .set('Authorization', "Bearer "+modelSpec.token)
@@ -335,8 +337,9 @@ describe.only('Cronjob workflow OK', function (){
 
     describe('get loan II', function (){
         it('getLoan', function(done) {
-            request(app)
-                .get('/api/v1/loan/'+modelSpec.loanId)
+          this.timeout(60000);
+          request(app)
+                .get('/api/v1/loan/find/loanId/'+modelSpec.loanId)
                 .set('Authorization', "Bearer "+modelSpec.token)
                 .expect(200)
                 .end(function(err, res) {
@@ -366,9 +369,9 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     describe('validate loan is correct', function (){
-        this.timeout(60000);
         it('/loan validate', function(done) {
-            var filter = {_id:modelSpec.loanId};
+          this.timeout(60000);
+          var filter = {_id:modelSpec.loanId};
             loanService.findOne(filter,function(err,loan){
                 if(err || !loan){
                     done(err);
@@ -376,7 +379,7 @@ describe.only('Cronjob workflow OK', function (){
                 assert.equal(loan.state, 'active');
                 assert.equal(loan.notifications.length, 3);
                 assert.equal(loan.schedule[0].state, 'paid');
-                done();
+              done();
             });
         });
     });
@@ -392,7 +395,7 @@ function updateLoan(loanId, cb){
         }
         loan.createAt = newDateSubtract;
         loan.schedule[0].paymentDay = newDateAdd;
-        loan.markModified('schedule');
+        //loan.markModified('schedule');
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
@@ -407,7 +410,7 @@ function updateLoanTwo(loanId, cb){
             cb(err);
         }
         loan.schedule[0].paymentDay = newDate;
-        loan.markModified('schedule');
+        //loan.markModified('schedule');
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
