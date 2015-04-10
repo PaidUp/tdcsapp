@@ -50,6 +50,8 @@ exports.place = function(req, res) {
   }
   // Process order
   if (req.body.payment == "loan") {
+    console.log('req.body', req.body);
+
     loanService.findOne({_id: req.body.loanId}, function (err,loan){
       cartService.addLoanInterest(req.body.cartId, loan.interestSum, function (err, data) {
         if (err) return handleError(res, err);
@@ -101,6 +103,8 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             sku: shoppingCart.items[1].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
+            console.log('child' , child);
+
             child[0].teams.push(team);
             var acountNumber;
             var action;

@@ -51,7 +51,7 @@ exports.sign = function(req, res) {
         "code": "ValidationError",
         "message": "sign is not accepted"
       });
-    } 
+    }
   });
 };
 

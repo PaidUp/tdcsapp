@@ -4,7 +4,7 @@ var should = require('should');
 var app = require('../../app');
 var request = require('supertest');
 var assert = require('chai').assert;
-var User = require("../../api/user/user.model");
+//var User = require("../../api/user/user.model");
 var userService = require("../../api/user/user.service");
 var logger = require('../../config/logger');
 //logger.info(err, err);
@@ -269,7 +269,7 @@ describe('user.service', function() {
       id:'fakeId',
       email:'jesse.cogollo@talosdigital.com'
     };
-    
+
     userService.mergeFacebookUser({user:user,fbUser:fbUser}, function(err, data){
       assert.equal(err, null);
       assert(data);

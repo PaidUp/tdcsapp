@@ -12,9 +12,9 @@ var random = Math.floor(Math.random() * 1000) + 1;
 var moment = require('moment');
 var modelSpec = require('./cronjob.model.spec');
 
-describe('Cronjob workflow OK', function (){
+describe.only('Cronjob workflow OK', function (){
     this.timeout(15000);
-    
+
     describe('Prepare user', function (){
         it('Create fake user', function(done){
             var userFake = {firstName:modelSpec.firstName,lastName:modelSpec.lastName};
@@ -26,13 +26,14 @@ describe('Cronjob workflow OK', function (){
                 if (err) return done(err);
                 assert(res.body.userId);
                 modelSpec.userId = res.body.userId;
+                modelSpec.user = res.body;
                 done();
             });
         });
 
         it('add credentials to fake user', function(done){
             var credentialFake = {
-                userId: modelSpec.userId, 
+                userId: modelSpec.userId,
                 email: modelSpec.email,
                 password: modelSpec.password,
                 rememberMe: true
@@ -81,7 +82,7 @@ describe('Cronjob workflow OK', function (){
     });
 
     describe('Prepare loan', function (){
-        
+
         it('createCart', function(done) {
             request(app)
                 .get('/api/v1/commerce/cart/create')
@@ -120,6 +121,7 @@ describe('Cronjob workflow OK', function (){
                 if (err) return done(err);
                 assert.isNotNull(res.body.userId);
                 modelSpec.loanUserId = res.body.userId;
+                modelSpec.loanUser = res.body;
                 done();
             });
         });
@@ -134,6 +136,7 @@ describe('Cronjob workflow OK', function (){
                 .end(function(err, res) {
                 if (err) return done(err);
                 assert.isNotNull(res.body.contactId);
+                modelSpec.cons
                 done();
                 });
         });
@@ -177,12 +180,20 @@ describe('Cronjob workflow OK', function (){
                 if (err) return done(err);
                 assert.isNotNull(res.body.applicationId);
                 modelSpec.applicationId = res.body.applicationId;
+                modelSpec.loanApplication = res.body
                 done();
             });
         });
 
         it('signLoanApplication', function(done) {
-            var dataLoanSign = {firstName:modelSpec.firstName,lastName:modelSpec.lastName,ssn:modelSpec.ssnLast4Digists,applicationId:modelSpec.applicationId};
+          this.timeout(60000);
+          var loanUser = modelSpec.getLoanUser();
+            var dataLoanSign = {firstName:modelSpec.firstName,
+              lastName:modelSpec.lastName,
+              ssn:modelSpec.ssnLast4Digists,
+              applicationId:modelSpec.applicationId,
+              userId : modelSpec.loanUserId,
+              applicantUserId : modelSpec.userId};
             request(app)
             .post('/api/v1/loan/application/sign')
             .set('Authorization', "Bearer "+modelSpec.token)
@@ -219,6 +230,7 @@ describe('Cronjob workflow OK', function (){
 
     describe('get loan I', function (){
         it('getLoan', function(done) {
+          this.timeout(60000);
             request(app)
                 .get('/api/v1/loan/'+modelSpec.loanId)
                 .set('Authorization', "Bearer "+modelSpec.token)
@@ -229,7 +241,7 @@ describe('Cronjob workflow OK', function (){
                     updateLoan(modelSpec.loanId, function(err, data){
                         done();
                     });
-                    
+
                 });
         });
     });
@@ -251,7 +263,7 @@ describe('Cronjob workflow OK', function (){
 
     describe('Add method payment', function (){
         this.timeout(30000);
-        
+
         it('createBank (front)', function (done) {
             var bankDetails = modelSpec.bankDetails();
 
@@ -288,7 +300,7 @@ describe('Cronjob workflow OK', function (){
             });
         });
     });
-    
+
     describe('RUN cronjob II', function (){
         this.timeout(60000);
         it('/cron', function(done) {
@@ -303,7 +315,7 @@ describe('Cronjob workflow OK', function (){
             });
         });
     });
-    
+
     describe('Verify method payment', function (){
         this.timeout(30000);
         it('Verify bank', function(done){
@@ -333,7 +345,7 @@ describe('Cronjob workflow OK', function (){
                     updateLoanTwo(modelSpec.loanId, function(err, data){
                         done();
                     });
-                    
+
                 });
         });
     });
@@ -384,7 +396,7 @@ function updateLoan(loanId, cb){
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
-    }); 
+    });
 }
 
 function updateLoanTwo(loanId, cb){
@@ -399,5 +411,5 @@ function updateLoanTwo(loanId, cb){
         loanService.save(loan,function(err, data){
             cb(null, data);
         });
-    }); 
+    });
 }

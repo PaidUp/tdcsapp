@@ -65,6 +65,9 @@ function findOne(applicationId, cb){
 function sign (data, cb){
   tdLoanApplicationService.init(config.connections.loan);
   tdLoanApplicationService.sign(data, function (err, data){
+    console.log('err',err);
+    console.log('data',data);
+
     if(err) {
       return cb(err);
     }

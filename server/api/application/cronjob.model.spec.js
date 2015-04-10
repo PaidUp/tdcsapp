@@ -33,7 +33,17 @@ var data = {
             account_number: "9900826301",
             routing_number: "021000021"
         }
+    },
+  getLoanUser : function(){
+    return {
+      userId: this.loanUserId,
+        firstName: this.user.firstName,
+        lastName: this.user.lastName,
+        ssn: this.user.ssn,
+        addresses: [],
+        contacts: []
     }
+  }
 };
 
 module.exports = data;
