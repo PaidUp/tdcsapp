@@ -18,6 +18,7 @@ function emailContact(dataContact, cb) {
 function configView(cb) {
 	var data = {};
 	data.marketplace = config.balanced.marketplace;
+    data.stripeApiPublic = config.stripe.apiPublic;
 	return cb(null,data);
 }
 
