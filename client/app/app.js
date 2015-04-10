@@ -73,7 +73,7 @@ angular.module('convenienceApp', [
       var currentUserMp = AuthService.getCurrentUser();
       if(currentUserMp && currentUserMp._id){
         $analytics.setUsername(currentUserMp._id);
-        currentUserMp.name = currentUserMp.email  +' - '+ currentUserMp.firstName;
+        currentUserMp.name = currentUserMp.firstName  +' '+ currentUserMp.lastName + ' - ' +currentUserMp.email;
         $analytics.setUserProperties(currentUserMp);
       }
       AuthService.isLoggedInAsync(function(loggedIn) {
