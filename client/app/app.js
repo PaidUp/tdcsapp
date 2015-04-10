@@ -70,7 +70,12 @@ angular.module('convenienceApp', [
     $rootScope.$on('$stateChangeStart', function (event, next) {
       //Mixpanel page tracker
       $analytics.pageTrack(next.url);
-
+      var currentUserMp = AuthService.getCurrentUser();
+      if(currentUserMp && currentUserMp._id){
+        $analytics.setUsername(currentUserMp._id);
+        currentUserMp.name = currentUserMp.firstName  +' '+ currentUserMp.lastName + ' - ' +currentUserMp.email;
+        $analytics.setUserProperties(currentUserMp);
+      }
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (next.auth && !loggedIn) {
           $rootScope.$emit('logout', {});
