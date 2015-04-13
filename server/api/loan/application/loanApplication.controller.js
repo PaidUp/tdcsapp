@@ -2,8 +2,7 @@
 
 var loanApplicationService = require('./loanApplication.service');
 var userService = require('./user/user.service');
-var mixPanel = require('mixpanel');
-var mixpanel = mixPanel.init('ec0a4bdcce8b969299299e0710f4775a');
+var mixpanel = require('../../../config/mixpanel');
 
 exports.simulate = function(req, res) {
   mixpanel.track("simulateAppLoan", req.body);
