@@ -13,39 +13,6 @@ var logger = require('../../config/logger');
 var user;
 var token;
 
-before('auth before', function(){
-  it('signup user', function(done){
-    user = new User({
-      firstName : 'auth',
-      lastName : 'spec'
-    });
-    user.save();
-    done();
-  });
-
-  it('/signup', function(done) {
-    request(app)
-      .post('/api/v1/auth/local/signup')
-      .send({
-        "userId": user.id,
-        "email": "jesse.cogollo@talosdigital.com",
-        "password": "Qwerty1!",
-        "rememberMe": false
-      })
-      .expect(200)
-      .expect('Content-Type', 'application/json')
-      .end(function(err, res) {
-        if (err) return done(err);
-        token = res.body.token;
-        done();
-      });
-  });
-});
-
-//after('auth after', function(done){
-  //user.remove();
-  //done();
-//});
 
 describe('auth.email.service', function() {
 
@@ -113,17 +80,7 @@ describe('auth.service', function(){
       done();
     });
   });
-  /*
-  it('verifyEmail', function(done){
-    this.timeout(5000);
-    var token = 'notValid';
-    authService.verifyEmail(token, function(err, data){
-      if(err) done(err);
-      assert.equal(data.verify.status, 'sent');
-      done();
-    });
-  });
-  */
+
 
   it('ResetPassword', function(done){
     this.timeout(2500);
@@ -133,15 +90,8 @@ describe('auth.service', function(){
       done();
     });
   });
-/*
-  it('verifyPasswordToken', function(done){
-    this.timeout(3000);
-    authService.verifyPasswordToken(token, function(err, data){
-      assert.equal(err.name,'ValidationError');
-      done();
-    });
-  });
-*/
+
+
   it('validationPasswordSync Ok', function(done){
     var password = '!1Aqwerty';
     var validation = authService.validationPasswordSync(password);
@@ -176,40 +126,4 @@ describe('auth.service', function(){
     assert.equal(validation, ' No specialCharacter');
     done();
   });
-});
-
-describe('auth/local', function(){
-
-  it('/login 401', function(done) {
-    request(app)
-    .post('/api/v1/auth/local/login')
-    .send({
-      "email": 'jesse.cogollo@talosdigital.com',
-      "password": "Qwerty2!",
-      "rememberMe": false
-    })
-    .expect(401)
-    .end(function(err, res) {
-      if (err) return done(err);
-      assert.equal(res.body.code, 'PermissionDenied');
-      done();
-    });
-  });
-
-  it('/login 200', function(done) {
-    request(app)
-    .post('/api/v1/auth/local/login')
-    .send({
-      "email": 'jesse.cogollo@talosdigital.com',
-      "password": "Qwerty1!",
-      "rememberMe": false
-    })
-    .expect(200)
-    .end(function(err, res) {
-      if (err) return done(err);
-      assert(res.body.token);
-      done();
-    });
-  });
-
 });
