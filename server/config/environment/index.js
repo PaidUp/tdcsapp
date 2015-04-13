@@ -164,6 +164,9 @@ var all = {
   stripe:{
     apiPublic: "ak-test-p8Ob9vp9GnqWNwFf6CeLLokeQsf76RIe",
   },
+  mixpanel:{
+    apiKey: "ec0a4bdcce8b969299299e0710f4775a",
+  },
   loan:{
     defaults: {
       interestRate: 8.99,

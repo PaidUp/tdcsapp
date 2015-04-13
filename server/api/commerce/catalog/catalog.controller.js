@@ -3,8 +3,8 @@
 var _ = require('lodash');
 var catalogService = require('./catalog.service');
 var config = require('../../../config/environment');
+var mix = require('../../../config/mixpanel');
 
-// Creates a new user in the DB.
 exports.list = function(req, res) {
   if(!req.params && !req.params.categoryId) {
     return res.json(400, {
@@ -17,6 +17,7 @@ exports.list = function(req, res) {
     categoryId = config.commerce.category.teams;
   }
   catalogService.catalogList(categoryId, function(err, dataService){
+    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
     res.json(200, dataService);
   });
@@ -30,6 +31,7 @@ exports.catalogInfo = function(req, res) {
     });
   }
   catalogService.catalogProduct(req.params.productId, function(err, dataService){
+    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
     res.json(200, dataService);
   });

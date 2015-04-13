@@ -11,6 +11,7 @@ var async = require('async');
 var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
 var tdPaymentService = require('TDCore').paymentService;
+var mix = require('../../config/mixpanel');
 
 
 function createCustomer(user, cb) {
@@ -384,6 +385,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
           commerceService.orderHold(order.incrementId, function(err, data){
             //TODO
             paymentEmailService.sendFinalEmailCreditCard(user, amount, order.incrementId, function(error, data){
+              mix.panel.track("paymentCaptureSendFinalEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
               logger.log('info', 'send email final email ' + data );
             });
 
@@ -399,6 +401,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
           if (err) return cb(err);
           //TODO
           paymentEmailService.sendProcessedEmailCreditCard(user, amount, resultDebit.number, order.incrementId, function(err, data){
+            mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
             logger.log('info', 'send processed email. ' + data );
           });
 

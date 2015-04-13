@@ -2,13 +2,15 @@
 
 var _ = require('lodash');
 var cartService = require('./cart.service');
-var logger = require('../../../config/environment');
+var config = require('../../../config/environment');
 var logger = require('../../../config/logger');
+var mix = require('../../../config/mixpanel');
 
 // Creates a new cart in the DB.
 exports.create = function (req, res) {
   cartService.cartCreate(function (err, cartId){
     cartService.addFee(cartId, function (err, data) {
+      mix.panel.track("createCart", mix.mergeDataMixpanel({cartId: cartId}, req.user._id));
       res.json(200, {cartId: cartId});
     })
   });
@@ -21,6 +23,7 @@ exports.add = function (req, res) {
       "message": "Cart Id and products are required"
     });
   }
+  mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
   cartService.cartAdd(req.body, function (err, cartAdd) {
     if(err) return handleError(res, err);
     res.json(200, cartAdd);
@@ -34,6 +37,7 @@ exports.remove = function (req, res) {
       "message": "cartId or products is required"
     });
   }
+  mix.panel.track("removeCart", mix.mergeDataMixpanel(req.body, req.user._id));
   cartService.cartRemove(req.body, function (err, cartRemove) {
     if(err) return handleError(res, err);
     res.json(200, cartRemove);
@@ -54,6 +58,7 @@ exports.list = function (req, res) {
 }
 
 exports.address = function (req, res) {
+  mix.panel.track("addressCart", mix.mergeDataMixpanel(req.body, req.user._id));
   cartService.cartAddress(req.body, function (err, cartAddress) {
     if(err) return handleError(res, err);
     res.json(200, cartAddress);

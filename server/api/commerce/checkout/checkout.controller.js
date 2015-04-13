@@ -13,8 +13,10 @@ var logger = require('../../../config/logger');
 var contractEmail = require('../../loan/loan.contract.email.service');
 var loanApplicationService = require('../../loan/application/loanApplication.service');
 var userLoanService = require('../../loan/application/user/user.service');
+var mix = require('../../../config/mixpanel');
 
 exports.place = function(req, res) {
+  mix.panel.track("placeCheckoutStart", mix.mergeDataMixpanel(req.body, req.user._id));
   if(!req.body || !req.body.addresses || !req.body.paymentMethod || !req.body.payment) {
     return res.json(400, {
       "code": "ValidationError",
@@ -63,6 +65,7 @@ exports.place = function(req, res) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
                 userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
                   contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {
+                    mix.panel.track("placeCheckoutSendContractEmail", mix.mergeDataMixpanel(req.body, req.user._id));
                     if(err){
                       logger.info(err, err);
                     }
@@ -120,6 +123,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
+                  mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(req.body, req.user._id));
                   if(err) logger.log('error',err);
                 });
                 return cb(null, magentoOrderId);
