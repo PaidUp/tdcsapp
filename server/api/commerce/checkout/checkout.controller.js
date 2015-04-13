@@ -58,8 +58,8 @@ exports.place = function(req, res) {
           loanService.findOne({_id: req.body.loanId}, function (err, loan) {
             loan.orderId = magentoOrderId;
             loanService.save(loan, function (err, dataLoan){
-              var filter = {_id:loan.applicationId};
-              loanApplicationService.findOne(filter._id, function (err, dataApploan) {
+              //var filter = {_id:loan.applicationId};
+              loanApplicationService.findOne(loan.applicationId, function (err, dataApploan) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
                 userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
                   contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {

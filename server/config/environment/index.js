@@ -161,6 +161,9 @@ var all = {
     marketplace: "TEST-MP2OaM2stYkoWBlGFd0M8YV7",
     appearsOnStatementAs: "Conv. Select"
   },
+  stripe:{
+    apiPublic: "ak-test-p8Ob9vp9GnqWNwFf6CeLLokeQsf76RIe",
+  },
   loan:{
     defaults: {
       interestRate: 8.99,

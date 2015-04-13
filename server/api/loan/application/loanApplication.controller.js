@@ -38,8 +38,10 @@ exports.state = function(req, res) {
 };
 
 exports.sign = function(req, res) {
-  req.body.userId = req.user._id;
-  userService.sign(req.body.loanUser, function (err, sign){
+  if (req.user) {
+    req.body.applicantUserId = req.user._id;
+  }
+  userService.sign(req.body, function (err, sign){
     if (err) return res.json(409, err);
     if (sign.isCorrect) {
       loanApplicationService.sign(req.body, function (err, data){
@@ -51,7 +53,7 @@ exports.sign = function(req, res) {
         "code": "ValidationError",
         "message": "sign is not accepted"
       });
-    } 
+    }
   });
 };
 
