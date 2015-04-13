@@ -55,7 +55,7 @@ describe('application.service', function() {
 });
 
 describe('application.controller', function() {
-  	
+
   	it('/config', function(done) {
 	    request(app)
 	    .get('/api/v1/application/config')
@@ -83,18 +83,3 @@ describe('application.controller', function() {
   	});
 });
 
-describe('cronjob.service', function() {
-
-	it('run ', function (done) {
-		this.timeout(120000);
-		cronjobService.run(function(err, data){
-			if(err){
-				logger.info(err.name);
-				assert.equal(err.name, 'cronjob.pid is created');
-			}else{
-				assert.equal(data.length, 5, 'the five jobs are complete with issues.');	
-			}
-			done();
-		});
-	});
-});
