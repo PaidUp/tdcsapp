@@ -11,9 +11,17 @@ var logger = require('../../config/logger');
 var random = Math.floor(Math.random() * 1000) + 1;
 var moment = require('moment');
 var modelSpec = require('./cronjob.model.spec');
+var prepareTest = require('../../components/util/prepare.test');
 
 describe.only('Cronjob workflow OK', function (){
     this.timeout(15000);
+
+  before(function(done) {
+    prepareTest.prepareEnvironment(function(err, data){
+      if(err) return done(err);
+      return done();
+    });
+  })
 
     describe('Prepare user', function (){
         it('Create fake user', function(done){
@@ -97,7 +105,6 @@ describe.only('Cronjob workflow OK', function (){
         });
 
         it('addToCart', function(done) {
-          console.log('modelSpec.cartId', modelSpec.cartId);
           var data = {cartId:modelSpec.cartId,products:modelSpec.productsCart};
           request(app)
             .post('/api/v1/commerce/cart/add')

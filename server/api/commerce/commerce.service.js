@@ -9,7 +9,8 @@ var logger = require('../../config/logger');
 TDCommerceService.init(config.connections.commerce);
 
 var ORDER_STATUS = {
-  HOLD  : 'hold'
+  HOLD  : 'hold',
+  CANCEL : 'cancel'
 }
 
 function getUserOrders(user, cb) {
@@ -132,6 +133,14 @@ function orderHold(orderId, cb) {
   });
 }
 
+function orderCancel(orderId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.orderUpdateStatus(orderId, ORDER_STATUS.CANCEL, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
 function orderList(filter, cb){
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderList({filter : filter}, function (err, data) {
@@ -156,3 +165,4 @@ exports.getOrder = getOrder;
 exports.getUsertransactions = getUsertransactions;
 exports.orderList = orderList;
 exports.orderLoad = orderLoad;
+exports.orderCancel = orderCancel;
