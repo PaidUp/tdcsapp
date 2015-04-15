@@ -29,8 +29,8 @@ exports.update = function(req, res, next) {
 };
 
 exports.find = function(req, res, next) {
-  mix.panel.track("findUser", mix.mergeDataMixpanel(req.body, req.user._id));
   userService.find(req.body, function (err, data){
+    mix.panel.track("findUser", mix.mergeDataMixpanel(req.body, req.user._id));
     if(err) res.json(402, err);
     res.json(200, data);
   });

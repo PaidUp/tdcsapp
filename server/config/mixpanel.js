@@ -5,9 +5,9 @@ var panel = mixPanel.init(key);
 //for register users in mixpanel, revise file auth.service.
 
 function mergeDataMixpanel(data, userId){
-  var merge = data;
-  merge.distinct_id = userId;
-  return merge;
+    var merge = data;
+    merge.distinct_id = userId;
+    return merge;
 }
 
 exports.panel = panel;
