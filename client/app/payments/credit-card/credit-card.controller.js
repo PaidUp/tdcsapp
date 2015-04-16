@@ -32,10 +32,10 @@ angular.module('convenienceApp')
     });
 
     PaymentService.listCards().then(function (response) {
-      $scope.cards = angular.copy(response.cards);
+      $scope.cards = angular.copy(response.data);
       angular.forEach($scope.cards, function (card) {
         card.nameOnCard = card.name;
-        card.cardNumber = card.number;
+        card.cardNumber = card.last4;
         card.expirationDate = {};
         card.expirationDate.month = card.expirationMonth;
         card.expirationDate.year = card.expirationYear;
@@ -86,7 +86,7 @@ angular.module('convenienceApp')
       }).catch(function (err) {
         $scope.sendAlertErrorMsg(err.data.message);
       });
-    
+
       UserService.getContactList($scope.user._id).then(function(data){
         angular.forEach(data, function (contactInfo) {
           UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){

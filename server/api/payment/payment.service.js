@@ -264,9 +264,9 @@ function fetchBank(bankId, cb){
 
 }
 
-function fetchCard(cardId, cb){
+function fetchCard(customerId ,cardId, cb){
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.fetchCard(cardId, function(err, creditCard){
+  tdPaymentService.fetchCard(customerId , cardId, function(err, creditCard){
       if(err) return cb(err);
       return cb(null, creditCard);
   });

@@ -29,6 +29,7 @@ exports.place = function(req, res) {
       "message": "CardId is required with onetime payment."
     });
   }
+
   if(! (['creditcard','directdebit'].indexOf(req.body.paymentMethod) > -1)) {
     return res.json(400, {
       "code": "ValidationError",
@@ -48,7 +49,8 @@ exports.place = function(req, res) {
     payment: req.body.payment,
     paymentMethod: req.body.paymentMethod,
     athleteId: req.body.userId,
-    cardId: req.body.cardId
+    cardId: req.body.cardId,
+    customerId: req.user.BPCustomerId
   }
   // Process order
   if (req.body.payment == "loan") {
@@ -112,12 +114,12 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             } else {
               action = 'fetchCard';
             };
-            paymentService[action](orderData.cardId, function(err, account){
+            paymentService[action](orderData.customerId, orderData.cardId, function(err, account){
               var accountNumber;
               if (orderData.paymentMethod==='directdebit') {
                 accountNumber = '';
               }else{
-                accountNumber = account.cards[0].number;
+                accountNumber = account.last4;
               }
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
               userService.save(child[0], function(err, userAthlete) {
