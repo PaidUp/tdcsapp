@@ -23,7 +23,6 @@ exports.collectOneTimePayments = function (cb) {
     async.eachSeries(data, function (order, callback) {
       if (order.paymentMethod === 'creditcard' && order.payment === 'onetime') {
         userService.find({_id : order.userId}, function (err, user){
-          console.log('user' , user);
           paymentService.capture(order, user[0], order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
             if (err) callback(err);
             callback();

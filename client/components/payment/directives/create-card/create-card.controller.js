@@ -73,6 +73,7 @@ angular.module('convenienceApp')
               }
             } else {
               var token = response.id;
+              console.log('token' , token);
               PaymentService.associateCard(response.id).then(function () {
                 $scope.loading = false;
                 $state.go('user-payments');
