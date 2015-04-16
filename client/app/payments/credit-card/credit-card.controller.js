@@ -32,7 +32,7 @@ angular.module('convenienceApp')
     });
 
     PaymentService.listCards().then(function (response) {
-      $scope.cards = angular.copy(response.cards);
+      $scope.cards = angular.copy(response.data);
       angular.forEach($scope.cards, function (card) {
         card.nameOnCard = card.name;
         card.cardNumber = card.number;
