@@ -125,7 +125,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
-                  mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(req.body, req.user._id));
+                  //mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(req.body, req.user._id));
                   if(err) logger.log('error',err);
                 });
                 return cb(null, magentoOrderId);
