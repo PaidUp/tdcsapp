@@ -32,7 +32,7 @@ angular.module('convenienceApp')
 
     PaymentService.listCards().then(function (response) {
       $scope.loadingCards = false;
-      $scope.cards = angular.copy(response.cards);
+      $scope.cards = angular.copy(response.data);
     }).catch(function (err) {
       $scope.loadingCards = false;
       $scope.sendAlertErrorMsg(err.data.message);
