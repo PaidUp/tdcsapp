@@ -17,9 +17,9 @@ exports.create = function (req, res) {
 };
 
 exports.getloan = function (req, res) {
-  mix.panel.track("getLoan", mix.mergeDataMixpanel(req.body, req.user._id));
   loanService.findOne(req.body, function (err, data) {
     if (err) return res.json(409, err);
+    mix.panel.track("getLoan", mix.mergeDataMixpanel(req.body, req.user._id));
     res.json(200, data);
   });
 };

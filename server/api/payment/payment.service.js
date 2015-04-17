@@ -222,17 +222,17 @@ function prepareUser(user, cb) {
 
 function prepareCard(userId, cardId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.fetchCard(cardId, function(err, creditCard){
+  tdPaymentService.fetchCard(userId , cardId, function(err, creditCard){
     if(err) return cb(err);
-      if(creditCard.cards[0].links.customer === null) {
-        associateCard(userId, cardId, function (err, data) {
-          if(err) return cb(err);
-          return cb(null, creditCard);
-        });
+    /*if(creditCard.cards[0].links.customer === null) {
+      associateCard(userId, cardId, function (err, data) {
+        if(err) return cb(err);
+        return cb(null, creditCard);
+      });
     }
-    else {
+    else {*/
       return cb(null, creditCard);
-    }
+    //}
   });
 }
 
@@ -266,7 +266,10 @@ function fetchBank(bankId, cb){
 
 function fetchCard(customerId ,cardId, cb){
   tdPaymentService.init(config.connections.payment);
+  console.log('---');
   tdPaymentService.fetchCard(customerId , cardId, function(err, creditCard){
+    console.log('creditCard',creditCard);
+    console.log('err',err);
       if(err) return cb(err);
       return cb(null, creditCard);
   });
@@ -305,7 +308,7 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
                 var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
-                  paymentMethod: "creditcard", number: cardDetails.cards[0].number, brand : cardDetails.cards[0].brand};
+                  paymentMethod: "creditcard", number: cardDetails.fingerprint, brand : cardDetails.brand};
                 commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
@@ -504,11 +507,11 @@ function getUserDefaultCardId(user, cb) {
   // Check bank accounts
   listCards(user.BPCustomerId, function(err, data){
     if(err) return cb(err);
-    if(data.cards.length == 0) {
+    if(data.data.length == 0) {
       // error
       return cb({name: 'not-available-payment'}, null);
     }
-    var card = data.cards[0];
+    var card = data.data[0];
     return cb(null, card.id);
   });
 }

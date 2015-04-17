@@ -8,7 +8,7 @@ var mix = require('../../config/mixpanel');
 
 exports.contact = function(req, res) {
 	var data = req.body;
-    mix.panel.track("contact", req.body);
+  mix.panel.track("contact", req.body);
 	applicationService.emailContact(data, function(err, data) {
 		if(err){
 			logger.info(err, err);

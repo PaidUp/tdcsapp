@@ -16,9 +16,9 @@ exports.list = function(req, res) {
   if(req.params.categoryId == 'teams') {
     categoryId = config.commerce.category.teams;
   }
-  catalogService.catalogList(categoryId, function(err, dataService){
-    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
+  catalogService.catalogList(categoryId, function(err, dataService){    
     if(err) return handleError(res, err);
+    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     res.json(200, dataService);
   });
 }
