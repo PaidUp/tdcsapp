@@ -28,6 +28,7 @@ angular.module('convenienceApp')
     };
 
     ApplicationConfigService.getConfig().then(function (config) {
+      Stripe.setPublishableKey(config.stripeApiPublic);
       balanced.init('/v1/marketplaces/'+config.marketplace);
     });
 
@@ -207,52 +208,13 @@ angular.module('convenienceApp')
       if ($scope.checkoutForm.$valid) {
         if ($scope.createCard) {
           var payload = {
-            name: $scope.card.nameOnCard,
-            card_number: $scope.card.cardNumber,
-            expiration_month: $scope.card.expirationDate.month,
-            expiration_year: $scope.card.expirationDate.year,
-            security_code: $scope.card.securityCode,
-            postal_code: $scope.billing.address.zipCode
+            number: $scope.card.cardNumber,
+            cvc: $scope.card.securityCode,
+            exp_month: $scope.card.expirationDate.month,
+            exp_year: $scope.card.expirationDate.year
           };
-          balanced.card.create(payload, function (response) {
-            if(response.status === 201) {
-              // Send to your backend
-              var addressBilling = {
-                mode: 'billing',
-                firstName: $scope.user.firstName,
-                lastName: $scope.user.lastName,
-                address1: $scope.billing.address.address1,
-                address2: $scope.billing.address.address2,
-                city: $scope.billing.address.city,
-                state: $scope.billing.address.state,
-                zipCode: $scope.billing.address.zipCode,
-                country: 'US',
-                telephone: $scope.billing.phone
-              };
-              var addressShipping = angular.extend({}, addressBilling);
-              addressShipping.mode = 'shipping';
-              var payment = {
-                cartId: CartService.getCurrentCartId(),
-                addresses: [
-                  addressBilling,
-                  addressShipping
-                ],
-                cardId: response.data.id,
-                userId: CartService.getUserId(),
-                payment: 'onetime',
-                paymentMethod: 'creditcard'
-              };
-              PaymentService.sendPayment(payment).then(function () {
-                CartService.removeCurrentCart();
-                CartService.createCart();
-                $scope.saveOrUpdateBillingAddress();
-                $state.go('thank-you');
-              }).catch(function (err) {
-                if (err.data) {
-                  $scope.sendAlertErrorMsg(err.data.message);
-                }
-              });
-            } else {
+          Stripe.card.createToken(payload, function stripeResponseHandler(status, response) {
+            if (response.error) {
               $scope.placedOrder = false;
               if (response.error && response.error.message) {
                 $scope.sendAlertErrorMsg(response.error.message);
@@ -263,6 +225,57 @@ angular.module('convenienceApp')
               }else {
                 $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
               }
+            }
+            else{
+
+              PaymentService.associateCard(response.id).then(function (newCard) {
+
+                // Send to your backend
+                var addressBilling = {
+                  mode: 'billing',
+                  firstName: $scope.user.firstName,
+                  lastName: $scope.user.lastName,
+                  address1: $scope.billing.address.address1,
+                  address2: $scope.billing.address.address2,
+                  city: $scope.billing.address.city,
+                  state: $scope.billing.address.state,
+                  zipCode: $scope.billing.address.zipCode,
+                  country: 'US',
+                  telephone: $scope.billing.phone
+                };
+                var addressShipping = angular.extend({}, addressBilling);
+                addressShipping.mode = 'shipping';
+                var payment = {
+                  cartId: CartService.getCurrentCartId(),
+                  addresses: [
+                    addressBilling,
+                    addressShipping
+                  ],
+                  cardId: newCard.id,
+                  userId: CartService.getUserId(),
+                  payment: 'onetime',
+                  paymentMethod: 'creditcard'
+                };
+                PaymentService.sendPayment(payment).then(function () {
+                  CartService.removeCurrentCart();
+                  CartService.createCart();
+                  $scope.saveOrUpdateBillingAddress();
+                  $state.go('thank-you');
+                }).catch(function (err) {
+                  if (err.data) {
+                    $scope.sendAlertErrorMsg(err.data.message);
+                  }
+                });
+
+
+              }).catch(function (err) {
+                $scope.placedOrder = false;
+                for (var key in response.error) {
+                  $scope.sendAlertErrorMsg(response.error[key]);
+                }
+              });
+
+
             }
           });
         } else {
