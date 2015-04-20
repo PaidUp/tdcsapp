@@ -31,7 +31,7 @@ exports.associate = function (req, res) {
         if(err){
           return handleError(res, err);
         }
-          return res.json(200, {});
+          return res.json(200, dataAssociate);
       });
     });
   });
