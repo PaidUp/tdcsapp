@@ -204,6 +204,7 @@ function listBanks (customerId, cb) {
  * @param cb
  */
 function prepareUser(user, cb) {
+  // TODO add validate user magneto.
   if(!user.BPCustomerId) {
     createCustomer(user, function(err, data) {
 
@@ -266,7 +267,8 @@ function fetchBank(bankId, cb){
 
 function fetchCard(customerId ,cardId, cb){
   tdPaymentService.init(config.connections.payment);
-  console.log('---');
+  console.log('customerId',customerId);
+  console.log('cardId',cardId);
   tdPaymentService.fetchCard(customerId , cardId, function(err, creditCard){
     console.log('creditCard',creditCard);
     console.log('err',err);

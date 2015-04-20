@@ -143,6 +143,8 @@ function orderCancel(orderId, cb) {
 
 function orderList(filter, cb){
   TDCommerceService.init(config.connections.commerce);
+  console.log('filter0: {customer_id: user.mageCustomerId}');
+  console.log('filter1:', filter);
   TDCommerceService.orderList({filter : filter}, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
