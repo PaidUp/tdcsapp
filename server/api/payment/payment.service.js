@@ -267,11 +267,7 @@ function fetchBank(bankId, cb){
 
 function fetchCard(customerId ,cardId, cb){
   tdPaymentService.init(config.connections.payment);
-  console.log('customerId',customerId);
-  console.log('cardId',cardId);
   tdPaymentService.fetchCard(customerId , cardId, function(err, creditCard){
-    console.log('creditCard',creditCard);
-    console.log('err',err);
       if(err) return cb(err);
       return cb(null, creditCard);
   });

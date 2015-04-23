@@ -103,7 +103,6 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
   var userEmail;
 
   //var filter = {_id:applicationId};
-  //console.log('filter' , filter);
   loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
     // get the user data with the userId
