@@ -204,10 +204,8 @@ function listBanks (customerId, cb) {
  * @param cb
  */
 function prepareUser(user, cb) {
-  // TODO add validate user magneto.
   if(!user.BPCustomerId) {
     createCustomer(user, function(err, data) {
-
       if (err) return cb(err);
       user.BPCustomerId = data.id;
       userService.save(user,function(err, data){
