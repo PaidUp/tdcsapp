@@ -60,18 +60,18 @@ function associateBank(customerId, bankId, cb) {
   });
 }
 
-function createOrder(merchantCustomerId, description, cb) {
+function createOrder(providerId, description, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.createOrder({merchantCustomerId:merchantCustomerId, description:description}, function(err, data){
+  tdPaymentService.createOrder({merchantCustomerId:providerId, description:description}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
-function debitCard(cardId, amount, description, appearsOnStatementAs, orderId, cb) {
+function debitCard(cardId, amount, description, appearsOnStatementAs, customerId, providerId, cb) {
   tdPaymentService.init(config.connections.payment);
   tdPaymentService.debitCard({cardId:cardId, amount:amount, description:description,
-    appearsOnStatementAs:appearsOnStatementAs, orderId:orderId}, function(err, data){
+    appearsOnStatementAs:appearsOnStatementAs, customerId:customerId, providerId:providerId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -279,7 +279,7 @@ function fetchDebit(debitId, cb){
   });
 }
 
-function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
+function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -291,21 +291,17 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
       prepareCard(user.BPCustomerId, cardId, function (err, cardDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
-        // 2c) Create BP Order
-        createOrder(merchantId, orderId, function(err, BPOrderId) {
-          if(err) return cb(err);
-          logger.info('2d) Report BP Order to Magento.');
-          commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
-            logger.info('2e) Debit BP credit card, order.');
+          //commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
+           // logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
-            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, BPOrderId, function(err, data) {
+            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.BPCustomerId, providerId, function(err, data) {
               if(err) return cb(err);
-              if(data.debits[0].status == 'succeeded') {
+              if(data.status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
-                var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
+                var result = {amount: amount, BPOrderId: data.id, BPDebitId: data.id,
                   paymentMethod: "creditcard", number: cardDetails.fingerprint, brand : cardDetails.brand};
-                commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
+                commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
@@ -315,8 +311,8 @@ function debitOrderCreditCard(orderId, userId, merchantId, amount, cardId, cb) {
                 return cb(data);
               }
             });
-          });
-        });
+          //});
+
       });
     });
   });
@@ -370,12 +366,12 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   });
 }
 
-function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
+function capture(order, user, providerId, amount, paymentMethod, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
 
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user._id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
+    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, function (err, resultDebit) {
       // Debit failed
       if (err) {
         logger.info('Failed, add a comment and mark order as "on hold"');
@@ -422,7 +418,7 @@ function capture(order, user, BPCustomerId, amount, paymentMethod, cb) {
       }
       else {
         // Debit order
-        debitOrderDirectDebit(order.incrementId, user._id, BPCustomerId, amount, paymentId, function (err, resultDebit) {
+        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, paymentId, function (err, resultDebit) {
           // Debit failed
           if (err) {
             logger.info('Failed, add a comment and mark order as "on hold"');
