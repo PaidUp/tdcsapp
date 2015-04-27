@@ -1,7 +1,7 @@
 'use strict';
 
 var loanService = require('./loan.service');
-
+var mix = require('../../config/mixpanel');
 exports.simulate = function (req, res) {
 	loanService.simulate(req.body, function (err, dataSimulate) {
 		if (err) return res.json(409, err);
@@ -19,18 +19,7 @@ exports.create = function (req, res) {
 exports.getloan = function (req, res) {
   loanService.findOne(req.body, function (err, data) {
     if (err) return res.json(409, err);
+    mix.panel.track("getLoan", mix.mergeDataMixpanel(req.body, req.user._id));
     res.json(200, data);
   });
 };
-
-
-// function handleError(res, err) {
-//   var httpErrorCode = 500;
-//   var errors = [];
-
-//   if (err.name === "ValidationError") {
-//     httpErrorCode = 400;
-//   }
-
-//   return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
-// }

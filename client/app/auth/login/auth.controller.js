@@ -88,7 +88,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
       var success = function() {
         // Logged in, redirect to home
         $scope.modal.closeModal();
-        $state.go('athletes');
+        $state.go(AuthService.dest);
+        AuthService.destDefault();
         if ($rootScope.currentUser.verify && $rootScope.currentUser.verify.status !== 'verified') {
           FlashService.addAlert({
             type:'warning',
@@ -130,7 +131,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
             type:'warning',
             templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
           });
-          $state.go('athletes');
+          $state.go(AuthService.dest);
+          AuthService.destDefault();
         }, error);
       };
 

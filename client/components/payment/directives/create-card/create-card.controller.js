@@ -47,7 +47,7 @@ angular.module('convenienceApp')
         var payload = {
           name: $scope.card.nameOnCard,
           card_number: $scope.card.cardNumber,
-          expiration_month: $scope.card.expirationDate.month,
+          expiration_month: $scope.card.expirationDate.month,≤≤
           expiration_year: $scope.card.expirationDate.year,
           security_code: $scope.card.securityCode,
           postal_code: $scope.card.zipCode
@@ -56,7 +56,7 @@ angular.module('convenienceApp')
         Stripe.card.createToken({
           number: $scope.card.cardNumber,
           cvc: $scope.card.securityCode,
-          exp_month: $scope.card.expirationDate.month,
+            exp_month: $scope.card.expirationDate.month,
           exp_year: $scope.card.expirationDate.year
         }, function stripeResponseHandler(status, response) {
             if (response.error) {
@@ -73,7 +73,7 @@ angular.module('convenienceApp')
               }
             } else {
               var token = response.id;
-              PaymentService.associateCard(response.id).then(function () {
+              PaymentService.associateCard(token).then(function () {
                 $scope.loading = false;
                 $state.go('user-payments');
               }).catch(function (err) {

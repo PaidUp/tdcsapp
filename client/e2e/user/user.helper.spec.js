@@ -2,7 +2,7 @@
 
 var signuppo = require('../page-objects/signup.po.js');
 
-exports.signupUserEmail = function(userModel) {
+exports.signupUserEmail = function(userModel,dest) {
   signuppo.openSignupModal();
   signuppo.fillFormByEmail(userModel);
 

@@ -103,7 +103,6 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
   var userEmail;
 
   //var filter = {_id:applicationId};
-  //console.log('filter' , filter);
   loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
     // get the user data with the userId
@@ -240,8 +239,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
   emailVars.amount = parseFloat(amount).toFixed(2);;
 
   paymentService.getUserDefaultCardId(user, function (err, cardId) {
-
-      paymentService.fetchCard(cardId, function (response, account) {
+      paymentService.fetchCard(user.BPCustomerId,cardId, function (response, account) {
         emailVars.accountLast4Digits = account.cards[0].number;
 
         // get the loan object

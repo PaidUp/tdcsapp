@@ -11,6 +11,7 @@ var moment = require('moment');
 var logger = require('../../config/logger');
 var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
+var mix = require('../../config/mixpanel');
 
 exports.collectOneTimePayments = function (cb) {
   logger.log('info', 'into collectOneTimePayments');
@@ -22,7 +23,6 @@ exports.collectOneTimePayments = function (cb) {
     async.eachSeries(data, function (order, callback) {
       if (order.paymentMethod === 'creditcard' && order.payment === 'onetime') {
         userService.find({_id : order.userId}, function (err, user){
-          console.log('user' , user);
           paymentService.capture(order, user[0], order.products[0].BPCustomerId, order.grandTotal, order.paymentMethod, function(err, data){
             if (err) callback(err);
             callback();
@@ -147,6 +147,7 @@ exports.sendRemindToAddPaymentMethod = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToAddPaymentMethod(loan.applicationId,loan.orderId,function(err, data){
+                    mix.panel.track("paymentCronServiceSendRemindAddPaymentMethod", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to add payment method. ');
                     //Sent email.
                     mainCallback();
@@ -209,6 +210,7 @@ exports.sendRemindToVerifyAccount = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToVerifyAccount(loan.applicationId, loan.orderId,function(err, data){
+                    mix.panel.track("paymentCronServiceSendRemindToVerifyAccount", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to verify account. ' + data );
                     //Sent email.
                     mainCallback();
@@ -275,6 +277,7 @@ exports.sendTomorrowChargeLoan = function(cb){
                   loan.notifications.push(objNotification);
                   loanService.save(loan, function(err, newLoan){
                     paymentEmailService.sendTomorrowChargeLoan({loan:loan,schedule:schedule, days:value,orderId:loan.orderId},function(err, data){
+                      mix.panel.track("paymentCronServiceSendTomorrowChargeLoan", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                       logger.log('info', 'send email reminder tomorrow charge loan ' );
                       mainCallback();
                     });

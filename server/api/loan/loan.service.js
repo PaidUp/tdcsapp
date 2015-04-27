@@ -14,7 +14,7 @@ var paymentEmailService = require('../payment/payment.email.service');
 
 var config = require('../../config/environment');
 var tdLoanService = require('TDCore').loanService;
-
+var mix = require('../../config/mixpanel');
 
 function simulate (dataSimulate, cb) {
   tdLoanService.init(config.connections.loan);
@@ -23,20 +23,6 @@ function simulate (dataSimulate, cb) {
     return cb(null, data);
   });
 }
-
-// function isValidNumberPayments(numberPayments) {
-// 	if (typeof numberPayments === 'number' && numberPayments > 0) {
-// 		return true;
-// 	}
-// 	return false;
-// }
-
-// function isValidAmount(amount) {
-// 	if (typeof amount === 'number' && amount > 0) {
-// 		return true;
-// 	}
-// 	return false;
-// }
 
 function save(loan, cb) {
   tdLoanService.init(config.connections.loan);
@@ -86,6 +72,7 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
            save(loan, function (err, dataLoan) {
              if(captureErr.name === 'not-bank-verified') {
                paymentEmailService.sendFinalEmail(user[0], amount, loan.orderId, function (error, data) {
+                  mix.panel.track("loanLoanScheduleSendFinalEmail", mix.mergeDataMixpanel(loan, user[0]._id));
                  logger.log('info', 'Send email capture failed. ');
                  return cb(err);
                });
@@ -101,6 +88,7 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
            //loan.markModified('schedule');
            save(loan, function (err, dataLoan) {
              paymentEmailService.sendProcessedEmail(user, amount, loan.orderId, function(err, data){
+              mix.panel.track("loanLoanScheduleSendProcessedEmail", mix.mergeDataMixpanel(loan, user[0]._id));
                logger.log('info', 'Send email capture processed. ');
              });
              return cb(err);

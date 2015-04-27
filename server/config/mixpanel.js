@@ -1,6 +1,14 @@
 'use strict';
-
+var key = require('./environment').mixpanel.apiKey;
 var mixPanel = require('mixpanel');
-var mixpanel = mixPanel.init('ec0a4bdcce8b969299299e0710f4775a');
+var panel = mixPanel.init(key);
+//for register users in mixpanel, revise file auth.service.
 
-module.exports = mixpanel;
+function mergeDataMixpanel(data, userId){
+    var merge = data;
+    merge.distinct_id = userId;
+    return merge;
+}
+
+exports.panel = panel;
+exports.mergeDataMixpanel = mergeDataMixpanel;
