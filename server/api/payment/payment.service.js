@@ -133,7 +133,7 @@ function deleteBankAccount(customerId, bankId, cb) {
     if(err) return cb(err);
     listBanks(customerId, function(err, dataBanks){
       if(dataBanks.bankAccounts.length === 0){
-        userService.find({meta.TDPaymentId:customerId}, function(err, user){
+        userService.find({'meta.TDPaymentId':customerId}, function(err, user){
           user[0].payment = {};
           userService.save(user[0], function(err, dataUpdateUser){
             if(err){
