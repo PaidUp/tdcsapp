@@ -300,7 +300,7 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, cb) {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
                 var result = {amount: amount, BPOrderId: data.id, BPDebitId: data.id,
-                  paymentMethod: "creditcard", number: cardDetails.fingerprint, brand : cardDetails.brand};
+                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand};
                 commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
@@ -379,7 +379,7 @@ function capture(order, user, providerId, amount, paymentMethod, cb) {
         commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
           commerceService.orderHold(order.incrementId, function(err, data){
             //TODO
-            paymentEmailService.sendFinalEmailCreditCard(user, amount, order.incrementId, function(error, data){
+            paymentEmailService.sendFinalEmailCreditCard(user, amount, order, function(error, data){
               mix.panel.track("paymentCaptureSendFinalEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
               logger.log('info', 'send email final email ' + data );
             });
@@ -392,7 +392,7 @@ function capture(order, user, providerId, amount, paymentMethod, cb) {
         // Debit succeed
         logger.info('3) Success, add a comment and mark order as "processing"');
         // 3) Add a comment and mark order as "processing"
-        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
+        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.id, 'processing', function (err, result) {
           if (err) return cb(err);
           //TODO
           paymentEmailService.sendProcessedEmailCreditCard(user, amount, resultDebit.number, order.incrementId, function(err, data){

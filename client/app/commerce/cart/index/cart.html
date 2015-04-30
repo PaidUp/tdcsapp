@@ -27,7 +27,7 @@
             </td>
             <td class="hidden-xs">{{team.attributes.price | currency}}</td>
             <td>{{team.attributes.qty}}</td>
-            <td>{{team.attributes.price | currency}}</td>
+            <td>{{team.attributes.rowTotal | currency}}</td>
           </tr>
 
           <tr ng-repeat="requiredItem in item.attributes.requiredItems">
