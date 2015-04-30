@@ -50,7 +50,7 @@ exports.place = function(req, res) {
     paymentMethod: req.body.paymentMethod,
     athleteId: req.body.userId,
     cardId: req.body.cardId,
-    customerId: req.user.BPCustomerId
+    customerId: req.user.meta.TDPaymentId
   }
   // Process order
   if (req.body.payment == "loan") {
@@ -102,8 +102,8 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
         paymentService.prepareUser(user, function (err, user) {
           if(err) logger.log('error',err);
           var team = {
-            name: shoppingCart.items[1].name,
-            sku: shoppingCart.items[1].sku
+            name: shoppingCart.items[0].name,
+            sku: shoppingCart.items[0].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
             child[0].teams.push(team);

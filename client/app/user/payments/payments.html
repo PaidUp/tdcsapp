@@ -2,13 +2,12 @@
 <div class="container payments-container">
   <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
-      <h4 class="text-CS pull-left">Bank Account</h4>
+      <h4 class="text-CS pull-left">Payment Methods</h4>
       <br>
       <br>
-      <strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
+      <!--strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
       <table class="table table-payment-methods">
         <thead>
-          <!-- <td width="15%" class="text-center"><strong>{{'primary' | uppercase}}</strong></td> -->
           <td><strong>{{'details' | uppercase}}</strong></td>
         </thead>
         <tbody>
@@ -18,19 +17,6 @@
             </td>
           </tr>
           <tr ng-repeat="account in bankAccounts">
-            <!-- <td width="15%" class="text-center">
-              <div class="radio center-block">
-                <label>
-                  <input type="radio"
-                          name="primaryAccount"
-                          ng-value="true"
-                          ng-model="account.primary"
-                          required
-                          ng-required="true">
-                  <div></div>
-                </label>
-              </div>
-            </td> -->
             <td>
               <strong>{{account.bankName}}</strong> <br>
               {{account.accountNumber}}
@@ -49,7 +35,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </table -->
 
       <h4 class="text-CS">Credit / Debit card</h4>
       <strong class="pull-right"> + <a ui-sref="user-card-create" href="">ADD NEW CARD</a></strong>

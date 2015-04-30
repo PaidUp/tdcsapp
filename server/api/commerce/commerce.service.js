@@ -16,7 +16,7 @@ var ORDER_STATUS = {
 function getUserOrders(user, cb) {
   var orders = [];
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
+  TDCommerceService.orderList({customer_id: user.meta.TDCommerceId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
     }
@@ -81,7 +81,7 @@ function getOrder(user, orderId, cb) {
 function getUsertransactions(user, cb) {
   var transactions = [];
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.orderList({customer_id: user.mageCustomerId}, function (err, magentoOrders) {
+  TDCommerceService.orderList({customer_id: user.meta.TDCommerceId}, function (err, magentoOrders) {
     if (err) {
       return cb(err);
     }
