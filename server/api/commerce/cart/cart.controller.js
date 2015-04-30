@@ -7,12 +7,12 @@ var logger = require('../../../config/logger');
 var mix = require('../../../config/mixpanel');
 
 // Creates a new cart in the DB.
-exports.create = function (req, res) {
-  cartService.cartCreate(function (err, cartId){
-    cartService.addFee(cartId, function (err, data) {
-      mix.panel.track("createCart", mix.mergeDataMixpanel({cartId: cartId}, req.user._id));
-      res.json(200, {cartId: cartId});
-    })
+exports.create = function(req, res) {
+  cartService.cartCreate(function(err, cartId){
+    //cartService.addFee(cartId, function(err, data) {
+      //res.json(200, {cartId: cartId});
+    //})
+    res.json(200, {cartId: cartId});
   });
 }
 

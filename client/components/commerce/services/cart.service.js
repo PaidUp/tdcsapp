@@ -77,4 +77,28 @@ angular.module('convenienceApp')
     this.getUserId = function () {
       return $cookieStore.get('userId');
     };
+    
+    var subTotal = 0;
+
+    this.getSubtotal = function () {
+      return subTotal;
+    };
+
+    this.calculatePrice = function (price, selectedCustomOptions, custionOptions) {
+      var resp = Number(price);
+      angular.forEach(selectedCustomOptions, function (selectedVal, selectedKey) {
+        for (var option in custionOptions) {
+          if (selectedKey === custionOptions[option].optionId) {
+            for (var value in custionOptions[option].values) {
+              if (selectedVal === custionOptions[option].values[value].valueId) {
+                resp = resp + Number(custionOptions[option].values[value].price);
+              }
+            }
+          }
+        }
+      });
+      subTotal = resp;
+      return resp;
+    };
+
   });

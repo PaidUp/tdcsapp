@@ -71,7 +71,7 @@ function prepareMerchantProducts (shoppingCart, cb) {
   // TODO
   // check on every product if it has a different Merchant (provider or BPMerchantId)
 
-  var product = shoppingCart.items[1];
+  var product = shoppingCart.items[0];
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.catalogProduct(product.productId, function(err, data){
     products.push({

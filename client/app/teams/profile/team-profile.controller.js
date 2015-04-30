@@ -20,6 +20,7 @@ angular.module('convenienceApp')
 
     TeamService.getTeam($stateParams.teamId).then(function (team) {
       $scope.team = team;
+      $scope.price = Number($scope.team.attributes.price);
       $scope.selectedCustomOptions = {
         productId: $scope.team.attributes.productId,
         sku: $scope.team.attributes.sku,
@@ -83,7 +84,10 @@ angular.module('convenienceApp')
     $scope.changeCustomOptions = function (customOption, optionModel) {
       if (optionModel && optionModel.valueId) {
         $scope.selectedCustomOptions.options[customOption.optionId] = optionModel.valueId;
-      }
+      } 
+      $scope.price = CartService.calculatePrice($scope.team.attributes.price,
+        $scope.selectedCustomOptions.options,
+        $scope.team.attributes.customOptions[0]);
     };
 
     // $scope.selectAthlete = function (athlete) {
