@@ -70,7 +70,6 @@ exports.listCards = function(req, res){
 }
 
 exports.getCard = function(req, res){
-  console.log('get card');
 	if(!req.params.id){
 		return res.json({
 			"code": "ValidationError",

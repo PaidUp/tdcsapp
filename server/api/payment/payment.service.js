@@ -204,7 +204,7 @@ function listBanks (customerId, cb) {
  * @param cb
  */
 function prepareUser(user, cb) {
-  if(!user.meta.TDPaymentId) {
+  if(user.meta.TDPaymentId === '') {
     createCustomer(user, function(err, data) {
       if (err) return cb(err);
       user.meta.TDPaymentId = data.id;
