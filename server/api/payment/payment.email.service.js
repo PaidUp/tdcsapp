@@ -239,7 +239,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
   emailVars.amount = parseFloat(amount).toFixed(2);;
 
   paymentService.getUserDefaultCardId(user, function (err, cardId) {
-      paymentService.fetchCard(user.BPCustomerId,cardId, function (response, account) {
+      paymentService.fetchCard(user.meta.TDPaymentId,cardId, function (response, account) {
         emailVars.accountLast4Digits = account.cards[0].number;
 
         // get the loan object

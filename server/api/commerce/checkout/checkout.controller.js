@@ -50,7 +50,7 @@ exports.place = function(req, res) {
     paymentMethod: req.body.paymentMethod,
     athleteId: req.body.userId,
     cardId: req.body.cardId,
-    customerId: req.user.BPCustomerId
+    customerId: req.user.meta.TDPaymentId
   }
   // Process order
   if (req.body.payment == "loan") {

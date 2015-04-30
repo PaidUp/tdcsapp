@@ -6,10 +6,10 @@ function parentsBuy(cb) {
   var result = [];
   var userIds = [];
   var familyIds = [];
-  User.find({BPCustomerId: {$exists: true}}, {
+  User.find({meta.TDPaymentId: {$exists: true}}, {
     firstName: true,
     lastName: true,
-    BPCustomerId: true
+    meta.TDPaymentId: true
   }, function (err, userBuy) {
     for (var i = 0; i < userBuy.length; i++) {
       userIds.push(userBuy[i]._id);
@@ -22,7 +22,7 @@ function parentsBuy(cb) {
         email: true,
         firstName: true,
         lastName: true,
-        BPCustomerId: true,
+        meta.TDPaymentId: true,
         teams: true
       }, function (err, userFamily) {
         for (var k = 0; k < userFamily.length; k++) {
@@ -37,7 +37,7 @@ function parentsBuy(cb) {
           for (var l = 0; l < user.teams.length; l++) {
             teams.push(user.teams[l].sku);
           }
-          result.push([type, user._id, user.firstName, user.lastName, user.email, user.BPCustomerId, teams]);
+          result.push([type, user._id, user.firstName, user.lastName, user.email, user.meta.TDPaymentId, teams]);
         }
         return cb(err, result);
       });

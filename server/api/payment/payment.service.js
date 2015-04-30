@@ -133,7 +133,7 @@ function deleteBankAccount(customerId, bankId, cb) {
     if(err) return cb(err);
     listBanks(customerId, function(err, dataBanks){
       if(dataBanks.bankAccounts.length === 0){
-        userService.find({BPCustomerId:customerId}, function(err, user){
+        userService.find({meta.TDPaymentId:customerId}, function(err, user){
           user[0].payment = {};
           userService.save(user[0], function(err, dataUpdateUser){
             if(err){
@@ -204,10 +204,10 @@ function listBanks (customerId, cb) {
  * @param cb
  */
 function prepareUser(user, cb) {
-  if(!user.BPCustomerId) {
+  if(!user.meta.TDPaymentId) {
     createCustomer(user, function(err, data) {
       if (err) return cb(err);
-      user.BPCustomerId = data.id;
+      user.meta.TDPaymentId = data.id;
       userService.save(user,function(err, data){
         if (err) return cb(err);
         return cb(null, data);
@@ -288,13 +288,13 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, cb) {
       if(err) return cb(err);
       logger.info('2b) Associate BP customer credit card');
       // 2b) Associate BP customer credit card
-      prepareCard(user.BPCustomerId, cardId, function (err, cardDetails) {
+      prepareCard(user.meta.TDPaymentId, cardId, function (err, cardDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
           //commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
            // logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
-            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.BPCustomerId, providerId, function(err, data) {
+            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, function(err, data) {
               if(err) return cb(err);
               if(data.status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
@@ -324,13 +324,13 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
 
-    var BPCustomerId = user[0].BPCustomerId;
+    var TDPaymentId = user[0].meta.TDPaymentId;
 
     prepareUser(user[0], function (err, user) {
       if(err) return cb(err);
       logger.info('2b) Associate BP customer bank account');
       // 2b) Associate BP customer credit card
-      prepareBank(BPCustomerId, bankId, function (err, bankDetails) {
+      prepareBank(TDPaymentId, bankId, function (err, bankDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
         // 2c) Create BP Order
@@ -446,7 +446,7 @@ function capture(order, user, providerId, amount, paymentMethod, cb) {
 
 function getUserDefaultBankId(user, cb) {
   // Check bank accounts
-  listBanks(user.BPCustomerId, function(err, data){
+  listBanks(user.meta.TDPaymentId, function(err, data){
     if(err) return cb(err);
     if(data.bankAccounts.length == 0) {
       // error
@@ -497,7 +497,7 @@ function setUserDefaultBank(user, cb) {
 
 function getUserDefaultCardId(user, cb) {
   // Check bank accounts
-  listCards(user.BPCustomerId, function(err, data){
+  listCards(user.meta.TDPaymentId, function(err, data){
     if(err) return cb(err);
     if(data.data.length == 0) {
       // error

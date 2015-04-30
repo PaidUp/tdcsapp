@@ -78,7 +78,7 @@ function prepareMerchantProducts (shoppingCart, cb) {
       productId : data.productId,
       productSku: data.sku,
       productPurchaseSku: product.sku,
-      BPCustomerId: data.balancedCustomerId
+      TDPaymentId: data.balancedCustomerId
     });
     return cb(null, products);
   });
