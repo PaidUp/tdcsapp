@@ -128,7 +128,6 @@ describe('Credit Workflow', function () {
 
   it('should sign out', function(){
     browser.get(browser.baseUrl);
-    //browser.waitForAngular();
     user.signOut();
   });
 
