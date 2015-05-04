@@ -10,14 +10,26 @@ var teamspo = require('../page-objects/teams.po');
 var loanpo = require('../page-objects/loan.po');
 
 describe('Credit Workflow', function () {
+  
+    beforeEach(function() {
+      
+    });
 
-  beforeEach(function () {});
+  
 
   it("should be signed in", function () {
-    user.signupUserEmail(models.signup);
+    browser.get('/');
+    browser.waitForAngular();
+    //browser.findElement(by.id('singup')).then(function(){
+      user.signupUserEmail(models.signup);  
+    //}
+      
+    //);
+    
   });
 
   it("should register a child", function () {
+    browser.get('/');
     element(by.css('.my-athletes')).click();
     browser.getLocationAbsUrl().then(function (url) {
       expect(url).toEqual('/athletes/dashboard');
@@ -45,15 +57,15 @@ describe('Credit Workflow', function () {
       expect(browser.manage().getCookie('userId')).toBeDefined();
       element(by.id('proceed-to-checkout')).click();
       browser.getLocationAbsUrl().then(function (url) {
-        expect(url).toEqual('/payment/loan');
+        expect(url).toEqual('/payment/creditcard');
       });
     });
   });
 
   it("should go to credit card payment", function() {
-    var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
-    expect(tabs.count()).toEqual(2);
-    tabs.get(1).click();
+    //var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
+    //expect(tabs.count()).toEqual(1);
+    //tabs.get(1).click();
     browser.getLocationAbsUrl().then(function (url) {
         expect(url).toEqual('/payment/creditcard');
     });
@@ -115,6 +127,8 @@ describe('Credit Workflow', function () {
 //  });
 
   it('should sign out', function(){
+    browser.get(browser.baseUrl);
+    //browser.waitForAngular();
     user.signOut();
   });
 
