@@ -30,13 +30,13 @@
                 Bank Account: {{transaction.details.rawDetailsInfo.account | uppercase}}
               </td>
               <td ng-show="transaction.order.card">
-                Credit Card: {{transaction.details.rawDetailsInfo.number | uppercase}}
+                Credit Card: {{transaction.order.card.last4 | uppercase}}
               </td>
               <td>
                 {{transaction.order.products[0].productPurchaseSku | cleaner}}
               </td>
               <td>
-                {{transaction.details.rawDetailsInfo.amount | currency}}
+                {{transaction.grandTotal| currency}}
               </td>
             </tr>
           </tbody>
