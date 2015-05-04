@@ -70,7 +70,7 @@
                       </div>
                       <div ng-show="order.card">
                         <span class="bank-acount">
-                          <strong>Credit Card:</strong> {{order.card.cards[0].number}}
+                          <strong>Credit Card:</strong> {{order.card.last4}}
                         </span><br>
                         <span class="next-payment">
                           <strong>Payment date:</strong> {{prettify(order.createdAt)}}
