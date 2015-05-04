@@ -19,11 +19,11 @@ exports.listOrders = function (req, res) {
       if (err) {
         callback(err);
       }
-      userService.findOne({_id: order.athleteId}, function (err, athlete) {
+      userService.find({_id: order.athleteId}, function (err, athlete) {
         if (err) {
           callback(err);
         }
-        order.athlete = athlete;
+        order.athlete = athlete[0];
         callback();
       });
     }, function (err) {

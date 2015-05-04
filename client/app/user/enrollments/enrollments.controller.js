@@ -19,17 +19,14 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
-
     CommerceService.getOrders().then(function (orders) {
       if (orders.length === 0) {
         $scope.noEnrollments = true;
         $scope.loading = false;
         return;
       }
-      // console.log(orders);
       $scope.orders = orders;
       angular.forEach($scope.orders, function (order) {
-        // console.log(order)
         TeamService.getTeam(order.products[0].productId).then(function (team) {
           order.isOpen = false;
           order.team = team;

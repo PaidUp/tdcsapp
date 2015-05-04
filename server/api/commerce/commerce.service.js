@@ -64,7 +64,7 @@ function getOrder(user, orderId, cb) {
         });
       });
     } else if (magentoOrder.paymentMethod === 'creditcard') {
-      paymentService.fetchCard(magentoOrder.cardId, function (err, card) {
+      paymentService.fetchCard(user.meta.TDPaymentId ,magentoOrder.cardId, function (err, card) {
         if (err) {
           return cb(err);
         }
