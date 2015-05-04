@@ -8,35 +8,46 @@ var user = require('../user/user.helper.spec.js');
 var athlete = require('../athletes/athlete.helper.spec.js');
 var teamspo = require('../page-objects/teams.po');
 var loanpo = require('../page-objects/loan.po');
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+var expect = chai.expect;
+var webdriver = require('selenium-webdriver');
+var protractor = require('protractor');
+var ptor;
+
 
 describe('Credit Workflow', function () {
   
+  
+  
     beforeEach(function() {
-      
+     
     });
 
   
 
-  it("should be signed in", function () {
-    browser.get('/');
-    browser.waitForAngular();
-    //browser.findElement(by.id('singup')).then(function(){
-      user.signupUserEmail(models.signup);  
-    //}
-      
-    //);
-    
-  });
-
-  it("should register a child", function () {
-    browser.get('/');
-    element(by.css('.my-athletes')).click();
-    browser.getLocationAbsUrl().then(function (url) {
-      expect(url).toEqual('/athletes/dashboard');
-      var athleteModel = models.athlete;
-      athlete.addAthlete(athleteModel);
+    it("should be signed in", function () {
+      browser.get('/').then(function () {
+        browser.waitForAngular().then(function () {
+          user.signupUserEmail(models.signup);
+        });
+      });
     });
-  });
+
+    it("should register a child", function () {
+      //element(by.css('.close')).click();
+      browser.get('/').then(function () {
+        element(by.css('.my-athletes')).click();
+        browser.waitForAngular().then(function () {
+          browser.getLocationAbsUrl().then(function (url) {
+            expect(url).toEqual('/athletes/dashboard');
+            var athleteModel = models.athlete;
+            athlete.addAthlete(athleteModel);
+          });
+        });
+      });
+    });
 
   it("should select a team for a selected child", function () {
     athlete.selectAthlete();
