@@ -128,6 +128,7 @@ describe.only('Cronjob workflow OK', function (){
       paymentService.createCard(cardDetails , function(err, token){
         if(err) return done(err);
         assert(token);
+
         modelSpec.tokenCard = token;
         done();
       });
@@ -160,7 +161,6 @@ describe.only('Cronjob workflow OK', function (){
           if (err) return done(err);
           assert(res.body);
           modelSpec.orderId = res.body
-          console.log('res.body' , res.body);
           done();
         });
     });

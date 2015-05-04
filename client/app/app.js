@@ -77,7 +77,7 @@ angular.module('convenienceApp', [
         delete currentUserMp.addresses;
         delete currentUserMp.contacts;
         delete currentUserMp.teams;
-        delete currentUserMp.BPCustomerId;
+        delete currentUserMp.meta.TDPaymentId;
         delete currentUserMp.verify;
         delete currentUserMp.__v;
         delete currentUserMp.$promise;
