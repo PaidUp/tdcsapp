@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BigHippo_Api>
+            <version>1.0.0</version>
+        </BigHippo_Api>
+    </modules>
+    <global>
+      <blocks>
+          <bighippo_api>
+              <class>BigHippo_Api_Block</class>
+          </bighippo_api>
+      </blocks>
+      <helpers>
+          <bighippo_api>
+              <class>BigHippo_Api_Helper</class>
+          </bighippo_api>
+      </helpers>
+      <models>
+        <bighippo_api>
+          <class>BigHippo_Api_Model</class>
+        </bighippo_api>
+      </models>
+    </global>
+</config>
