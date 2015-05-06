@@ -19,12 +19,14 @@ angular.module('convenienceApp')
         angular.forEach(cart.items, function (cartItem, index) {
           TeamService.getTeam(cartItem.productId).then(function (team) {
             team.attributes.qty = cartItem.qty;
+            team.attributes.price = cartItem.price;
+            team.attributes.rowTotal = cartItem.rowTotal;
             if(team.attributes.productId === '9'){
               feeItem = team;
             }else{
               $scope.teams.push(team);
             }
-            if (cart.items.length-1 === index){
+            if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
               $scope.teams.push(feeItem);
             }
           });
@@ -49,7 +51,7 @@ angular.module('convenienceApp')
 
     $scope.checkouOrder = function () {
       // $state.go('checkout');
-      $state.go('payment-loan-index');
+      $state.go('payment-credit-card');
     };
 
     $scope.removeCart = function () {

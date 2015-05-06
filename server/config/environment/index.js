@@ -162,7 +162,10 @@ var all = {
     appearsOnStatementAs: "Conv. Select"
   },
   stripe:{
-    apiPublic: "ak-test-p8Ob9vp9GnqWNwFf6CeLLokeQsf76RIe",
+    apiPublic: "pk_test_J5gfockQi2DP28GszFZvTnwS",
+  },
+  mixpanel:{
+    apiKey: "ec0a4bdcce8b969299299e0710f4775a",
   },
   loan:{
     defaults: {

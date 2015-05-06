@@ -7,8 +7,8 @@ var camelize = require('camelize');
 
 //TODO
 /*
- For every API validate if user have BPCustomerId.
- if user not have BPCustomerId use method Prepared User.
+ For every API validate if user have TDPaymentId.
+ if user not have TDPaymentId use method Prepared User.
 */
 
 exports.create = function (req, res) {
@@ -30,13 +30,13 @@ exports.create = function (req, res) {
 
 
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      if (!userPrepared.BPCustomerId) {
+      if (!userPrepared.meta.TDPaymentId) {
         return res.json(400, {
           "code": "ValidationError",
-          "message": "User without BPCustomerId"
+          "message": "User without TDPaymentId"
         });
       }
-      paymentService.associateBank(userPrepared.BPCustomerId, bankId, function (err, dataAssociate) {
+      paymentService.associateBank(userPrepared.meta.TDPaymentId, bankId, function (err, dataAssociate) {
         if (err) {
           return handleError(res, err);
         }
@@ -67,13 +67,13 @@ exports.listBanks = function (req, res) {
     }
 
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      if (!userPrepared.BPCustomerId) {
+      if (!userPrepared.meta.TDPaymentId) {
         return res.json(400, {
           "code": "ValidationError",
-          "message": "User without BPCustomerId"
+          "message": "User without TDPaymentId"
         });
       }
-      paymentService.listBanks(userPrepared.BPCustomerId, function (err, dataBanks) {
+      paymentService.listBanks(userPrepared.meta.TDPaymentId, function (err, dataBanks) {
         if (err) {
         } else {
           if(dataBanks.bankAccounts.length === 0){
@@ -125,10 +125,10 @@ exports.verify = function (req, res) {
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      if (!userPrepared.BPCustomerId) {
+      if (!userPrepared.meta.TDPaymentId) {
         return res.json(400, {
           "code": "ValidationError",
-          "message": "User without BPCustomerId"
+          "message": "User without TDPaymentId"
         });
       }
       paymentService.confirmBankVerification(verificationId, deposit1, deposit2, function (err, data) {
@@ -189,13 +189,13 @@ exports.pending = function (req, res) {
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser, function (err, userPrepared) {
-      if (!userPrepared.BPCustomerId) {
+      if (!userPrepared.meta.TDPaymentId) {
         return res.json(400, {
           "code": "ValidationError",
-          "message": "user without BPCustomerId"
+          "message": "user without TDPaymentId"
         });
       }
-      paymentService.listBanks(req.user.BPCustomerId, function (err, dataBanks) {
+      paymentService.listBanks(req.user.meta.TDPaymentId, function (err, dataBanks) {
         if (err) {
           return res.json(400, {
             "code": "ValidationError",
@@ -232,10 +232,10 @@ exports.getBank = function (req, res) {
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      if (!userPrepared.BPCustomerId) {
+      if (!userPrepared.meta.TDPaymentId) {
         return res.json(400, {
           "code": "ValidationError",
-          "message": "User without BPCustomerId"
+          "message": "User without TDPaymentId"
         });
       }
 

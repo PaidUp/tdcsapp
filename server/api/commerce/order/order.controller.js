@@ -7,6 +7,7 @@ var logger = require('../../../config/logger');
 var userLoanService = require('../../loan/application/user/user.service');
 var commerceService = require('../commerce.service');
 var async = require('async');
+var mix = require('../../../config/mixpanel');
 
 exports.listOrders = function (req, res) {
   var user = req.user;
@@ -18,15 +19,16 @@ exports.listOrders = function (req, res) {
       if (err) {
         callback(err);
       }
-      userService.findOne({_id: order.athleteId}, function (err, athlete) {
+      userService.find({_id: order.athleteId}, function (err, athlete) {
         if (err) {
           callback(err);
         }
-        order.athlete = athlete;
+        order.athlete = athlete[0];
         callback();
       });
     }, function (err) {
       if (err) { return handleError(res, err); }
+      mix.panel.track("orderList", mix.mergeDataMixpanel(orders, req.user._id));
       return res.json(200, orders);
     });
   });

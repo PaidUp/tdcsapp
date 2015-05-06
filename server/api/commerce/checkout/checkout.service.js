@@ -9,7 +9,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
   tdCommerceService.init(config.connections.commerce);
   tdCommerceService.customerCreate(user, function(err, customer) {
     if(err) {return cb(err);}
-    user.mageCustomerId = customer;
+    user.meta.TDCommerceId = customer;
     tdUserService.init(config.connections.user);
     tdUserService.save(user, function(err, userPrepared){
       if(err) {return cb(err);}

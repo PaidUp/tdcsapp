@@ -476,6 +476,13 @@ module.exports = function (grunt) {
             suite: 'sadPath'
           }
         }
+      },
+      authPath:{
+        options: {
+          args: {
+            suite: 'authPath'
+          }
+        }
       }
     },
 
@@ -683,6 +690,8 @@ module.exports = function (grunt) {
         generalTasks.push('protractor:verifyBankAccountPath');
       }else if (target2 === 'testFlow'){
         generalTasks.push('protractor:testFlowPath');
+        }else if (target2 === 'auth'){
+          generalTasks.push('protractor:authPath');
       }else{
         //generalTasks.push('protractor:testFlowPath');
         generalTasks.push('protractor:loanPath');

@@ -13,8 +13,10 @@ var logger = require('../../../config/logger');
 var contractEmail = require('../../loan/loan.contract.email.service');
 var loanApplicationService = require('../../loan/application/loanApplication.service');
 var userLoanService = require('../../loan/application/user/user.service');
+var mix = require('../../../config/mixpanel');
 
 exports.place = function(req, res) {
+  mix.panel.track("placeCheckoutStart", mix.mergeDataMixpanel(req.body, req.user._id));
   if(!req.body || !req.body.addresses || !req.body.paymentMethod || !req.body.payment) {
     return res.json(400, {
       "code": "ValidationError",
@@ -27,6 +29,7 @@ exports.place = function(req, res) {
       "message": "CardId is required with onetime payment."
     });
   }
+
   if(! (['creditcard','directdebit'].indexOf(req.body.paymentMethod) > -1)) {
     return res.json(400, {
       "code": "ValidationError",
@@ -46,7 +49,8 @@ exports.place = function(req, res) {
     payment: req.body.payment,
     paymentMethod: req.body.paymentMethod,
     athleteId: req.body.userId,
-    cardId: req.body.cardId
+    cardId: req.body.cardId,
+    customerId: req.user.meta.TDPaymentId
   }
   // Process order
   if (req.body.payment == "loan") {
@@ -63,6 +67,7 @@ exports.place = function(req, res) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
                 userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
                   contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {
+                    mix.panel.track("placeCheckoutSendContractEmail", mix.mergeDataMixpanel(req.body, req.user._id));
                     if(err){
                       logger.info(err, err);
                     }
@@ -97,8 +102,8 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
         paymentService.prepareUser(user, function (err, user) {
           if(err) logger.log('error',err);
           var team = {
-            name: shoppingCart.items[1].name,
-            sku: shoppingCart.items[1].sku
+            name: shoppingCart.items[0].name,
+            sku: shoppingCart.items[0].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
             child[0].teams.push(team);
@@ -109,17 +114,18 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             } else {
               action = 'fetchCard';
             };
-            paymentService[action](orderData.cardId, function(err, account){
+            paymentService[action](orderData.customerId, orderData.cardId, function(err, account){
               var accountNumber;
               if (orderData.paymentMethod==='directdebit') {
                 accountNumber = '';
               }else{
-                accountNumber = account.cards[0].number;
+                accountNumber = account.last4;
               }
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
+                  mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
                   if(err) logger.log('error',err);
                 });
                 return cb(null, magentoOrderId);

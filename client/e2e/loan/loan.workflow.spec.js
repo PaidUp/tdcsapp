@@ -9,7 +9,7 @@ var loanpo = require('../page-objects/loan.po');
 var payments = require('../user/payments/payments.helper.spec.js');
 var verifyBankAccount = require('../page-objects/verify-bank-account.po');
 
-describe('Loan Workflow', function () {
+describe.skip('Loan Workflow', function () {
 
   beforeEach(function () {});
 

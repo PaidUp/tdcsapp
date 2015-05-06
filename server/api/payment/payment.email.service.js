@@ -103,7 +103,6 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
   var userEmail;
 
   //var filter = {_id:applicationId};
-  //console.log('filter' , filter);
   loanApplicationService.findOne(applicationId, function(err, applicationData){
     var userId = applicationData.applicantUserId;
     // get the user data with the userId
@@ -232,53 +231,44 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
   });
 };
 
-exports.sendFinalEmailCreditCard = function  (user, amount, orderId, cb) {
+exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
   var emailVars = config.emailVars;
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
 
-  paymentService.getUserDefaultCardId(user, function (err, cardId) {
+  paymentService.fetchCard(user.BPCustomerId, order.cardId, function (response, account) {
+    emailVars.accountLast4Digits = account.last4;
 
-      paymentService.fetchCard(cardId, function (response, account) {
-        emailVars.accountLast4Digits = account.cards[0].number;
+    // get the loan object
+    commerceService.orderLoad(order.incrementId, function (err, magentoOrder) {
+      emailTemplates(config.emailTemplateRoot, function (err, template) {
 
-        // get the loan object
-        commerceService.orderLoad(orderId, function (err, magentoOrder) {
+        if (err) return cb(err);
+        emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        template('payment/final', emailVars, function (err, html, text) {
 
-          emailTemplates(config.emailTemplateRoot, function (err, template) {
+          if (err) return cb(err);
 
-            if (err) return cb(err);
-            emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
-
-            template('payment/final', emailVars, function (err, html, text) {
-
-              if (err) return cb(err);
-
-              var mailOptions = config.emailOptions;
-              mailOptions.to = user.email;
-              mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
-
-              mailOptions.html = html;
-              mailOptions.subject = 'Oh Oh – Insufficient Funds In Your Account – ' + emailVars.team;
-
-              mailOptions.attachments = [];
-
-              transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  return cb(err);
-                } else {
-                  return cb(null, info);
-                }
-              });
-
-            });
+          var mailOptions = config.emailOptions;
+          mailOptions.to = user.email;
+          mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
+          mailOptions.html = html;
+          mailOptions.subject = 'Oh Oh – Insufficient Funds In Your Account – ' + emailVars.team;
+          mailOptions.attachments = [];
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return cb(err);
+            } else {
+              return cb(null, info);
+            }
           });
-
         });
-
       });
+
+    });
+
   });
 };
 

@@ -20,18 +20,18 @@ exports.associate = function (req, res) {
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser[0], function(err, userPrepared){
-      if(!userPrepared.BPCustomerId){
+      if(!userPrepared.meta.TDPaymentId){
       return res.json(400, {
           "code": "ValidationError",
-          "message": "user without BPCustomerId"
+          "message": "user without TDPaymentId"
         });
       }
 
-      paymentService.associateCard(userPrepared.BPCustomerId, cardId, function(err, dataAssociate){
+      paymentService.associateCard(userPrepared.meta.TDPaymentId, cardId, function(err, dataAssociate){
         if(err){
           return handleError(res, err);
         }
-          return res.json(200, {});
+          return res.json(200, dataAssociate);
       });
     });
   });
@@ -44,13 +44,13 @@ exports.listCards = function(req, res){
       return handleError(res, err);
     }
     paymentService.prepareUser(dataUser[0], function(err, userPrepared){
-      if(!userPrepared.BPCustomerId){
+      if(!userPrepared.meta.TDPaymentId){
         return res.json(400,{
               "code": "ValidationError",
-              "message": "user without BPCustomerId"
+              "message": "user without TDPaymentId"
         });
       }
-      paymentService.listCards(userPrepared.BPCustomerId, function(err, dataCards){
+      paymentService.listCards(userPrepared.meta.TDPaymentId, function(err, dataCards){
         if(err){
           return res.json(400,{
             "code": "ValidationError",
@@ -82,10 +82,10 @@ exports.getCard = function(req, res){
 	      	return handleError(res, err);
 	    }
 	    paymentService.prepareUser(dataUser[0], function(err, userPrepared){
-	      	if(!userPrepared.BPCustomerId){
+	      	if(!userPrepared.meta.TDPaymentId){
 	        	return res.json(400,{
 	            	"code": "ValidationError",
-	            	"message": "User without BPCustomerId"
+	            	"message": "User without TDPaymentId"
 	    		});
 			}
 

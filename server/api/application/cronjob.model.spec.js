@@ -9,6 +9,7 @@ var data = {
     fullName : function(){
         return this.firstName + ' ' + this.lastName;
     },
+    meta:{},
     password : 'Querty1!',
     token:'',
     childId:'',

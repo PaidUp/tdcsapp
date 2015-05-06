@@ -2,6 +2,7 @@
 
 angular.module('convenienceApp')
   .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook) {
+
     if(SessionService.getCurrentSession()) {
       $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
     }
@@ -11,6 +12,12 @@ angular.module('convenienceApp')
     });
 
     return {
+
+      dest:'athletes',
+
+      destDefault :function(){
+        this.dest  = 'athletes';
+      },
 
       updateCurrentUser: function () {
         $rootScope.$emit('close-alerts');

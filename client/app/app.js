@@ -73,7 +73,14 @@ angular.module('convenienceApp', [
       var currentUserMp = AuthService.getCurrentUser();
       if(currentUserMp && currentUserMp._id){
         $analytics.setUsername(currentUserMp._id);
-        currentUserMp.name = currentUserMp.firstName  +' '+ currentUserMp.lastName + ' - ' +currentUserMp.email;
+        currentUserMp.name = currentUserMp.firstName  +' '+ currentUserMp.lastName + ' ' +currentUserMp.email;
+        delete currentUserMp.addresses;
+        delete currentUserMp.contacts;
+        delete currentUserMp.teams;
+        delete currentUserMp.meta.TDPaymentId;
+        delete currentUserMp.verify;
+        delete currentUserMp.__v;
+        delete currentUserMp.$promise;
         $analytics.setUserProperties(currentUserMp);
       }
       AuthService.isLoggedInAsync(function(loggedIn) {
