@@ -22,7 +22,7 @@ exports.config = {
   suites: {
     loanPath: [
       // LOAN PAYMENT
-      'client/e2e/loan/loan.workflow.spec.js'
+      //'client/e2e/loan/loan.workflow.spec.js'
       // 'client/e2e/signup/*.spec.js',
       // 'client/e2e/add-athlete/*.spec.js',
       // 'client/e2e/select-team-for-athlete/*.spec.js',
@@ -36,10 +36,10 @@ exports.config = {
 //      'client/e2e/loan/*.spec.js',
     ],
     creditPath: ['client/e2e/credit/credit.workflow.spec.js'],
-    verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
-    testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
+    //verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
+    //testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
     sadPath: [],
-    authPath: ['client/e2e/user/auth/auth.spec.js']
+    //authPath: ['client/e2e/user/auth/auth.spec.js']
   },
 
   // Patterns to exclude.
@@ -55,10 +55,15 @@ exports.config = {
     'browserName': 'chrome'
   },
 
-  onPrepare: function() {
-    console.log('ON PREPARE ==============');
-    browser.get('/');
-    var userMenu = element(by.css('.dropdown'));
+  onPrepare: function(done) {
+    /*
+    browser.get('/').then(function () {
+      browser.wait(function () {
+        return element(by.css('.dropdown')).isDisplayed();
+      });
+      
+      console.log('ON PREPARE ==============');
+      var userMenu = element(by.css('.dropdown'));
     userMenu.isDisplayed().then(function (isVisible) {
       if (isVisible) {
         userMenu.click();
@@ -68,7 +73,11 @@ exports.config = {
         userMenuItems.last().click();
         console.log('LOGOUT ==============');
       }
+      done()
     });
+    
+    */
+    
   },
 
   // ----- The test framework -----

@@ -12,67 +12,70 @@ var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
-var webdriver = require('selenium-webdriver');
-var protractor = require('protractor');
-var ptor;
+//var driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.firefox()).build();
+var driver = browser.driver;
+//var ptor = protractor.getInstance();
 
 
 describe('Credit Workflow', function () {
-  
-  
-  
-    beforeEach(function() {
-     
-    });
+    //beforeEach(function() {
+      //browser.ignoreSynchronization = false;
+    //});
 
-  
-
-    it("should be signed in", function () {
-      browser.get('/').then(function () {
-        browser.waitForAngular().then(function () {
-          user.signupUserEmail(models.signup);
-        });
-      });
-    });
-
-    it("should register a child", function () {
-      //element(by.css('.close')).click();
-      browser.get('/').then(function () {
-        element(by.css('.my-athletes')).click();
-        browser.waitForAngular().then(function () {
-          browser.getLocationAbsUrl().then(function (url) {
-            expect(url).toEqual('/athletes/dashboard');
-            var athleteModel = models.athlete;
-            athlete.addAthlete(athleteModel);
-          });
-        });
-      });
-    });
-
-  it("should select a team for a selected child", function () {
-    athlete.selectAthlete();
-    athlete.selectTeam(models.teamName);
-     
-    var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
-    expect(athleteFirstName).toEqual(models.athlete.firstName);
-    expect(element(by.binding('team.attributes.name')).getText()).toEqual(models.teamName);
-    browser.wait(function () {
-      return element(by.css('.magento-custom-options')).isDisplayed();
-    }, 10000);
-
-    teamspo.fillFormTeamForAthlete();
-
-    browser.getLocationAbsUrl().then(function (url) {
-      expect(url).toEqual('/commerce/cart/index');
-      expect(browser.manage().getCookie('cartId')).toBeDefined();
-      expect(browser.manage().getCookie('userId')).toBeDefined();
-      element(by.id('proceed-to-checkout')).click();
-      browser.getLocationAbsUrl().then(function (url) {
-        expect(url).toEqual('/payment/creditcard');
-      });
+  it("should be signed in", function () {
+    browser.get('/').then(function () {
+      user.signupUserEmail(models.signup);
     });
   });
 
+  it("should register a child", function () {
+    driver.wait(function () {
+      return element(by.css('.my-athletes')).isDisplayed();
+    }, 10000).then(function () {
+      element(by.css('.my-athletes')).click();
+      browser.getLocationAbsUrl().then(function (url) {
+        console.log('url**********', url);
+        expect(url).equal('/athletes/dashboard');
+        var athleteModel = models.athlete;
+        athlete.addAthlete(athleteModel);
+      });
+    });
+  });
+    
+
+  it("should select a team for a selected child", function () {
+    driver.wait(function () {
+      return typeof element.all(by.repeater('athlete in athletes')).count === 'function';
+    }, 10000).then(function () {
+      athlete.selectAthlete();
+      athlete.selectTeam(models.teamName);
+
+      //var athleteFirstName = element(by.css('form select#select-athlete')).$('option:checked').getText();
+      //console.log('athleteFirstName', athleteFirstName.getText());
+
+      //expect(athleteFirstName).equal(models.athlete.firstName);
+      //expect(element(by.binding('team.attributes.name')).getText()).equal(models.teamName);
+      browser.wait(function () {
+        return element(by.css('.magento-custom-options')).isDisplayed();
+      }, 10000);
+
+      teamspo.fillFormTeamForAthlete();
+
+      browser.getLocationAbsUrl().then(function (url) {
+        expect(url).equal('/commerce/cart/index');
+        expect(browser.manage().getCookie('cartId')).to.exist;
+        expect(browser.manage().getCookie('userId')).to.exist;
+        element(by.id('proceed-to-checkout')).click();
+        browser.getLocationAbsUrl().then(function (url) {
+          expect(url).equal('/payment/creditcard');
+        });
+      });
+
+    });
+
+
+  });
+/*
   it("should go to credit card payment", function() {
     //var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
     //expect(tabs.count()).toEqual(1);
@@ -83,17 +86,17 @@ describe('Credit Workflow', function () {
 
     creditCardPayment.fillForm(models.creditCardDetails);
 
-    expect(element(by.model('billing.address.address1')).getAttribute('value')).toEqual(models.creditCardDetails.address.address1);
-    expect(element(by.model('billing.address.address2')).getAttribute('value')).toEqual(models.creditCardDetails.address.address2);
+    expect(element(by.model('billing.address.address1')).getAttribute('value')).equal(models.creditCardDetails.address.address1);
+    expect(element(by.model('billing.address.address2')).getAttribute('value')).equal(models.creditCardDetails.address.address2);
     expect(element(by.model('billing.address.city')).getAttribute('value')).toEqual(models.creditCardDetails.address.city);
-    expect(element(by.model('billing.address.zipCode')).getAttribute('value')).toEqual(models.creditCardDetails.address.zipCode);
-    expect(element(by.model('billing.phone')).getAttribute('value')).toEqual(models.creditCardDetails.phone);
+    expect(element(by.model('billing.address.zipCode')).getAttribute('value')).equal(models.creditCardDetails.address.zipCode);
+    expect(element(by.model('billing.phone')).getAttribute('value')).equal(models.creditCardDetails.phone);
 
-    expect(element(by.model('$parent.card.nameOnCard')).getAttribute('value')).toEqual(models.creditCardDetails.card.nameOnCard);
-    expect(element(by.model('$parent.card.cardNumber')).getAttribute('value')).toEqual(models.creditCardDetails.card.cardNumber);
-    expect(element(by.model('$parent.card.expirationDate.month')).getAttribute('value')).toEqual(models.creditCardDetails.card.expirationDate.month);
-    expect(element(by.model('$parent.card.expirationDate.year')).getAttribute('value')).toEqual(models.creditCardDetails.card.expirationDate.year);
-    expect(element(by.model('$parent.card.securityCode')).getAttribute('value')).toEqual(models.creditCardDetails.card.securityCode);
+    expect(element(by.model('$parent.card.nameOnCard')).getAttribute('value')).equal(models.creditCardDetails.card.nameOnCard);
+    expect(element(by.model('$parent.card.cardNumber')).getAttribute('value')).equal(models.creditCardDetails.card.cardNumber);
+    expect(element(by.model('$parent.card.expirationDate.month')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.month);
+    expect(element(by.model('$parent.card.expirationDate.year')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.year);
+    expect(element(by.model('$parent.card.securityCode')).getAttribute('value')).equal(models.creditCardDetails.card.securityCode);
 
     element(by.css('form[name=checkoutForm]')).submit();
 
@@ -101,12 +104,12 @@ describe('Credit Workflow', function () {
       return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
     }, 15000);
     browser.getLocationAbsUrl().then(function (url) {
-      expect(url).toEqual('/commerce/checkout/success');
+      expect(url).equal('/commerce/checkout/success');
       var thankyouTitle = element(by.css('.titleThankyouBanner')).getText();
-      expect(thankyouTitle).toEqual('Thanks for your order!');
+      expect(thankyouTitle).equal('Thanks for your order!');
     });
   });
-
+*/
   // we could not check the existence of the credit card,
   // until the payment has benn proceesed by balance payments
 
@@ -137,9 +140,8 @@ describe('Credit Workflow', function () {
 //    });
 //  });
 
-  it('should sign out', function(){
-    browser.get(browser.baseUrl);
-    user.signOut();
-  });
+  //it('should sign out', function(){
+  //  user.signOut();
+  //});
 
 });
