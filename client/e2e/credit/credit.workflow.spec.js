@@ -75,7 +75,7 @@ describe('Credit Workflow', function () {
 
 
   });
-/*
+/** 
   it("should go to credit card payment", function() {
     //var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
     //expect(tabs.count()).toEqual(1);
@@ -140,8 +140,8 @@ describe('Credit Workflow', function () {
 //    });
 //  });
 
-  //it('should sign out', function(){
-  //  user.signOut();
-  //});
+  it('should sign out', function(){
+    user.signOut();
+  });
 
 });
