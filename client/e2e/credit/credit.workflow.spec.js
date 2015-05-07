@@ -75,31 +75,30 @@ describe('Credit Workflow', function () {
 
 
   });
-/** 
+
   it("should go to credit card payment", function() {
     //var tabs = element(by.css('.loan-tabs .nav.nav-tabs')).all(by.repeater('tab in tabs'));
     //expect(tabs.count()).toEqual(1);
     //tabs.get(1).click();
     browser.getLocationAbsUrl().then(function (url) {
-        expect(url).toEqual('/payment/creditcard');
+        expect(url).equal('/payment/creditcard');
     });
 
     creditCardPayment.fillForm(models.creditCardDetails);
 
-    expect(element(by.model('billing.address.address1')).getAttribute('value')).equal(models.creditCardDetails.address.address1);
-    expect(element(by.model('billing.address.address2')).getAttribute('value')).equal(models.creditCardDetails.address.address2);
-    expect(element(by.model('billing.address.city')).getAttribute('value')).toEqual(models.creditCardDetails.address.city);
-    expect(element(by.model('billing.address.zipCode')).getAttribute('value')).equal(models.creditCardDetails.address.zipCode);
-    expect(element(by.model('billing.phone')).getAttribute('value')).equal(models.creditCardDetails.phone);
+    //expect(element(by.model('billing.address.address1')).getAttribute('value')).equal(models.creditCardDetails.address.address1);
+    //expect(element(by.model('billing.address.address2')).getAttribute('value')).equal(models.creditCardDetails.address.address2);
+    //expect(element(by.model('billing.address.city')).getAttribute('value')).toEqual(models.creditCardDetails.address.city);
+    //expect(element(by.model('billing.address.zipCode')).getAttribute('value')).equal(models.creditCardDetails.address.zipCode);
+    //expect(element(by.model('billing.phone')).getAttribute('value')).equal(models.creditCardDetails.phone);
 
-    expect(element(by.model('$parent.card.nameOnCard')).getAttribute('value')).equal(models.creditCardDetails.card.nameOnCard);
-    expect(element(by.model('$parent.card.cardNumber')).getAttribute('value')).equal(models.creditCardDetails.card.cardNumber);
-    expect(element(by.model('$parent.card.expirationDate.month')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.month);
-    expect(element(by.model('$parent.card.expirationDate.year')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.year);
-    expect(element(by.model('$parent.card.securityCode')).getAttribute('value')).equal(models.creditCardDetails.card.securityCode);
+    //expect(element(by.model('$parent.card.nameOnCard')).getAttribute('value')).equal(models.creditCardDetails.card.nameOnCard);
+    //expect(element(by.model('$parent.card.cardNumber')).getAttribute('value')).equal(models.creditCardDetails.card.cardNumber);
+    //expect(element(by.model('$parent.card.expirationDate.month')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.month);
+    //expect(element(by.model('$parent.card.expirationDate.year')).getAttribute('value')).equal(models.creditCardDetails.card.expirationDate.year);
+    //expect(element(by.model('$parent.card.securityCode')).getAttribute('value')).equal(models.creditCardDetails.card.securityCode);
 
     element(by.css('form[name=checkoutForm]')).submit();
-
     browser.wait(function () {
       return browser.isElementPresent(element(by.css('.titleThankyouBanner')));
     }, 15000);
@@ -109,7 +108,7 @@ describe('Credit Workflow', function () {
       expect(thankyouTitle).equal('Thanks for your order!');
     });
   });
-*/
+
   // we could not check the existence of the credit card,
   // until the payment has benn proceesed by balance payments
 
