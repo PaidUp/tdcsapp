@@ -62,7 +62,6 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
   // Get Magento Order
   commerceService.orderLoad(loan.orderId, function(err,order){
     userService.find({_id:order.userId}, function(err, user){
-      console.log('order.products[0]',order.products[0]);
        paymentService.capture(order, user[0], order.products[0].TDPaymentId, amount, order.paymentMethod, function(captureErr, data){
          if (captureErr) {
            // Stop loan
