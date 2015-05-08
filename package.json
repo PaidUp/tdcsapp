@@ -10,6 +10,7 @@
     "blind": "^1.0.0",
     "body-parser": "~1.5.0",
     "camelize": "^1.0.0",
+    "chai": "^2.2.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
     "connect-mongo": "^0.4.1",
@@ -23,7 +24,6 @@
     "faker": "^2.1.2",
     "fb": "^0.7.0",
     "jsonwebtoken": "^0.3.0",
-    "loanjs": "0.0.8",
     "lodash": "~2.4.1",
     "method-override": "~1.0.0",
     "mixpanel": "^0.1.1",
@@ -39,11 +39,17 @@
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2",
-    "winston": "^0.9.0"
+    "winston": "^0.9.0",
+    "wkhtmltopdf": "^0.1.5"
   },
   "devDependencies": {
     "connect-livereload": "~0.4.0",
-    "grunt": "~0.4.4",
+    "grunt": "~0.4.5",
+    "mocha-cobertura-reporter": "^1.0.4",
+    "mocha-jenkins-reporter": "^0.1.6",
+    "grunt-blanket-mocha": "^0.5.0",
+    "grunt-mocha-cli": "^1.13.0",
+    "grunt-mocha-cov": "^0.4.0",
     "grunt-angular-templates": "^0.5.4",
     "grunt-asset-injector": "^0.1.0",
     "grunt-autoprefixer": "~0.7.2",
@@ -104,5 +110,12 @@
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
   },
-  "private": true
+  "private": true,
+  "config": {
+    "blanket": {
+      "pattern": [
+        "varity/lib"
+      ]
+    }
+  }
 }

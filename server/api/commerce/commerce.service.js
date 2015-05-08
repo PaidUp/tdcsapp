@@ -144,7 +144,7 @@ function orderCancel(orderId, cb) {
 
 function orderList(filter, cb){
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.orderList({filter : filter}, function (err, data) {
+  TDCommerceService.orderList(filter, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
   });

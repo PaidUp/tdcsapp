@@ -12,6 +12,7 @@ commerce/media
 commerce/app/etc/local.xml
 node_modules
 bower_components
+build/*
 
 # path to emails #
 ######################
