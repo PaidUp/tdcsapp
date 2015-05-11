@@ -45,7 +45,7 @@ module.exports = function(app) {
   }
 
   if('development' === env) {
-    //app.use(morgan('dev'));
+    app.use(morgan('dev'));
   }
 
 };
