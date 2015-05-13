@@ -14,36 +14,36 @@
           <div class="col-sm-6 col-sm-pull-6">
             <div class="form-group">
               <label>Name</label>
-              <input type="text" name="Name" class="form-control" placeholder="Name" ng-model="provider.Name" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
-              <div class="text-CS text-center" ng-show="provider.Name.$error.required && submitted">
+              <input type="text" name="Name" class="form-control" placeholder="Name" ng-model="team.Name" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="team.Name.$error.required && submitted">
                 <small class="text-CS">Name is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.Name.$error.maxlength && submitted">
+              <div class="text-CS text-center" ng-show="team.Name.$error.maxlength && submitted">
                 <small class="text-CS">Name exceeds 128 characters</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.Name.$error.pattern && submitted">
+              <div class="text-CS text-center" ng-show="team.Name.$error.pattern && submitted">
                 <small class="text-CS">Name should only contain letters</small>
               </div>
             </div>
 
             <div class="form-group">
               <label>Number teams</label>
-              <input type="text" name="lastName" class="form-control" placeholder="Number teams" ng-model="provider.numberTeams" ng-maxlength="3" required ng-required="true" ng-pattern="/^[0-9]*$/">
-              <div class="text-CS text-center" ng-show="provider.numberTeams.$error.required && submitted">
+              <input type="text" name="numberTeams" class="form-control" placeholder="Number teams" ng-model="team.numberTeams" ng-maxlength="3" required ng-required="true" ng-pattern="/^[0-9]*$/">
+              <div class="text-CS text-center" ng-show="team.numberTeams.$error.required && submitted">
                 <small class="text-CS">Number teams is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.numberTeams.$error.maxlength && submitted">
+              <div class="text-CS text-center" ng-show="team.numberTeams.$error.maxlength && submitted">
                 <small class="text-CS">Number teams exceeds 3 characters</small>
               </div>
             </div>
 
             <div class="form-group">
               <label>Average team size</label>
-              <input type="text" name="avgTeamSize" class="form-control" placeholder="Average team size" ng-model="provider.avgTeamSize" ng-maxlength="3" required ng-required="true"  ng-pattern="/^[0-9]*$/">
-              <div class="text-CS text-center" ng-show="provider.avgTeamSize.$error.required && submitted">
+              <input type="text" name="avgTeamSize" class="form-control" placeholder="Average team size" ng-model="team.avgTeamSize" ng-maxlength="3" required ng-required="true"  ng-pattern="/^[0-9]*$/">
+              <div class="text-CS text-center" ng-show="team.avgTeamSize.$error.required && submitted">
                 <small class="text-CS">Average team size is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.avgTeamSize.$error.maxlength && submitted">
+              <div class="text-CS text-center" ng-show="team.avgTeamSize.$error.maxlength && submitted">
                 <small class="text-CS">Average team size exceeds 3 characters</small>
               </div>
             </div>
@@ -51,7 +51,7 @@
             <div class="form-group">
             <label>Sport</label>
               <select name="Sport"
-                      ng-model="provider.Sport"
+                      ng-model="team.Sport"
                       required
                       ng-required="true" class="form-control">
                 <option value="" disabled>Select sport</option>
@@ -105,7 +105,7 @@
                             id="month"
                             placeholder="MM"
                             name="month"
-                            ng-model="date.month"
+                            ng-model="owner.month"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
@@ -118,7 +118,7 @@
                             id="day"
                             placeholder="DD"
                             name="day"
-                            ng-model="date.day"
+                            ng-model="owner.day"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
@@ -131,7 +131,7 @@
                             id="year"
                             placeholder="YYYY"
                             name="year"
-                            ng-model="date.year"
+                            ng-model="owner.year"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
@@ -147,12 +147,12 @@
               <div class="col-sm-12">
                 <label>Social Security Number</label>
               </div>
-              <div class="col-sm-12">
-                <input type="text" class="form-control" name="socialSecurityNumberProvider" ng-model="inputSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
-                <div class="text-CS text-center" ng-show="owner.socialSecurityNumberProvider.$error.required && submitted">
+              <div class="col-sm-12"><!--ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()"-->
+                <input type="text" class="form-control" name="inputSSN" ng-model="owner.inputSSN" required ng-required="true" >
+                <div class="text-CS text-center" ng-show="owner.inputSSN.$error.required && submitted">
                   <small class="text-CS">Social Security Number is required</small>
                 </div>
-                <div class="text-CS text-center" ng-show="owner.socialSecurityNumberProvider.$error.pattern && submitted">
+                <div class="text-CS text-center" ng-show="owner.inputSSN.$error.pattern && submitted">
                   <small class="text-CS">Social Security Number Format Error</small>
                 </div>
                 <small>We use 128-bit SSL protection and strict levels of security and encryption standards to keep your information safe.</small>
@@ -337,7 +337,35 @@
               <h4 class="text-CS">Bank details</h4>
             </div>
 
-            <!-- TODO: use bank details of components. -->
+            <div class="form-group">
+              <label>Rounting number (ABA)</label>
+              <input type="text" name="aba" ng-model="owner.aba" class="form-control" placeholder="" required ng-required="true" ng-change="ABAValidator()" ng-blur="maskABA()" ng-focus="unmaskABA()">
+              <div class="text-CS text-center" ng-show="owner.aba.$error.required && submitted">
+                <small class="text-CS">Routing number is required</small>
+              </div>
+              <div class="text-CS text-center number-error" ng-show="owner.aba.$error.aba && submitted">
+                <small class="text-CS">Routing number is not correct</small>
+              </div>
+            </div>
+
+            <div class="form-group"> <!-- ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()" -->
+              <label>Account number (DDA)</label>
+              <input type="text" name="dda" ng-model="owner.dda" class="form-control" placeholder="" required ng-required="true" >
+              <div class="text-CS text-center" ng-show="owner.dda.$error.required && submitted">
+                <small class="text-CS">Account number is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="owner.dda.$error.pattern && submitted">
+                <small class="text-CS">Account number format error</small>
+              </div>
+              <label>Repeat Account number (DDA)</label><!-- ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()" -->
+              <input type="text" name="ddaVerification" ng-model="owner.ddaVerification" class="form-control" placeholder="" required ng-required="true" >
+              <div class="text-CS text-center" ng-show="owner.ddaVerification.$error.required && submitted">
+                <small class="text-CS">Account number verification is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="owner.ddaVerification.$error.match && submitted">
+                <small class="text-CS">Account number verification does not match</small>
+              </div>
+            </div>
 
           </div>
         </div>
