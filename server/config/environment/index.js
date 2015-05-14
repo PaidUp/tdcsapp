@@ -38,8 +38,10 @@ var all = {
     options: {
       db: {
         safe: true
-      }
-    }
+      },
+      prefix:'TDcsApp_'
+    },
+
   },
 
   facebook: {

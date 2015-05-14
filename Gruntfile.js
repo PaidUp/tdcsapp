@@ -680,8 +680,7 @@ module.exports = function (grunt) {
         'autoprefixer',
         'express:dev'
       ];
-
-
+      
       if (target2 === 'loan') {
         generalTasks.push('protractor:loanPath');
       }else if (target2 === 'credit'){
@@ -690,13 +689,15 @@ module.exports = function (grunt) {
         generalTasks.push('protractor:verifyBankAccountPath');
       }else if (target2 === 'testFlow'){
         generalTasks.push('protractor:testFlowPath');
-        }else if (target2 === 'auth'){
-          generalTasks.push('protractor:authPath');
+      }else if (target2 === 'auth'){
+        generalTasks.push('protractor:authPath');
+      }else if (target2 === 'provider'){
+        generalTasks.push('protractor:provider');
       }else{
         //generalTasks.push('protractor:testFlowPath');
-        generalTasks.push('protractor:loanPath');
-        generalTasks.push('protractor:verifyBankAccountPath');
-        generalTasks.push('protractor:creditPath');
+        //generalTasks.push('protractor:loanPath');
+        //generalTasks.push('protractor:verifyBankAccountPath');
+        //generalTasks.push('protractor:creditPath');
       }
 
       return grunt.task.run(generalTasks);

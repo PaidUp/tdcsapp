@@ -5,8 +5,10 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
-            providerService.createProvider($scope.team,$scope.owner,$scope.billing);
+        //TODO
+        //set onwerDOB
+        if($scope.providerForm.$valid){
+            providerService.providerRequest($scope.provider);
         };
     }
     

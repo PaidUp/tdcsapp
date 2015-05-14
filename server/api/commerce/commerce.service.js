@@ -6,6 +6,8 @@ var async = require('async');
 var TDCommerceService = require('TDCore').commerceService;
 var config = require('../../config/environment');
 var logger = require('../../config/logger');
+var providerService = require('./provider/provider.service');
+var Provider = require('./provider/provider.model');
 TDCommerceService.init(config.connections.commerce);
 
 var ORDER_STATUS = {
@@ -158,6 +160,16 @@ function orderLoad(orderId, cb){
   });
 }
 
+function providerRequest(userId, dataProvider, cb) {
+  dataProvider.ownerId = userId;
+  var provider = new Provider(dataProvider);
+  providerService.save(provider, function (err, data) {
+    if (err) return cb(err);
+    //TODO: send email CS admin with all information provider.
+    return cb(null,data);
+  });
+}
+
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
 exports.orderHold = orderHold;
@@ -167,3 +179,4 @@ exports.getUsertransactions = getUsertransactions;
 exports.orderList = orderList;
 exports.orderLoad = orderLoad;
 exports.orderCancel = orderCancel;
+exports.providerRequest = providerRequest;
