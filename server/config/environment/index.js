@@ -52,12 +52,13 @@ var all = {
 
   // Email system
   emailService:{
-    service: 'Mailjet',
+    service: 'gmail',
     auth: {
-      user: '2d88e00f7419463d83ee5900780c10d6',
-      pass: '9ada702c0dc7be15af45942eeb68eba2'
+      user: 'correo@correo.com',
+      pass: 'password'
     }
   },
+
   emailTemplateRoot:path.normalize(__dirname + '/../../../server/views/email'),
   emailOptions:{
     from: 'Convenience Select <ourteam@convenienceselect.com>',
@@ -68,9 +69,9 @@ var all = {
     baseUrl : "http://localhost:9000"
   },
   emailContacts : {
-    contact : 'email@email.com',
-    admin : 'email@email.com',
-    developer : 'email@email.com'
+    contact : 'jesse.cogollo@talosdigital.com',
+    admin : 'cogollo87@gmail.com',
+    developer : 'jesse.cogollo@talosdigital.com'
   },
 
   // contract data

@@ -13,10 +13,10 @@ var data = {
         //Owner info
         ownerId: 'xxx',
         ownerName: faker.name.firstName(),
-        onwerDOB: faker.date.past(),
-        onwerSSN: faker.random.uuid(),
-        onwerEmail: faker.internet.email(),
-        onwerPhone: faker.phone.phoneNumber(),
+        ownerDOB: faker.date.past(),
+        ownerSSN: faker.random.uuid(),
+        ownerEmail: faker.internet.email(),
+        ownerPhone: faker.phone.phoneNumber(),
         //End owner info
         
         //Billing info

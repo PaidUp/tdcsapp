@@ -508,6 +508,21 @@ function getUserDefaultCardId(user, cb) {
   });
 }
 
+function createConnectAccount(account, cb) {
+  console.log('createConnectAccount');
+  tdPaymentService.init(config.connections.payment);
+  /*var connectAccount = {
+    firstName: account.firstName,
+    lastName: account.lastName,
+    email: account.email,
+    id:  account._id
+  }*/
+  //tdPaymentService.createConnectAccount(connectAccount, function(err, data){
+    //if(err) return cb(err);
+    return cb(null, 'data');
+  //});
+}
+
 exports.paymentAdapter = paymentAdapter;
 exports.createCustomer = createCustomer;
 exports.associateCard = associateCard;
@@ -535,3 +550,4 @@ exports.fetchCard = fetchCard;
 exports.fetchDebit = fetchDebit;
 exports.getUserDefaultCardId = getUserDefaultCardId;
 exports.deleteBankAccount = deleteBankAccount;
+exports.createConnectAccount = createConnectAccount;
