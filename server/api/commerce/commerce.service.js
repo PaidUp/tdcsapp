@@ -165,10 +165,28 @@ function providerRequest(userId, dataProvider, cb) {
   var provider = new Provider(dataProvider);
   providerService.save(provider, function (err, data) {
     if (err) return cb(err);
-    //TODO: send email CS admin with all information provider.
     return cb(null,data);
   });
 }
+
+function providerResponse(providerId, cb) {
+  //TODO
+  //Add state pending validate in findOne method.
+  providerService.findOne({_id:providerId},'', function (err, providerData) {
+    if (err) return cb(err);
+    return cb(null,providerData);
+  });
+}
+
+function providerResponseUpdate(providerId, cb) {
+  //TODO
+  //Update state verify for done value.
+  //providerService.findOne({_id:providerId},'', function (err, providerData) {
+    //if (err) return cb(err);
+    return cb(null,'providerData');
+  //});
+}
+
 
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
@@ -180,3 +198,5 @@ exports.orderList = orderList;
 exports.orderLoad = orderLoad;
 exports.orderCancel = orderCancel;
 exports.providerRequest = providerRequest;
+exports.providerResponse = providerResponse;
+exports.providerResponseUpdate = providerResponseUpdate;

@@ -1,5 +1,4 @@
 'use strict';
-console.log('...yyy...');
 //var creditCardPayment = require('../page-objects/credit-card-payment.po');
 
 var Utils = require('../utils/utils');

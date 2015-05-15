@@ -41,12 +41,7 @@ var ProviderSchema = new Schema({
     createAt: {type: Date, default: new Date()},
     updateAt: {type: Date, default: new Date()},
     
-    verify: {
-      token: String,
-      updatedAt: String,
-      status: String,
-      email: String
-    }
+    verify: {type: String,default:'pending'}
 });
 
 /**
