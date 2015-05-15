@@ -22,3 +22,27 @@
 .footer-nav a{
   color: #a1acb5;
 }
+
+.footer-bar ul{
+  list-style-type: none;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.footer-bar li{
+  height: 25px;
+}
+
+.footer-bar .contactUs{
+  background-image: url("/assets/images/landing/img_bg_contact.png");
+  width: 350px;
+  height: 200px;
+}
+
+.footer-bar .contactUsDesc{
+  font-size: 24px;
+  color: #FFFFFF;
+  font-weight: 500;
+  position: relative;
+  margin-top: 40px;
+}

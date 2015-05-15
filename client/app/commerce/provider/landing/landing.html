@@ -18,37 +18,85 @@
     </div>
   </div>
 </div>
+<a name="solutionsForTeams" />
  <div class="container">
   <div class="row solutionsForTeams text-center">
     <h2><strong class="text-CS">Solutions For Teams</strong></h2>
     <br>
-    <div class="col-sm-6 col-md-4 item1" >
-      <div class="desc">
+    <div class="col-sm-6 col-md-4 item1 " ng-mouseover="hideSolution1()" ng-mouseleave="showSolution1()">
+      <div class="desc" ng-show="solution1">
         <img src="/assets/images/landing/ic_solutions_01.png" >
         <br>
         <br>
         TIRED OF GETTING PAID IN CASH, CHECKS OR CARDS IN-PERSON?
       </div>
+      <div class="solutionDescTop" ng-show="!solution1">
+          Are chasing down parents to pay their registration fees before and during the season? Parents even
+          try to bring your cash during a game to pay for registration dues.  Why not  avoid that?
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution1">
+        <div class="title">PAYMENT COLLECTIONS</div>
+        Convenience Select processes you payments and contact parents directly, so you don't have to.  No more
+        chasing parents who owe you money. Let Convenience Select do all the leg work. We accept all credit cards
+        and bank accounts. *
+        <br>
+        * 2.9% + 30 processing fees applies to every payments collected
+      </div>
+
+
+
     </div>
-    <div class="col-sm-6 col-md-4 item2" >
-      <div class="desc">
+
+
+    <div class="col-sm-6 col-md-4 item2" ng-mouseover="hideSolution2()" ng-mouseleave="showSolution2()">
+      <div class="desc" ng-show="solution2">
         <img src="/assets/images/landing/ic_solutions_02.png" >
         <br>
         <br>
         SPENDING TOO MUCH TIME RECONCILING YOUR PAYMENTS?
       </div>
+
+      <div class="solutionDescTop" ng-show="!solution2">
+        Are tired of spending time reconciling your payments?  Does your card processor make you have to guess which
+        parents has the email fireball@aol.com? There must be an easier way.
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution2">
+        <div class="title">ITEMIZED REPORTING</div>
+        Convenience Selected will send you a monthly itemized report with your roster per team and the payments
+        we have collected. Know immediately the status of each payment.
+
+      </div>
     </div>
-    <div class="col-sm-6 col-md-4 item3" >
-      <div class="desc">
+
+
+    <div class="col-sm-6 col-md-4 item3" ng-mouseover="hideSolution3()" ng-mouseleave="showSolution3()">
+      <div class="desc" ng-show="solution3">
         <img src="/assets/images/landing/ic_solutions_03.png" >
         <br>
         <br>
         TROUBLE GETTING PAID ON TIME?
       </div>
+
+      <div class="solutionDescTop" ng-show="!solution3">
+        Do you have to track whether payments have been made on your schedule? Is it tough to collect a deposit in the
+        pre-season monthly payments throughout the season, or any other schedule you can think of?
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution3">
+        <div class="title">PAYMENT SCHEDULING</div>
+        Convenience Select can setup the schedule for you while you sit back and let us charge parents every month
+        rather than parents having to remember to pay you. Receive one lump sum payment into your bank account
+        every month or receive the money as we collect it, it's up to you.
+
+      </div>
+
     </div>
 
   </div>
 </div>
+<a name="bannerLandingPayment" />
 <div class="bannerLandingPayment">
   <div class="container">
     <div class="row">
@@ -78,7 +126,6 @@
   <br>
   <div class="home-button center-block btn-lg">
     <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started</button>
-    <a class="btn btnSignUp btn-block btn-lg" ng-show="isLoggedIn()" ui-sref="athletes">Get Started</a>
     <br>
     <br>
   </div>
@@ -93,11 +140,15 @@
     <br>
     <div class="clearfix"></div>
     <div class="home-button center-block btn-lg">
-      <button type="submit" class="btn btnContactUs btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started</button>
-      <br>
+      <button type="button" class="btn btnContactUs btn-block btn-block" ng-click="togggleForm()" >Contact Us</button>
       <br>
     </div>
   </div>
+  <div class="contactUs-form center-block" ng-show="showContactUsForm">
+    <contact-us></contact-us>
+    <br>
+  </div>
+
 </div>
 
 <div class="bannerComingSoon">
@@ -106,21 +157,29 @@
     <br>
     <div class="row">
       <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_1.png" >
+        </div>
         <h2>TRAVEL LOGISTICS</h2>
         Stop worrying about the administrative part of travel. Let us find you one or multiple hotel options
         for the team and parents.  We will coordinate team dinners that accommodate everyone.
       </div>
       <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_2.png" >
+        </div>
         <h2>EASY COMMUNICATION</h2>
         Write a single message and distribute it to evwryone via Facebook, Twitter, email and even SMS. Stop wasting time
         posting the same content to multiple sites and be more efficient.
       </div>
       <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_3.png" >
+        </div>
         <h2>VALUED OFFERINGS</h2>
         Make your organization standout with our valued partners. Whether it's live video streaming games, college
         recruiting services or many more, we bring best-in-class services to you and parents.
       </div>
-
       </div>
     </div>
 
@@ -132,7 +191,7 @@
     </div>
   </div>
 </div>
-
+<a name="bannerOurPackages" />
 <div class="bannerOurPackages">
   <div class="container">
     <div class="title">Our Packages</div>
@@ -241,26 +300,21 @@
       <div class="carousel-inner testimonial">
         <!--item-one-->
         <div class="item active">
-          <div class="unit" style="background-image:url(../testimonial-slider/brown.jpg);">
+          <div class="unit" >
+            <div><img src="/assets/images/yeoman.png" class="center-block"><br></div>
+            <div class="name">John Smith</div>
+            <div class="teamName">TEAM NAME</div>
             <h3>An amazing learning experience</h3>
-            <div></div>
-            <p class="byline">- Rocket Singh, Rocket Corp</p>
           </div>
         </div>
         <!--item-two-->
         <div class="item">
-          <div class="unit unit-2">
-            <h3>They always tried to empower us.</h3>
-            <div></div>
-            <p class="byline">- Mike, Bread Inc</p>
-          </div>
-        </div>
-        <!--item-three-->
-        <div class="item">
-          <div class="unit unit-3">
-            <h3>Unlimited potential to learn and share</h3>
-            <div></div>
-            <p class="byline">- Nik, TCB</p>
+          <div class="unit" >
+            <div><img src="/assets/images/yeoman.png" class="center-block"><br></div>
+            <div class="name">John Smith</div>
+            <div class="teamName">TEAM NAME</div>
+            <h3>An amazing learning experience</h3>
+
           </div>
         </div>
       </div>
@@ -282,15 +336,3 @@
 
 </div>
 
-<div class="contactUsHome">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-        <span class="contactUsTitle">
-          <strong>Contact us!</strong>
-        </span>
-        <contact-us></contact-us>
-      </div>
-    </div>
-  </div>
-</div>
