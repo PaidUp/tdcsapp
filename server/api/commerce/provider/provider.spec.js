@@ -12,7 +12,7 @@ var providerSpecModel = require('./provider.model.spec');
 describe('User', function() {
 
     describe('provider.service', function() {
-    
+
         it.only('save', function (done) {
             var provider = new Provider(providerSpecModel.provider);
             providerService.save(provider, function(err, data){

@@ -37,6 +37,24 @@
   background-image: url(/assets/images/landing/im_bg_solutions_03.png);
 }
 
+.solutionDescTop{
+  height: 50%;
+  font-size: 18px;
+  font-weight: 300;
+  color: #FFFFFF;
+  text-align: justify;
+  position:relative;
+  top:20px;
+}
+
+.solutionDescBottom{
+  height: 50%;
+  font-size: 18px;
+  font-weight: 300;
+  color: #FFFFFF;
+  text-align: justify;
+}
+
 .solutionsForTeams .desc{
   margin-top: 30%;
   color: #FFFFFF;
@@ -91,6 +109,32 @@
 }
 
 .btnContactUs:hover{
+  color: #FF805D;
+  background-color: #ebedef;
+}
+
+.contactUs-form{
+  align-content: center;
+  max-width: 500px;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+
+}
+.contactUs-form .text-CS{
+  color: #FFFFFF;
+}
+
+.bannerContactUs .btnSignUp{
+  color: #FF805D;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+.bannerContactUs .btnSignUp:hover{
   color: #FF805D;
   background-color: #ebedef;
 }
@@ -169,6 +213,7 @@
 }
 
 .bannerOurPackages .planBox1{
+
   width: 220px;
   height: 350px;
   margin-right: 10px;
@@ -312,13 +357,21 @@
   background-size: cover;
   width:100%;
 }
+
+.unit .name{
+  font-size: 25px;
+  font-weight: 200;
+}
+
+.unit .teamName{
+  font-size: 18px;
+  font-weight: 500;
+}
+
 .testimonial h3{
   display:inline-block;
-  background:black;
-  background:rgba(0, 0, 0, 0.5);
   color:#fff;
-  padding:10px;
-  margin-left: 20%;
+  padding:30px;
 }
 .testimonial .byline{
   display:inline-block;
