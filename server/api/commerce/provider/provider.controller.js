@@ -31,17 +31,25 @@ exports.providerResponse = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
-    paymentService.createConnectAccount('providerDataOwner', function(err, account){
+    paymentService.createConnectAccount({email:provider.ownerEmail,country:provider.country}, function(err, account){
       if(err){
         //return handleError(res, err);
         return res.json(400);
       }
-      catalogService.createProduct('providerDataTeam', function(err, team){
+      paymentService.addBankConnectAccount({accountId:account.id,bankAccount:{country:provider.country,routingNumber:provider.aba,accountNumber:provider.dda}}, function(err, bank){
         if(err){
           //return handleError(res, err);
           return res.json(401);
         }
-        return res.json(200);
+        catalogService.catalogCreate({teamName:provider.teamName}, function(err, teamId){
+          if(err){
+            //return handleError(res, err);
+            return res.json(402);
+          }
+          //TODO
+          //Update provider with account.id, teamId
+          return res.json(200);
+        });
       });
     });
     //return res.redirect('/');

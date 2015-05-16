@@ -32,8 +32,8 @@ var data = {
         //End billing info
         
         //Billing info
-        aba: '123',
-        dda: '321'
+        aba: '110000000',
+        dda: '000123456789'
     }
         //encryptKey : 'PZ3oXv2v6Pq5HAPFI9NFbQ==',
         //encryptValue : ''
