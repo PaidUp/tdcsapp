@@ -33,6 +33,7 @@ body{
   font-family: 'Roboto', sans-serif;
   color: #6c737c;
   font-weight: 300;
+  background: #f9f9f9;
 }
 strong, label{
   font-family: 'Roboto Condensed', sans-serif;
