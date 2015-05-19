@@ -22,11 +22,10 @@
   border-bottom-color: #ffffff;
 }
 .user-tabs .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-  color: #ffffff;
   cursor: default;
   background-color: transparent;
   border: 4px solid transparent;
-  border-bottom-color: #ffffff;
+  border-bottom-color: #ff805d;
 }
 .payments-container{
   padding-top: 30px;
