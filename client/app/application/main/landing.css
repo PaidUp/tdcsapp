@@ -188,12 +188,8 @@
 }
 
 .bannerComingSoon .item{
-  background-position: 10px 0px;
-  background-repeat: no-repeat;
-  padding: 0px 0px 0px 95px;
   min-height: 170px;
   color: #494c4e;
-  margin-top: 0px;
   text-align: center;
 }
 
