@@ -1,7 +1,8 @@
 .welcome {
-    background-color: transparent;
+    background-color: #f9f9f9;
     min-height: 38px;
     width: 100%;
+
 }
 
 .welcome .breadcrumb {
@@ -101,8 +102,8 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 /** modal **/
 
 .btn.bar-btn {
-    background-color: #FEC046;
-    border-color: #FEC046;
+    background-color: #f9f9f9;
+    border-color: #f9f9f9;
     color: #CD6C49;
     font-size: 11px;
     padding: 0;
@@ -112,5 +113,5 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .bar-btn .fa-plus {
-    color: #FFF;
+    color: #CD6C49;
 }
