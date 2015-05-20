@@ -175,7 +175,7 @@
 
   <div class="clearfix"></div>
   <div class="home-button center-block btn-lg">
-    <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get More Info</button>
+    <button type="button" class="btn btnSignUp btn-block btn-block" ng-click="modalFactory.ContactUs('Coming Soon Solutions Question')" ng-show="!isLoggedIn()">Get More Info</button>
     <br>
     <br>
   </div>
@@ -281,7 +281,7 @@
   </div>
 </div>
 
-<div class="bannerTestimonial" id="bannerTestimonial">
+<div class="bannerTestimonial" id="bannerTestimonial" ng-show="false">
   <div class="content">
     <div id="carousel-testimonial" class="carousel slide" data-ride="carousel">
       <!-- Wrapper for slides -->
