@@ -12,14 +12,12 @@
 
 .footer-nav li{
   float: left;
-  height: 56px;
+  height: 30px;
   width: auto;
-  line-height: 56px;
   margin-right: 10px;
 }
 .footer-nav a{
   color: #a1acb5;
-  display: block;
 }
 
 .footer-bar ul{
@@ -30,8 +28,7 @@
 
 .footer-bar li{
   float: left;
-  height: 25px;
-  display: block;
+  line-height: normal;
   width: 100%;
 }
 
@@ -41,7 +38,7 @@
   width: 350px;
   height: 200px;
   float: left;
-  display: block;
+
 }
 
 .footer-bar .contactUsDesc{

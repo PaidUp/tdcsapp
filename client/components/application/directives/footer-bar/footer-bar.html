@@ -9,26 +9,23 @@
             <ul>
               <li><strong>TEAMS</strong></li>
               <li>
-                <a href="#solutionsForTeams" >Solutions for Teams</a><br>
+                <a href="" ng-click="goTo('/', 'solutionsForTeams')">Solutions for Teams</a><br>
               </li>
-              <li><a href="#bannerOurPackages" >Our Packages</a><br></li>
-              <li><a href="#">FAQ</a><br></li>
-              <li>
-                <a href="#">Partners</a>
-              </li>
+              <li><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
+              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
             </ul>
           </div>
           <div class="col-md-2 footer-nav">
             <ul>
               <li><strong>ABOUT</strong></li>
-              <li><a href="#">About us</a></li>
-              <li><a href="#">Meet the team</a></li>
-              <li><a href="#contactUs">Contact us</a></li>
-              <li><a href="#"></a>Help</li>
+              <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">About us</a></li>
+              <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">Meet our team</a></li>
+              <li><a href="" ng-click="modalFactory.ContactUs()">Contact us</a></li>
+              <li><a href="" ng-click="modalFactory.ContactUs()">Help</a></li>
             </ul>
           </div>
-          <div class="col-md-4 contactUs">
-            <div align="center" class="contactUsDesc">
+          <div class="col-md-4 contactUs" ng-click="modalFactory.ContactUs()">
+            <div align="center" class="contactUsDesc" >
               <img src="assets/images/landing/ic_contact.png" /><br>
               CONTACT US
             </div>

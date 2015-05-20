@@ -22,16 +22,13 @@
 
         <ul class="nav navbar-nav">
           <li class="" ng-show="!isLoggedIn()">
-            <a href="#solutionsForTeams" >Solutions for Teams</a>
+            <a href="" ng-click="goTo('/', 'solutionsForTeams')" >Solutions for Teams</a>
           </li>
           <li class="" ng-show="!isLoggedIn()">
-            <a href="#bannerOurPackages" >Our Packages</a>
+            <a href="" ng-click="goTo('/','bannerOurPackages')">Our Packages</a>
           </li>
           <li class="" ng-show="!isLoggedIn()">
-            <a href="" >FAQ</a>
-          </li>
-          <li class="" ng-show="!isLoggedIn()">
-            <a href="" >Partner</a>
+            <a href="" ng-click="goTo('/faq')">FAQ</a>
           </li>
           <li class="my-athletes" ng-show="isLoggedIn()">
             <a href="" ui-sref="athletes">My Athlete(s)</a>
