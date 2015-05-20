@@ -20,16 +20,17 @@ exports.providerRequest = function (req, res) {
       }
     });
     return res.json(200);
-    //TODO: send email CS admin with all information provider.
-    //mix.panel.track("providerRequest", mix.mergeDataMixpanel(provider, req.user._id));
   });
 }
 
 exports.providerResponse = function (req, res) {
   var providerId = req.params.id;
-  commerceService.providerResponse(providerId, function (err, provider) {
+  commerceService.providerResponse(providerId, 'pending', function (err, provider) {
     if (err) {
       return handleError(res, err);
+    }
+    if (!provider) {
+      return res.redirect('/');
     }
     paymentService.createConnectAccount({email:provider.ownerEmail,country:provider.country}, function(err, account){
       if(err){
@@ -47,8 +48,13 @@ exports.providerResponse = function (req, res) {
             return res.json(402);
           }
           //TODO
-          //Update provider with account.id, teamId
-          return res.json(200);
+          commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, provider) {
+            if(err){
+              //return handleError(res, err);
+              return res.json(403);
+            }
+            return res.redirect('/');
+          });
         });
       });
     });

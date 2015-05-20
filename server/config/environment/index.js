@@ -54,8 +54,8 @@ var all = {
   emailService:{
     service: 'gmail',
     auth: {
-      user: 'correo@correo.com',
-      pass: 'password'
+      user: 'cogollo87@gmail.com',
+      pass: 'Gmail87072957626'
     }
   },
 
