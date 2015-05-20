@@ -7,35 +7,37 @@ var config = require('../../../config/environment/index.js');
 var ProviderSchema = new Schema({
     //Team info
     teamName: { type: String, required: true},
-    teamNumber: { type: String, required: true},
+    teamNumber: { type: String},
     teamAverageSize: { type: String },
-    teamSport:{type: String, required: true},
+    teamSport:{type: String},
     //End team info
     
     //Owner info
-    ownerId: { type: String, required: true},
-    ownerName: { type: String, required: true},
-    ownerDOB: { type: Date},
-    ownerSSN: { type: String, required: true},
-    ownerEmail: { type: String, required: true},
-    ownerPhone: { type: String, required: true},
+    ownerId: { type: String},
+    ownerName: { type: String, required: true},//required
+    ownerDOB: { type: Date},//required
+    ownerSSN: { type: String, required: true},//required
+    ownerEmail: { type: String},
+    ownerPhone: { type: String},
     //End owner info
     
     //Billing info
-    country: { type: String, required: true},
-    state: { type: String, required: true},
-    city: { type: String, required: true},
-    averagePayment: { type: String, required: true},
-    EIN: { type: String, required: true},
-    Address: { type: String, required: true},
-    website: { type: String, required: true},
-    businessName: { type: String, required: true},
-    phoneNumber: { type: String, required: true},
+    country: { type: String, default: 'US'},//required
+    state: { type: String, required: true},//required
+    city: { type: String, required: true},//required
+    zipCode: { type: String, required: true},//required
+    averagePayment: { type: String},
+    EIN: { type: String, required: true},//required
+    Address: { type: String, required: true},//required
+    website: { type: String},
+    businessName: { type: String, required: true},//required
+    phoneNumber: { type: String},
+    businessType: { type: String, required: true},//required
     //End billing info
     
     //Billing info
-    aba: { type: String, required: true},
-    dda: { type: String, required: true},
+    aba: { type: String, required: true},//required
+    dda: { type: String, required: true},//required
     //End billing info
 
     createAt: {type: Date, default: new Date()},

@@ -169,22 +169,20 @@ function providerRequest(userId, dataProvider, cb) {
   });
 }
 
-function providerResponse(providerId, cb) {
+function providerResponse(providerId, verifyState, cb) {
   //TODO
   //Add state pending validate in findOne method.
-  providerService.findOne({_id:providerId},'', function (err, providerData) {
+  providerService.findOne({_id:providerId,verify:verifyState},'', function (err, providerData) {
     if (err) return cb(err);
     return cb(null,providerData);
   });
 }
 
-function providerResponseUpdate(providerId, cb) {
-  //TODO
-  //Update state verify for done value.
-  //providerService.findOne({_id:providerId},'', function (err, providerData) {
-    //if (err) return cb(err);
+function providerResponseUpdate(providerId, value, cb) {
+  providerService.update({_id:providerId},value, function (err, providerData) {
+    if (err) return cb(err);
     return cb(null,'providerData');
-  //});
+  });
 }
 
 
