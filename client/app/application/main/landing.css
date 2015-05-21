@@ -31,32 +31,32 @@
   height: 520px;
   margin-right: 5px;
   vertical-align: middle;
-  background-image: url(/assets/images/landing/im_bg_solutions_01.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_01.jpg);
 }
 
 .solutionsForTeams .item1:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_01_1.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_01_1.jpg);
 }
 .solutionsForTeams .item2{
   width: 380px;
   height: 520px;
   margin-right: 5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_02.jpg);
 }
 
 .solutionsForTeams .item2:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_02_1.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_02_1.jpg);
 }
 
 .solutionsForTeams .item3{
   width: 380px;
   height: 520px;
   margin-right: 5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_03.jpg);
 }
 
 .solutionsForTeams .item3:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_03_1.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_03_1.jpg);
 }
 
 .solutionDescTop{
