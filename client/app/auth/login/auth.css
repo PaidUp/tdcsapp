@@ -14,8 +14,8 @@
     line-height: 50px;
     height: 50px;
     color: #ccc;
-    background-color: #fafafa;
-    border-color: #ccc;
+    background-color: #fff;
+    border:1px solid #ccc;
 }
 
 
@@ -25,8 +25,13 @@
     border-color: #FF734D;
 }*/
 
-.btn-account-type.active{
+.btn-account-type.active {
     color: #fff;
     background-color: #FF805D !important;
-    border-color: #FF734D;
+    border-color:1px solid #FF734D;
+}
+
+.msg-account-type{
+    background-color: #ecedef;
+    padding-left:5px; 
 }

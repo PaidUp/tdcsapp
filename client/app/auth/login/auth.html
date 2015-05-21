@@ -9,32 +9,36 @@
           </button>
           <img src="/assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
           <br>
-          <div class="text-CS text-center">
+          <div class="text-center">
             Choose your account type:
           </div>
-          <div class="row">
-            <div class="col-sm-6 text-CS text-center btn-account-type {{showRole?'active' : ''}}" ng-click="destPath('athletes', true);">
-              I am an athlete
+          
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="col-sm-6 text-CS text-center btn-account-type {{showRole?'active' : ''}}" ng-click="destPath('athletes', true);">
+                  I have an athlete
+                </div>
+                <div class="col-sm-6 text-CS text-center btn-account-type {{!showRole?'active' : ''}}" ng-click="destPath('provider-request', false);">
+                  I have a team
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6 text-CS text-center btn-account-type {{!showRole?'active' : ''}}" ng-click="destPath('provider-request', false);">
-              I am a team
+          
+          <br>
+            <div class="msg-account-type" ng-show="!showRole">
+              <div class="text-CS">Choose if you are :</div>
+                <div>- Team owner</div>
+                <div>- Coach</div>
+                <div>- GM</div>
+                <div>- League admin</div>
             </div>
-          </div>
+            <div class="msg-account-type" ng-show="showRole">
+              <div class="text-CS">Choose if you are :</div>
+              <div>- Parent</div>
+              <div>- Athlete</div>
+            </div>
 
-            <div class="text-CS text-center" ng-show="!showRole">
-              Choose if you are :
-              * Team owner
-              * Coach
-              * GM
-              * League admin
-            </div>
-            <div class="text-CS text-center" ng-show="showRole">
-              Choose if you are :
-              * Parent
-              * Athlete
-            </div>
-
-
+            <br>
           <div class="text-CS text-center">
             <small class="text-CS" ng-show="error">{{error}}</small>
           </div>
