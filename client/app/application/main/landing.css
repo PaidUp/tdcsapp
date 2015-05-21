@@ -3,7 +3,7 @@
   min-height: 740px;
   padding-top: 150px;
   background-position: top center;
-  background-image: url(/assets/images/landing/Backgrounds_img/im_bg_main_baner.jpg);
+  background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
   background-size: cover;
   color: #fff;
   font-size: 30px;
@@ -222,7 +222,7 @@
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-image: url(/assets/images/landing/Backgrounds_img/im_bg_pricing.jpg);
+  background-image: url(/assets/images/landing/im_bg_pricing.jpg);
 }
 
 .bannerOurPackages .title{
@@ -370,7 +370,7 @@
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-image: url(/assets/images/landing/Backgrounds_img/im_bg_teams.jpg);
+  background-image: url(/assets/images/landing/im_bg_teams.jpg);
 }
 
 .unit{
