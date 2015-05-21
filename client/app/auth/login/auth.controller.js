@@ -53,6 +53,7 @@ angular.module('convenienceApp')
 
 angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalService, AuthService, $state, $rootScope, FlashService, $timeout) {
   $scope.showRole = true;
+  $scope.hideRole = true;
   $scope.user = {};
   $scope.error = null;
   $scope.log_in = 'Log in with Facebook';
@@ -112,6 +113,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
   // SIGNUP function
   $scope.emailBtnClick = function(){
+    $scope.hideRole = false;
     $scope.emailClick = $scope.emailClick ? false : true;
   };
 

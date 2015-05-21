@@ -23,21 +23,21 @@
                 </div>
               </div>
             </div>
-          
-          <br>
-            <div class="msg-account-type" ng-show="!showRole">
+            <br>
+            
+            <div class="msg-account-type" ng-show="!showRole && hideRole">
               <div class="text-CS">Choose if you are :</div>
                 <div>- Team owner</div>
                 <div>- Coach</div>
                 <div>- GM</div>
                 <div>- League admin</div>
             </div>
-            <div class="msg-account-type" ng-show="showRole">
+            <div class="msg-account-type" ng-show="showRole && hideRole">
               <div class="text-CS">Choose if you are :</div>
               <div>- Parent</div>
               <div>- Athlete</div>
             </div>
-
+            
             <br>
           <div class="text-CS text-center">
             <small class="text-CS" ng-show="error">{{error}}</small>
