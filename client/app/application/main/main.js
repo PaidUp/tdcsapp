@@ -8,6 +8,7 @@ angular.module('convenienceApp')
         templateUrl: 'app/application/main/main.html'
       }).state('faq', {
         url: '/faq',
-        templateUrl: 'app/application/main/faq.html'
+        templateUrl: 'app/application/main/faq.html',
+        controller : 'FaqCtrl'
       });
   });

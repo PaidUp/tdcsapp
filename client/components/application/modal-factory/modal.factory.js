@@ -79,10 +79,12 @@ angular.module('convenienceApp')
           size: 'lg'
         });
       },
-      ContactUs: function () {
+      ContactUs: function (subject) {
         openModal({
           templateUrl: 'app/application/contact-form/contact-us.html',
-
+          controller : function($scope){
+            $scope.subject = subject;
+          },
           size: 'md'
         });
       },
