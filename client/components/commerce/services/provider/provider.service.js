@@ -6,7 +6,7 @@ angular.module('convenienceApp')
     var LoanService = this;
 
     this.providerRequest = function(providerInfo){
-        Provider.save({action: 'request'},{providerInfo: providerInfo}).$promise;
+        return Provider.save({action: 'request'},{providerInfo: providerInfo}).$promise;
     }
     
   });

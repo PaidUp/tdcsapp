@@ -13,5 +13,9 @@ angular.module('convenienceApp')
         templateUrl: 'app/commerce/provider/landing/landing.html',
         controller: 'ProviderLandingCtrl',
         auth: false
+      }).state('provider-success', {
+        url: '/commerce/provider/success',
+        templateUrl: 'app/commerce/provider/success/success.html',
+        auth: true
       });
   });
