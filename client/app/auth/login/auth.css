@@ -9,3 +9,24 @@
   background-color: #fafafa;
   border-color: #ccc;
 }
+
+.btn-account-type {
+    line-height: 50px;
+    height: 50px;
+    color: #ccc;
+    background-color: #fafafa;
+    border-color: #ccc;
+}
+
+
+/*.btn-account-type:hover {
+    color: #fff;
+    background-color: #FF805D;
+    border-color: #FF734D;
+}*/
+
+.btn-account-type.active{
+    color: #fff;
+    background-color: #FF805D !important;
+    border-color: #FF734D;
+}

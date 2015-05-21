@@ -2,7 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('ProviderLandingCtrl', function ($rootScope, $scope, $state, $stateParams, AuthService) {
-    AuthService.dest = 'provider-request';
+    AuthService.destPath('provider-request');
 
     $scope.showContactUsForm = false;
 
@@ -13,8 +13,6 @@ angular.module('convenienceApp')
     $scope.solution = [true,true,true];
 
     $scope.showSolution = function(pos, val){
-      console.log('pos', pos);
-      console.log('val', val);
       $scope.solution[pos] = val;
     };
 

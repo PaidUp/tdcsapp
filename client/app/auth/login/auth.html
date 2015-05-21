@@ -10,6 +10,32 @@
           <img src="/assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
           <br>
           <div class="text-CS text-center">
+            Choose your account type:
+          </div>
+          <div class="row">
+            <div class="col-sm-6 text-CS text-center btn-account-type {{showRole?'active' : ''}}" ng-click="destPath('athletes', true);">
+              I am an athlete
+            </div>
+            <div class="col-sm-6 text-CS text-center btn-account-type {{!showRole?'active' : ''}}" ng-click="destPath('provider-request', false);">
+              I am a team
+            </div>
+          </div>
+
+            <div class="text-CS text-center" ng-show="!showRole">
+              Choose if you are :
+              * Team owner
+              * Coach
+              * GM
+              * League admin
+            </div>
+            <div class="text-CS text-center" ng-show="showRole">
+              Choose if you are :
+              * Parent
+              * Athlete
+            </div>
+
+
+          <div class="text-CS text-center">
             <small class="text-CS" ng-show="error">{{error}}</small>
           </div>
           <div class="text-center" ng-hide="emailClick">How would you like to create your account?</div>
@@ -61,7 +87,7 @@
                       <small class="text-CS">Not a valid email.</small>
                     </div>
                     <div class="text-CS text-center" ng-show="form.email.$error.required && submitted">
-                      <small class="text-CS">What's your email address?</small>
+                      <small class="text-CS">What&#39;s your email address?</small>
                     </div>
                     <div class="text-center" ng-show="emailFocus">
                       <br>
@@ -84,7 +110,7 @@
                   <br>
                   <div class="text-center">
                     <small>
-                      By signing up,  I agree to the Convenience Select's<br>
+                      By signing up,  I agree to the Convenience Select&#39;s<br>
                       <a href="/terms-of-service" target="blank">Terms of service</a> &amp;
                       <a href="/privacy-policy" target="blank">Privacy Policy</a>
                     </small>
@@ -96,7 +122,7 @@
                 <br>
                 <div class="text-center" ng-hide="emailClick">
                     <small>
-                      By signing up,  I agree to the Convenience Select's<br>
+                      By signing up,  I agree to the Convenience Select&#39;s<br>
                       <a href="/terms-of-service" target="blank">Terms of service</a> &amp;
                       <a href="/privacy-policy" target="blank">Privacy Policy</a>
                     </small>

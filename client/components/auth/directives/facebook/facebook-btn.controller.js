@@ -6,8 +6,8 @@ angular.module('convenienceApp')
     $scope.facebookLogin = function() {
       var success = function(user) {
         $scope.modal.closeModal();
-        $state.go(AuthService.dest);
-        AuthService.destDefault();
+        $state.go(AuthService.getDest());
+        AuthService.setDest();
       };
       var error = function(err) {
         console.log(err);

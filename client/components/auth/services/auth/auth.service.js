@@ -11,12 +11,21 @@ angular.module('convenienceApp')
       delete $rootScope.currentUser;
     });
 
+    var dest = 'athletes';
+
     return {
 
-      dest:'athletes',
+      getDest :function(){
+        return dest;
+      },
 
-      destDefault :function(){
-        this.dest  = 'athletes';
+      destPath :function(value){
+        //The value should be name target path.
+        dest  = value;
+      },
+
+      setDest :function(){
+        dest  = 'athletes';
       },
 
       updateCurrentUser: function () {
