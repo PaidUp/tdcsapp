@@ -8,11 +8,10 @@
             <span class="sr-only">Close</span>
           </button>
           <img src="/assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
-          <br>
           <div class="text-center">
+            <br>
             Choose your account type:
           </div>
-          
             <div class="row">
               <div class="col-sm-12">
                 <div class="col-sm-6 text-CS text-center btn-account-type {{showRole?'active' : ''}}" ng-click="destPath('athletes', true);">
@@ -24,26 +23,28 @@
               </div>
             </div>
             <br>
-            
             <div class="msg-account-type" ng-show="!showRole && hideRole">
               <div class="text-CS">Choose if you are :</div>
                 <div>- Team owner</div>
                 <div>- Coach</div>
                 <div>- GM</div>
                 <div>- League admin</div>
+                <br>
             </div>
             <div class="msg-account-type" ng-show="showRole && hideRole">
               <div class="text-CS">Choose if you are :</div>
               <div>- Parent</div>
               <div>- Athlete</div>
+              <br>
             </div>
-            
-            <br>
           <div class="text-CS text-center">
             <small class="text-CS" ng-show="error">{{error}}</small>
           </div>
-          <div class="text-center" ng-hide="emailClick">How would you like to create your account?</div>
-          <br>
+          <div class="text-center" ng-hide="emailClick">
+            <br>
+            How would you like to create your account? <br>
+            <br>
+          </div>
           <form class="form inputWIcons" name="form" ng-submit="register(form)" novalidate>
             <facebook-btn ng-model="signup"></facebook-btn>
             <hr>
