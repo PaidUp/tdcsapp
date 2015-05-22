@@ -50,8 +50,6 @@ angular.module('convenienceApp')
       });
     };
 
-
-
     $scope.showContactUsForm = false;
 
     $scope.togggleForm = function(){
