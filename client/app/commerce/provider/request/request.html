@@ -359,14 +359,14 @@
               <div class="text-CS text-center" ng-show="billingForm.aba.$error.required && submitted">
                 <small class="text-CS">Routing number is required</small>
               </div>
-              <div class="text-CS text-center number-error" ng-show="owner.aba.$error.aba && submitted">
+              <div class="text-CS text-center number-error" ng-show="billingForm.aba.$error.aba && submitted">
                 <small class="text-CS">Routing number is not correct</small>
               </div>
             </div>
 
             <div class="form-group"> <!-- ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()" -->
               <label>Account number (DDA)</label>
-              <input type="text" name="dda" ng-model="provider.dda" class="form-control" placeholder="" required ng-required="true" >
+              <input type="text" name="dda" ng-model="provider.dda" class="form-control" placeholder="" required ng-required="true" ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()">
               <div class="text-CS text-center" ng-show="billingForm.dda.$error.required && submitted">
                 <small class="text-CS">Account number is required</small>
               </div>
@@ -374,7 +374,7 @@
                 <small class="text-CS">Account number format error</small>
               </div>
               <label>Repeat Account number (DDA)</label><!-- ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()" -->
-              <input type="text" name="ddaVerification" ng-model="provider.ddaVerification" class="form-control" placeholder="" required ng-required="true" >
+              <input type="text" name="ddaVerification" ng-model="provider.ddaVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()">
               <div class="text-CS text-center" ng-show="billingForm.ddaVerification.$error.required && submitted">
                 <small class="text-CS">Account number verification is required</small>
               </div>
@@ -382,7 +382,6 @@
                 <small class="text-CS">Account number verification does not match</small>
               </div>
             </div>
-
           </div>
         </div>
 
