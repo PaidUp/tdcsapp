@@ -1,44 +1,38 @@
 <footer class="footer-bar">
     <div class="container">
         <div class="row">
-            <div class="col-md-7 col-md-push-5">
-
-                    <ul class="footer-nav pull-right">
-                        <!-- <li>
-                            <a href="">About us</a>
-                        </li>
-                        <li>
-                            <a href="">Support</a>
-                        </li>
-                        <li>
-                           <a href=""> Site map</a>
-                        </li> -->
-                        <li ng-click="modalFactory.PrivacyModal()">
-                            <a href="">Privacy Policy</a>
-                        </li>
-                        <li >
-                            <a href="" ng-click="modalFactory.ContactUsModal()">Contact us</a>
-                        </li>
-                        <li>
-                            <a href="" ui-sref="credits">Icons Attributions</a>
-                        </li>
-                        <li>
-                          <img src="assets/images/gD_verified.png">
-                        </li>
-                        <li>
-                          <img src="assets/images/siteLock_icon.png">
-                        </li>
-                    </ul>
-
+          <div class="col-md-3">
+            <img src="assets/images/landing/im_cs-logo-header.png" />
+            &copy; Copyright 2015
+          </div>
+          <div class="col-md-3 footer-nav">
+            <ul>
+              <li><strong>TEAMS</strong></li>
+              <li>
+                <a href="" ng-click="goTo('/', 'solutionsForTeams')">Solutions for Teams</a><br>
+              </li>
+              <li><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
+              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
+            </ul>
+          </div>
+          <div class="col-md-2 footer-nav">
+            <ul>
+              <li><strong>ABOUT</strong></li>
+              <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">About us</a></li>
+              <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">Meet our team</a></li>
+              <li><a href="" ng-click="modalFactory.ContactUs()">Contact us</a></li>
+              <li><a href="" ng-click="modalFactory.ContactUs()">Help</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 contactUs" ng-click="modalFactory.ContactUs()">
+            <div align="center" class="contactUsDesc" >
+              <img src="assets/images/landing/ic_contact.png" /><br>
+              CONTACT US
             </div>
-            <div class="col-md-5 col-md-pull-7">
-              <ul class="footer-nav pull-left">
-               <li>
-                 <img src="assets/images/logo_footer_CS.png" />
-               </li>
-               <li>Copyright &copy; 2014 Convenience Select. All rights reserved.</li>
-              </ul>
-            </div>
+
+          </div>
+
+
         </div>
     </div>
 </footer>

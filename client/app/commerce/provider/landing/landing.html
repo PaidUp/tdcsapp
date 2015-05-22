@@ -1,1 +1,342 @@
-@hello landing
+<div class="bannerLanding text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="titleBannerHome">We are better than <strong>do-it-yourself</strong><br>
+          we <strong>do-it-for-you</strong></div>
+        Let <strong>Convenience Select</strong> do the boring work so <br> you can focus on the things you love!
+        <br>
+        <br>
+      </div>
+      <div class="home-button center-block clearfix">
+        <a href="" class="btn btnSignUp btn-block btn-lg" ng-show="isLoggedIn()" ui-sref="athletes">Get Started</a>
+        <button type="button" class="btn btnSignUp btn-block btn-lg" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started Free!</button>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+<a name="solutionsForTeams" />
+ <div class="container">
+  <div class="row solutionsForTeams text-center">
+    <h2><strong class="text-CS">Solutions For Teams</strong></h2>
+    <br>
+    <div class="col-sm-6 col-md-4 item1 " ng-mouseover="hideSolution1()" ng-mouseleave="showSolution1()">
+      <div class="desc" ng-show="solution1">
+        <img src="/assets/images/landing/ic_solutions_01.png" >
+        <br>
+        <br>
+        TIRED OF GETTING PAID IN CASH, CHECKS OR CARDS IN-PERSON?
+      </div>
+      <div class="solutionDescTop" ng-show="!solution1">
+          Are chasing down parents to pay their registration fees before and during the season? Parents even
+          try to bring your cash during a game to pay for registration dues.  Why not  avoid that?
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution1">
+        <div class="title">PAYMENT COLLECTIONS</div>
+        Convenience Select processes you payments and contact parents directly, so you don't have to.  No more
+        chasing parents who owe you money. Let Convenience Select do all the leg work. We accept all credit cards
+        and bank accounts<sup>*</sup>.
+        <br>
+        <br>
+
+        <div class="footerDesc">
+          * 2.9% + 30 processing fees applies to every payments collected
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+    <div class="col-sm-6 col-md-4 item2" ng-mouseover="hideSolution2()" ng-mouseleave="showSolution2()">
+      <div class="desc" ng-show="solution2">
+        <img src="/assets/images/landing/ic_solutions_02.png" >
+        <br>
+        <br>
+        SPENDING TOO MUCH TIME RECONCILING YOUR PAYMENTS?
+      </div>
+
+      <div class="solutionDescTop" ng-show="!solution2">
+        Are tired of spending time reconciling your payments?  Does your card processor make you have to guess which
+        parents has the email fireball@aol.com? There must be an easier way.
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution2">
+        <div class="title">ITEMIZED REPORTING</div>
+        Convenience Selected will send you a monthly itemized report with your roster per team and the payments
+        we have collected. Know immediately the status of each payment.
+
+      </div>
+    </div>
+
+
+    <div class="col-sm-6 col-md-4 item3" ng-mouseover="hideSolution3()" ng-mouseleave="showSolution3()">
+      <div class="desc" ng-show="solution3">
+        <img src="/assets/images/landing/ic_solutions_03.png" >
+        <br>
+        <br>
+        TROUBLE GETTING PAID ON TIME?
+      </div>
+
+      <div class="solutionDescTop" ng-show="!solution3">
+        Do you have to track whether payments have been made on your schedule? Is it tough to collect a deposit in the
+        pre-season monthly payments throughout the season, or any other schedule you can think of?
+
+      </div>
+      <div class="solutionDescBottom" ng-show="!solution3">
+        <div class="title">PAYMENT SCHEDULING</div>
+        Convenience Select can setup the schedule for you while you sit back and let us charge parents every month
+        rather than parents having to remember to pay you. Receive one lump sum payment into your bank account
+        every month or receive the money as we collect it, it's up to you.
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<a name="bannerLandingPayment" />
+<div class="bannerLandingPayment">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 title">
+        <h2>Are you wondering what the payment collection experience is?<br>
+        With Convenience Select, it's as easy.</h2>
+      </div>
+      <div class="col-sm-3 item">
+        <img src="/assets/images/landing/ic_paymentcollection_step_01.png" class="center-block"><br>
+        Convenience Select calls you to quickly setup the payment schedule, teams and emails.
+      </div>
+      <div class="col-sm-3 item">
+        <img src="/assets/images/landing/ic_paymentcollection_step_02.png" class="center-block"><br>
+        Send parents to our site when it's time for them to pay.
+      </div>
+      <div class="col-sm-3 item">
+        <img src="/assets/images/landing/ic_paymentcollection_step_03.png" class="center-block"><br>
+        We collect the money and contact any parents that have not yet paid.
+      </div>
+      <div class="col-sm-3 item">
+        <img src="/assets/images/landing/ic_paymentcollection_step_04.png" class="center-block"><br>
+        You get a deposit for the dues collected into your bank account along with a detailed report.
+      </div>
+  </div>
+  </div>
+  <br>
+  <br>
+  <div class="home-button center-block btn-lg">
+    <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started</button>
+    <br>
+    <br>
+  </div>
+</div>
+
+<a name="contactUs"></a>
+<div class="bannerContactUs">
+  <div class="container">
+    <div class="title">Do you need assistance collecting payments for camos, personal training<br>
+      or any other services? Tell us how we can help.
+    </div>
+    <br>
+    <div class="clearfix"></div>
+    <div class="home-button center-block btn-lg">
+      <button type="button" class="btn btnContactUs btn-block btn-block" ng-click="togggleForm()" >Contact Us</button>
+      <br>
+    </div>
+  </div>
+  <div class="contactUs-form center-block" ng-show="showContactUsForm">
+    <contact-us></contact-us>
+    <br>
+  </div>
+
+</div>
+
+<div class="bannerComingSoon">
+  <div class="container">
+    <div class="title"><strong>COMING SOON</strong></div>
+    <br>
+    <div class="row">
+      <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_1.png" >
+        </div>
+        <h2>TRAVEL LOGISTICS</h2>
+        Stop worrying about the administrative part of travel. Let us find you one or multiple hotel options
+        for the team and parents.  We will coordinate team dinners that accommodate everyone.
+      </div>
+      <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_2.png" >
+        </div>
+        <h2>EASY COMMUNICATION</h2>
+        Write a single message and distribute it to evwryone via Facebook, Twitter, email and even SMS. Stop wasting time
+        posting the same content to multiple sites and be more efficient.
+      </div>
+      <div class="col-md-4 item">
+        <div>
+          <img src="/assets/images/landing/ic_coming_soon_3.png" >
+        </div>
+        <h2>VALUED OFFERINGS</h2>
+        Make your organization standout with our valued partners. Whether it's live video streaming games, college
+        recruiting services or many more, we bring best-in-class services to you and parents.
+      </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="home-button center-block btn-lg">
+      <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get More Info</button>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+<a name="bannerOurPackages" />
+<div class="bannerOurPackages">
+  <div class="container">
+    <div class="title">Our Packages</div>
+    <hr>
+      <div class="desc">
+        Designed for your select sports organization.<br>
+        Choose the right package designed to meet your needs.
+      </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2 planBox1">
+        <div class="plan1">
+          <div class="planName">
+            Free Play
+          </div>
+          <div class="planPrice">
+            $O
+          </div>
+          <div class="planTime">
+            PER ATHLETE PER MONTH
+          </div>
+          <div class="upTo">
+            Up to <span>15 athletes</span>
+          </div>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get started free</button>
+        </div>
+      </div>
+      <div class="col-md-2 planBox2">
+        <div class="plan2">
+          <div class="planName">
+            Gold Play
+          </div>
+          <div class="planPrice">
+            $30
+          </div>
+          <div class="planTime">
+            PER ATHLETE PER MONTH
+          </div>
+          <div class="upTo">
+            Up to <span>50 athletes</span>
+          </div>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+        </div>
+
+      </div>
+      <div class="col-md-2 planBox3">
+        <div class="plan3">
+          <div class="planName">
+            Platinum Play
+          </div>
+          <div class="planPrice">
+            $25
+          </div>
+          <div class="planTime">
+            PER ATHLETE PER MONTH
+          </div>
+          <div class="upTo">
+            Up to <span>250 athletes</span>
+          </div>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+        </div>
+      </div>
+      <div class="col-md-2 planBox4">
+        <div class="plan4">
+          <div class="planName">
+            Diamond Play
+          </div>
+          <div class="planPrice">
+            $20
+          </div>
+          <div class="planTime">
+            PER ATHLETE PER MONTH
+          </div>
+          <div class="upTo">
+            Up to <span>500 athletes</span>
+          </div>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+        </div>
+      </div>
+      <div class="col-md-2 planBox5">
+        <div class="plan5">
+          <div class="planName">
+            Unlimited Play
+          </div>
+          <div class="planPrice">
+            $15
+          </div>
+          <div class="planTime">
+            PER ATHLETE PER MONTH
+          </div>
+          <div class="upTo">
+            Up to <span>500+ athletes</span>
+          </div>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bannerTestimonial">
+  <div class="content">
+
+    <div id="carousel-testimonial" class="carousel slide" data-ride="carousel">
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner testimonial">
+        <!--item-one-->
+        <div class="item active">
+          <div class="unit" >
+            <div><img src="/assets/images/yeoman.png" class="img-circle center-block"><br></div>
+            <div class="name">John Smith</div>
+            <div class="teamName">TEAM NAME</div>
+            <h3>An amazing learning experience</h3>
+          </div>
+        </div>
+        <!--item-two-->
+        <div class="item">
+          <div class="unit" >
+            <div><img src="/assets/images/yeoman.png" class="center-block"><br></div>
+            <div class="name">John Smith</div>
+            <div class="teamName">TEAM NAME</div>
+            <h3>An amazing learning experience</h3>
+
+          </div>
+        </div>
+      </div>
+      <!-- Controls -->
+      <a class="left carousel-control" href="#carousel-testimonial" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#carousel-testimonial" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+    <!--carousel end-->
+    <script>
+      $('.carousel').carousel();
+    </script>
+
+
+  </div>
+
+</div>
+

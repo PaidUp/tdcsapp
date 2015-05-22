@@ -52,12 +52,18 @@ angular.module('convenienceApp')
   });
 
 angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalService, AuthService, $state, $rootScope, FlashService, $timeout) {
-
+  $scope.showRole = true;
+  $scope.hideRole = true;
   $scope.user = {};
   $scope.error = null;
   $scope.log_in = 'Log in with Facebook';
   $scope.signup = 'Sign up with Facebook';
   $scope.modal = ModalService;
+
+  $scope.destPath = function(value, isParent){
+    $scope.showRole = isParent;
+    AuthService.destPath(value);
+  };
 
   $scope.resetState = function() {
     $scope.user = {};
@@ -88,8 +94,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
       var success = function() {
         // Logged in, redirect to home
         $scope.modal.closeModal();
-        $state.go(AuthService.dest);
-        AuthService.destDefault();
+        $state.go(AuthService.getDest());
+        AuthService.setDest();
         if ($rootScope.currentUser.verify && $rootScope.currentUser.verify.status !== 'verified') {
           FlashService.addAlert({
             type:'warning',
@@ -107,6 +113,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
   // SIGNUP function
   $scope.emailBtnClick = function(){
+    $scope.hideRole = false;
     $scope.emailClick = $scope.emailClick ? false : true;
   };
 
@@ -131,8 +138,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
             type:'warning',
             templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
           });
-          $state.go(AuthService.dest);
-          AuthService.destDefault();
+          $state.go(AuthService.getDest());
+          AuthService.setDest();
         }, error);
       };
 

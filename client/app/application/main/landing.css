@@ -1,0 +1,412 @@
+.bannerLanding{
+  width: 100%;
+  min-height: 740px;
+  padding-top: 150px;
+  background-position: top center;
+  background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
+  background-size: cover;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.solutionsForTeams{
+  margin-bottom: 30px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+.solutionsForTeams h2{
+  font-weight: 300;
+  font-size: 60px;
+}
+
+.solutionsForTeams .title{
+  text-align: center;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.solutionsForTeams .item1{
+  width: 380px;
+  height: 520px;
+  margin-right: 5px;
+  vertical-align: middle;
+  background-image: url(/assets/images/landing/im_bg_solutions_01.jpg);
+}
+
+.solutionsForTeams .item1:hover{
+  background-image: url(/assets/images/landing/im_bg_solutions_01_1.jpg);
+}
+.solutionsForTeams .item2{
+  width: 380px;
+  height: 520px;
+  margin-right: 5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_02.jpg);
+}
+
+.solutionsForTeams .item2:hover{
+  background-image: url(/assets/images/landing/im_bg_solutions_02_1.jpg);
+}
+
+.solutionsForTeams .item3{
+  width: 380px;
+  height: 520px;
+  margin-right: 5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_03.jpg);
+}
+
+.solutionsForTeams .item3:hover{
+  background-image: url(/assets/images/landing/im_bg_solutions_03_1.jpg);
+}
+
+.solutionDescTop{
+  height: 50%;
+  font-size: 18px;
+  font-weight: 300;
+  color: #FFFFFF;
+  text-align: justify;
+  padding-top: 70px;
+  line-height: normal;
+
+}
+
+.solutionDescBottom{
+  height: 50%;
+  font-size: 18px;
+  font-weight: 300;
+  color: #FFFFFF;
+  text-align: justify;
+  padding-top: 20px;
+  line-height: normal;
+}
+
+.solutionsForTeams .desc{
+  padding-top: 100px;
+  color: #FFFFFF;
+  font-size: 30px;
+  font-weight:  500;
+  background-color: transparent;
+}
+
+.solutionDescBottom .footerDesc{
+  font-size: 12px;
+  line-height: normal;
+
+}
+
+
+.bannerLandingPayment{
+  min-height: 400px;
+  width: 100%;
+  color: #ff805d;
+  font-size: 18px;
+  background-size: cover;
+}
+.bannerLandingPayment .title{
+  padding: 25px 0px 10px 0px;
+  text-align: center;
+  border-bottom: 1px solid #ffffff;
+  margin-bottom: 30px;
+}
+.bannerLandingPayment .item{
+  min-height: 170px;
+  color: #494c4e;
+  margin-top: 0px;
+  text-align: center;
+}
+
+.bannerContactUs{
+  min-height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-color: #ff805d;
+  text-align: justify;
+}
+
+.bannerContactUs .title{
+  margin-top: 20px;
+  font-size: 25px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+
+.btnContactUs{
+  color: #FF805D;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+.btnContactUs:hover{
+  color: #FF805D;
+  background-color: #ebedef;
+}
+
+.contactUs-form{
+  align-content: center;
+  max-width: 500px;
+  color: #FFFFFF;
+  margin-bottom: 10px;
+
+}
+.contactUs-form .text-CS{
+  color: #FFFFFF;
+}
+
+.bannerContactUs .btnSignUp{
+  color: #FF805D;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+.bannerContactUs .btnSignUp:hover{
+  color: #FF805D;
+  background-color: #ebedef;
+}
+
+.bannerComingSoon{
+  min-height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-color: #f9f9f9;
+  text-align: justify;
+}
+
+.bannerComingSoon .title{
+  margin-top: 20px;
+  font-size: 25px;
+  color: #ff805d;
+  text-align: center;
+}
+
+.bannerComingSoon .item{
+  min-height: 170px;
+  color: #494c4e;
+  text-align: center;
+}
+
+.bannerComingSoon .item h2{
+  font-size: 25px;
+}
+
+.btnComingSoon{
+  color: #FF805D;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+.btnComingSoon:hover{
+  color: #FF805D;
+  background-color: #ebedef;
+}
+
+.bannerOurPackages{
+  min-height: 700px;
+  color: #FFFFFF;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  background-position: center;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-image: url(/assets/images/landing/im_bg_pricing.jpg);
+}
+
+.bannerOurPackages .title{
+  margin-top: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 50px;
+  font-weight: 500;
+}
+
+.bannerOurPackages .desc{
+  margin-top: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 200;
+}
+
+.bannerOurPackages .planBox1{
+
+  width: 220px;
+  height: 350px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  margin-top: 50px;
+
+}
+
+.bannerOurPackages .planBox2{
+  width: 220px;
+  height: 360px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  margin-top: 40px;
+}
+
+.bannerOurPackages .planBox3{
+  width: 220px;
+  height: 370px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  margin-top: 30px;
+}
+
+.bannerOurPackages .planBox4{
+  width: 220px;
+  height: 380px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  margin-top: 20px;
+}
+
+.bannerOurPackages .planBox5{
+  width: 220px;
+  height: 390px;
+  margin-right: 10px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+}
+
+.bannerOurPackages .plan1{
+ margin-top: 0px;
+}
+.bannerOurPackages .plan2{
+  margin-top: 30px;
+
+}
+.bannerOurPackages .plan3{
+  margin-top: 40px;
+
+}
+.bannerOurPackages .plan4{
+  margin-top: 50px;
+
+}
+.bannerOurPackages .plan5{
+  margin-top: 60px;
+
+}
+
+.bannerOurPackages .planName{
+  color: #7fc348;
+  font-size: 28px;
+  font-weight: 200;
+  text-align: center;
+  margin-top: 20px;
+
+}
+
+.bannerOurPackages .planPrice{
+  color: #7fc348;
+  font-size: 60px;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.bannerOurPackages .planTime{
+  color: #6b737e;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.bannerOurPackages .upTo{
+  color: #6b737e;
+  font-size: 14px;
+  font-weight: 300;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
+
+.bannerOurPackages .upTo span{
+  font-weight: 500;
+  color: #7fc348;
+}
+
+
+.bannerOurPackages .btnChoose{
+  color: #FFFFFF;
+  background-color: #7fc348;
+  border-color: #69bb18;
+  border-bottom-color: #080808;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  vertical-align: bottom;
+
+}
+
+.bannerOurPackages .btnChoose:hover{
+  color: #FFFFFF;
+  background-color: #69bb18;
+}
+
+.bannerTestimonial{
+  min-height: 400px;
+  color: #FFFFFF;
+  background-color: #FFFFFF;
+  border-color: #FF734D;
+  border-bottom-color: #C65C43;
+  background-position:center;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-image: url(/assets/images/landing/im_bg_teams.jpg);
+}
+
+.unit{
+  text-align:center;
+  color:#fff;
+  padding:5% 10% 5% 0;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position:center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  width:100%;
+}
+
+.unit .name{
+  font-size: 25px;
+  font-weight: 200;
+}
+
+.unit .teamName{
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.testimonial h3{
+  display:inline-block;
+  color:#fff;
+  padding:30px;
+}
+.testimonial .byline{
+  display:inline-block;
+  background:black;
+  background:rgba(0, 0, 0, 0.5);
+  font-size:18px;
+  padding:8px;
+  margin-left: 25%;
+}

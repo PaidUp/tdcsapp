@@ -21,6 +21,15 @@
       <div class="collapse navbar-collapse mobile-right" id="nav-no-float">
 
         <ul class="nav navbar-nav">
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="" ng-click="goTo('/', 'solutionsForTeams')" >Solutions for Teams</a>
+          </li>
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="" ng-click="goTo('/','bannerOurPackages')">Our Packages</a>
+          </li>
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="" ng-click="goTo('/faq')">FAQ</a>
+          </li>
           <li class="my-athletes" ng-show="isLoggedIn()">
             <a href="" ui-sref="athletes">My Athlete(s)</a>
           </li>

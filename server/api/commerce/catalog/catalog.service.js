@@ -21,5 +21,14 @@ function catalogProduct (productId, cb) {
   });
 }
 
+function catalogCreate (productData, cb) {
+  tdCommerceService.init(config.connections.commerce);
+  tdCommerceService.catalogCreate(productData,function(err, product) {
+    if(err) return cb(err);
+    return cb(null, product);
+  });
+}
+
 exports.catalogList = catalogList;
 exports.catalogProduct = catalogProduct;
+exports.catalogCreate = catalogCreate;

@@ -79,6 +79,13 @@ angular.module('convenienceApp')
           size: 'lg'
         });
       },
+      ContactUs: function (subject) {
+        openModal({
+          templateUrl: 'app/application/contact-form/contact-us.html',
+
+          size: 'md'
+        });
+      },
       closeModal: function () {
         $rootScope.modal.dismiss('cancel');
       }

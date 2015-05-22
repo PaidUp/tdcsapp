@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('MainCtrl', function ($rootScope, $scope, $timeout, FlashService, AuthService, ContactService, ModalService, ModalFactory) {
+  .controller('MainCtrl', function ($rootScope, $scope, $timeout, FlashService, AuthService, ContactService,
+                                    ModalService, ModalFactory, $anchorScroll, $location) {
 
     $rootScope.alerts = [];
     $scope.modalFactory = ModalFactory;
@@ -49,12 +50,27 @@ angular.module('convenienceApp')
       });
     };
 
-    $scope.contactUs = function (form, contactInfo) {
-      $scope.submitted = true;
-      if (form.$valid) {
-        ContactService.contactUs(contactInfo);
-        $scope.modalFactory.ContactUsModalConfirmation();
-        document.getElementById('contactUsForm').reset();
+    $scope.showContactUsForm = false;
+
+    $scope.togggleForm = function(){
+      $scope.showContactUsForm = !$scope.showContactUsForm;
+    };
+
+    $scope.solution = [true,true,true];
+
+    $scope.showSolution = function(pos, val){
+      $scope.solution[pos] = val;
+    };
+
+    $scope.goTo = function(path,anchor) {
+      $location.path(path);
+      if(anchor){
+        $location.hash(anchor);
+        $anchorScroll();
+      }else{
+        $location.hash('');
       }
     };
+
+
   });

@@ -1,5 +1,5 @@
 .loan-tabs{
-  color: #ffffff;
+  color: #ff805d;;
   margin-top: 20px;
 }
 .loan-tabs strong{
@@ -26,11 +26,11 @@
   border-bottom-color: #ffffff;
 }
 .loan-tabs .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-  color: #ffffff;
+  color: #ff805d;
   cursor: default;
   background-color: transparent;
   border: 4px solid transparent;
-  border-bottom-color: #ffffff;
+  border-bottom-color: #ff805d;
 }
 .loan-tabs li.active{
   font-family: 'Roboto Condensed', sans-serif;
