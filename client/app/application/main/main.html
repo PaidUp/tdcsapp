@@ -1,7 +1,7 @@
 <div class="bannerLanding text-center">
   <div class="container">
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 desc">
         <div class="titleBannerHome">We are better than <strong>do-it-yourself</strong><br>
           we <strong>do-it-for-you</strong></div>
         Let <strong>Convenience Select</strong> do the boring work so <br> you can focus on the things you love!
@@ -22,7 +22,7 @@
   <div class="row solutionsForTeams text-center">
     <h2><strong class="text-CS">Solutions For Teams</strong></h2>
     <br>
-    <div class="col-sm-6 col-md-4 item1 " ng-mouseover="showSolution(0,false)" ng-mouseleave="showSolution(0, true)">
+    <div class="col-sm-6 col-md-4 item item1 " ng-mouseover="showSolution(0,false)" ng-mouseleave="showSolution(0, true)">
       <div class="desc" ng-show="solution[0]">
         <img src="/assets/images/landing/ic_solutions_01.png" >
         <br>
@@ -47,7 +47,7 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 col-md-4 item2" ng-mouseover="showSolution(1, false)" ng-mouseleave="showSolution(1, true)">
+    <div class="col-sm-6 col-md-4 item item2" ng-mouseover="showSolution(1, false)" ng-mouseleave="showSolution(1, true)">
       <div class="desc" ng-show="solution[1]">
         <img src="/assets/images/landing/ic_solutions_02.png" >
         <br>
@@ -67,7 +67,7 @@
 
       </div>
     </div>
-    <div class="col-sm-6 col-md-4 item3" ng-mouseover="showSolution(2, false)" ng-mouseleave="showSolution(2, true)">
+    <div class="col-sm-6 col-md-4 item item3" ng-mouseover="showSolution(2, false)" ng-mouseleave="showSolution(2, true)">
       <div class="desc" ng-show="solution[2]">
         <img src="/assets/images/landing/ic_solutions_03.png" >
         <br>
@@ -190,8 +190,8 @@
       Choose the right package designed to meet your needs.
     </div>
     <br>
-    <div class="row">
-      <div class="col-md-2 planBox1">
+    <div class="row contentPlanBox">
+      <div class="col-sm-2 planBox planBox1">
         <div class="plan1">
           <div class="planName">
             Free Play
@@ -208,7 +208,7 @@
           <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get started free</button>
         </div>
       </div>
-      <div class="col-md-2 planBox2">
+      <div class="col-sm-2 planBox planBox2">
         <div class="plan2">
           <div class="planName">
             Gold Play
@@ -226,7 +226,7 @@
         </div>
 
       </div>
-      <div class="col-md-2 planBox3">
+      <div class="col-sm-2 planBox planBox3">
         <div class="plan3">
           <div class="planName">
             Platinum Play
@@ -243,7 +243,7 @@
           <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
-      <div class="col-md-2 planBox4">
+      <div class="col-sm-2 planBox planBox4">
         <div class="plan4">
           <div class="planName">
             Diamond Play
@@ -260,7 +260,7 @@
           <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
-      <div class="col-md-2 planBox5">
+      <div class="col-sm-2 planBox planBox5">
         <div class="plan5">
           <div class="planName">
             Unlimited Play
