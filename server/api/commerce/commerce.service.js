@@ -185,6 +185,17 @@ function providerResponseUpdate(providerId, value, cb) {
   });
 }
 
+function getSchedule(productId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.generateSchedule(productId, function (err, data) {
+    console.log('err',err);
+    console.log('data',data);
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+
+}
+
 
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
@@ -198,3 +209,4 @@ exports.orderCancel = orderCancel;
 exports.providerRequest = providerRequest;
 exports.providerResponse = providerResponse;
 exports.providerResponseUpdate = providerResponseUpdate;
+exports.getSchedule = getSchedule;
