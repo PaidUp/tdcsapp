@@ -18,6 +18,7 @@ angular.module('convenienceApp')
     $scope.oldBillingAddress = null;
     $scope.oldPhone = null;
     $scope.user = angular.copy(AuthService.getCurrentUser());
+    //get schedule
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
