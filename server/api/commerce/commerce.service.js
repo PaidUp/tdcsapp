@@ -93,7 +93,7 @@ function getUsertransactions(user, cb) {
           return cb(err);
         }
         TDCommerceService.init(config.connections.commerce);
-        TDCommerceService.transactionList(order.incrementId,user._id, function (err, orderTransactions) {
+        TDCommerceService.transactionList(order.incrementId, function (err, orderTransactions) {
           if (err) {
             return cb(err);
           }
