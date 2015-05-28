@@ -35,13 +35,11 @@ angular.module('convenienceApp')
     CartService.getCart(currentCartId).then(function(value){
       var products = value.items;
       products.forEach(function(ele, idx, arr){
-        console.log('ele', ele);
         CommerceService.getSchedule(ele.productId).then(function(val){
           $scope.schedules.push({
             name : ele.name,
             periods : val.schedulePeriods
           });
-          console.log('val', val);
         });
       });
 
