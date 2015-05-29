@@ -61,6 +61,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.modal = ModalService;
 
   $scope.destPath = function(value, isParent){
+    console.log('auth isParent',isParent);
+    console.log('auth value',value);
     $scope.showRole = isParent;
     AuthService.destPath(value);
   };
