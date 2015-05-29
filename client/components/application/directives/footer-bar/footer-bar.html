@@ -1,36 +1,32 @@
 <footer class="footer-bar">
     <div class="container">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-sm-4">
             <img src="assets/images/landing/im_cs-logo-header.png" />
             &copy; Copyright 2015
           </div>
-          <div class="col-md-3 footer-nav">
+          <div class="col-sm-4 footer-nav">
             <ul>
               <li><strong>TEAMS</strong></li>
+              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
               <li>
                 <a href="" ng-click="goTo('/', 'solutionsForTeams')">Solutions for Teams</a><br>
               </li>
               <li><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
-              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
+
             </ul>
           </div>
-          <div class="col-md-2 footer-nav">
+          <div class="col-sm-4 footer-nav">
             <ul>
               <li><strong>ABOUT</strong></li>
               <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">About us</a></li>
               <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">Meet our team</a></li>
               <li><a href="" ng-click="modalFactory.ContactUs()">Contact us</a></li>
-              <li><a href="" ng-click="modalFactory.ContactUs()">Help</a></li>
+              <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+              <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of Service</a></li>
             </ul>
           </div>
-          <div class="col-md-4 contactUs" ng-click="modalFactory.ContactUs()">
-            <div align="center" class="contactUsDesc" >
-              <img src="assets/images/landing/ic_contact.png" /><br>
-              CONTACT US
-            </div>
 
-          </div>
 
 
         </div>

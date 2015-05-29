@@ -12,6 +12,66 @@ var logger = require('../../config/logger');
 var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 var mix = require('../../config/mixpanel');
+var commerceService = require('../commerce/commerce.service');
+
+
+function collectPendingOrders(callback){
+  paymentService.collectPendingOrders(function (err, pendingOrders){
+    if(err){
+      callback(err);
+    };
+    callback(null, pendingOrders);
+  });
+};
+
+function paymentSchedule(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, schedulePeriods){
+        if(err){
+          callbackEach(err);
+        };
+        async.eachSeries(schedulePeriods.scheduled,
+          function(schedulePeriod, callbackEach2){
+            if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+              userService.find({_id : order.userId}, function(err, users){
+                paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price, order.paymentMethod, schedulePeriod.id, function(err , data){
+                  if(err){
+                    return callbackEach2(err);
+                  }
+                  return callbackEach2();
+                });
+              });
+            }else{
+              callbackEach2();
+            }
+          },
+          function(err){
+            if(err){
+              return callbackEach(err);
+            };
+            callbackEach();
+          });
+        //callback(null, schedule);
+      });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+}
+
+exports.collectCreditCard = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    paymentSchedule
+  ], function(err, result){
+    cb(null, true);
+  });
+
+};
 
 exports.collectOneTimePayments = function (cb) {
   logger.log('info', 'into collectOneTimePayments');

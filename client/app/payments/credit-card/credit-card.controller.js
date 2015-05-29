@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService, CartService, $state, PaymentService, ApplicationConfigService) {
+  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService,
+                                          AuthService, FlashService, CartService, $state, PaymentService,
+                                          ApplicationConfigService, CommerceService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/payments/templates/loan-bar.html'
@@ -18,6 +20,7 @@ angular.module('convenienceApp')
     $scope.oldBillingAddress = null;
     $scope.oldPhone = null;
     $scope.user = angular.copy(AuthService.getCurrentUser());
+    //get schedule
 
     $scope.sendAlertErrorMsg = function (msg) {
       FlashService.addAlert({
@@ -26,6 +29,22 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
+
+    $scope.schedules = [];
+
+    var currentCartId = CartService.getCurrentCartId();
+    CartService.getCart(currentCartId).then(function(value){
+      var products = value.items;
+      products.forEach(function(ele, idx, arr){
+        CommerceService.getSchedule(ele.productId).then(function(val){
+          $scope.schedules.push({
+            name : ele.name,
+            periods : val.schedulePeriods
+          });
+        });
+      });
+
+    });
 
     ApplicationConfigService.getConfig().then(function (config) {
       Stripe.setPublishableKey(config.stripeApiPublic);

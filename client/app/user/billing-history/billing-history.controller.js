@@ -29,7 +29,6 @@ angular.module('convenienceApp')
         $scope.noBillinHistory = true;
       }
       angular.forEach(response, function (userTransactions) {
-        // console.log(userTransactions);
         angular.forEach(userTransactions.transactions, function (transaction) {
           transaction.createdAt = $scope.formatDate(transaction.createdAt);
           transaction.order = userTransactions.order;

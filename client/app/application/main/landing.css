@@ -1,12 +1,9 @@
 @media screen and (max-width: 1200px) {
   .solutionsForTeams .item {
     margin-top: 1em;
-    margin: 0 !important;
-    margin-top: 5px !important;
-    width: 100% !important;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
+    display: block;
+    align-content: center !important;
+
   }
 
   .planBox{
@@ -15,19 +12,10 @@
     margin-left: auto;
   }
 
-  .contentPlanBox{
-  }
-
   .bannerOurPackages .planBox{
     width: 220px;
     margin-right: 10px;
     background-color: #f9f9f9;
-  }
-
-  .bannerOurPackages .planBox1{
-    height: 350px;
-    margin-top: 50px;
-
   }
 
   .bannerLanding{
@@ -40,6 +28,10 @@
     font-size: 20px;
     font-weight: 200;
 
+  }
+
+  .titleBannerHome{
+    font-size: 42px !important;
   }
 }
 
@@ -55,6 +47,7 @@
   .bannerLanding{
     font-size: 30px !important;
     font-weight: 200 !important;
+    background-size: cover !important;
   }
 
   .solutionsForTeams h2{
@@ -64,6 +57,8 @@
   .bannerOurPackages .title {
     font-size: 40px !important;
   }
+
+
 
 }
 
@@ -88,7 +83,8 @@
   margin-right: auto;
 }
 .solutionsForTeams h2{
-  font-size: 60px;
+  font-size: 50px;
+  font-weight: 500;
 }
 
 .solutionsForTeams .item{
@@ -99,26 +95,32 @@
 }
 
 .solutionsForTeams .item1{
-  background-image: url(/assets/images/landing/im_bg_solutions_01.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
 }
 
 .solutionsForTeams .item1:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_01_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
 }
 .solutionsForTeams .item2{
-  background-image: url(/assets/images/landing/im_bg_solutions_02.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
 }
 
 .solutionsForTeams .item2:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_02_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
 }
 
 .solutionsForTeams .item3{
-  background-image: url(/assets/images/landing/im_bg_solutions_03.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
 }
 
 .solutionsForTeams .item3:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_03_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
 }
 
 .solutionDescTop{
@@ -283,6 +285,16 @@
   background-position: center;
   background-image: url(/assets/images/landing/im_bg_pricing.jpg);
   padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.bannerOurPackages .bottom{
+  margin-top: 3em;
+  text-align: center;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 200;
 }
 
 .bannerOurPackages .title{
@@ -369,6 +381,12 @@
   font-weight: 300;
   text-align: center;
   margin-top: 20px;
+}
+
+.planPrice sup{
+  vertical-align: super;
+  font-size: 24px;
+  font-weight: 300;
 }
 
 .bannerOurPackages .planTime{

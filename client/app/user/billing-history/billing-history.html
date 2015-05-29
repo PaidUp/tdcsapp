@@ -36,7 +36,7 @@
                 {{transaction.order.products[0].productPurchaseSku | cleaner}}
               </td>
               <td>
-                {{transaction.grandTotal| currency}}
+                {{transaction.details.rawDetailsInfo.amount| currency}}
               </td>
             </tr>
           </tbody>

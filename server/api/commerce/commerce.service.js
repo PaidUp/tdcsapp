@@ -93,7 +93,7 @@ function getUsertransactions(user, cb) {
           return cb(err);
         }
         TDCommerceService.init(config.connections.commerce);
-        TDCommerceService.transactionList(order.incrementId,user._id, function (err, orderTransactions) {
+        TDCommerceService.transactionList(order.incrementId, function (err, orderTransactions) {
           if (err) {
             return cb(err);
           }
@@ -185,6 +185,22 @@ function providerResponseUpdate(providerId, value, cb) {
   });
 }
 
+function getSchedule(productId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.generateSchedule(productId, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
+function paymentsSchedule(params, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.paymentsSchedule(params, function (err, data) {
+    if (err) return cb(err);
+    return cb(null,data);
+  });
+}
+
 
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
@@ -198,3 +214,5 @@ exports.orderCancel = orderCancel;
 exports.providerRequest = providerRequest;
 exports.providerResponse = providerResponse;
 exports.providerResponseUpdate = providerResponseUpdate;
+exports.getSchedule = getSchedule;
+exports.paymentsSchedule = paymentsSchedule;
