@@ -12,6 +12,7 @@ var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
 var tdPaymentService = require('TDCore').paymentService;
 var mix = require('../../config/mixpanel');
+var uuid = require('node-uuid');
 
 
 function createCustomer(user, cb) {
@@ -295,20 +296,25 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
            // logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
             debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, userp.meta.TDPaymentId, providerId, function(err, data) {
-              if(err) return cb(err);
-              if(data.status == 'succeeded') {
+              //if(err) return cb(err);
+              if(data && data.status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
-                var result = {amount: amount, BPOrderId: data.id, BPDebitId: data.id,
-                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId};
+                var result = {amount: amount, OrderId: data.id, DebitId: data.id,
+                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId, status:data.status};
                 commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
               }
               else {
-                // Debit failed
-                return cb(data);
+                var result = {amount: amount, OrderId: uuid.v4(), DebitId: uuid.v4(),
+                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId, status:'failed', message:err.message};
+                commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
+                  if(err) return cb(err);
+                  return cb(data);
+                });
+                //return cb(data);
               }
             });
           //});
@@ -373,10 +379,10 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, cb)
     debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, function (err, resultDebit) {
       // Debit failed
       if (err) {
-        logger.info('Failed, add a comment and mark order as "on hold"');
+        //logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"
         commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
-          commerceService.orderHold(order.incrementId, function(err, data){
+          //commerceService.orderHold(order.incrementId, function(err, data){
             //TODO
             paymentEmailService.sendFinalEmailCreditCard(user, amount, order, function(error, data){
               mix.panel.track("paymentCaptureSendFinalEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
@@ -384,14 +390,14 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, cb)
             });
 
             return cb(err);
-          });
+          //});
         });
       }
       else {
         // Debit succeed
         logger.info('3) Success, add a comment and mark order as "processing"');
         // 3) Add a comment and mark order as "processing"
-        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.id, 'processing', function (err, result) {
+        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit, 'processing', function (err, result) {
           if (err) return cb(err);
           //TODO
           paymentEmailService.sendProcessedEmailCreditCard(user, amount, resultDebit.number, order.incrementId, function(err, data){
