@@ -128,17 +128,11 @@
     <br>
     <div class="clearfix"></div>
     <div class="home-button center-block btn-lg">
-      <button type="button" class="btn btnContactUs btn-block btn-block" ng-click="togggleForm()" >Contact Us</button>
+      <button type="button" class="btn btnContactUs btn-block btn-block" ng-click="modalFactory.ContactUs()" >Contact Us</button>
       <br>
     </div>
   </div>
-  <div class="contactUs-form center-block" ng-show="showContactUsForm">
-    <contact-us></contact-us>
-    <br>
-  </div>
-
 </div>
-
 <div class="bannerComingSoon" id="bannerComingSoon">
   <div class="container">
     <div class="title"><strong>COMING SOON</strong></div>
@@ -220,7 +214,7 @@
           <div class="upTo">
             Up to <span>50 athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
 
       </div>

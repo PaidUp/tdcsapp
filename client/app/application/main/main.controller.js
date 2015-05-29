@@ -8,6 +8,13 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
     $scope.modal = ModalService;
 
+    $scope.destPath = function(value, isParent){
+      console.log('main isParent',isParent);
+      console.log('main value',value);
+      $scope.showRole = isParent;
+      AuthService.destPath(value);
+    };
+
     $scope.$on('event:alerts', function () {
       var alert = FlashService.shift();
       if (alert.timeout) {
