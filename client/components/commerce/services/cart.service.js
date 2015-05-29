@@ -77,7 +77,7 @@ angular.module('convenienceApp')
     this.getUserId = function () {
       return $cookieStore.get('userId');
     };
-    
+
     var subTotal = 0;
 
     this.getSubtotal = function () {

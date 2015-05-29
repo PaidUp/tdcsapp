@@ -164,7 +164,7 @@ function updateOrderDescription(orderId, description, cb) {
 }
 
 function collectPendingOrders(cb) {
-  commerceService.orderList({status: "pending"}, function(err, data) {
+  commerceService.orderList({status: ["pending","processing"]}, function(err, data) {
     var orderList = [];
     if (err) return cb(err);
     async.eachSeries(data, function (order, callback) {
@@ -279,7 +279,7 @@ function fetchDebit(debitId, cb){
   });
 }
 
-function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, cb) {
+function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -300,7 +300,7 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, cb) {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
                 var result = {amount: amount, BPOrderId: data.id, BPDebitId: data.id,
-                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand};
+                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId};
                 commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
@@ -366,12 +366,12 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   });
 }
 
-function capture(order, user, providerId, amount, paymentMethod, cb) {
+function capture(order, user, providerId, amount, paymentMethod, scheduleId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
 
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, function (err, resultDebit) {
+    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, function (err, resultDebit) {
       // Debit failed
       if (err) {
         logger.info('Failed, add a comment and mark order as "on hold"');

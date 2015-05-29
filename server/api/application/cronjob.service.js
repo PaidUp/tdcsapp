@@ -8,39 +8,10 @@ var logger = require('../../config/logger');
 
 var jobs =
   [
+   // Collect One Time Payments
     function(callback) {
-      logger.log('info','paymentCronService.sendRemindToAddPaymentMethod');
-      paymentCronService.sendRemindToAddPaymentMethod(function (err, data) {
-        if (err) callback(err);
-        callback(null, data);
-      });
-    },
-    function(callback) {
-      logger.log('info','paymentCronService.sendRemindToVerifyAccount');
-      paymentCronService.sendRemindToVerifyAccount(function (err, data) {
-        if (err) callback(err);
-        callback(null, data);
-      });
-    },
-    function(callback) {
-      logger.log('info','paymentCronService.sendTomorrowChargeLoan');
-      paymentCronService.sendTomorrowChargeLoan(function (err, data) {
-        if (err) callback(err);
-        callback(null, data);
-      });
-    },
-    // Collect One Time Payments
-    function(callback) {
-      logger.log('info','paymentCronService.collectOneTimePayments');
-      paymentCronService.collectOneTimePayments(function (err, data) {
-        if (err) callback(err);
-        callback(null, data);
-      });
-    },
-    // Collect Loan Payments
-    function(callback) {
-      logger.log('info','paymentCronService.collectLoanPayments');
-      paymentCronService.collectLoanPayments('minutes', function (err, data) {
+      logger.log('info','paymentCronService.collectCreditCard');
+      paymentCronService.collectCreditCard(function (err, data) {
         if (err) callback(err);
         callback(null, data);
       });

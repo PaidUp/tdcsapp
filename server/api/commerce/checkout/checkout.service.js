@@ -24,9 +24,15 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
               if(err) {return cb(err);}
               tdCommerceService.cartPlace(cartId.cartId, function(err, dataOrderId) {
                 if(err) {return cb(err);}
-                tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
+                tdCommerceService.generateSchedule(orderData.products[0].productId, function(err,schedule){
                   if(err) {return cb(err);}
-                  return cb(null, dataOrderId);
+                  tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(schedule), 'pending', function(err, comment) {
+                    if(err) {return cb(err);}
+                    tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
+                      if(err) {return cb(err);}
+                      return cb(null, dataOrderId);
+                    });
+                  });
                 });
               });
             });
