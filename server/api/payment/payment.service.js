@@ -284,17 +284,17 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
-    prepareUser(user[0], function (err, user) {
+    prepareUser(user[0], function (err, userp) {
       if(err) return cb(err);
       logger.info('2b) Associate BP customer credit card');
       // 2b) Associate BP customer credit card
-      prepareCard(user.meta.TDPaymentId, cardId, function (err, cardDetails) {
+      prepareCard(userp.meta.TDPaymentId, cardId, function (err, cardDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
           //commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
            // logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
-            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, function(err, data) {
+            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, userp.meta.TDPaymentId, providerId, function(err, data) {
               if(err) return cb(err);
               if(data.status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
@@ -368,7 +368,6 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
 
 function capture(order, user, providerId, amount, paymentMethod, scheduleId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
-
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
     debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, function (err, resultDebit) {
