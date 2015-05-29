@@ -8,11 +8,12 @@
           <div class="col-md-3 footer-nav">
             <ul>
               <li><strong>TEAMS</strong></li>
+              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
               <li>
                 <a href="" ng-click="goTo('/', 'solutionsForTeams')">Solutions for Teams</a><br>
               </li>
               <li><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
-              <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
+
             </ul>
           </div>
           <div class="col-md-2 footer-nav">
@@ -21,7 +22,8 @@
               <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">About us</a></li>
               <li ng-show="false"><a href="" ng-click="modalFactory.ContactUs()">Meet our team</a></li>
               <li><a href="" ng-click="modalFactory.ContactUs()">Contact us</a></li>
-              <li><a href="" ng-click="modalFactory.ContactUs()">Help</a></li>
+              <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+              <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of Service</a></li>
             </ul>
           </div>
           <div class="col-md-4 contactUs" ng-click="modalFactory.ContactUs()">
