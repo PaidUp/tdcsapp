@@ -164,7 +164,7 @@ function updateOrderDescription(orderId, description, cb) {
 }
 
 function collectPendingOrders(cb) {
-  commerceService.orderList({status: "pending"}, function(err, data) {
+  commerceService.orderList({status: ["pending","processing"]}, function(err, data) {
     var orderList = [];
     if (err) return cb(err);
     async.eachSeries(data, function (order, callback) {
