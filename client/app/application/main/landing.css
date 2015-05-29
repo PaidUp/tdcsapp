@@ -284,6 +284,16 @@
   background-position: center;
   background-image: url(/assets/images/landing/im_bg_pricing.jpg);
   padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.bannerOurPackages .bottom{
+  margin-top: 3em;
+  text-align: center;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 200;
 }
 
 .bannerOurPackages .title{
@@ -370,6 +380,12 @@
   font-weight: 300;
   text-align: center;
   margin-top: 20px;
+}
+
+.planPrice sup{
+  vertical-align: super;
+  font-size: 24px;
+  font-weight: 300;
 }
 
 .bannerOurPackages .planTime{
