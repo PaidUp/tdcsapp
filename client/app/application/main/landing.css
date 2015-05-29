@@ -7,24 +7,15 @@
   }
 
   .planBox{
-    display: inline;
+    display: block;
     width: 95% !important;
     margin-left: auto;
-  }
-
-  .contentPlanBox{
   }
 
   .bannerOurPackages .planBox{
     width: 220px;
     margin-right: 10px;
     background-color: #f9f9f9;
-  }
-
-  .bannerOurPackages .planBox1{
-    height: 350px;
-    margin-top: 50px;
-
   }
 
   .bannerLanding{
@@ -66,6 +57,8 @@
   .bannerOurPackages .title {
     font-size: 40px !important;
   }
+
+
 
 }
 
