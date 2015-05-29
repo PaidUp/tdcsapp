@@ -237,9 +237,8 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
-
   paymentService.fetchCard(user.meta.TDPaymentId, order.cardId, function (response, account) {
-    emailVars.accountLast4Digits = account.last4;
+    emailVars.accountLast4Digits = account.last4 || '1234';
 
     // get the loan object
     commerceService.orderLoad(order.incrementId, function (err, magentoOrder) {

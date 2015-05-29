@@ -25,30 +25,17 @@ function collectPendingOrders(callback){
 };
 
 function paymentSchedule(pendingOrders, callbackSchedule){
-  console.log("0");
   async.eachSeries(pendingOrders,
     function(order, callbackEach){
-      console.log("1", order);
       commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, schedulePeriods){
-        console.log("2err", err);
-        console.log("2", schedulePeriods);
         if(err){
           callbackEach(err);
         };
         async.eachSeries(schedulePeriods.scheduled,
           function(schedulePeriod, callbackEach2){
-
-            console.log('if ' , moment(schedulePeriod.nextPaymentDue).isBefore(moment()));
-
             if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
-              console.log("3", schedulePeriod);
-
-              userService.find(order.userId, function(err, users){
-                console.log("4", users);
-
-
+              userService.find({_id : order.userId}, function(err, users){
                 paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price, order.paymentMethod, schedulePeriod.id, function(err , data){
-                  console.log("5", data);
                   if(err){
                     return callbackEach2(err);
                   }
