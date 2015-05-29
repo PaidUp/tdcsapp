@@ -47,7 +47,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                 console.log("4", users);
 
 
-                paymentService.capture(order, users[0], order.products[0].TDPaymentId, order.grandTotal, order.paymentMethod, function(err , data){
+                paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price, order.paymentMethod, schedulePeriod.id, function(err , data){
                   console.log("5", data);
                   if(err){
                     return callbackEach2(err);
