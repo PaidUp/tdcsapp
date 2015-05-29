@@ -72,5 +72,9 @@ angular.module('convenienceApp')
       }
     };
 
+    $scope.toggleMenu = function(){
+      $(".navbar-toggle").click();
+    };
+
 
   });
