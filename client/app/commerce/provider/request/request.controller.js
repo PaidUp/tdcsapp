@@ -9,7 +9,8 @@ angular.module('convenienceApp')
         if($scope.providerForm.$valid){
             $scope.provider.ownerDOB = $scope.provider.month + '/' + $scope.provider.day + '/' + $scope.provider.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber,
-            $scope.provider.aba = $scope.bankAccount.routingNumber
+            $scope.provider.aba = $scope.bankAccount.routingNumber,
+            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial
             providerService.providerRequest($scope.provider).then(function(data){
                 $state.go('provider-success'); 
             }).catch(function(err){
@@ -110,6 +111,33 @@ angular.module('convenienceApp')
         $scope.billingForm.dda.$setValidity('pattern', pattern.test($scope.bankAccount.accountNumber));
       } else {
         $scope.billingForm.dda.$setValidity('pattern', false);
+      }
+    };
+
+    $scope.validateSSN = function () {
+      $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
+      if ($scope.bankAccount.securitySocial) {
+        var pattern = /^\d{4}$/;
+        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
+      } else {
+        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', false);
+      }
+    };
+
+    $scope.maskSSN = function () {
+      if ($scope.provider.ownerSSN) {
+        $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
+        var temp = '';
+        for(var i=0; i<$scope.provider.ownerSSN.length; i++) {
+          temp += '*';
+        }
+        $scope.provider.ownerSSN = temp;
+      }
+    };
+
+    $scope.unmaskSSN = function () {
+      if ($scope.bankAccount.securitySocial) {
+        $scope.provider.ownerSSN = angular.copy($scope.bankAccount.securitySocial);
       }
     };
     

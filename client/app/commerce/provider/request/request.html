@@ -147,9 +147,9 @@
               <div class="col-sm-12">
                 <label>SSN last 4 </label>
               </div>
-              <div class="col-sm-12"><!--ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()"-->
-                <input type="text" class="form-control" name="ownerSSN" ng-model="provider.ownerSSN" required ng-required="true" >
-                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.required && submitted">
+              <div class="col-sm-12"><!--  -->
+                <input type="text" class="form-control" name="ownerSSN" ng-model="provider.ownerSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
+                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.required && submitted" >
                   <small class="text-CS">Social Security Number is required</small>
                 </div>
                 <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.pattern && submitted">
@@ -260,15 +260,15 @@
 
             <div class="form-group">
               <label>EIN</label>
-              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
-              <div class="text-CS text-center" ng-show="provider.EIN.$error.required && submitted">
+              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" required ng-required="true" ng-pattern="/^[1-9]\d?-\d{7}$/">
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.required && submitted">
                 <small class="text-CS">EIN is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.EIN.$error.maxlength && submitted">
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.maxlength && submitted">
                 <small class="text-CS">EIN exceeds 128 characters</small>
               </div>
-              <div class="text-CS text-center" ng-show="provider.EIN.$error.pattern && submitted">
-                <small class="text-CS">EIN should only contain letters</small>
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.pattern && submitted">
+                <small class="text-CS">EIN invalid</small>
               </div>
             </div>
 
