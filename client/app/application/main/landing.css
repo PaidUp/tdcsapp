@@ -1,12 +1,9 @@
 @media screen and (max-width: 1200px) {
   .solutionsForTeams .item {
     margin-top: 1em;
-    margin: 0 !important;
-    margin-top: 5px !important;
-    width: 100% !important;
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
+    display: block;
+    align-content: center !important;
+
   }
 
   .planBox{
@@ -15,19 +12,10 @@
     margin-left: auto;
   }
 
-  .contentPlanBox{
-  }
-
   .bannerOurPackages .planBox{
     width: 220px;
     margin-right: 10px;
     background-color: #f9f9f9;
-  }
-
-  .bannerOurPackages .planBox1{
-    height: 350px;
-    margin-top: 50px;
-
   }
 
   .bannerLanding{
@@ -70,6 +58,8 @@
     font-size: 40px !important;
   }
 
+
+
 }
 
 
@@ -105,26 +95,32 @@
 }
 
 .solutionsForTeams .item1{
-  background-image: url(/assets/images/landing/im_bg_solutions_01.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
 }
 
 .solutionsForTeams .item1:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_01_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
 }
 .solutionsForTeams .item2{
-  background-image: url(/assets/images/landing/im_bg_solutions_02.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
 }
 
 .solutionsForTeams .item2:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_02_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
 }
 
 .solutionsForTeams .item3{
-  background-image: url(/assets/images/landing/im_bg_solutions_03.jpg);
+  background-position: -5px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
 }
 
 .solutionsForTeams .item3:hover{
-  background-image: url(/assets/images/landing/im_bg_solutions_03_1.jpg);
+  background-position: -405px -5px;
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
 }
 
 .solutionDescTop{

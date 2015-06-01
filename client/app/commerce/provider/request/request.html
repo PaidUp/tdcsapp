@@ -26,7 +26,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Number teams</label>
               <input type="text" name="teamNumber" class="form-control" placeholder="Number teams" ng-model="provider.teamNumber" ng-maxlength="3" required ng-required="true" ng-pattern="/^[0-9]*$/">
               <div class="text-CS text-center" ng-show="providerForm.teamNumber.$error.required && submitted">
@@ -35,9 +35,9 @@
               <div class="text-CS text-center" ng-show="providerForm.teamNumber.$error.maxlength && submitted">
                 <small class="text-CS">Number teams exceeds 3 characters</small>
               </div>
-            </div>
+            </div>-->
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Average team size</label>
               <input type="text" name="teamAverageSize" class="form-control" placeholder="Average team size" ng-model="provider.teamAverageSize" ng-maxlength="3" required ng-required="true"  ng-pattern="/^[0-9]*$/">
               <div class="text-CS text-center" ng-show="providerForm.teamAverageSize.$error.required && submitted">
@@ -46,9 +46,9 @@
               <div class="text-CS text-center" ng-show="providerForm.teamAverageSize.$error.maxlength && submitted">
                 <small class="text-CS">Average team size exceeds 3 characters</small>
               </div>
-            </div>
+            </div>-->
 
-            <div class="form-group">
+            <!--<div class="form-group">
             <label>Sport</label>
               <select name="Sport"
                       ng-model="provider.teamSport"
@@ -66,7 +66,7 @@
                   Tennis
                 </option>
               </select>
-            </div>
+            </div>-->
 
           </div>
         </div>
@@ -144,18 +144,13 @@
             <br>
 
             <div class="form-group">
-              <div class="col-sm-12">
-                <label>SSN last 4 </label>
+              <label>Home address</label>
+              <input type="text" name="Address" class="form-control" placeholder="Home address" ng-model="provider.Address" ng-maxlength="128" required ng-required="true">
+              <div class="text-CS text-center" ng-show="ownerForm.Address.$error.required && submitted">
+                <small class="text-CS">Home address is required</small>
               </div>
-              <div class="col-sm-12"><!--  -->
-                <input type="text" class="form-control" name="ownerSSN" ng-model="provider.ownerSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
-                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.required && submitted" >
-                  <small class="text-CS">Social Security Number is required</small>
-                </div>
-                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.pattern && submitted">
-                  <small class="text-CS">Social Security Number Format Error</small>
-                </div>
-                <small>We use 128-bit SSL protection and strict levels of security and encryption standards to keep your information safe.</small>
+              <div class="text-CS text-center" ng-show="ownerForm.Address.$error.maxlength && submitted">
+                <small class="text-CS">Home address exceeds 128 characters</small>
               </div>
             </div>
 
@@ -178,6 +173,69 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" name="city" class="form-control" placeholder="City" ng-model="provider.city" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <div class="text-CS text-center" ng-show="ownerForm.city.$error.required && submitted">
+                <small class="text-CS">City is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="ownerForm.city.$error.maxlength && submitted">
+                <small class="text-CS">City exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="ownerForm.city.$error.pattern && submitted">
+                <small class="text-CS">City should only contain letters</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+            <label>State</label>
+              <select id="state"
+                      name="state"
+                      ng-model="provider.state"
+                      class="form-control"
+                      ng-class="{ 'has-error': ownerForm.state.$invalid && submitted }"
+                      required
+                      ng-required="true">
+                  <option value="" disabled>Select a State</option>
+                  <option ng-repeat="state in states" value="{{state.abbreviation}}">
+                      {{state.abbreviation}}
+                  </option>
+              </select>
+              <div class="text-CS text-center" ng-show="ownerForm.state.$error.required && submitted">
+                <small class="text-CS">State is required</small>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Zip code</label>
+
+              </div>
+              <div class="form-group" ng-class="{ 'has-error': ownerForm.zipCode.$invalid && submitted }">
+                <input type="text" class="form-control" name="zipCode" placeholder="Zip code" required ng-required="true" ng-model="provider.zipCode" ng-maxlength="5" ng-minlength="5" ng-pattern="/^\d{5}$/">
+                <div class="text-CS text-center" ng-show="ownerForm.zipCode.$error.required && submitted">
+                  <small class="text-CS">Zip code is required</small>
+                </div>
+              </div>
+              <div class="text-CS text-center" ng-show="ownerForm.zipCode.$error.maxlength || ownerForm.zipCode.$error.minlength || ownerForm.zipCode.$error.pattern && submitted">
+                <small class="text-CS">Invalid Zip code</small>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label>SSN last 4 </label>
+              </div>
+              <div class="col-sm-12"><!--  -->
+                <input type="text" class="form-control" name="ownerSSN" ng-model="provider.ownerSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
+                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.required && submitted" >
+                  <small class="text-CS">Social Security Number is required</small>
+                </div>
+                <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.pattern && submitted">
+                  <small class="text-CS">Social Security Number Format Error</small>
+                </div>
+                <small>We use 128-bit SSL protection and strict levels of security and encryption standards to keep your information safe.</small>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -185,7 +243,7 @@
 
         <div class="row bg-Block" ng-form name="billingForm">
           <div class="col-sm-12">
-            <h3 class="text-CS">Billing info</h3>
+            <h3 class="text-CS">Funds recipient</h3> Identify verification helps to ensure parents and athletes that there is a real sports organization behind every payment.
           </div>
 
           <div class="col-sm-6 col-sm-push-6">
@@ -193,7 +251,7 @@
 
           <div class="col-sm-6 col-sm-pull-6">
 
-            <div class="form-group">
+            <!--<div class="form-group">
               <label>Country</label>
               <input type="text" name="country" class="form-control" placeholder="US" value='US' ng-model="provider.country" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
               <div class="text-CS text-center" ng-show="billingForm.country.$error.required && submitted">
@@ -205,72 +263,9 @@
               <div class="text-CS text-center" ng-show="billingForm.country.$error.pattern && submitted">
                 <small class="text-CS">Country should only contain letters</small>
               </div>
-            </div>
+            </div>-->
 
-            <div class="form-group">
-            <label>State</label>
-              <select id="state"
-                      name="state"
-                      ng-model="provider.state"
-                      class="form-control"
-                      ng-class="{ 'has-error': billingForm.state.$invalid && submitted }"
-                      required
-                      ng-required="true">
-                  <option value="" disabled>Select a State</option>
-                  <option ng-repeat="state in states" value="{{state.abbreviation}}">
-                      {{state.abbreviation}}
-                  </option>
-              </select>
-              <div class="text-CS text-center" ng-show="billingForm.state.$error.required && submitted">
-                <small class="text-CS">State is required</small>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Zip code</label>
-
-              </div>
-              <div class="form-group" ng-class="{ 'has-error': billingForm.zipCode.$invalid && submitted }">
-                <input type="text" class="form-control" name="zipCode" placeholder="Zip code" required ng-required="true" ng-model="provider.zipCode" ng-maxlength="5" ng-minlength="5" ng-pattern="/^\d{5}$/">
-                <div class="text-CS text-center" ng-show="billingForm.zipCode.$error.required && submitted">
-                  <small class="text-CS">Zip code is required</small>
-                </div>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.zipCode.$error.maxlength || billingForm.zipCode.$error.minlength || billingForm.zipCode.$error.pattern && submitted">
-                <small class="text-CS">Invalid Zip code</small>
-            </div>
-
-            <div class="form-group">
-              <label>City</label>
-              <input type="text" name="city" class="form-control" placeholder="City" ng-model="provider.city" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
-              <div class="text-CS text-center" ng-show="billingForm.city.$error.required && submitted">
-                <small class="text-CS">City is required</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.city.$error.maxlength && submitted">
-                <small class="text-CS">City exceeds 128 characters</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.city.$error.pattern && submitted">
-                <small class="text-CS">City should only contain letters</small>
-              </div>
-            </div>
             <br>
-
-            <div class="col-sm-12">
-              <h4 class="text-CS">Business details</h4>
-            </div>
-
-            <div class="form-group">
-              <label>EIN</label>
-              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" required ng-required="true" ng-pattern="/^[1-9]\d?-\d{7}$/">
-              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.required && submitted">
-                <small class="text-CS">EIN is required</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.maxlength && submitted">
-                <small class="text-CS">EIN exceeds 128 characters</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.pattern && submitted">
-                <small class="text-CS">EIN invalid</small>
-              </div>
-            </div>
 
             <div class="form-group">
               <label>Business type</label>
@@ -299,32 +294,6 @@
             </div>
 
             <div class="form-group">
-              <label>Business address</label>
-              <input type="text" name="Address" class="form-control" placeholder="Business address" ng-model="provider.Address" ng-maxlength="128" required ng-required="true">
-              <div class="text-CS text-center" ng-show="billingForm.Address.$error.required && submitted">
-                <small class="text-CS">Business address is required</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.Address.$error.maxlength && submitted">
-                <small class="text-CS">Business address exceeds 128 characters</small>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Website</label>
-              <input type="text" name="website" class="form-control" placeholder="http://teamwebsite.com" ng-model="provider.website" ng-maxlength="128" required ng-required="true">
-              <div class="text-CS text-center" ng-show="billingForm.website.$error.required && submitted">
-                <small class="text-CS">Website is required</small>
-              </div>
-              <div class="text-CS text-center" ng-show="billingForm.website.$error.maxlength && submitted">
-                <small class="text-CS">Website exceeds 128 characters</small>
-              </div>
-            </div>
-
-            <div class="col-sm-12">
-              <h4 class="text-CS">Credit card details</h4>
-            </div>
-
-            <div class="form-group">
               <label>Business name</label>
               <input type="text" name="businessName" class="form-control" placeholder="Business name" ng-model="provider.businessName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
               <div class="text-CS text-center" ng-show="billingForm.businessName.$error.required && submitted">
@@ -339,6 +308,31 @@
             </div>
 
             <div class="form-group">
+              <label>EIN</label>
+              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" required ng-required="true" ng-pattern="/^[1-9]\d?-\d{7}$/">
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.required && submitted">
+                <small class="text-CS">EIN is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.maxlength && submitted">
+                <small class="text-CS">EIN exceeds 128 characters</small>
+              </div>
+              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.pattern && submitted">
+                <small class="text-CS">EIN invalid</small>
+              </div>
+            </div>
+
+            <!--<div class="form-group">
+              <label>Website</label>
+              <input type="text" name="website" class="form-control" placeholder="http://teamwebsite.com" ng-model="provider.website" ng-maxlength="128" required ng-required="true">
+              <div class="text-CS text-center" ng-show="billingForm.website.$error.required && submitted">
+                <small class="text-CS">Website is required</small>
+              </div>
+              <div class="text-CS text-center" ng-show="billingForm.website.$error.maxlength && submitted">
+                <small class="text-CS">Website exceeds 128 characters</small>
+              </div>
+            </div>-->
+
+            <!--<div class="form-group">
               <label>Phone number</label>
               <input type="text" name="phoneNumber" class="form-control" placeholder="Phone number" ng-model="provider.phoneNumber" ng-maxlength="128" required ng-required="true">
               <div class="text-CS text-center" ng-show="billingForm.phoneNumber.$error.required && submitted">
@@ -347,44 +341,57 @@
               <div class="text-CS text-center" ng-show="billingForm.phoneNumber.$error.maxlength && submitted">
                 <small class="text-CS">Phone number exceeds 128 characters</small>
               </div>
+            </div>-->
+          </div>
+          <div class="row bg-Block" ng-form name="bankForm">
+            <div class="col-sm-12">
+              <h3 class="text-CS">Bank account</h3> Routing number are 9 digits long. Please use the one designated for paper and electronic (not wire) transfers.
             </div>
 
-            <div class="col-sm-12">
-              <h4 class="text-CS">Bank details</h4>
+            <div class="col-sm-6 col-sm-push-6">
             </div>
+
+            <div class="col-sm-6 col-sm-pull-6">
 
             <div class="form-group">
               <label>Rounting number (ABA)</label>
               <input type="text" name="aba" ng-model="provider.aba" class="form-control" placeholder="" required ng-required="true" ng-change="ABAValidator()" ng-blur="maskABA()" ng-focus="unmaskABA()">
-              <div class="text-CS text-center" ng-show="billingForm.aba.$error.required && submitted">
+              <div class="text-CS text-center" ng-show="bankForm.aba.$error.required && submitted">
                 <small class="text-CS">Routing number is required</small>
               </div>
-              <div class="text-CS text-center number-error" ng-show="billingForm.aba.$error.aba && submitted">
+              <div class="text-CS text-center number-error" ng-show="bankForm.aba.$error.aba && submitted">
                 <small class="text-CS">Routing number is not correct</small>
               </div>
             </div>
 
-            <div class="form-group"> <!-- ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()" -->
+            <div class="form-group">
               <label>Account number (DDA)</label>
               <input type="text" name="dda" ng-model="provider.dda" class="form-control" placeholder="" required ng-required="true" ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()">
-              <div class="text-CS text-center" ng-show="billingForm.dda.$error.required && submitted">
+              <div class="text-CS text-center" ng-show="bankForm.dda.$error.required && submitted">
                 <small class="text-CS">Account number is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="billingForm.dda.$error.pattern && submitted">
+              <div class="text-CS text-center" ng-show="bankForm.dda.$error.pattern && submitted">
                 <small class="text-CS">Account number format error</small>
               </div>
               <label>Repeat Account number (DDA)</label><!-- ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()" -->
               <input type="text" name="ddaVerification" ng-model="provider.ddaVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()">
-              <div class="text-CS text-center" ng-show="billingForm.ddaVerification.$error.required && submitted">
+              <div class="text-CS text-center" ng-show="bankForm.ddaVerification.$error.required && submitted">
                 <small class="text-CS">Account number verification is required</small>
               </div>
-              <div class="text-CS text-center" ng-show="billingForm.ddaVerification.$error.match && submitted">
+              <div class="text-CS text-center" ng-show="bankForm.ddaVerification.$error.match && submitted">
                 <small class="text-CS">Account number verification does not match</small>
               </div>
             </div>
+
+            <div class="form-group">
+              <input type="checkbox" name="tos" ng-model="provider.ToS" required ng-required="true"> By registering your account, you agree to our <a href="https://stripe.com/docs/connect/updating-accounts#link-to-your-own-ToS" target="_blank"> Terms of Service</a> and the <a href="https://stripe.com/connect/account-terms" target="_blank">Stripe Connected Account Agreement</a>.
+              <div class="text-CS text-center" ng-show="bankForm.tos.$error.required && submitted">
+                <small class="text-CS">Agree our Terms of Service is required</small>
+              </div>
+            </div>
+            </div>
           </div>
         </div>
-
         <br>
         <div class="row">
           <!-- <div class="col-xs-3">

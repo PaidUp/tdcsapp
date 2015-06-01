@@ -1,8 +1,10 @@
+
+
 <nav class="nav-bar navbar-default" role="navigation">
   <div class="container">
     <div class="row">
       <div class="navbar-header">
-        <button class="navbar-toggle btn btn-default"
+        <button id="nav-button" class="navbar-toggle btn btn-default"
           data-target=".navbar-collapse"
           data-toggle="collapse"
           type="button">
@@ -22,13 +24,14 @@
 
         <ul class="nav navbar-nav">
           <li class="" ng-show="!isLoggedIn()">
-            <a href="" ng-click="goTo('/', 'solutionsForTeams')" >Solutions for Teams</a>
+            <a href="" ng-click="goTo('/', 'solutionsForTeams'); toggleMenu()" >
+              Solutions for Teams</a>
           </li>
           <li class="" ng-show="!isLoggedIn()">
-            <a href="" ng-click="goTo('/','bannerOurPackages')">Our Packages</a>
+            <a href="" ng-click="goTo('/','bannerOurPackages'); toggleMenu()">Our Packages</a>
           </li>
           <li class="" ng-show="!isLoggedIn()">
-            <a href="" ng-click="goTo('/faq')">FAQ</a>
+            <a href="" ng-click="goTo('/faq'); toggleMenu()">FAQ</a>
           </li>
           <li class="my-athletes" ng-show="isLoggedIn()">
             <a href="" ui-sref="athletes">My Athlete(s)</a>

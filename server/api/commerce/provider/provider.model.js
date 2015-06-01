@@ -6,38 +6,38 @@ var config = require('../../../config/environment/index.js');
 
 var ProviderSchema = new Schema({
     //Team info
-    teamName: { type: String, required: true},
-    teamNumber: { type: String},
-    teamAverageSize: { type: String },
+    teamName: { type: String, required: true},//email //response
+    teamNumber: { type: String, default: '1'},//email
+    teamAverageSize: { type: String, default: '1' },//email
     teamSport:{type: String},
     //End team info
     
     //Owner info
     ownerId: { type: String},
-    ownerName: { type: String, required: true},//required
-    ownerDOB: { type: Date},//required
-    ownerSSN: { type: String, required: true},//required
-    ownerEmail: { type: String},
-    ownerPhone: { type: String},
+    ownerName: { type: String, required: true},//required //email //newDesign
+    ownerDOB: { type: Date},//required //email //newDesign
+    ownerSSN: { type: String, required: true},//required //email //newDesign
+    ownerEmail: { type: String}, //email //response
+    ownerPhone: { type: String}, //email
     //End owner info
     
     //Billing info
-    country: { type: String, default: 'US'},//required
-    state: { type: String, required: true},//required
-    city: { type: String, required: true},//required
-    zipCode: { type: String, required: true},//required
-    averagePayment: { type: String},
-    EIN: { type: String, required: true},//required
-    Address: { type: String, required: true},//required
-    website: { type: String},
-    businessName: { type: String, required: true},//required
-    phoneNumber: { type: String},
-    businessType: { type: String, required: true},//required
+    country: { type: String, default: 'US'},//required //email //response
+    state: { type: String, required: true},//required //email //newDesign
+    city: { type: String, required: true},//required //email //newDesign
+    zipCode: { type: String, required: true},//required //newDesign
+    averagePayment: { type: String, default: '1'}, //email
+    EIN: { type: String, required: true},//required //email //newDesign
+    Address: { type: String, required: true},//required //email //newDesign
+    website: { type: String, default: 'https://www.convenieceselect.com'}, //email
+    businessName: { type: String, required: true},//required //email //newDesign
+    phoneNumber: { type: String, default: '0000000000'}, //email
+    businessType: { type: String, required: true},//required //newDesign
     //End billing info
     
     //Billing info
-    aba: { type: String, required: true},//required
-    dda: { type: String, required: true},//required
+    aba: { type: String, required: true},//required //email //response //newDesign
+    dda: { type: String, required: true},//required //email //response //newDesign
     //End billing info
 
     createAt: {type: Date, default: new Date()},

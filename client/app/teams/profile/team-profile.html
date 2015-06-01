@@ -54,17 +54,21 @@
               <div ng-if="customOption.type === 'radio'" id="radio{{indexCustomOp}}">
                 <label>{{customOption.title}}</label>
                 <br>
-                <label class="radio-inline" ng-repeat="(indexRadioOp, item) in customOption.values">
+                <div class="row">
+                <div class="col-sm-2 radio-container" ng-repeat="(indexRadioOp, item) in customOption.values">
+                <label class="radio-inline" >
                   <input  id="radio{{indexRadioOp}}"
                           type="radio"
                           name="radio{{customOption.optionId}}"
                           ng-value="item"
                           ng-model="optionModel"
-                          ng-required="customOption.isRequire === '1'"
-                          ng-change="changeCustomOptions(customOption, optionModel)">
+                          ng-required="customOption.isRequire === '1' && !customOption.isSelected"
+                          ng-click="changeCustomOptions(customOption, optionModel)">
                   <div><strong>{{item.title}}</strong></div>
                 </label>
-                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.radio{{customOption.optionId}}.$error.required && submitted">
+                </div>
+                </div>
+                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && !customOption.isSelected && submitted">
                   <small class="text-CS">{{customOption.title}} is required</small>
                 </div>
               </div>
@@ -77,7 +81,6 @@
           </form>
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-4 team-coach-small">
           <div class="coach-image img-circle" ng-show="team.getImage('coach_picture')">

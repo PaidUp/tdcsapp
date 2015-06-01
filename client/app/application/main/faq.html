@@ -14,51 +14,89 @@
         <div class="col-md-12" ng-show="faqGroup.pricing">
         <accordion close-others="true">
           <accordion-group heading="How does Convenience Select pricing really work?">
-            The prices for the packages listed are per athlete per month.
-            For example, if your season is 4 months, then each athlete pays
-            4 x $15 (Gold Package) = $60 for the season.
+            The prices for the packages listed are per athlete per month.  For example, if your season is 4 months,
+            then each athlete pays 4 x $14.99 (Diamond Play) = $59.96 for the season.
           </accordion-group>
           <accordion-group heading="Are you charging my team or the parents?">
-            This is really up to you since Convenience Select supports both.
-            We could add this as a Value Added Services fee to the season dues
-            we collect or you could bake that into the seasons dues.
-            We have seen a lot more success with teams that bake this into
-            their season cost to parents.  For example, charge $1,060
-            instead of $1,000 for a 4 month season.
+            This is really up to you since Convenience Select supports both.  We could add this as a value added services
+            fee to the season dues we collect or you could bake that into the seasons dues.
+            We have seen a lot more success with teams that include this into their season cost to parents.
+            For example, charge $1,059.96 instead of $1,000 for a 4 month season (Diamond Play).
           </accordion-group>
           <accordion-group heading="Do I have to pay for Convenience Select in the off-season?">
-            No.  You only pay for the services while your season is going on.  For example,
-            if your season is from February to April, you are only paying for 3 months.
+            No.  You only pay for the services while your season is going on.  For example, if your
+            season is from February to April, you are only paying for 3 months.
           </accordion-group>
         </accordion>
         </div>
         <div class="col-md-12" ng-show="faqGroup.payment">
           <accordion close-others="true">
             <accordion-group  heading="What comes with the payment collection service from Convenience Select?">
-              Convenience Select is your concierge.  We want to do the boring stuff for you
-              so you can stay focused on coaching and growing your business.  With the payment
-              collection service, we will setup your team, registration fees and collection schedule
-              on our site.  You then direct all parents to <a href="https://www.convenienceselect.com">www.convenienceselect.com</a>
-              where they will sign up for an account and enter their debit/credit card information and
-              let Convenience Select process the payments.
+              Convenience Select is your concierge.  We want to do the boring stuff for you so you can stay focused on
+              coaching and growing your business.  With the payment collection service, we will setup your team,
+              registration fees and collection schedule on our site.  You then direct all parents to
+              <a href="https://www.convenienceselect.com">www.convenienceselect.com</a>where they will sign up for an account and enter their debit/credit
+              card information and let Convenience Select process the payments.
             </accordion-group>
             <accordion-group heading="Are there any other fees for payment collections?">
-              Convenience Select gets charges 2.9% + $0.30 per credit card that’s processed.
+              Convenience Select gets charged 2.9% + $0.30 per credit card that’s processed.
               We don’t make any money on these fees and pass them along to the teams.
-              For example, if you purchase a package containing Payment Collections and your season
-              dues per player are $1,000, Convenience Select would send $970.70 to your bank account
-              ($1,000 x 2.9% = $29 + $0.30 = $29.30 credit card processing fees).
+              <br>
+              Here's an example:
+              <br><br>
+              4 month season - Diamond Play<br>
+              $1000 - Registration Fee<br>
+              $1059.96 - Charged to Parents<br>
+              <br>
+              $31.04 - Stripe Card Processing Fee ($1059.96 x 2.9% + $0.30)<br>
+              $59.96 - Convenience Select Payment Collection Fee<br>
+              <br>
+              $968.96 - Deposited to your bank account
             </accordion-group>
-            <accordion-group heading="How quickly do I get the money if Convenience Select collects payments for me?">
-              If parents pay with their credit card, you can receive your money within 48 hours.
-              If parents pay with a bank account, you can receive your money within 3-6 business days.
+            <accordion-group heading="When do I get my money?">
+              Credit card payments that are successfully processed can be paid out within 2 business days.
+              You have the option of getting paid on every card we process immediately
+              (resulting in several deposits into your bank account) or on a monthly basis
+              (one lump sum deposit into your bank account).  How you wish to get paid is your choice when we
+              setup your organization.
             </accordion-group>
             <accordion-group heading="Who does Convenience Select use for card processing?">
-              Convenience Select partners with the leading credit card processing company around,
-              Stripe.  The best way for Convenience Select to keep its prices low is to let Stripe
-              deal with all the regulatory parts of taking payments.  As a result, Stripe requires
-              that we setup an account for you with Stripe and that only takes a few minutes to do so
-              through our site.  You can always call Convenience Select to help you through it.
+              Convenience Select partners Stripe, the best credit card processing company around.
+              The best way for Convenience Select to keep its prices low is to let Stripe handle the regulatory
+              requirements of taking payments.  As a result, Stripe requires that we setup an account for you with
+              Stripe and that only takes a few minutes to do so through our site.  You can always call
+              Convenience Select to help you through it.
+            </accordion-group>
+
+            <accordion-group heading="What happens when you can’t process a card?">
+              Sometimes we cannot process a card.  This can happen because their card expired or change in
+              address or sometimes due to insufficient funds.  Despite the reason, when a payment cannot be
+              collected, Convenience Select contacts the parent to work with them to resolve the issue and process
+              the payment.  If after 3 attempts to process the payment, we still cannot do so, someone from our
+              team will communicate with you what has happened and determine the best course of action.
+            </accordion-group>
+
+            <accordion-group heading="Why does Convenience Select need my EIN or SSN?">
+              Part of our responsibilities involves verifying your identity and confirming the legitimacy of your business.
+              Collecting this information enables us to automate parts of the registration process so that
+              we can start running charges immediately.
+              <br>
+              <br>
+              We do not use this information for any other purpose, and we take your privacy and the security of
+              your data very seriously.
+              <br>
+              <br>
+              We want to make sure that parents feel confident that their money is being sent to the right team.
+              Convenience Select must verify that your name or the name of your business matches the SSN or EIN. For
+              this reason, you should always send us your full, legal name.
+              <br>
+              <br>
+              If you do not have a US tax ID (SSN or EIN), then we may need to verify you using a government-issued
+              photo ID; please scan and send that to us via email.  This is required to help avoid criminal activity
+              and money laundering.  It’s important that anybody sending large quantities of money knows who they are
+              paying and checks the payees against certain government watchlists (entities on this watchlist include
+              terrorists, drug dealers, potentially corrupt government officials, etc).  If you’re not one of these
+              entities, then you have nothing to worry about.
             </accordion-group>
           </accordion>
         </div>
@@ -72,29 +110,59 @@
               SelectFund is the name of the crowdfunding platform built by Convenience Select.
             </accordion-group>
             <accordion-group heading="What is a SelectFund campaign?">
-              SelectFund campaigns are projects or services created by Convenience Select or you the
-              team owner, to raise money to pay for the project or service.  A campaign typically
-              has a campaign goal, it could be people (e.g. 20 people must sign up to attend a tour)
-              or money (e.g. $200 to purchase a new pitching machine or $500 to play in a tournament).
+              SelectFund campaigns are projects or services created by Convenience Select or you the team owner,
+              to raise money to pay for the project or service.  A campaign typically has a campaign goal,
+              it could be people (e.g. 20 people must sign up to attend a tour of Fenway Park) or money
+              (e.g. $200 to paint new lines on the field or $500 to play in a tournament).
             </accordion-group>
             <accordion-group heading="How does SelectFund work?">
-              SelectFund sends campaigns are sent to parents (or they view them on our site)
-              with details about the campaign and why they should participate.
-              All campaigns have a date by which they need to be funded.
-              SelectFund is all or nothing.  Campaigns must be reach their goal within the
+              SelectFund sends campaigns are sent to parents (or they view them on our site) with details
+              about the campaign and why they should participate.  All campaigns have a date by which they
+              need to be funded.  SelectFund is all or nothing.  Campaigns must be reach their goal within the
               time frame specified otherwise they are a no-go.
             </accordion-group>
-            <accordion-group heading="What kind of campaigns can I create with SelectFund?">
-              You can create self-managed campaigns, where Convenience Select let’s you take matters
-              into your own hands.  Your organization can create the campaigns and share that with
-              your audience to get them funded.
+            <accordion-group heading="What does SelectFund cost?">
+              SelectFund is free to use by anyone in your organization.  Convenience Select charges 5% for any
+              successfully funded campaign.  Any campaigns funded with credit cards will incur 2.9% + $0.30 processing
+              fees (standard Stripe interchange fees).  Campaigns that are created but do not reach their funding goal
+              incur no charges.
             </accordion-group>
+            <accordion-group heading="Can you give me an example of a campaign?">
+              $500 fee to enter tournament<br>
+              10 players minimum required<br>
+              30 day campaign<br>
+              <br>
+              $540.53 - Campaign Goal (inclusive of Convenience Select and Stripe fees)<br>
+              <br>
+              Example Campaign Results:<br>
+              1.  12 players commit within 30 days - Campaign Goal Reached!  ($45.04 paid per parent)<br>
+              2.  10 players commit within 17 days - Campaign Goal Reached!  ($54.05 paid per parent)<br>
+              3.  9 players commit within 30 days - Campaign Goal Not Reached (Nobody is charged)<br>
+              <br>
+              In example 1 & 2, the campaign is funded and we will deposit $500 into your bank account within 48 hours.
+            </accordion-group>
+            <accordion-group heading="When do I get my money from SelectFund?">
+              Credit card payments that are successfully processed can be paid out within 2 business days.
+              You have the option of getting paid on every card we process immediately (resulting in several
+              deposits into your bank account) or on a monthly basis (one lump sum deposit into your bank account).
+              How you wish to get paid is your choice when we setup your organization.
+            </accordion-group>
+
+            <accordion-group heading="What happens when you can’t process a card for SelectFund?">
+              Sometimes we cannot process a card.  This can happen because their card expired or change in address or
+              sometimes due to insufficient funds.  Despite the reason, when a payment cannot be collected, Convenience
+              Select contacts the parent to work with them to resolve the issue and process the payment.  If the issue is
+              resolved before the campaign deadline, we will process the payment again.  If it cannot be resolved before
+              the campaign deadline, the campaign may not meet its goal.
+            </accordion-group>
+
             <accordion-group heading="What campaigns are prohibited with SelectFund?">
-              All campaigns should be related to your sports organization.  We prohibit projects that
-              are illegal, heavily regulated, or potentially dangerous for backers are not allowed.
+              All campaigns should be related to your sports organization.  We prohibit projects that are illegal, heavily regulated, or
+              potentially dangerous for backers are not allowed.<br><br>
+
               <ul>
-                <li>Any item claiming to cure, treat, or prevent an illness or condition (whether via a device,
-                  app, book, nutritional supplement, or other means).</li>
+                <li>Any item claiming to cure, treat, or prevent an illness or condition (whether via a device, app, book,
+                  nutritional supplement, or other means).</li>
                 <li>Contests, coupons, gambling, and raffles.</li>
                 <li>Energy food and drinks.</li>
                 <li>Offensive material (e.g., hate speech, encouraging violence against others, etc).</li>
@@ -102,14 +170,9 @@
                 <li>Pornographic material.</li>
                 <li>Drugs, nicotine, tobacco, vaporizers and related paraphernalia.</li>
                 <li>Weapons, replicas of weapons, and weapon accessories.</li>
-                <li>If your project involves something illegal, heavily regulated, or potentially dangerous
-                  for backers and it is not on this list, please contact us before starting your project.</li>
+                <li>If your project involves something illegal, heavily regulated, or potentially dangerous for backers and it
+                  is not on this list, please contact us before starting your project.</li>
               </ul>
-            </accordion-group>
-            <accordion-group heading="What does SelectFund cost?">
-              SelectFund is free to use by anyone in your organization.  Convenience Select charges 5% for any successfully
-              funded campaign.  Any campaigns funded with credit cards will incur 2.9% + $0.30 processing fees (standard Stripe
-              interchange fees).  Campaigns that are created but do not reach their funding goal incur no charges.
             </accordion-group>
           </accordion>
         </div>

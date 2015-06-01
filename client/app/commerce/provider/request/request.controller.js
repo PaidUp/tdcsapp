@@ -6,7 +6,7 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        if($scope.providerForm.$valid){
+        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
             $scope.provider.ownerDOB = $scope.provider.month + '/' + $scope.provider.day + '/' + $scope.provider.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber,
             $scope.provider.aba = $scope.bankAccount.routingNumber,
@@ -43,12 +43,12 @@ angular.module('convenienceApp')
       // Taken from: http://www.brainjar.com/js/validation/
       $scope.bankAccount.routingNumber = angular.copy($scope.provider.aba);
       if (!$scope.bankAccount.routingNumber) {
-        $scope.billingForm.aba.$setValidity('aba', false);
+        $scope.bankForm.aba.$setValidity('aba', false);
         return;
       } else {
         $scope.bankAccount.routingNumber = $scope.bankAccount.routingNumber.replace(/ /g,'');
         if ($scope.bankAccount.routingNumber.length !== 9) {
-          $scope.billingForm.aba.$setValidity('aba', false);
+          $scope.bankForm.aba.$setValidity('aba', false);
           return;
         }
       }
@@ -64,9 +64,9 @@ angular.module('convenienceApp')
       // the aba routing number is good.
 
       if (n !== 0 && n % 10 === 0) {
-        $scope.billingForm.aba.$setValidity('aba', true);
+        $scope.bankForm.aba.$setValidity('aba', true);
       } else {
-        $scope.billingForm.aba.$setValidity('aba', false);
+        $scope.bankForm.aba.$setValidity('aba', false);
       }
     };
 
@@ -108,9 +108,9 @@ angular.module('convenienceApp')
       $scope.bankAccount.accountNumber = angular.copy($scope.provider.dda);
       if ($scope.bankAccount.accountNumber) {
         var pattern = /^\d{4,}$/;
-        $scope.billingForm.dda.$setValidity('pattern', pattern.test($scope.bankAccount.accountNumber));
+        $scope.bankForm.dda.$setValidity('pattern', pattern.test($scope.bankAccount.accountNumber));
       } else {
-        $scope.billingForm.dda.$setValidity('pattern', false);
+        $scope.bankForm.dda.$setValidity('pattern', false);
       }
     };
 
@@ -118,9 +118,9 @@ angular.module('convenienceApp')
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
       if ($scope.bankAccount.securitySocial) {
         var pattern = /^\d{4}$/;
-        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
+        $scope.ownerForm.ownerSSN.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
       } else {
-        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', false);
+        $scope.ownerForm.ownerSSN.$setValidity('pattern', false);
       }
     };
 

@@ -116,8 +116,10 @@
                   <div class="text-center">
                     <small>
                       By signing up,  I agree to the Convenience Select&#39;s<br>
-                      <a href="/terms-of-service" target="blank">Terms of service</a> &amp;
+                      <a href="/terms-of-service" target="blank">Terms of service</a> ,
                       <a href="/privacy-policy" target="blank">Privacy Policy</a>
+                      &amp;
+                      <a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a>
                     </small>
                   </div>
                 </div>
@@ -128,8 +130,10 @@
                 <div class="text-center" ng-hide="emailClick">
                     <small>
                       By signing up,  I agree to the Convenience Select&#39;s<br>
-                      <a href="/terms-of-service" target="blank">Terms of service</a> &amp;
+                      <a href="/terms-of-service" target="blank">Terms of service</a> ,
                       <a href="/privacy-policy" target="blank">Privacy Policy</a>
+                      &amp;
+                      <a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a>
                     </small>
                   </div>
               </div>
@@ -290,11 +294,11 @@
   <!-- END RESET PASSWORD -->
   </script>
   <ul class="nav navbar-nav">
-    <li>
-      <a href="" ng-click="resetState(); modal.showContent('signup'); modal.openModal(); destPath('athletes', true);" id='signup'>Sign up</a>
+    <li style="margin-left: 1em">
+      <a href="" ng-click="resetState(); modal.showContent('signup'); modal.openModal(); toggleMenu(); destPath('athletes', true);" id='signup'>Sign up</a>
     </li>
-    <li>
-      <a href="" ng-click="resetState(); modal.showContent('login'); modal.openModal()">Log in</a>
+    <li style="margin-left: 1em">
+      <a href="" ng-click="resetState(); modal.showContent('login'); modal.openModal(); toggleMenu()">Log in</a>
     </li>
 <!--
      <li>
