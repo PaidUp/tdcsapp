@@ -17,5 +17,10 @@ angular.module('convenienceApp')
         url: '/commerce/provider/success',
         templateUrl: 'app/commerce/provider/success/success.html',
         auth: true
+      }).state('provider-response', {
+        url: '/commerce/provider/response/:id',
+        templateUrl: 'app/commerce/provider/success/success.html',
+        controller: 'ProviderResponseCtrl',
+        auth: false
       });
   });

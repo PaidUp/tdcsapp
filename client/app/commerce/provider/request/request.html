@@ -364,7 +364,7 @@
               </div>
             </div>
 
-            <div class="form-group"> <!-- ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()" -->
+            <div class="form-group">
               <label>Account number (DDA)</label>
               <input type="text" name="dda" ng-model="provider.dda" class="form-control" placeholder="" required ng-required="true" ng-change="validateDDA()" ng-blur="maskDDA()" ng-focus="unmaskDDA()">
               <div class="text-CS text-center" ng-show="billingForm.dda.$error.required && submitted">
@@ -382,9 +382,15 @@
                 <small class="text-CS">Account number verification does not match</small>
               </div>
             </div>
+
+            <div class="form-group">
+              <input type="checkbox" name="tos" ng-model="provider.ToS" required ng-required="true"> By registering your account, you agree to our <a href="https://stripe.com/docs/connect/updating-accounts#link-to-your-own-ToS" target="_blank"> Terms of Service</a> and the <a href="https://stripe.com/connect/account-terms" target="_blank">Stripe Connected Account Agreement</a>.
+              <div class="text-CS text-center" ng-show="billingForm.tos.$error.required && submitted">
+                <small class="text-CS">Agree our Terms of Service is required</small>
+              </div>
+            </div>
           </div>
         </div>
-
         <br>
         <div class="row">
           <!-- <div class="col-xs-3">
