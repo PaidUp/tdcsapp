@@ -62,10 +62,11 @@ angular.module('convenienceApp')
         $scope.sendAlertErrorMsg(err.data.message);
       });
     });
-    
+
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;
+      console.log('$scope.teamSelectionForm.$error',$scope.teamSelectionForm.$error);
       if ($scope.teamSelectionForm.$valid) {
         CartService.createCart().then(function () {
           CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete._id).then(function () {
@@ -82,9 +83,12 @@ angular.module('convenienceApp')
     };
 
     $scope.changeCustomOptions = function (customOption, optionModel) {
+
+
       if (optionModel && optionModel.valueId) {
         $scope.selectedCustomOptions.options[customOption.optionId] = optionModel.valueId;
-      } 
+        customOption.isSelected=true;
+      }
       $scope.price = CartService.calculatePrice($scope.team.attributes.price,
         $scope.selectedCustomOptions.options,
         $scope.team.attributes.customOptions[0]);
