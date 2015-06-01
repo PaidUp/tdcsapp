@@ -6,7 +6,7 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        if($scope.providerForm.$valid){
+        if($scope.providerForm.$valid && $scope.billingForm.$valid){
             $scope.provider.ownerDOB = $scope.provider.month + '/' + $scope.provider.day + '/' + $scope.provider.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber,
             $scope.provider.aba = $scope.bankAccount.routingNumber,
@@ -118,9 +118,9 @@ angular.module('convenienceApp')
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
       if ($scope.bankAccount.securitySocial) {
         var pattern = /^\d{4}$/;
-        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
+        $scope.ownerForm.ownerSSN.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
       } else {
-        $scope.loanApplyForm.socialSecurityNumber.$setValidity('pattern', false);
+        $scope.ownerForm.ownerSSN.$setValidity('pattern', false);
       }
     };
 

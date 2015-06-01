@@ -24,20 +24,13 @@ exports.providerRequest = function (req, res) {
 }
 
 exports.providerResponse = function (req, res) {
-  /*console.log('headers',req.headers);
-  console.log('headers',req.headers.host);
-  console.log('ip1',req.connection.remoteAddress);
-  console.log('ip2',req.headers["X-Forwarded-For"]);
-  console.log('ip3',req.headers["x-forwarded-for"]);
-  console.log('ip4',req.client.remoteAddress);*/
-
   var providerId = req.params.id;
   commerceService.providerResponse(providerId, 'pending', function (err, provider) {
     if (err) {
       return handleError(res, err);
     }
     if (!provider) {
-      return res.redirect('/');
+      return res.json(200);
     }
     paymentService.createConnectAccount({email:provider.ownerEmail,country:provider.country}, function(err, account){
       if(err){
@@ -49,7 +42,7 @@ exports.providerResponse = function (req, res) {
           //return handleError(res, err);
           return res.json(401);
         }
-        var ip = req.headers('x-forwarded-for') || req.connection.remoteAddress;
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.client.remoteAddress;
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
             //return handleError(res, err);
@@ -66,7 +59,7 @@ exports.providerResponse = function (req, res) {
                 //return handleError(res, err);
                 return res.json(403);
               }
-              return res.redirect('/');
+              return res.json(200);
             });
           });
         });
