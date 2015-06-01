@@ -24,6 +24,13 @@ exports.providerRequest = function (req, res) {
 }
 
 exports.providerResponse = function (req, res) {
+  /*console.log('headers',req.headers);
+  console.log('headers',req.headers.host);
+  console.log('ip1',req.connection.remoteAddress);
+  console.log('ip2',req.headers["X-Forwarded-For"]);
+  console.log('ip3',req.headers["x-forwarded-for"]);
+  console.log('ip4',req.client.remoteAddress);*/
+
   var providerId = req.params.id;
   commerceService.providerResponse(providerId, 'pending', function (err, provider) {
     if (err) {
@@ -42,18 +49,25 @@ exports.providerResponse = function (req, res) {
           //return handleError(res, err);
           return res.json(401);
         }
-        catalogService.catalogCreate({teamName:provider.teamName}, function(err, teamId){
+        var ip = req.headers('x-forwarded-for') || req.connection.remoteAddress;
+        paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
             //return handleError(res, err);
-            return res.json(402);
+            return res.json(401);
           }
-          //TODO
-          commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, provider) {
+          catalogService.catalogCreate({teamName:provider.teamName}, function(err, teamId){
             if(err){
               //return handleError(res, err);
-              return res.json(403);
+              return res.json(402);
             }
-            return res.redirect('/');
+            //TODO
+            commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, provider) {
+              if(err){
+                //return handleError(res, err);
+                return res.json(403);
+              }
+              return res.redirect('/');
+            });
           });
         });
       });
