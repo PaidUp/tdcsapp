@@ -219,7 +219,7 @@
          </div>
          <div class="modal-footer" ng-show="showLogin">
            <div class="text-center">
-             Need an account? <a href="" ng-click="resetState(); modal.showContent('signup')">Sign up</a>
+             Need an account? <a href="" ng-click="resetState(); modal.showContent('signup'); destPath('provider-request', false);">Sign up</a>
            </div>
          </div>
   <!-- END LOGIN -->
@@ -295,7 +295,7 @@
   </script>
   <ul class="nav navbar-nav">
     <li style="margin-left: 1em">
-      <a href="" ng-click="resetState(); modal.showContent('signup'); modal.openModal(); toggleMenu()" id='signup'>Sign up</a>
+      <a href="" ng-click="resetState(); modal.showContent('signup'); modal.openModal(); toggleMenu(); destPath('athletes', true);" id='signup'>Sign up</a>
     </li>
     <li style="margin-left: 1em">
       <a href="" ng-click="resetState(); modal.showContent('login'); modal.openModal(); toggleMenu()">Log in</a>

@@ -52,7 +52,7 @@ angular.module('convenienceApp')
   });
 
 angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalService, AuthService, $state, $rootScope, FlashService, $timeout) {
-  $scope.showRole = true;
+  $scope.showRole = AuthService.getIsParent();
   $scope.hideRole = true;
   $scope.user = {};
   $scope.error = null;
@@ -61,10 +61,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.modal = ModalService;
 
   $scope.destPath = function(value, isParent){
-    console.log('auth isParent',isParent);
-    console.log('auth value',value);
-    $scope.showRole = isParent;
-    AuthService.destPath(value);
+    AuthService.destPath(value, isParent);
+    $scope.showRole = AuthService.getIsParent();
   };
 
   $scope.resetState = function() {
