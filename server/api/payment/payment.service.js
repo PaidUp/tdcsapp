@@ -529,6 +529,14 @@ function addBankConnectAccount(bankDetails, cb) {
   });
 }
 
+function addToSCustomer(tosDetails, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.addToSCustomer(tosDetails, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 exports.paymentAdapter = paymentAdapter;
 exports.createCustomer = createCustomer;
 exports.associateCard = associateCard;
@@ -558,3 +566,4 @@ exports.getUserDefaultCardId = getUserDefaultCardId;
 exports.deleteBankAccount = deleteBankAccount;
 exports.createConnectAccount = createConnectAccount;
 exports.addBankConnectAccount = addBankConnectAccount;
+exports.addToSCustomer = addToSCustomer;
