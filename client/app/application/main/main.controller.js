@@ -9,10 +9,7 @@ angular.module('convenienceApp')
     $scope.modal = ModalService;
 
     $scope.destPath = function(value, isParent){
-      console.log('main isParent',isParent);
-      console.log('main value',value);
-      $scope.showRole = isParent;
-      AuthService.destPath(value);
+      AuthService.destPath(value, isParent);
     };
 
     $scope.$on('event:alerts', function () {

@@ -11,7 +11,7 @@
       </div>
       <div class="home-button center-block clearfix">
         <a href="" class="btn btnSignUp btn-block btn-lg" ng-show="isLoggedIn()" ui-sref="athletes">Get Started</a>
-        <button type="button" class="btn btnSignUp btn-block btn-lg" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started Free!</button>
+        <button type="button" class="btn btnSignUp btn-block btn-lg" ng-click="modal.showContent('signup'); modal.openModal(); destPath('athletes', true);" ng-show="!isLoggedIn()">Get Started Free!</button>
         <br>
         <br>
         <br>
@@ -115,7 +115,7 @@
   <br>
   <br>
   <div class="home-button center-block btn-lg">
-    <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get Started</button>
+    <button type="submit" class="btn btnSignUp btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('athletes', true);" ng-show="!isLoggedIn()">Get Started</button>
     <br>
     <br>
   </div>
@@ -173,7 +173,7 @@
 
   <div class="clearfix"></div>
   <div class="home-button center-block btn-lg">
-    <button type="button" class="btn btnSignUp btn-block btn-block" ng-click="modalFactory.ContactUs()" ng-show="!isLoggedIn()">Get More Info</button>
+    <button type="button" class="btn btnSignUp btn-block btn-block" ng-click="modalFactory.ContactUs(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Get More Info</button>
     <br>
     <br>
   </div>
@@ -203,7 +203,7 @@
           <div class="upTo">
             Up to <span>15 athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Get started free</button>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Get started free</button>
         </div>
       </div>
       <div class="col-sm-2 planBox planBox2">
@@ -238,7 +238,7 @@
           <div class="upTo">
             Up to <span>250 athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
       <div class="col-sm-2 planBox planBox4">
@@ -255,7 +255,7 @@
           <div class="upTo">
             Up to <span>500 athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
       <div class="col-sm-2 planBox planBox5">
@@ -272,7 +272,7 @@
           <div class="upTo">
             Up to <span>500+ athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal()" ng-show="!isLoggedIn()">Choose Plan</button>
+          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
     </div>
