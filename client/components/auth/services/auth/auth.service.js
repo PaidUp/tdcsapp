@@ -12,6 +12,7 @@ angular.module('convenienceApp')
     });
 
     var dest = 'athletes';
+    var isParent = true;
 
     return {
 
@@ -19,13 +20,21 @@ angular.module('convenienceApp')
         return dest;
       },
 
-      destPath :function(value){
-        //The value should be name target path.
+      getIsParent :function(){
+        return isParent;
+      },
+
+      destPath :function(value, parent){
         dest  = value;
+        isParent = parent;
       },
 
       setDest :function(){
         dest  = 'athletes';
+      },
+
+      setIsParent :function(){
+        isParent  = true;
       },
 
       updateCurrentUser: function () {
