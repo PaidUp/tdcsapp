@@ -5,10 +5,10 @@ angular.module('convenienceApp')
                                           AuthService, FlashService, CartService, $state, PaymentService,
                                           ApplicationConfigService, CommerceService) {
     $rootScope.$emit('bar-welcome', {
-      left:{
+      left: {
         url: 'app/payments/templates/loan-bar.html'
-      } ,
-      right:{
+      },
+      right: {
         url: ''
       }
     });
@@ -33,13 +33,13 @@ angular.module('convenienceApp')
     $scope.schedules = [];
 
     var currentCartId = CartService.getCurrentCartId();
-    CartService.getCart(currentCartId).then(function(value){
+    CartService.getCart(currentCartId).then(function (value) {
       var products = value.items;
-      products.forEach(function(ele, idx, arr){
-        CommerceService.getSchedule(ele.productId).then(function(val){
+      products.forEach(function (ele, idx, arr) {
+        CommerceService.getSchedule(ele.productId).then(function (val) {
           $scope.schedules.push({
-            name : ele.name,
-            periods : val.schedulePeriods
+            name: ele.name,
+            periods: val.schedulePeriods
           });
         });
       });
@@ -48,7 +48,7 @@ angular.module('convenienceApp')
 
     ApplicationConfigService.getConfig().then(function (config) {
       Stripe.setPublishableKey(config.stripeApiPublic);
-      balanced.init('/v1/marketplaces/'+config.marketplace);
+      balanced.init('/v1/marketplaces/' + config.marketplace);
     });
 
     PaymentService.listCards().then(function (response) {
@@ -107,9 +107,9 @@ angular.module('convenienceApp')
         $scope.sendAlertErrorMsg(err.data.message);
       });
 
-      UserService.getContactList($scope.user._id).then(function(data){
+      UserService.getContactList($scope.user._id).then(function (data) {
         angular.forEach(data, function (contactInfo) {
-          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact){
+          UserService.getContact($scope.user._id, contactInfo.contactId).then(function (contact) {
             if (contact.label === 'shipping') {
               $scope.oldPhone = contact;
               $scope.billing.phone = contact.value;
@@ -174,8 +174,8 @@ angular.module('convenienceApp')
       }
 
       if ($scope.card && $scope.card.expirationDate && $scope.card.expirationDate.month &&
-          $scope.card.expirationDate.year &&
-          balanced.card.isExpiryValid($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
+        $scope.card.expirationDate.year &&
+        balanced.card.isExpiryValid($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
         $scope.checkoutForm.$setValidity('expiration', true);
       } else {
         $scope.checkoutForm.$setValidity('expiration', false);
@@ -196,8 +196,8 @@ angular.module('convenienceApp')
       if ($scope.oldBillingAddress) {
         // update billing address
         if ($scope.checkoutForm.address1.$dirty || $scope.checkoutForm.address2.$dirty ||
-            $scope.checkoutForm.city.$dirty || $scope.checkoutForm.state.$dirty ||
-            $scope.checkoutForm.zipCode.$dirty) {
+          $scope.checkoutForm.city.$dirty || $scope.checkoutForm.state.$dirty ||
+          $scope.checkoutForm.zipCode.$dirty) {
           $scope.billing.address.userId = $scope.user._id;
           $scope.oldBillingAddress = angular.extend({}, $scope.billing.address);
           $scope.updateAddress($scope.oldBillingAddress);
@@ -241,11 +241,11 @@ angular.module('convenienceApp')
                 for (var key in response.error) {
                   $scope.sendAlertErrorMsg(response.error[key]);
                 }
-              }else {
+              } else {
                 $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
               }
             }
-            else{
+            else {
 
               PaymentService.associateCard(response.id).then(function (newCard) {
 
@@ -331,8 +331,21 @@ angular.module('convenienceApp')
             $scope.sendAlertErrorMsg(err);
           });
         }
-      }  else {
+      } else {
         $scope.placedOrder = false;
       }
     };
+
+    $scope.fieldNumberOnly = function (modelField) {
+      console.log('$scope.$parent.card', $scope.$parent.cards);
+
+      console.log('modelField', $scope.$parent.card[modelField]);
+
+      console.log('parseInt()', isNaN($scope.$parent.card[modelField]));
+      if(!isNaN(modelField)){
+        $scope.$parent.card[modelField] = '';
+      }
+    }
+
+
   });
