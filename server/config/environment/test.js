@@ -13,10 +13,10 @@ module.exports = {
     developer : 'hola@hola.com'
   },
   emailService:{
-    service: 'Mailjet',
+    service: 'gmail',
     auth: {
-      user: '',
-      pass: ''
+      user: 'xxx',
+      pass: 'xxx'
     }
   }
 };
