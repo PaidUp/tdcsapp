@@ -8,12 +8,12 @@ module.exports = {
     uri: 'mongodb://localhost/convenience-test'
   },
   emailContacts : {
-    contact : 'hola@hola.com',
-    admin : 'hola@hola.com',
-    developer : 'hola@hola.com'
+    contact : 'convenieceselect@gmail.com',
+    admin : 'convenieceselect@gmail.com',
+    developer : 'convenieceselect@gmail.com'
   },
   emailService:{
-    service: 'Mailjet',
+    service: 'Gmail',
     auth: {
       user: '',
       pass: ''
