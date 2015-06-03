@@ -10,6 +10,27 @@
       </div>
 
     </div>
+
+
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-4 " ng-repeat="schedule in schedules">
+        <h4>{{schedule.name}}</h4>
+        <div class="clearfix"></div>
+        <table class="table table-bordered table-hover">
+          <thead>
+          <th>Date Next Payment</th>
+          <th>Value</th>
+          </thead>
+          <tbody>
+          <tr ng-repeat="period in schedule.periods">
+            <td class="">{{period.nextPaymentDue | date:'dd/MM/yyyy'}} - {{period.description}}</td>
+            <td>{{period.price | currency:"USD$ ":0}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-4 text-right clearfix">
         <h4 class="text-CS">Billing Address</h4>
@@ -19,28 +40,50 @@
     <div class="row">
 
       <div class="col-sm-4 text-right">
-        <label>Address</label>
+        <label>Address1</label>
       </div>
       <div class="col-sm-4">
-
         <div class="form-group clearfix" ng-class="{ 'has-error': checkoutForm.address1.$invalid && submitted }">
           <input type="text" class="form-control" name="address1" placeholder="Address 1" ng-model="billing.address.address1" required ng-required="true">
           <div class="text-CS text-center" ng-show="checkoutForm.address1.$error.required && submitted">
             <small class="text-CS">Address1 is required</small>
           </div>
         </div>
-
+      </div>
+      <div class="col-sm-4"> &blank;</div>
+      </div>
+      <div class="row">
+      <div class="col-sm-4 text-right">
+        <label>Address2</label>
+      </div>
+      <div class="col-sm-4">
         <div class="form-group clearfix">
           <input type="text" class="form-control" name="address2" placeholder="Address 2" ng-model="billing.address.address2">
         </div>
+      </div>
+      <div class="col-sm-4"></div>
 
-        <div class="form-group clearfix" ng-class="{ 'has-error': checkoutForm.city.$invalid && submitted }">
-          <input type="text" class="form-control" name="city" placeholder="City" ng-model="billing.address.city" required ng-required="true">
-          <div class="text-CS text-center" ng-show="checkoutForm.city.$error.required && submitted">
-            <small class="text-CS">City is required</small>
+      </div>
+
+    <div class="row">
+          <div class="col-sm-4 text-right">
+            <label>City</label>
           </div>
-        </div>
-
+          <div class="col-sm-4">
+            <div class="form-group clearfix" ng-class="{ 'has-error': checkoutForm.city.$invalid && submitted }">
+              <input type="text" class="form-control" name="city" placeholder="City" ng-model="billing.address.city" required ng-required="true">
+              <div class="text-CS text-center" ng-show="checkoutForm.city.$error.required && submitted">
+                <small class="text-CS">City is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label>State / Zip code</label>
+      </div>
+      <div class="col-sm-4">
         <div class="row">
           <div class="col-sm-6">
 
@@ -52,10 +95,10 @@
                       ng-class="{ 'has-error': checkoutForm.state.$invalid && submitted }"
                       required
                       ng-required="true">
-                  <option value="" disabled>Select a State</option>
-                  <option ng-repeat="state in states" value="{{state.abbreviation}}">
-                      {{state.abbreviation}}
-                  </option>
+                <option value="" disabled>Select a State</option>
+                <option ng-repeat="state in states" value="{{state.abbreviation}}">
+                  {{state.abbreviation}}
+                </option>
               </select>
               <div class="text-CS text-center" ng-show="checkoutForm.state.$error.required && submitted">
                 <small class="text-CS">State is required</small>
@@ -79,57 +122,46 @@
         </div>
 
       </div>
+      <div class="col-sm-4"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <label>Phone</label>
+      </div>
+          <div class="col-sm-4"  ng-class="{ 'has-error': checkoutForm.phone.$invalid && submitted }">
+
+            <div class="form-group">
+              <input type="text" class="form-control" name="phone" placeholder="Phone number" ng-model="billing.phone" required ng-required="true" ng-pattern="/^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$/">
+              <!-- (541) 754-3010 VALID -->
+              <!-- (541) 7543010 VALID -->
+              <!-- (541) 754 3010 VALID -->
+              <!-- (541)754 3010 VALID -->
+              <!-- 5417543010 VALID -->
+              <div class="text-CS text-center" ng-show="checkoutForm.phone.$error.pattern">
+                <small class="text-CS">Invalid phone format</small>
+              </div>
+              <div class="text-CS text-center" ng-show="checkoutForm.phone.$error.required && submitted">
+                <small class="text-CS">Your phone is required</small>
+              </div>
+            </div>
+
+          </div>
+      <div class="col-sm-4"></div>
 
     </div>
 
+      <div class="row">
+      <div class="col-sm-12">
+
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-5 col-sm-offset-3">
         <hr>
       </div>
     </div>
 
-
-    <div class="row">
-      <div class="col-sm-4 text-right">
-        <label>Phone</label>
-      </div>
-      <div class="col-sm-4"  ng-class="{ 'has-error': checkoutForm.phone.$invalid && submitted }">
-
-        <div class="form-group">
-          <input type="text" class="form-control" name="phone" placeholder="Phone number" ng-model="billing.phone" required ng-required="true" ng-pattern="/^(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}$/">
-          <!-- (541) 754-3010 VALID -->
-          <!-- (541) 7543010 VALID -->
-          <!-- (541) 754 3010 VALID -->
-          <!-- (541)754 3010 VALID -->
-          <!-- 5417543010 VALID -->
-          <div class="text-CS text-center" ng-show="checkoutForm.phone.$error.pattern">
-            <small class="text-CS">Invalid phone format</small>
-          </div>
-          <div class="text-CS text-center" ng-show="checkoutForm.phone.$error.required && submitted">
-            <small class="text-CS">Your phone is required</small>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-4 col-sm-offset-4 " ng-repeat="schedule in schedules">
-        <h4>{{schedule.name}}</h4>
-        <div class="clearfix"></div>
-        <table class="table table-bordered table-hover">
-          <thead>
-          <th>Date Next Payment</th>
-          <th>Value</th>
-          </thead>
-          <tbody>
-          <tr ng-repeat="period in schedule.periods">
-            <td class="">{{period.nextPaymentDue | date:'MM/dd/yyyy'}}</td>
-            <td>{{period.price | currency:"USD$ ":0}}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
 
 
     <div class="row">
@@ -193,7 +225,7 @@
                     ng-model="$parent.card.cardNumber"
                     placeholder="Card Number"
                     ng-required="$parent.cards.length === 1 || $parent.createCard"
-                    ng-change="$parent.validateInput()">
+                    ng-change="$parent.validateInput() ">
             <div class="text-CS text-center" ng-show="$parent.checkoutForm.cardNumber.$error.format">
               <small class="text-CS">Invalid Card Number</small>
             </div>
@@ -299,41 +331,27 @@
         <div class="col-sm-4 col-sm-offset-4">
 
           <div class="row">
-            <div class="col-sm-12">
-              <br>
-              <div class="checkbox" id="agreeCheckbox">
-                <label>
-                  <input type="checkbox" name="agree" ng-model="agree" required ng-required="true">I consent to the electronic communications agreement specified
-                  <div></div>
-                  <a href="" ng-click="modalFactory.ElectronicModal()">&nbsp;here</a>
-                </label>
-              </div>
-              <br>
-              <div class="text-CS" ng-show="checkoutForm.agree.$error.required && submitted">
-                <small class="text-CS">Please click on the consent box.</small>
-              </div>
-              <br>
-              <strong>By clicking on the "Place Order" button, I agree to the following:</strong>
-              <br>
+            <div class="col-sm-12"><small>
+              By clicking on the "Place Order" button, I agree to Convenience Select's:<br>
               <ul>
-                <li>I consent to the <a href="" ng-click="modalFactory.BoomModal()">Austin Boom Financial agreement</a></li>
-                <li>I agree to Convenience Select's <a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of Use</a> and Convenience Select's <a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
-                <li>I consent to receive calls (including SMS text messages) from Convenience Select regarding my account as specified <a href="" ng-click="modalFactory.PhoneAuthModal()">here</a></li>
-                <li>I consent to being considered for terms available from Convenience Select</li>
+                <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
+                <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
+                <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
               </ul>
-            </div>
+            </small></div>
             <div class="col-sm-12">
               <button type="submit" class="btn btnSignUp btn-block btn-lg" ng-disabled="placedOrder">Place Order</button>
             </div>
           </div>
-
+        <br>
         </div>
-        <div class="col-sm-12">
+        <!--div class="col-sm-12">
           <br>
           <small><strong>Important information about procedures for opening a new account:</strong><br>
             <small>To help the goverment fight the funding of terrorism and money laundering activities, Federal law requires all financial institutions to obtain, verify and record information that identifies each person who opens an account. <br>
               What this means for you: When you open an account, obtain a loan from Convenience Select in this case, we will ask you for your name, address, date of birth an other information that allow us to identify you. We may also ask to see your drivers license or other identifying documents.</small></small>
-        </div>
+        </div-->
       </div>
     </div>
   </div>

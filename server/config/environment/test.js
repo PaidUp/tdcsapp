@@ -15,8 +15,8 @@ module.exports = {
   emailService:{
     service: 'Gmail',
     auth: {
-      user: '',
-      pass: ''
+      user: 'xxx',
+      pass: 'xxx'
     }
   }
 };
