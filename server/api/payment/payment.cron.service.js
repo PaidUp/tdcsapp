@@ -35,7 +35,8 @@ function paymentSchedule(pendingOrders, callbackSchedule){
           function(schedulePeriod, callbackEach2){
             if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
               userService.find({_id : order.userId}, function(err, users){
-                paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price, order.paymentMethod, schedulePeriod.id, function(err , data){
+                paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                  order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, function(err , data){
                   if(err){
                     return callbackEach2(err);
                   }
