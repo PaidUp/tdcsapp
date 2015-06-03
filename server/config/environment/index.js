@@ -69,9 +69,9 @@ var all = {
     baseUrl : "http://localhost:9000"
   },
   emailContacts : {
-    contact : 'jesse.cogollo@talosdigital.com',
-    admin : 'cogollo87@gmail.com',
-    developer : 'jesse.cogollo@talosdigital.com'
+    contact : 'convenieceselect@gmail.com',
+    admin : 'convenieceselect@gmail.com',
+    developer : 'convenieceselect@gmail.com'
   },
 
   // contract data
