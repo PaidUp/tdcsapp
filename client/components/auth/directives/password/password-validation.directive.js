@@ -8,18 +8,18 @@ angular.module('convenienceApp')
       link: function (scope, element, attrs, ctrl) {
         ctrl.$parsers.unshift(function(viewValue){
           var validations = [
-            {
-              pattern: /[a-z]+/,
-              msg: 'lowerCase'
-            },
+            //{
+            //  pattern: /[a-z]+/,
+            //  msg: 'lowerCase'
+            //},
             {
               pattern: /[A-Z]+/,
               msg: 'upperCase'
             },
-            {
-              pattern: /\d+/,
-              msg: 'digits'
-            },
+            //{
+            //  pattern: /\d+/,
+            //  msg: 'digits'
+            //},
             {
               pattern: /\W+/,
               msg: 'specialCharacter'
@@ -34,7 +34,7 @@ angular.module('convenienceApp')
               ctrl.$setValidity(validation.msg, true);
             }
           });
-          if (viewValue.length < 8) {
+          if (viewValue.length < 6) {
             ctrl.$setValidity('minlength', false);
           } else {
             ctrl.$setValidity('minlength', true);
