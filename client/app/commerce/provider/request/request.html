@@ -78,10 +78,11 @@
             <h3 class="text-CS">Identify verification</h3> We require sports organization members to verify their identity.  If your organization is a legal entity, like an LLC or Inc., choose a representative to verify their identity.
           </div>
           <div class="col-sm-6 col-sm-push-6">
+
           </div>
 
           <div class="col-sm-6 col-sm-pull-6">
-
+            <br>
             <div class="form-group">
               <label>Your name</label>
               <input type="text" name="ownerName" class="form-control" placeholder="Your name" ng-model="provider.ownerName" ng-maxlength="128" required ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
@@ -205,7 +206,7 @@
                 <small class="text-CS">State is required</small>
               </div>
             </div>
-            
+
             <div class="form-group">
               <label>Zip code</label>
 
@@ -221,10 +222,9 @@
             </div>
 
             <div class="form-group">
-              <div class="col-sm-12">
                 <label>SSN last 4 </label>
-              </div>
-              <div class="col-sm-12"><!--  -->
+            </div>
+              <div class="form-group">
                 <input type="text" class="form-control" name="ownerSSN" ng-model="provider.ownerSSN" required ng-required="true" ng-change="validateSSN()" ng-blur="maskSSN()" ng-focus="unmaskSSN()">
                 <div class="text-CS text-center" ng-show="ownerForm.ownerSSN.$error.required && submitted" >
                   <small class="text-CS">Social Security Number is required</small>
@@ -235,9 +235,9 @@
                 <small>We use 128-bit SSL protection and strict levels of security and encryption standards to keep your information safe.</small>
               </div>
             </div>
+            </div>
 
-          </div>
-        </div>
+        
 
         <br>
 
@@ -343,15 +343,22 @@
               </div>
             </div>-->
           </div>
-          <div class="row bg-Block" ng-form name="bankForm">
-            <div class="col-sm-12">
-              <h3 class="text-CS">Bank account</h3> Routing number are 9 digits long. Please use the one designated for paper and electronic (not wire) transfers.
-            </div>
 
-            <div class="col-sm-6 col-sm-push-6">
-            </div>
 
-            <div class="col-sm-6 col-sm-pull-6">
+
+
+        </div>
+
+
+        <div class="row bg-Block" ng-form name="bankForm">
+          <div class="col-sm-12">
+            <h3 class="text-CS">Bank account</h3> Routing number are 9 digits long. Please use the one designated for paper and electronic (not wire) transfers.
+          </div>
+
+          <div class="col-sm-6 col-sm-push-6">
+          </div>
+
+          <div class="col-sm-6 col-sm-pull-6">
 
             <div class="form-group">
               <label>Rounting number (ABA)</label>
@@ -388,7 +395,6 @@
               <div class="text-CS text-center" ng-show="bankForm.tos.$error.required && submitted">
                 <small class="text-CS">Agree our Terms of Service is required</small>
               </div>
-            </div>
             </div>
           </div>
         </div>
