@@ -15,7 +15,7 @@
             <div ng-bind-html="team.attributes.description"> </div>
           <br>
           <form name="teamSelectionForm" ng-submit="enrollNow()" novalidate>
-            <label for="athleteSelect">Enrolling Athlete</label><br>
+            <label for="select-athlete">Enrolling Athlete</label><br>
             <select class="form-control"
                     id="select-athlete"
                     name="athleteSelect"
@@ -29,6 +29,8 @@
               <small class="text-CS">Athlete is required</small>
             </div>
             <br>
+
+
             <div ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
               <!-- <custom-options ng-model="optionModel"
                               type="customOption.type"
@@ -37,42 +39,57 @@
                               options="customOption.values"
                               ng-click="changeCustomOptions(customOption, optionModel)">
               </custom-options> -->
-              <div ng-if="customOption.type === 'drop_down'" class="customDropDown">
-                <label>{{customOption.title}}</label>
-                <select id="select{{indexCustomOp}}"
-                        class="form-control"
-                        ng-model="optionModel"
-                        name="select{{customOption.optionId}}"
-                        ng-required="customOption.isRequire === '1'"
-                        ng-options="option as option.title for option in customOption.values track by option.valueId"
-                        ng-change="changeCustomOptions(customOption, optionModel)">
-                </select>
-                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
-                  <small class="text-CS">{{customOption.title}} is required</small>
-                </div>
-              </div>
-              <div ng-if="customOption.type === 'radio'" id="radio{{indexCustomOp}}">
-                <label>{{customOption.title}}</label>
+
+              <div ng-if="customOption.isRequire === '1' && customOption.values.length === 1">
+                <label>{{customOption.title}}</label><br>
+                {{customOption.values[0].title}}
                 <br>
-                <div class="row">
-                <div class="col-sm-2 radio-container" ng-repeat="(indexRadioOp, item) in customOption.values">
-                <label class="radio-inline" >
-                  <input  id="radio{{indexRadioOp}}"
-                          type="radio"
-                          name="radio{{customOption.optionId}}"
-                          ng-value="item"
-                          ng-model="optionModel"
-                          ng-required="customOption.isRequire === '1' && !customOption.isSelected"
-                          ng-click="changeCustomOptions(customOption, optionModel)">
-                  <div><strong>{{item.title}}</strong></div>
-                </label>
-                </div>
-                </div>
-                <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && !customOption.isSelected && submitted">
-                  <small class="text-CS">{{customOption.title}} is required</small>
-                </div>
+                <br>
               </div>
-              <br>
+
+
+
+              <div ng-if="!(customOption.isRequire === '1' && customOption.values.length === 1)">
+                <div ng-if="customOption.type === 'drop_down'" class="customDropDown">
+                  <label>{{customOption.title}}</label>
+                  <select id="select{{indexCustomOp}}"
+                          class="form-control"
+                          ng-model="optionModel"
+                          name="select{{customOption.optionId}}"
+                          ng-required="customOption.isRequire === '1'"
+                          ng-options="option as option.title for option in customOption.values track by option.valueId"
+                          ng-change="changeCustomOptions(customOption, optionModel)">
+                  </select>
+
+                  <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
+                    <small class="text-CS">{{customOption.title}} is required</small>
+                  </div>
+                </div>
+
+
+                <div ng-if="customOption.type === 'radio'" id="radio{{indexCustomOp}}">
+                  <label>{{customOption.title}}</label>
+                  <br>
+                  <div class="row">
+                    <div class="col-sm-2 radio-container" ng-repeat="(indexRadioOp, item) in customOption.values">
+                      <label class="radio-inline" >
+                        <input  id="radio{{indexRadioOp}}"
+                                type="radio"
+                                name="radio{{customOption.optionId}}"
+                                ng-value="item"
+                                ng-model="optionModel"
+                                ng-required="customOption.isRequire === '1' && !customOption.isSelected"
+                                ng-click="changeCustomOptions(customOption, optionModel)">
+                        <div><strong>{{item.title}}</strong></div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && !customOption.isSelected && submitted">
+                    <small class="text-CS">{{customOption.title}} is required</small>
+                  </div>
+                </div>
+                <br>
+              </div>
             </div>
             <br>
             <br>
@@ -81,7 +98,7 @@
           </form>
         </div>
       </div>
-      <div class="row">
+      <!--div class="row">
         <div class="col-sm-4 team-coach-small">
           <div class="coach-image img-circle" ng-show="team.getImage('coach_picture')">
             <img ng-src="{{team.getImage('coach_picture').url}}" alt="">
@@ -92,7 +109,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div-->
+      <br>
+      <br>
 
     </div>
   </div>
