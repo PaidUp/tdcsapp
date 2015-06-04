@@ -18,6 +18,8 @@ angular.module('convenienceApp')
     $scope.athletes = [];
     // $scope.athlete = {};
 
+
+
     TeamService.getTeam($stateParams.teamId).then(function (team) {
       $scope.team = team;
       $scope.price = Number($scope.team.attributes.price);
@@ -27,7 +29,16 @@ angular.module('convenienceApp')
         qty: 1,
         options: {}
       };
+
+      $scope.team.attributes.customOptions[0].forEach(function(element, index, array){
+        if(element.isRequire === '1' && element.values.length === 1){
+          $scope.changeCustomOptions(element , element.values[0]);
+        }
+      });
+
     });
+
+
 
     $scope.underAges = TeamService.getTeamUnderAges($stateParams.teamId);
     $scope.underAge = $scope.underAges[0];
@@ -66,7 +77,6 @@ angular.module('convenienceApp')
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;
-      console.log('$scope.teamSelectionForm.$error',$scope.teamSelectionForm.$error);
       if ($scope.teamSelectionForm.$valid) {
         CartService.createCart().then(function () {
           CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete._id).then(function () {
@@ -83,8 +93,6 @@ angular.module('convenienceApp')
     };
 
     $scope.changeCustomOptions = function (customOption, optionModel) {
-
-
       if (optionModel && optionModel.valueId) {
         $scope.selectedCustomOptions.options[customOption.optionId] = optionModel.valueId;
         customOption.isSelected=true;
