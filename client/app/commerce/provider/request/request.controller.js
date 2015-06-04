@@ -3,14 +3,18 @@
 angular.module('convenienceApp')
   .controller('ProviderRequestCtrl', function ($scope, providerService, UserService, $state) {
     $scope.states = UserService.getStates();
+    var currentDate = moment();
+    var minDate = moment().subtract(60, 'year');
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
+        console.log('0',$scope.provider.ownerDOB);
         if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
-            $scope.provider.ownerDOB = $scope.provider.month + '/' + $scope.provider.day + '/' + $scope.provider.year;
-            $scope.provider.dda = $scope.bankAccount.accountNumber,
-            $scope.provider.aba = $scope.bankAccount.routingNumber,
-            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial
+            // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
+            $scope.provider.dda = $scope.bankAccount.accountNumber;
+            $scope.provider.aba = $scope.bankAccount.routingNumber;
+            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial;
+            console.log('$scope.provider.ownerDOB',$scope.provider.ownerDOB);
             providerService.providerRequest($scope.provider).then(function(data){
                 $state.go('provider-success'); 
             }).catch(function(err){
@@ -138,6 +142,32 @@ angular.module('convenienceApp')
     $scope.unmaskSSN = function () {
       if ($scope.bankAccount.securitySocial) {
         $scope.provider.ownerSSN = angular.copy($scope.bankAccount.securitySocial);
+      }
+    };
+
+    $scope.toggleMin = function() {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+
+    $scope.isValidDate = function () {
+      // moment.js takes the month as an array position so:
+      // Jan is the month 0, Feb is the month 1 and so on
+      // but the user enters it normally
+      var tmpDate = angular.extend({}, $scope.provider.date);
+      tmpDate.month -= 1;
+      tmpDate.day -= 1;
+      var birthdate = moment(tmpDate);
+      var dateRange = moment().range(minDate, currentDate);
+      if (birthdate.isValid() && dateRange.contains(birthdate)) {
+        $scope.providerForm.$setValidity('date', true);
+        $scope.provider.ownerDOB = $scope.provider.date.year + '-' + $scope.provider.date.month + '-' + $scope.provider.date.day;
+        console.log('here',$scope.provider.ownerDOB);
+        //$scope.athlete.birthDate = $scope.provider.year + '-' + $scope.provider.month + '-' + $scope.provider.day;
+        return true;
+      } else {
+        $scope.providerForm.$setValidity('date', false);
+        return false;
       }
     };
     
