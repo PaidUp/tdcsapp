@@ -146,7 +146,6 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
       var error = function (err) {
         $scope.error = err.message;
       };
-
       AuthService.createUser(user, success, error);
     }
   };

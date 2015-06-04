@@ -11,7 +11,7 @@ angular.module('convenienceApp')
       delete $rootScope.currentUser;
     });
 
-    var dest = 'athletes';
+    var dest = 'user-enrollments';
     var isParent = true;
 
     return {
