@@ -106,7 +106,7 @@
                             id="month"
                             placeholder="MM"
                             name="month"
-                            ng-model="provider.month"
+                            ng-model="provider.date.month"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
@@ -119,7 +119,7 @@
                             id="day"
                             placeholder="DD"
                             name="day"
-                            ng-model="provider.day"
+                            ng-model="provider.date.day"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
@@ -132,15 +132,15 @@
                             id="year"
                             placeholder="YYYY"
                             name="year"
-                            ng-model="provider.year"
+                            ng-model="provider.date.year"
                             required
                             ng-change="isValidDate()"
                             ng-required="true"
                             ng-pattern="/^\d{4}$/">
                 </div>
-                <!--<div class="text-CS text-center" ng-show="(addAthleteForm.$error.date || addAthleteForm.year.$invalid || addAthleteForm.month.$invalid || addAthleteForm.day.$invalid) && submitted">
+                <div class="text-CS text-center" ng-show="(providerForm.$error.date || providerForm.year.$invalid || providerForm.month.$invalid || providerForm.day.$invalid) && submitted">
                   <small class="text-CS">Invalid Date</small>
-                </div>-->
+                </div>
             </div>
             <br>
 
