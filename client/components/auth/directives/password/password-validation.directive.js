@@ -34,7 +34,7 @@ angular.module('convenienceApp')
               ctrl.$setValidity(validation.msg, true);
             }
           });
-          if (viewValue.length < 6) {
+          if (viewValue.length < 8) {
             ctrl.$setValidity('minlength', false);
           } else {
             ctrl.$setValidity('minlength', true);
