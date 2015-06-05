@@ -6,7 +6,7 @@ angular.module('convenienceApp')
     AuthService.verifyEmailToken($stateParams.token, function(){
       $rootScope.$emit('close-alerts');
       AuthService.updateCurrentUser();
-      $state.go('main', {}, { location: true, reload: true, inherit: false, notify: true });
+      $state.go('athletes', {}, { location: true, reload: true, inherit: false, notify: true });
       FlashService.addAlert({
         type: 'success',
         templateUrl:'components/application/directives/alert/alerts/verify-email-success.html',
@@ -19,7 +19,7 @@ angular.module('convenienceApp')
         msg: err.message,
         timeout: 10000
       });
-      $state.go('main');
+      $state.go('athletes');
     });
   }
 });
