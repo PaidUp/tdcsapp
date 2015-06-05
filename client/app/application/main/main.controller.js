@@ -80,5 +80,10 @@ angular.module('convenienceApp')
       $(".navbar-toggle").click();
     };
 
-
+    AuthService.isLoggedInAsync(function (isLoggin) {
+      if (isLoggin && $location.$$path === '/') {
+        $location.path('/athletes/dashboard');
+        console.log('$location' , $location.$$path)
+      }
+    });
   });

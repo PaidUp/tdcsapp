@@ -9,10 +9,10 @@
             <ul>
               <li><strong>TEAMS</strong></li>
               <li><a href="" ng-click="goTo('/faq')">FAQ</a><br></li>
-              <li>
+              <li ng-show="isLoggedIn()">
                 <a href="" ng-click="goTo('/', 'solutionsForTeams')">Solutions for Teams</a><br>
               </li>
-              <li><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
+              <li ng-show="isLoggedIn()"><a href="" ng-click="goTo('/', 'bannerOurPackages')">Our Packages</a><br></li>
 
             </ul>
           </div>
