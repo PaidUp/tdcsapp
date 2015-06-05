@@ -224,6 +224,7 @@ module.exports = function (grunt) {
           src: [
             '<%= yeoman.dist %>/public/{,*/}*.js',
             '<%= yeoman.dist %>/public/{,*/}*.css',
+            '!<%= yeoman.dist %>/public/assets/images/csLogoLarge.jpg',
             '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/public/assets/fonts/*'
           ]
@@ -556,7 +557,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    
+
     mochacov: {
       default: {
         src: ['server/**/*.spec.js'],
@@ -590,7 +591,7 @@ module.exports = function (grunt) {
         src: ['server/**/*.spec.js']
       }
     }
-    
+
   });
 
   // Used for delaying livereload until after server has restarted
@@ -680,7 +681,7 @@ module.exports = function (grunt) {
         'autoprefixer',
         'express:dev'
       ];
-      
+
       if (target2 === 'loan') {
         generalTasks.push('protractor:loanPath');
       }else if (target2 === 'credit'){
