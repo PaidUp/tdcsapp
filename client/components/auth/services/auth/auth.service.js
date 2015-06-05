@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook) {
+  .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook, Principal) {
 
     if(SessionService.getCurrentSession()) {
       $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
@@ -79,6 +79,29 @@ angular.module('convenienceApp')
       logout: function() {
         SessionService.removeCurrentSession();
         delete $rootScope.currentUser;
+      },
+
+      authorize: function(force) {
+          return Principal.identity(force)
+              .then(function() {
+                  var isAuthenticated = Principal.isAuthenticated();
+
+                  if ($rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !Principal.isInAnyRole($rootScope.toState.data.roles)) {
+                      if (isAuthenticated) {
+                          // user is signed in but not authorized for desired state
+                          $state.go('accessdenied');
+                      }
+                      else {
+                          // user is not authenticated. stow the state they wanted before you
+                          // send them to the signin state, so you can return them when you're done
+                          $rootScope.returnToState = $rootScope.toState;
+                          $rootScope.returnToStateParams = $rootScope.toStateParams;
+
+                          // now, send them to the signin state so they can log in
+                          $state.go('login');
+                      }
+                  }
+              });
       },
 
       loginFacebook: function(successFn, errorFn) {

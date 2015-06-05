@@ -16,7 +16,7 @@ angular.module('convenienceApp', [
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('main');
 
     $locationProvider.html5Mode(true);
     FacebookProvider.init('717631811625048');
@@ -24,6 +24,7 @@ angular.module('convenienceApp', [
   })
 
   .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
+    
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -53,7 +54,6 @@ angular.module('convenienceApp', [
             msg: 'Session has expired.',
             timeout: 10000
           });
-
           $location.path('/');
           // remove any state tokens
           return $q.reject(response);
@@ -65,7 +65,8 @@ angular.module('convenienceApp', [
     };
   })
 
-  .run(function ($rootScope, $state, AuthService, $analytics, FlashService, $anchorScroll) {
+  .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll, $urlRouter) {
+
     $anchorScroll.yOffset = 100;
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -99,6 +100,24 @@ angular.module('convenienceApp', [
           event.preventDefault();
         }
       });
+    });
+    
+    $rootScope.$on('$locationChangeSuccess', function(evt) {
+      
+        AuthService.isLoggedInAsync(function(loggedIn) {
+          var role = 
+            console.log('loggedIn',loggedIn);
+            console.log('$state.current',$state.current);
+            if(loggedIn && $state.current.name === '') {
+              
+            }
+            if($state.current && $state.current.data && $state.current.data.roles){
+              console.log('roles',$state.current.data.roles);
+            //$state.go('main');
+            //event.preventDefault();
+            }
+        });
+
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
