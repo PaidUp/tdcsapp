@@ -103,21 +103,20 @@ angular.module('convenienceApp', [
     });
     
     $rootScope.$on('$locationChangeSuccess', function(evt) {
-      
-        AuthService.isLoggedInAsync(function(loggedIn) {
-          var role = 
-            console.log('loggedIn',loggedIn);
-            console.log('$state.current',$state.current);
-            if(loggedIn && $state.current.name === '') {
-              
-            }
-            if($state.current && $state.current.data && $state.current.data.roles){
-              console.log('roles',$state.current.data.roles);
-            //$state.go('main');
-            //event.preventDefault();
-            }
-        });
-
+      AuthService.isLoggedInAsync(function(loggedIn) {
+        if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
+          var reLocation = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
+          if(!reLocation){
+            var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles);
+            $state.go(newLocation);
+            evt.preventDefault();
+          }else{
+            return true;
+          }
+        }else{
+          return true;
+        }
+      });
     });
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {

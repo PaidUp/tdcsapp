@@ -8,7 +8,7 @@ angular.module('convenienceApp')
         templateUrl: 'app/application/main/main.html',
         test:'true',
         data:{
-          roles:['user','guest']
+          roles:['guest']
         }
       }).state('faq', {
         url: '/faq',

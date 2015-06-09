@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook, Principal) {
+  .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook) {
+
+    var ROLES_ROUTES ={
+      USER:'athletes',
+      COACH:'provider-request',
+      DEFAULT:'main'
+    }
 
     if(SessionService.getCurrentSession()) {
       $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
@@ -81,27 +87,22 @@ angular.module('convenienceApp')
         delete $rootScope.currentUser;
       },
 
-      authorize: function(force) {
-          return Principal.identity(force)
-              .then(function() {
-                  var isAuthenticated = Principal.isAuthenticated();
+      authorize: function(data) {
+        if(data.pageDataRoles){
+          return data.pageDataRoles.some(function(role){
+            return data.userRoles.indexOf(role) != -1 ? true : false;
+          });
+        }
+      },
 
-                  if ($rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !Principal.isInAnyRole($rootScope.toState.data.roles)) {
-                      if (isAuthenticated) {
-                          // user is signed in but not authorized for desired state
-                          $state.go('accessdenied');
-                      }
-                      else {
-                          // user is not authenticated. stow the state they wanted before you
-                          // send them to the signin state, so you can return them when you're done
-                          $rootScope.returnToState = $rootScope.toState;
-                          $rootScope.returnToStateParams = $rootScope.toStateParams;
-
-                          // now, send them to the signin state so they can log in
-                          $state.go('login');
-                      }
-                  }
-              });
+      reLocation: function(roles){
+        if(roles.indexOf('coach') != -1){
+          return ROLES_ROUTES.COACH;
+        }else if(roles.indexOf('user') != -1){
+          return ROLES_ROUTES.USER;
+        }else{
+          return ROLES_ROUTES.DEFAULT;
+        }
       },
 
       loginFacebook: function(successFn, errorFn) {

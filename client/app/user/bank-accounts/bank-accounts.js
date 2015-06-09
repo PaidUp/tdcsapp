@@ -7,6 +7,9 @@ angular.module('convenienceApp')
         url: '/user/bank/account/create',
         templateUrl: 'app/user/bank-accounts/create-bank-account.html',
         controller: 'BankAccountCreateCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user', 'coach']
+        }
       });
   });

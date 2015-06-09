@@ -7,6 +7,9 @@ angular.module('convenienceApp')
         url: '/user/enrollments',
         templateUrl: 'app/user/enrollments/enrollments.html',
         controller: 'EnrollmentsCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user', 'coach']
+        }
       });
   });
