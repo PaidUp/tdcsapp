@@ -6,6 +6,7 @@ angular.module('convenienceApp')
     var ROLES_ROUTES ={
       USER:'athletes',
       COACH:'provider-request',
+      COACH_SUCCESS:'provider-success',
       DEFAULT:'main'
     }
 
@@ -95,9 +96,13 @@ angular.module('convenienceApp')
         }
       },
 
-      reLocation: function(roles){
+      reLocation: function(roles, providerState){
         if(roles.indexOf('coach') != -1){
-          return ROLES_ROUTES.COACH;
+          if(providerState === 'pending'){
+            return ROLES_ROUTES.COACH_SUCCESS;
+          }else{
+            return ROLES_ROUTES.COACH;
+          }
         }else if(roles.indexOf('user') != -1){
           return ROLES_ROUTES.USER;
         }else{
