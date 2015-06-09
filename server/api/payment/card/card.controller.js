@@ -43,14 +43,9 @@ exports.listCards = function(req, res){
     if(err){
       return handleError(res, err);
     }
-    paymentService.prepareUser(dataUser[0], function(err, userPrepared){
-      if(!userPrepared.meta.TDPaymentId){
-        return res.json(400,{
-              "code": "ValidationError",
-              "message": "user without TDPaymentId"
-        });
-      }
-      paymentService.listCards(userPrepared.meta.TDPaymentId, function(err, dataCards){
+    if(dataUser[0].meta.TDPaymentId !== ''){
+
+      paymentService.listCards(dataUser[0].meta.TDPaymentId, function(err, dataCards){
         if(err){
           return res.json(400,{
             "code": "ValidationError",
@@ -65,7 +60,9 @@ exports.listCards = function(req, res){
         }
         return res.json(200, camelize(dataCards));
       });
-    });
+    } else{
+      return res.json(200, {data:[]});
+    };
   });
 }
 

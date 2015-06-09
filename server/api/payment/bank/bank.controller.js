@@ -65,19 +65,13 @@ exports.listBanks = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
+    if(dataUser[0].meta.TDPaymentId  !== ''){
 
-    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
-      if (!userPrepared.meta.TDPaymentId) {
-        return res.json(400, {
-          "code": "ValidationError",
-          "message": "User without TDPaymentId"
-        });
-      }
-      paymentService.listBanks(userPrepared.meta.TDPaymentId, function (err, dataBanks) {
+      paymentService.listBanks(dataUser[0].meta.TDPaymentId, function (err, dataBanks) {
         if (err) {
         } else {
           if(dataBanks.bankAccounts.length === 0){
-            userPrepared.payment = {};
+            dataUser[0].payment = {};
             userService.save(userPrepared, function(err, user){
               if(err){
                 return res.json(500,err);
@@ -87,7 +81,9 @@ exports.listBanks = function (req, res) {
           return res.json(200, camelize(dataBanks));
         }
       });
-    });
+    }else{
+      return res.json(200, {data:[]});
+    };
   });
 }
 
