@@ -22,7 +22,7 @@ server/api/user/user.spec.js
 server/config/environment/index.js
 
 # COMMON FILES
-# 
+#
 # Compiled source #
 ###################
 *.com
@@ -65,3 +65,8 @@ Thumbs.db
 /server/config/local.env.js
 var/logs/*
 server/config/express.js
+
+
+*~
+.DS_Store
+.idea
