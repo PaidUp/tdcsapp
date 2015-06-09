@@ -113,7 +113,7 @@ angular.module('convenienceApp')
             error('User authorization denied');
             return;
           }
-          $http.post('/api/v1/auth/facebook', {facebookToken:user.authResponse.accessToken}).
+          $http.post('/api/v1/auth/facebook', {facebookToken:user.authResponse.accessToken, isParent:isParent}).
             success(function(data) {
             $rootScope.currentUser = UserService.get(data.token, function(user){
               SessionService.addSession(data);
@@ -136,6 +136,7 @@ angular.module('convenienceApp')
       createUser: function(user, successFn, errorFn) {
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;
+        user.isParent = isParent;
         UserService.save(user, success, function (httpResponse){
           error(httpResponse.data);
         });
