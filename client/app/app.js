@@ -105,9 +105,9 @@ angular.module('convenienceApp', [
     $rootScope.$on('$locationChangeSuccess', function(evt) {
       AuthService.isLoggedInAsync(function(loggedIn) {
         if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
-          var reLocation = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
-          if(!reLocation){
-            var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles);
+          var authorize = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
+          if(!authorize){
+            var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles, AuthService.getCurrentUser().meta.providerStatus);
             $state.go(newLocation);
             evt.preventDefault();
           }else{
