@@ -7,6 +7,9 @@ angular.module('convenienceApp')
         url: '/user/billing-history',
         templateUrl: 'app/user/billing-history/billing-history.html',
         controller: 'BillingHistoryCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user', 'coach']
+        }
       });
   });

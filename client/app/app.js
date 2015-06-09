@@ -16,7 +16,7 @@ angular.module('convenienceApp', [
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('main');
 
     $locationProvider.html5Mode(true);
     FacebookProvider.init('717631811625048');
@@ -24,6 +24,7 @@ angular.module('convenienceApp', [
   })
 
   .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
+    
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -53,7 +54,6 @@ angular.module('convenienceApp', [
             msg: 'Session has expired.',
             timeout: 10000
           });
-
           $location.path('/');
           // remove any state tokens
           return $q.reject(response);
@@ -65,7 +65,8 @@ angular.module('convenienceApp', [
     };
   })
 
-  .run(function ($rootScope, $state, AuthService, $analytics, FlashService, $anchorScroll) {
+  .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll, $urlRouter) {
+
     $anchorScroll.yOffset = 100;
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -97,6 +98,23 @@ angular.module('convenienceApp', [
           });
           $state.go('main');
           event.preventDefault();
+        }
+      });
+    });
+    
+    $rootScope.$on('$locationChangeSuccess', function(evt) {
+      AuthService.isLoggedInAsync(function(loggedIn) {
+        if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
+          var reLocation = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
+          if(!reLocation){
+            var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles);
+            $state.go(newLocation);
+            evt.preventDefault();
+          }else{
+            return true;
+          }
+        }else{
+          return true;
         }
       });
     });

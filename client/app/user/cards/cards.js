@@ -6,6 +6,9 @@ angular.module('convenienceApp')
       .state('user-card-create', {
         url: '/user/card/create',
         templateUrl: 'app/user/cards/user-card-create.html',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user', 'coach']
+        }
       });
   });

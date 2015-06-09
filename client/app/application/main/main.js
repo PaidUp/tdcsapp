@@ -5,7 +5,11 @@ angular.module('convenienceApp')
     $stateProvider
       .state('main', {
         url: '/',
-        templateUrl: 'app/application/main/main.html'
+        templateUrl: 'app/application/main/main.html',
+        test:'true',
+        data:{
+          roles:['guest']
+        }
       }).state('faq', {
         url: '/faq',
         templateUrl: 'app/application/main/faq.html',
