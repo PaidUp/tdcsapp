@@ -17,7 +17,7 @@ function save(provider, cb) {
 }
 
 function create(provider, cb) {
-  Provider.create(user, function(err, data) {
+  Provider.create(provider, function(err, data) {
       if(err) {
         return cb(err);
       }

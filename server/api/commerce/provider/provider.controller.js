@@ -7,6 +7,7 @@ var paymentService = require('../../payment/payment.service');
 var commerceEmailService = require('../commerce.email.service');
 var config = require('../../../config/environment');
 var mix = require('../../../config/mixpanel');
+var userService = require('../../user/user.service');
 
 exports.providerRequest = function (req, res) {
   var userId = req.user._id;
@@ -14,12 +15,18 @@ exports.providerRequest = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
-    commerceEmailService.sendContactEmail(provider, function(err, send){
-      if(err){
-        logger.info(err);
+    var userUpd = {_id:userId,'meta.providerStatus':'pending'};
+    userService.save(userUpd, function(err, data){
+      if (err) {
+        return handleError(res, err);
       }
+      commerceEmailService.sendContactEmail(provider, function(err, send){
+        if(err){
+          logger.info(err);
+        }
+      });
+      return res.json(200);
     });
-    return res.json(200);
   });
 }
 
@@ -54,12 +61,18 @@ exports.providerResponse = function (req, res) {
               return res.json(402);
             }
             //TODO
-            commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, provider) {
+            commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, providerData) {
               if(err){
                 //return handleError(res, err);
                 return res.json(403);
               }
-              return res.json(200);
+              var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
+              userService.save(userUpd, function(err, data){
+                if (err) {
+                  return handleError(res, err);
+                }
+                return res.json(200);
+              });
             });
           });
         });
