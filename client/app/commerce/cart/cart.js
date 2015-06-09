@@ -7,11 +7,17 @@ angular.module('convenienceApp')
         url: '/commerce/cart/index',
         templateUrl: 'app/commerce/cart/index/cart.html',
         controller: 'CartCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user']
+        }
       }).state('cart-review', {
         url: '/commerce/cart/review',
         templateUrl: 'app/commerce/cart/review/cart-review.html',
         controller: 'CartReviewCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user']
+        }
       });
   });

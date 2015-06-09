@@ -3,6 +3,12 @@
 angular.module('convenienceApp')
   .factory('AuthService', function Auth($rootScope, $http, UserService, SessionService, Facebook) {
 
+    var ROLES_ROUTES ={
+      USER:'athletes',
+      COACH:'provider-request',
+      DEFAULT:'main'
+    }
+
     if(SessionService.getCurrentSession()) {
       $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
     }
@@ -81,6 +87,24 @@ angular.module('convenienceApp')
         delete $rootScope.currentUser;
       },
 
+      authorize: function(data) {
+        if(data.pageDataRoles){
+          return data.pageDataRoles.some(function(role){
+            return data.userRoles.indexOf(role) != -1 ? true : false;
+          });
+        }
+      },
+
+      reLocation: function(roles){
+        if(roles.indexOf('coach') != -1){
+          return ROLES_ROUTES.COACH;
+        }else if(roles.indexOf('user') != -1){
+          return ROLES_ROUTES.USER;
+        }else{
+          return ROLES_ROUTES.DEFAULT;
+        }
+      },
+
       loginFacebook: function(successFn, errorFn) {
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;
@@ -89,7 +113,7 @@ angular.module('convenienceApp')
             error('User authorization denied');
             return;
           }
-          $http.post('/api/v1/auth/facebook', {facebookToken:user.authResponse.accessToken}).
+          $http.post('/api/v1/auth/facebook', {facebookToken:user.authResponse.accessToken, isParent:isParent}).
             success(function(data) {
             $rootScope.currentUser = UserService.get(data.token, function(user){
               SessionService.addSession(data);
@@ -112,6 +136,7 @@ angular.module('convenienceApp')
       createUser: function(user, successFn, errorFn) {
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;
+        user.isParent = isParent;
         UserService.save(user, success, function (httpResponse){
           error(httpResponse.data);
         });

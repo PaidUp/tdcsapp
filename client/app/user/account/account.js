@@ -7,6 +7,9 @@ angular.module('convenienceApp')
         url: '/user/account',
         templateUrl: 'app/user/account/account.html',
         controller: 'AccountCtrl',
-        auth: true
+        auth: true,
+        data:{
+          roles:['user', 'coach']
+        }
       });
   });
