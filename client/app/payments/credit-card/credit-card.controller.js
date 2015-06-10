@@ -266,6 +266,7 @@ angular.module('convenienceApp')
                 addressShipping.mode = 'shipping';
                 var payment = {
                   cartId: CartService.getCurrentCartId(),
+                  athlete : CartService.getAthlete(),
                   addresses: [
                     addressBilling,
                     addressShipping
@@ -320,6 +321,8 @@ angular.module('convenienceApp')
             ],
             cardId: $scope.card.token,
             userId: CartService.getUserId(),
+            athleteFirstName: CartService.getAthlete().firstName,
+            athleteLastName: CartService.getAthlete().lastName,
             payment: 'onetime',
             paymentMethod: 'creditcard'
           };

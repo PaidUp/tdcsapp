@@ -26,6 +26,12 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                 if(err) {return cb(err);}
                 tdCommerceService.generateSchedule(orderData.products[0].productId, function(err,schedule){
                   if(err) {return cb(err);}
+                  schedule.meta = {
+                    org_name : orderData.products[0].productSku,
+                    sku : orderData.products[0].productPurchaseSku,
+                    athlete_first_name : orderData.athleteFirstName,
+                    athlete_last_name : orderData.athleteLastName
+                  }
                   tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(schedule), 'pending', function(err, comment) {
                     if(err) {return cb(err);}
                     tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {

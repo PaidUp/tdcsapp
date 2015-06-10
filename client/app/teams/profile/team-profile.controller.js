@@ -79,7 +79,7 @@ angular.module('convenienceApp')
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {
         CartService.createCart().then(function () {
-          CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete._id).then(function () {
+          CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
             $state.go('cart');
           }).catch(function (err) {
             $scope.enrolled = false;
