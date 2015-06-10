@@ -266,7 +266,8 @@ angular.module('convenienceApp')
                 addressShipping.mode = 'shipping';
                 var payment = {
                   cartId: CartService.getCurrentCartId(),
-                  athlete : CartService.getAthlete(),
+                  athleteFirstName: CartService.getAthlete().firstName,
+                  athleteLastName: CartService.getAthlete().lastName,
                   addresses: [
                     addressBilling,
                     addressShipping
