@@ -33,14 +33,15 @@ angular.module('convenienceApp')
       return deferred.promise;
     };
 
-    this.addProductToCart = function (products, userId) {
+    this.addProductToCart = function (products, athlete) {
       var cartId = this.getCurrentCartId();
       var deferred = $q.defer();
       Cart.save({action: 'add'}, {
         cartId: cartId,
         products: products
       }).$promise.then(function (cart) {
-        $cookieStore.put('userId', userId);
+        $cookieStore.put('userId', athlete._id);
+        $cookieStore.put('athlete', athlete);
         $rootScope.$emit('event:cart-state-changed', undefined);
         deferred.resolve(cart);
       }).catch(function (err) {
@@ -76,6 +77,10 @@ angular.module('convenienceApp')
 
     this.getUserId = function () {
       return $cookieStore.get('userId');
+    };
+
+    this.getAthlete = function () {
+      return $cookieStore.get('athlete');
     };
 
     var subTotal = 0;

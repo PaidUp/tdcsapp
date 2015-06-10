@@ -49,6 +49,8 @@ exports.place = function(req, res) {
     payment: req.body.payment,
     paymentMethod: req.body.paymentMethod,
     athleteId: req.body.userId,
+    athleteFirstName: req.body.athleteFirstName,
+    athleteLastName: req.body.athleteLastName,
     cardId: req.body.cardId,
     customerId: req.user.meta.TDPaymentId
   }
