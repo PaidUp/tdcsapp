@@ -30,7 +30,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                     org_name : orderData.products[0].productSku,
                     sku : orderData.products[0].productPurchaseSku,
                     athlete_first_name : orderData.athleteFirstName,
-                    athlete_last_name : orderData.athleteFirstName
+                    athlete_last_name : orderData.athleteLastName
                   }
                   tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(schedule), 'pending', function(err, comment) {
                     if(err) {return cb(err);}

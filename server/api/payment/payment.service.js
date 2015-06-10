@@ -69,11 +69,11 @@ function createOrder(providerId, description, cb) {
   });
 }
 
-function debitCard(cardId, amount, description, appearsOnStatementAs, customerId, providerId, fee, cb) {
+function debitCard(cardId, amount, description, appearsOnStatementAs, customerId, providerId, fee, metaPayment,cb) {
   tdPaymentService.init(config.connections.payment);
   tdPaymentService.debitCard({cardId:cardId, amount:amount, description:description,
     appearsOnStatementAs:appearsOnStatementAs, customerId:customerId,
-    providerId:providerId, fee : fee}, function(err, data){
+    providerId:providerId, fee : fee, meta:metaPayment}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -281,7 +281,7 @@ function fetchDebit(debitId, cb){
   });
 }
 
-function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, fee, cb) {
+function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, fee, metaPayment, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -297,7 +297,7 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
            // logger.info('2e) Debit BP credit card, order.');
             // 2d) Debit BP credit card
             debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs,
-              userp.meta.TDPaymentId, providerId, fee, function(err, data) {
+              userp.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
               //if(err) return cb(err);
               if(data && data.status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
@@ -374,11 +374,11 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   });
 }
 
-function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, cb) {
+function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, function (err, resultDebit) {
+    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, metaPayment, function (err, resultDebit) {
       // Debit failed
       if (err) {
         //logger.info('Failed, add a comment and mark order as "on hold"');
