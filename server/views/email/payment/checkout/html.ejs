@@ -21,11 +21,18 @@
                             We must have this to ensure your account is in good standing<br />
                             and so your athlete can play ball.
                             <% } else { %>
-                        Your order for the <%= organizationName%> <%= product%>
+                        Your order for the <%= organizationName%>
 
                         <br></br>
                         We will charge the card on file ending in <%= last4Digits %> on the following schedule:
-
+                        <br />
+                        <br />
+                        <% for(var i=0; i < schedules.length; i++) {
+                          var nextPaymentDue = new Date(schedules[i].nextPaymentDue);
+                        %>
+                        <%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getMonth() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
+                        <% } %>
+                        <br />
                         Total: $ <%= amount %>
 
                             <% } %>

@@ -132,7 +132,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
                 //console.log('orderDAta' , orderData);
                 //console.log('shoppingCart' , shoppingCart);
 
-                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, schedule, shoppingCart.items[0], function (err, data) {
+                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, schedule.schedulePeriods, shoppingCart.items[0], function (err, data) {
                   mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
                   if(err) logger.log('error',err);
                 });
