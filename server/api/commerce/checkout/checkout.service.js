@@ -36,7 +36,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                     if(err) {return cb(err);}
                     tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                       if(err) {return cb(err);}
-                      return cb(null, dataOrderId);
+                      return cb(null, dataOrderId, schedule);
                     });
                   });
                 });

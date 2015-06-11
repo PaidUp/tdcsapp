@@ -29,8 +29,12 @@ function paymentSchedule(pendingOrders, callbackSchedule){
     function(order, callbackEach){
       commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
         if(err){
-          callbackEach(err);
+          return callbackEach(err);
         };
+        if(!orderSchedule.scheduled.schedulePeriods){
+          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+          return callbackEach(new Error('order without schedulePeriods'));
+        }
         async.eachSeries(orderSchedule.scheduled.schedulePeriods,
           function(schedulePeriod, callbackEach2){
             if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
