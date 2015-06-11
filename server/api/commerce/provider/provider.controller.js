@@ -39,12 +39,14 @@ exports.providerResponse = function (req, res) {
     if (!provider) {
       return res.json(200);
     }
+    //TODO CS-469
     paymentService.createConnectAccount({email:provider.ownerEmail,country:provider.country}, function(err, account){
       if(err){
         //return handleError(res, err);
         return res.json(400);
       }
       paymentService.addBankConnectAccount({accountId:account.id,bankAccount:{country:provider.country,routingNumber:provider.aba,accountNumber:provider.dda}}, function(err, bank){
+        console.log('bank',bank);
         if(err){
           //return handleError(res, err);
           return res.json(401);
@@ -55,7 +57,27 @@ exports.providerResponse = function (req, res) {
             //return handleError(res, err);
             return res.json(401);
           }
-          catalogService.catalogCreate({teamName:provider.teamName}, function(err, teamId){
+          var productTeam = {
+            type:'grouped',//
+            set:'9',// should be 9 for Team attibute set.
+            sku:provider.ownerId,
+            data: {
+              name:provider.teamName,
+              websites:['1'],
+              short_description:provider.businessName,
+              description:'bank: ' + bank,
+              status:'1',
+              price:'1',
+              tax_class_id:'0',
+              url_key:'product-url-key',
+              url_path:'url_path',
+              visibility:'4',
+              categories:['4'],
+              categoryIds:['4']
+            }
+          }
+          console.log('productTeam',productTeam);
+          catalogService.catalogCreate(productTeam, function(err, teamId){
             if(err){
               //return handleError(res, err);
               return res.json(402);
