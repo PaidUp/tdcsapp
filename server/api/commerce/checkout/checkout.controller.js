@@ -99,7 +99,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
     cartService.prepareMerchantProducts(shoppingCart, function (err, merchantProducts) {
       if (err) return cb(err);
       orderData.products = merchantProducts;
-      checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId) {
+      checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId, schedule) {
         if (err) return cb(err);
         paymentService.prepareUser(user, function (err, user) {
           if(err) logger.log('error',err);
@@ -126,7 +126,13 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
-                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, function (err, data) {
+
+                //TODO pending delete
+                //console.log('schedule' , schedule);
+                //console.log('orderDAta' , orderData);
+                //console.log('shoppingCart' , shoppingCart);
+
+                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, schedule, shoppingCart.items[0], function (err, data) {
                   mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
                   if(err) logger.log('error',err);
                 });

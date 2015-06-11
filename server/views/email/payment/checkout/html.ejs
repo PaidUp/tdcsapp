@@ -21,14 +21,23 @@
                             We must have this to ensure your account is in good standing<br />
                             and so your athlete can play ball.
                             <% } else { %>
-                            Payment method: Credit card.<br />
-                            Credit card account last 4 digits used for payment: <br /><%= last4Digits %>
+                        Your order for the <%= organizationName%> <%= product%>
+
+                        <br></br>
+                        We will charge the card on file ending in <%= last4Digits %> on the following schedule:
+
+                        Total: $ <%= amount %>
+
                             <% } %>
                             <br />
                             <br />
-                            Payment total amount: $ <%= amount %>
+                        Reply to this email if you have any questions.
+
+
+
+                        <br />
                             <br />
-                            <br />
+                        Convenience Select
                             <br />
                             <!-- datos de orden -->
                           </div>
