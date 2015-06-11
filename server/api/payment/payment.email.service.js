@@ -14,16 +14,17 @@ var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, cb) {
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
-
     var emailVars = config.emailVars;
     emailVars.orderId = orderId;
     emailVars.paymentMethod = paymentMethod;
     emailVars.last4Digits = last4Digits;
     emailVars.amount = amount;
-
+    emailVars.organizationName = item.name
+    emailVars.product = item.sku
+    emailVars.schedules = schedules
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
       var mailOptions = config.emailOptions;
@@ -31,7 +32,6 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
       mailOptions.to = email;
       mailOptions.bcc = config.emailContacts.developer;
       mailOptions.subject = 'New Order from ' + emailVars.companyName;
-
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
@@ -275,7 +275,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
   var emailVars = config.emailVars;
 
   emailVars.userFirstName = user.firstName;
-  emailVars.amount = parseFloat(amount).toFixed(2);;
+  emailVars.amount = parseFloat(amount).toFixed(2);
 
   paymentService.getUserDefaultBankId(user, function (err, bankId) {
       paymentService.fetchBank(bankId, function (response, account) {
@@ -319,7 +319,6 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 };
 
 exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard, orderId, cb) {
-
   var emailVars = config.emailVars;
 
   emailVars.userFirstName = user.firstName;
@@ -328,6 +327,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
 
   getNameTeamFromOrder(orderId, function(err,team){
     emailTemplates(config.emailTemplateRoot, function (err, template) {
+      emailVars.team = team;
 
       if (err) return cb(err);
 
