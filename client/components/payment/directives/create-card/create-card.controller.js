@@ -56,8 +56,9 @@ angular.module('convenienceApp')
         Stripe.card.createToken({
           number: $scope.card.cardNumber,
           cvc: $scope.card.securityCode,
-            exp_month: $scope.card.expirationDate.month,
-          exp_year: $scope.card.expirationDate.year
+          exp_month: $scope.card.expirationDate.month,
+          exp_year: $scope.card.expirationDate.year,
+          name : $scope.card.nameOnCard
         }, function stripeResponseHandler(status, response) {
             if (response.error) {
               $scope.loading = false;

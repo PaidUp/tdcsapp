@@ -228,6 +228,7 @@ angular.module('convenienceApp')
         if ($scope.createCard) {
           var payload = {
             number: $scope.card.cardNumber,
+            name: $scope.card.nameOnCard,
             cvc: $scope.card.securityCode,
             exp_month: $scope.card.expirationDate.month,
             exp_year: $scope.card.expirationDate.year
