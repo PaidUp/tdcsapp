@@ -390,21 +390,28 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <!--div class="form-group">
               <input type="checkbox" name="tos" ng-model="provider.ToS" required ng-required="true"> By registering your account, you agree to our <a href="https://stripe.com/docs/connect/updating-accounts#link-to-your-own-ToS" target="_blank"> Terms of Service</a> and the <a href="https://stripe.com/connect/account-terms" target="_blank">Stripe Connected Account Agreement</a>.
               <div class="text-CS text-center" ng-show="bankForm.tos.$error.required && submitted">
                 <small class="text-CS">Agree our Terms of Service is required</small>
               </div>
+            </div-->
+
+            <div class="row">
+              <div class="col-sm-12"><strong>
+                By registering your account, you agree to our<br>
+                <ul>
+                  <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
+                  <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                  <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
+                  <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
+                </ul>
+              </strong></div>
+              <div class="col-sm-12">
+                <button type="submit" class="btn btnSignUp btn-block">Save info</button>
+              </div>
             </div>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <!-- <div class="col-xs-3">
-            <button type="button" class="btn btnCancel btn-block">Cancel</button>
-          </div> -->
-          <div class="col-xs-3">
-            <button type="submit" class="btn btnSignUp btn-block">Save info</button>
+
           </div>
         </div>
         <br>
