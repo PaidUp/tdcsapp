@@ -170,8 +170,6 @@ function providerRequest(userId, dataProvider, cb) {
 }
 
 function providerResponse(providerId, verifyState, cb) {
-  //TODO
-  //Add state pending validate in findOne method.
   providerService.findOne({_id:providerId,verify:verifyState},'', function (err, providerData) {
     if (err) return cb(err);
     return cb(null,providerData);

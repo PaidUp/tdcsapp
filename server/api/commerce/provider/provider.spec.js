@@ -13,7 +13,7 @@ describe('User', function() {
 
     describe('provider.service', function() {
 
-        it.only('save', function (done) {
+        it('save', function (done) {
             var provider = new Provider(providerSpecModel.provider);
             providerService.save(provider, function(err, data){
                 assert.equal(err, null);
@@ -69,6 +69,31 @@ describe('User', function() {
           var SSN = userService.decryptSSN(userSpecModel.encryptValue);
           assert.equal(userSpecModel.user.ssn, SSN);
           done();
+        });
+    */
+    });
+
+    describe('provider.controller', function() {
+
+        it.only('response', function (done) {
+            var provider = new Provider(providerSpecModel.provider);
+            providerService.save(provider, function(err, data){
+                assert.equal(err, null);
+                assert(data._id);
+                done();
+            });
+        });
+    /*
+        it('create', function (done) {
+          var user = new User({
+            firstName: userSpecModel.user.firstName,
+            lastName: userSpecModel.user.lastName
+          });
+          userService.create(user, function(err, data){
+            assert.equal(err, null);
+            assert(data._id);
+            done();
+          });
         });
     */
     });
