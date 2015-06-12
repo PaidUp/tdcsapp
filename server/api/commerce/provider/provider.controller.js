@@ -40,60 +40,77 @@ exports.providerResponse = function (req, res) {
       return res.json(200);
     }
     //TODO CS-469
-    paymentService.createConnectAccount({email:provider.ownerEmail,country:provider.country}, function(err, account){
+    var stripeInfo = {
+      email:provider.ownerEmail,
+      country:provider.country
+    };
+    paymentService.createConnectAccount(stripeInfo, function(err, account){
       if(err){
         //return handleError(res, err);
         return res.json(400);
       }
       paymentService.addBankConnectAccount({accountId:account.id,bankAccount:{country:provider.country,routingNumber:provider.aba,accountNumber:provider.dda}}, function(err, bank){
-        console.log('bank',bank);
         if(err){
           //return handleError(res, err);
           return res.json(401);
         }
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.client.remoteAddress;
+        var legalEntity={
+          accountId:account.id,
+          firstName:provider.ownerName,
+          lastName:provider.ownerName,
+          day:provider.ownerDOB.getDay() + 1,
+          month:provider.ownerDOB.getMonth() + 1,
+          year:provider.ownerDOB.getFullYear(),
+          type:'company'
+        };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
             //return handleError(res, err);
             return res.json(401);
           }
-          var productTeam = {
-            type:'grouped',//
-            set:'9',// should be 9 for Team attibute set.
-            sku:provider.ownerId,
-            data: {
-              name:provider.teamName,
-              websites:['1'],
-              short_description:provider.businessName,
-              description:'bank: ' + bank,
-              status:'1',
-              price:'1',
-              tax_class_id:'0',
-              url_key:'product-url-key',
-              url_path:'url_path',
-              visibility:'4',
-              categories:['4'],
-              categoryIds:['4']
-            }
-          }
-          console.log('productTeam',productTeam);
-          catalogService.catalogCreate(productTeam, function(err, teamId){
+          paymentService.addLegalCustomer(legalEntity, function(err, acceptedLegal){
             if(err){
               //return handleError(res, err);
-              return res.json(402);
+              return res.json(401);
             }
-            //TODO
-            commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, providerData) {
+            var productTeam = {
+              type:'grouped',//
+              set:'9',// should be 9 for Team attibute set.
+              sku:provider.ownerId,
+              data: {
+                name:provider.teamName,
+                websites:['1'],
+                short_description:provider.businessName,
+                description:'account.id: ' + account.id,
+                status:'1',
+                price:'1',
+                tax_class_id:'0',
+                url_key:'product-url-key',
+                url_path:'url_path',
+                visibility:'4',
+                categories:['4'],
+                categoryIds:['4']
+              }
+            }
+            catalogService.catalogCreate(productTeam, function(err, teamId){
               if(err){
                 //return handleError(res, err);
-                return res.json(403);
+                return res.json(402);
               }
-              var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
-              userService.save(userUpd, function(err, data){
-                if (err) {
-                  return handleError(res, err);
+              //TODO save account.id - and teamId in mongodb - provider in data value.
+              commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, providerData) {
+                if(err){
+                  //return handleError(res, err);
+                  return res.json(403);
                 }
-                return res.json(200);
+                var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
+                userService.save(userUpd, function(err, data){
+                  if (err) {
+                    return handleError(res, err);
+                  }
+                  return res.json(200);
+                });
               });
             });
           });
