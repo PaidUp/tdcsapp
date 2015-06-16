@@ -16,7 +16,7 @@ exports.list = function(req, res) {
   if(req.params.categoryId == 'teams') {
     categoryId = config.commerce.category.teams;
   }
-  catalogService.catalogList(categoryId, function(err, dataService){    
+  catalogService.catalogList(categoryId, function(err, dataService){
     if(err) return handleError(res, err);
     mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     res.json(200, dataService);
@@ -32,6 +32,20 @@ exports.catalogInfo = function(req, res) {
   }
   catalogService.catalogProduct(req.params.productId, function(err, dataService){
     mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
+    if(err) return handleError(res, err);
+    res.json(200, dataService);
+  });
+}
+
+exports.groupedProducts = function(req, res) {
+  if(!req.params && !req.params.productId) {
+    return res.json(400, {
+      "code": "ValidationError",
+      "message": "Product Id is required"
+    });
+  }
+  catalogService.groupedList(req.params.productId, function(err, dataService){
+    mix.panel.track("groupedList", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
     res.json(200, dataService);
   });
