@@ -104,7 +104,9 @@ exports.providerResponse = function (req, res) {
                   //return handleError(res, err);
                   return res.json(403);
                 }
-                var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
+                var userUpd = {_id:provider.ownerId,
+                  'meta.providerStatus':'done',
+                  product_related : teamId};
                 userService.save(userUpd, function(err, data){
                   if (err) {
                     return handleError(res, err);
