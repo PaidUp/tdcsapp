@@ -108,12 +108,23 @@ exports.providerResponse = function (req, res) {
                   //return handleError(res, err);
                   return res.json(403);
                 }
-                var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
-                userService.save(userUpd, function(err, data){
-                  if (err) {
-                    return handleError(res, err);
-                  }
-                  return res.json(200);
+
+                userService.find({_id:provider.ownerId},function(err , users){
+                  if(err) return handleError(res, err);
+
+                  var user = users[0];
+
+                  console.log('user' , user);
+
+                  user.meta.providerStatus = 'done';
+                  user.meta.productRelated.push(teamId);
+
+                  userService.save(user, function(err, data){
+                    if (err) {
+                      return handleError(res, err);
+                    }
+                    return res.json(200);
+                  });
                 });
               });
             });
