@@ -124,6 +124,17 @@ var all = {
       interest: {
         id: 10,
         sku: "interest"
+      },
+      defaultValue:{
+        visibility:'4',
+        urlPath:'urlPath',
+        urlKey:'urlKey',
+        taxClassId:'0',
+        status:'1',
+        price:'100',
+        websites:'1',
+        set:'9',
+        type:'grouped'
       }
     },
     testing: {
@@ -158,6 +169,11 @@ var all = {
     ],
     shippingMethod: 'freeshipping_freeshipping',
     paymentMethod: 'purchaseorder'
+  },
+  payment:{
+    legalEntity:{
+      type: 'company'
+    }
   },
   balanced: {
     api: "ak-test-p8Ob9vp9GnqWNwFf6CeLLokeQsf76RIe",

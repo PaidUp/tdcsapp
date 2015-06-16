@@ -547,6 +547,14 @@ function addLegalCustomer(legalDetails, cb) {
   });
 }
 
+function updateAccount(dataDetails, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.updateAccount(dataDetails, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 exports.paymentAdapter = paymentAdapter;
 exports.createCustomer = createCustomer;
 exports.associateCard = associateCard;
@@ -578,3 +586,4 @@ exports.createConnectAccount = createConnectAccount;
 exports.addBankConnectAccount = addBankConnectAccount;
 exports.addToSCustomer = addToSCustomer;
 exports.addLegalCustomer = addLegalCustomer;
+exports.updateAccount = updateAccount;
