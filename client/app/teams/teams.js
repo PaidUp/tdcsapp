@@ -4,7 +4,15 @@ angular.module('convenienceApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('teams-dashboard', {
-        url: '/teams/dashboard',
+        url: '/teams/dashboard/',
+        templateUrl: 'app/teams/dashboard/teams-dashboard.html',
+        controller: 'TeamsDashboardCtrl',
+        auth: true,
+        data:{
+          roles:['user']
+        }
+      }).state('teams-dashboard-group', {
+        url: '/teams/dashboard/:teamId',
         templateUrl: 'app/teams/dashboard/teams-dashboard.html',
         controller: 'TeamsDashboardCtrl',
         auth: true,

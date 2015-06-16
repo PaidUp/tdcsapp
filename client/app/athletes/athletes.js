@@ -27,5 +27,13 @@ angular.module('convenienceApp')
         data:{
           roles:['user','guest']
         }
+      }).state('athletes-slider-group', {
+        url: '/athletes/slider/:athleteId/team/:teamId',
+        templateUrl: 'app/athletes/slider/athletes-slider.html',
+        controller: 'AthletesSliderCtrl',
+        auth: true,
+        data:{
+          roles:['user','guest']
+        }
       });
   });
