@@ -14,7 +14,8 @@ var ProviderSchema = new Schema({
     
     //Owner info
     ownerId: { type: String},
-    ownerName: { type: String, required: true},//required //email //newDesign
+    ownerFirstName: { type: String, required: true},//required //email //newDesign
+    ownerLastName: { type: String, required: true},//required //email //newDesign
     ownerDOB: { type: Date},//required //email //newDesign
     ownerSSN: { type: String, required: true},//required //email //newDesign
     ownerEmail: { type: String}, //email //response

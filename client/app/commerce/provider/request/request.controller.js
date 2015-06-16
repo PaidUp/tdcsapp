@@ -8,13 +8,11 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        console.log('0',$scope.provider.ownerDOB);
         if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber;
             $scope.provider.aba = $scope.bankAccount.routingNumber;
             $scope.provider.ownerSSN = $scope.bankAccount.securitySocial;
-            console.log('$scope.provider.ownerDOB',$scope.provider.ownerDOB);
             providerService.providerRequest($scope.provider).then(function(data){
                 $state.go('provider-success'); 
             }).catch(function(err){
@@ -162,7 +160,6 @@ angular.module('convenienceApp')
       if (birthdate.isValid() && dateRange.contains(birthdate)) {
         $scope.providerForm.$setValidity('date', true);
         $scope.provider.ownerDOB = $scope.provider.date.year + '-' + $scope.provider.date.month + '-' + $scope.provider.date.day;
-        console.log('here',$scope.provider.ownerDOB);
         //$scope.athlete.birthDate = $scope.provider.year + '-' + $scope.provider.month + '-' + $scope.provider.day;
         return true;
       } else {
