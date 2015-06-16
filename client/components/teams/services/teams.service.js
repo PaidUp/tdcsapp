@@ -21,12 +21,32 @@ angular.module('convenienceApp')
 
     var Teams = $resource('/api/v1/commerce/catalog/category/:categoryId', {}, {});
     var TeamApi = $resource('/api/v1/commerce/catalog/product/:productId', {}, {});
+    var TeamsGrouped = $resource('/api/v1/commerce/catalog/grouped/product/:productId', {}, {});
     var TeamService = this;
     this.getTeams = function () {
       var teams = [];
 
       var deferred = $q.defer();
       Teams.query({categoryId:'teams'},function (teamsResponse) {
+        teamsResponse.forEach(function (teamItem) {
+          TeamService.getTeam(teamItem.productId).then(function (team) {
+            if(team) {
+              teams.push(team);
+            }
+            deferred.resolve(teams);
+          }).catch(function (err) {
+
+          });
+        });
+      });
+      return deferred.promise;
+    };
+
+    this.getTeamsGrouped = function (productId) {
+      var teams = [];
+
+      var deferred = $q.defer();
+      TeamsGrouped.query({productId:productId},function (teamsResponse) {
         teamsResponse.forEach(function (teamItem) {
           TeamService.getTeam(teamItem.productId).then(function (team) {
             if(team) {

@@ -1,14 +1,24 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('TeamsCtrl', function ($scope, TeamService) {
+  .controller('TeamsCtrl', function ($scope, TeamService, $stateParams) {
 
     $scope.teams = [];
-    TeamService.getTeams().then(function (teams) {
-      $scope.teams = teams;
-    }).catch(function (err) {
 
-    });
+    if($stateParams.teamId){
+      TeamService.getTeamsGrouped($stateParams.teamId).then(function (teams) {
+        $scope.teams = teams;
+      }).catch(function (err) {
+
+      });
+    }else{
+      TeamService.getTeams().then(function (teams) {
+        $scope.teams = teams;
+      }).catch(function (err) {
+
+      });
+    }
+
 
     $scope.selectTeam = function (team) {
       $scope.team = team;

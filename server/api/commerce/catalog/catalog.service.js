@@ -13,6 +13,14 @@ function catalogList (categoryId, cb) {
   });
 }
 
+function groupedList (productId, cb) {
+  tdCommerceService.init(config.connections.commerce);
+  tdCommerceService.groupedProduct(productId, function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 function catalogProduct (productId, cb) {
 	tdCommerceService.init(config.connections.commerce);
 	tdCommerceService.catalogProduct(productId,function(err, data) {
@@ -32,3 +40,4 @@ function catalogCreate (productData, cb) {
 exports.catalogList = catalogList;
 exports.catalogProduct = catalogProduct;
 exports.catalogCreate = catalogCreate;
+exports.groupedList = groupedList;

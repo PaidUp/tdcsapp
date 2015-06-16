@@ -57,12 +57,14 @@ exports.providerResponse = function (req, res) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.client.remoteAddress;
         var legalEntity={
           accountId:account.id,
-          firstName:provider.ownerName,
-          lastName:provider.ownerName,
+          firstName:provider.ownerName,//TODO
+          lastName:provider.ownerName,//TODO
           day:provider.ownerDOB.getDay() + 1,
           month:provider.ownerDOB.getMonth() + 1,
           year:provider.ownerDOB.getFullYear(),
-          type:'company'
+          type:'company',//add to config
+          businessName:provider.businessName//,
+          //verification:true
         };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
@@ -80,17 +82,19 @@ exports.providerResponse = function (req, res) {
               sku:provider.ownerId,
               data: {
                 name:provider.teamName,
-                websites:['1'],
-                short_description:provider.businessName,
+                websites:['1'],//add config.
+                shortDescription:provider.businessName,
                 description:'account.id: ' + account.id,
-                status:'1',
-                price:'1',
-                tax_class_id:'0',
-                url_key:'product-url-key',
-                url_path:'url_path',
-                visibility:'4',
-                categories:['4'],
-                categoryIds:['4']
+                status:'1',//add config.
+                price:'1',//add config.
+                taxClassId:'0',//add config.
+                urlKey:'product-url-key',//add config.
+                urlPath:'url_path',//add config.
+                visibility:'4',//add config.
+                categories:['3'],//add config.
+                categoryIds:['3'],//add config.
+                balancedCustomerId:account.id,
+                tdPaymentId:account.id
               }
             }
             catalogService.catalogCreate(productTeam, function(err, teamId){
@@ -104,12 +108,23 @@ exports.providerResponse = function (req, res) {
                   //return handleError(res, err);
                   return res.json(403);
                 }
-                var userUpd = {_id:provider.ownerId,'meta.providerStatus':'done'};
-                userService.save(userUpd, function(err, data){
-                  if (err) {
-                    return handleError(res, err);
-                  }
-                  return res.json(200);
+
+                userService.find({_id:provider.ownerId},function(err , users){
+                  if(err) return handleError(res, err);
+
+                  var user = users[0];
+
+                  console.log('user' , user);
+
+                  user.meta.providerStatus = 'done';
+                  user.meta.productRelated.push(teamId);
+
+                  userService.save(user, function(err, data){
+                    if (err) {
+                      return handleError(res, err);
+                    }
+                    return res.json(200);
+                  });
                 });
               });
             });
