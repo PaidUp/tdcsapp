@@ -16,7 +16,7 @@ angular.module('convenienceApp', [
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
-      .otherwise('main');
+      .otherwise('/');
 
     $locationProvider.html5Mode(true);
     FacebookProvider.init('717631811625048');
