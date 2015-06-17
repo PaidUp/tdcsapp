@@ -9,7 +9,6 @@ var emailTemplates = require('email-templates');
 var transporter = nodemailer.createTransport(config.emailService);
 
 exports.sendContactEmail = function(dataProvider, cb) {
-
   if(!isValidEmail(dataProvider.ownerEmail)){
     return cb('Email is not valid');
   };
@@ -18,7 +17,7 @@ exports.sendContactEmail = function(dataProvider, cb) {
     if(err) return cb(err);
     var emailVars = config.emailVars;
     emailVars.email = dataProvider.ownerEmail;
-    emailVars.ownerName = dataProvider.ownerName;
+    emailVars.ownerName = dataProvider.businessName;
     emailVars.teamName = dataProvider.teamName;
     emailVars.provider = dataProvider;
     template('commerce/provider',emailVars,function(err, html, text){
