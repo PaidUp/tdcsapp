@@ -8,6 +8,7 @@ angular.module('convenienceApp', [
   'ui.bootstrap',
   'angulartics',
   'angulartics.mixpanel',
+  'angulartics.google.analytics',
   'facebook',
   'angularNumberPicker',
   'ui.mask'
