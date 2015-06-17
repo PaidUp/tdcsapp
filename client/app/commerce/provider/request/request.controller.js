@@ -14,7 +14,7 @@ angular.module('convenienceApp')
             $scope.provider.aba = $scope.bankAccount.routingNumber;
             $scope.provider.ownerSSN = $scope.bankAccount.securitySocial;
             providerService.providerRequest($scope.provider).then(function(data){
-                $state.go('provider-success'); 
+                $state.go('provider-success');
             }).catch(function(err){
                 console.log(err);
             });
@@ -167,5 +167,21 @@ angular.module('convenienceApp')
         return false;
       }
     };
-    
+
+    $scope.$watch('provider.EIN', function (value, oldvalue){
+      if(!validateEin(value)){
+        if(oldvalue && value && oldvalue.length === 1 && value.length === 2){
+          $scope.provider.EIN = value + '-';
+        }
+        $scope.billingForm.EIN.$error.pattern = true;
+      }else{
+        $scope.billingForm.EIN.$error.pattern = false;
+      }
+    });
+
+    function validateEin(einValue) {
+      var re = /^[0-9]\d?-\d{7}$/;
+      return re.test(einValue);
+    }
+
   });
