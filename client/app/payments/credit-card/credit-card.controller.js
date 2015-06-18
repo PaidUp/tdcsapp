@@ -32,6 +32,8 @@ angular.module('convenienceApp')
 
     $scope.schedules = [];
 
+
+
     var currentCartId = CartService.getCurrentCartId();
     CartService.getCart(currentCartId).then(function (value) {
       var products = value.items;
@@ -45,6 +47,8 @@ angular.module('convenienceApp')
       });
 
     });
+
+
 
     ApplicationConfigService.getConfig().then(function (config) {
       Stripe.setPublishableKey(config.stripeApiPublic);

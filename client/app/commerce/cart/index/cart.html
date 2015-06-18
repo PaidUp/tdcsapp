@@ -47,9 +47,35 @@
           <strong>ORDER SUMMARY</strong>
         </li>
         <li>
+          <div class="row">
+            <div class="col-sm-4">
+              <strong>Description</strong>
+            </div>
+            <div class="col-sm-4">
+              <strong>Date payment</strong>
+            </div>
+            <div class="col-sm-4">
+              <span><strong>Value</strong></span>
+            </div>
+          </div>
+        </li>
+        <li ng-repeat="schedule in schedules[0].periods">
+          <div class="row">
+            <div class="col-sm-4">
+              <strong>{{schedule.description}}</strong>
+            </div>
+            <div class="col-sm-4">
+              <strong>{{schedule.nextPaymentDue  |  date:'dd-MM-yyyy'}}</strong>
+            </div>
+            <div class="col-sm-4">
+              <span>{{schedule.price | currency}}</span>
+            </div>
+          </div>
+        </li>
+        <!--li>
           <strong>{{subtotal.title  | uppercase}}</strong>
           <span>{{subtotal.amount | currency}}</span>
-        </li>
+        </li-->
         <!-- <li>
           <strong>{{"shipping" | uppercase}}</strong>
           <span>{{shipping | currency}}</span>
@@ -70,7 +96,7 @@
   </div>
 
 </div>
-
+<br>
 <div class="container" ng-show="!hasCart && !teams">
   <div class="row empty-car">
     <div class="col-sm-8 col-sm-offset-2">

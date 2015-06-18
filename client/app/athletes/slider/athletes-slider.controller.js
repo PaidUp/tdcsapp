@@ -92,19 +92,11 @@ angular.module('convenienceApp')
     };
 
     $scope.selectTeamForAthlete = function () {
-      if($scope.team.attributes.type === 'grouped'){
-        $state.go('athletes-slider-group',{
-          teamId: $scope.team.attributes.productId,
-          athleteId: $scope.athlete._id
-        });
-      }else{
-        $state.go('teams-profile-athlete',{
-          // teamId: $scope.athlete.team.product_id,
-          teamId: $scope.team.attributes.productId,
-          athleteId: $scope.athlete._id
-        });
-      }
-
+      $state.go('teams-profile-athlete',{
+        // teamId: $scope.athlete.team.product_id,
+        teamId: $scope.team.attributes.productId,
+        athleteId: $scope.athlete._id
+      });
     };
 
     $scope.onSlideChanged = function (nextSlide, direction) {

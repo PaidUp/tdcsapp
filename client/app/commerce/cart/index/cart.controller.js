@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory) {
+  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -31,6 +31,28 @@ angular.module('convenienceApp')
             }
           });
         });
+      });
+
+      $scope.schedules = [];
+      $scope.totalPrice   = 0;
+
+      var currentCartId = CartService.getCurrentCartId();
+      CartService.getCart(currentCartId).then(function (value) {
+        var products = value.items;
+        products.forEach(function (ele, idx, arr) {
+          CommerceService.getSchedule(ele.productId).then(function (val) {
+            $scope.schedules.push({
+              name: ele.name,
+              periods: val.schedulePeriods
+            });
+            val.schedulePeriods.forEach(function(ele, idx, arr){
+              console.log(ele);
+              console.log(idx);
+              $scope.totalPrice += parseFloat(ele.price) ;
+            });
+          });
+        });
+
       });
 
       CartService.getTotals(cartId).then(function (totals) {
