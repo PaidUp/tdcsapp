@@ -11,14 +11,6 @@ angular.module('convenienceApp')
         data:{
           roles:['user']
         }
-      }).state('teams-dashboard-group', {
-        url: '/teams/dashboard/:teamId',
-        templateUrl: 'app/teams/dashboard/teams-dashboard.html',
-        controller: 'TeamsDashboardCtrl',
-        auth: true,
-        data:{
-          roles:['user']
-        }
       }).state('teams-profile-athlete', {
         url: '/teams/profile/:teamId/athlete/:athleteId',
         templateUrl: 'app/teams/profile/team-profile.html',

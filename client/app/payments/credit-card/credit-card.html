@@ -24,7 +24,7 @@
           <tbody>
           <tr ng-repeat="period in schedule.periods">
             <td class="">{{period.nextPaymentDue | date:'dd/MM/yyyy'}} - {{period.description}}</td>
-            <td>{{period.price | currency:"USD$ ":0}}</td>
+            <td>{{period.price | currency}}</td>
           </tr>
           </tbody>
         </table>

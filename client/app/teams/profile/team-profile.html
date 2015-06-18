@@ -30,8 +30,22 @@
             </div>
             <br>
 
+            <div ng-if="team.attributes.type === 'grouped'">
+              <label>Team</label>
+              <select id="selectTeam"
+                      class="form-control"
+                      ng-model="teamSelected"
+                      name="selectTeam"
+                      ng-required="true"
+                      ng-options="team.attributes.description for team in teams"
+                      ng-change="updateTeam(teamSelected)">
+              </select>
 
-            <div ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
+
+            </div>
+
+
+            <div ng-if="team.attributes.type === 'simple'" ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
               <!-- <custom-options ng-model="optionModel"
                               type="customOption.type"
                               title="customOption.title"
@@ -94,7 +108,7 @@
             <br>
             <br>
             <br>
-            <button type="submit" class="btn btnSignUp btn-block btn-enroll"><strong class="pull-left">Pay Now</strong> <strong><span>cost<span>{{price | currency}}</span></span></strong></button>
+            <button type="submit" class="btn btnSignUp btn-block btn-enroll"><strong class="pull-left">Pay Now</strong> <strong><span><span></span></span></strong></button>
           </form>
         </div>
       </div>

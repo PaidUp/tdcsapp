@@ -20,24 +20,40 @@ angular.module('convenienceApp')
 
 
 
-    TeamService.getTeam($stateParams.teamId).then(function (team) {
-      $scope.team = team;
-      $scope.price = Number($scope.team.attributes.price);
-      $scope.selectedCustomOptions = {
-        productId: $scope.team.attributes.productId,
-        sku: $scope.team.attributes.sku,
-        qty: 1,
-        options: {}
-      };
 
-      $scope.team.attributes.customOptions[0].forEach(function(element, index, array){
-        if(element.isRequire === '1' && element.values.length === 1){
-          $scope.changeCustomOptions(element , element.values[0]);
+
+    function loadTeam(teamID){
+      TeamService.getTeam(teamID).then(function (team) {
+
+        if(team.attributes.type === 'grouped'){
+          TeamService.getTeamsGrouped(teamID).then(function (teams) {
+            console.log('teams' , teams);
+            $scope.teams = teams;
+          }).catch(function (err) {
+
+          });
         }
+
+        $scope.team = team;
+        $scope.price = Number($scope.team.attributes.price);
+        $scope.selectedCustomOptions = {
+          productId: $scope.team.attributes.productId,
+          sku: $scope.team.attributes.sku,
+          qty: 1,
+          options: {}
+        };
+
+        $scope.team.attributes.customOptions[0].forEach(function(element, index, array){
+          if(element.isRequire === '1' && element.values.length === 1){
+            $scope.changeCustomOptions(element , element.values[0]);
+          }
+        });
+
       });
+    };
 
-    });
 
+    loadTeam($stateParams.teamId);
 
 
     $scope.underAges = TeamService.getTeamUnderAges($stateParams.teamId);
@@ -100,6 +116,17 @@ angular.module('convenienceApp')
       $scope.price = CartService.calculatePrice($scope.team.attributes.price,
         $scope.selectedCustomOptions.options,
         $scope.team.attributes.customOptions[0]);
+    };
+
+    $scope.updateTeam = function(teamSelected){
+      $scope.price = Number(teamSelected.attributes.price);
+      $scope.selectedCustomOptions = {
+        productId: teamSelected.attributes.productId,
+        sku: teamSelected.attributes.sku,
+        qty: 1,
+        options: {}
+      };
+
     };
 
     // $scope.selectAthlete = function (athlete) {
