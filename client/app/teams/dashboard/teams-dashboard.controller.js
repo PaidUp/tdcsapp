@@ -14,16 +14,9 @@ angular.module('convenienceApp')
 
     $scope.viewTeamProfile = function () {
       if ($scope.team) {
-        if($scope.team.attributes.type === 'grouped'){
-          $state.go('teams-dashboard-group',{
-            teamId: $scope.team.attributes.productId
-          });
-        }else{
-          $state.go('teams-profile',{
-            teamId: $scope.team.attributes.productId
-          });
-        }
-
+        $state.go('teams-profile',{
+          teamId: $scope.team.attributes.productId
+        });
       };
     };
   });
