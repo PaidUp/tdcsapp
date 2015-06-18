@@ -30,6 +30,22 @@
 
   }
 
+  .bannerCommerceSuccess{
+    width: 100%;
+    padding-top: 150px;
+    background-position: center;
+    background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
+    background-size: auto !important;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 200;
+
+  }
+
+  .bannerCommerceSuccess .title{
+    font-size: 45px;
+  }
+
   .titleBannerHome{
     font-size: 42px !important;
   }
@@ -48,6 +64,18 @@
     font-size: 30px !important;
     font-weight: 200 !important;
     background-size: cover !important;
+  }
+
+  .bannerCommerceSuccess{
+    width: 100%;
+    padding-top: 150px;
+    background-position: center;
+    background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
+    background-size: auto !important;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 200;
+
   }
 
   .solutionsForTeams h2{
@@ -73,6 +101,29 @@
   color: #fff;
   font-size: 30px;
   font-weight: 300;
+}
+
+.bannerCommerceSuccess{
+  width: 100%;
+  padding-top: 150px;
+  background-position: top center;
+  background-image: url(/assets/images/im_bg_commerce_banner.jpg);
+  background-size: cover;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 200;
+  background-repeat: no-repeat;
+  min-height: 800px
+}
+
+.bannerCommerceSuccess .title{
+  font-size: 45px;
+}
+
+.bannerCommerceSuccess a{
+  color: #fff;
+  word-wrap: break-word;
+  text-decoration: underline;
 }
 
 .solutionsForTeams{
