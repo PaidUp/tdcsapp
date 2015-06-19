@@ -22,9 +22,9 @@ angular.module('convenienceApp')
         if(data.length==0){
           $scope.isChildCharged = true;
           return;
-        }else{
-          $state.go('user-enrollments');
-        }
+        }//else{
+          //$state.go('user-enrollments');
+        //}
         // if (data.length === 1) {
         //   $state.go('athletes-slider',{athleteId: data[0].targetUserId});
         //   return;
