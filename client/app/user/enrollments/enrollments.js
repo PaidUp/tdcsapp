@@ -9,7 +9,7 @@ angular.module('convenienceApp')
         controller: 'EnrollmentsCtrl',
         auth: true,
         data:{
-          roles:['user', 'coach']
+          roles:['user']
         }
       });
   });
