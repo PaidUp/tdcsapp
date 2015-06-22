@@ -277,7 +277,19 @@ angular.module('convenienceApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.role === 'admin';
+        return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('admin') != -1;
+      },
+
+      isCoach: function() {
+        if($rootScope.currentUser && $rootScope.currentUser.roles){
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('coach') != -1;
+        }
+      },
+
+      isUser: function() {
+        if($rootScope.currentUser && $rootScope.currentUser.roles){
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('user') != -1;
+        }
       },
 
       /**
