@@ -66,13 +66,13 @@ function update(filter, value, cb) {
 }
 
 var encryptKey = config.encryptKey;
-function encryptSSN(ssn){
-  var encrypted = new Blind({ encryptKey: encryptKey }).encrypt(ssn);
+function encryptField(value){
+  var encrypted = new Blind({ encryptKey: encryptKey }).encrypt(value);
   return encrypted;
 }
 
-function decryptSSN(encryptedSSN){
-  var decrypted = new Blind({ encryptKey: encryptKey }).decrypt(encryptedSSN);
+function decryptField(encryptedValue){
+  var decrypted = new Blind({ encryptKey: encryptKey }).decrypt(encryptedValue);
   return decrypted;
 }
 
@@ -80,9 +80,9 @@ function decryptSSN(encryptedSSN){
   return isValidSSN(ssn);
 }*/
 
-function getlast4ssn(encryptedSSN){
-  var last4snn = decryptSSN(encryptedSSN);
-  return last4snn.substring(last4snn.length - 4, last4snn.length);
+function getlast4Field(encryptedValue){
+  var last4Field = decryptField(encryptedValue);
+  return last4Field.substring(last4Field.length - 4, last4Field.length);
 }
 
 exports.save = save;
@@ -91,7 +91,7 @@ exports.findOne = findOne;
 exports.findById = findById;
 exports.find = find;
 exports.update = update;
-exports.encryptSSN = encryptSSN;
-exports.decryptSSN = decryptSSN;
+exports.encryptField = encryptField;
+exports.decryptField = decryptField;
 //exports.verifySSN = verifySSN;
-exports.getlast4ssn = getlast4ssn;
+exports.getlast4Field = getlast4Field;

@@ -186,6 +186,7 @@ var all = {
   mixpanel:{
     apiKey: "ec0a4bdcce8b969299299e0710f4775a"
   },
+  encryptKey:'PZ3oXv2v6Pq5HAPFI9NFbQ==',
   loan:{
     defaults: {
       interestRate: 8.99,
