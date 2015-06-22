@@ -180,7 +180,7 @@
                     class="form-control"
                     ng-model="cardDetails"
                     ng-required="cards.length > 1"
-                    ng-options="cardObj as cardObj.cardNumber for cardObj in cards track by cardObj.cardNumber"
+                    ng-options="cardObj as cardObj.brand + cardObj.cardNumber for cardObj in cards track by cardObj.cardNumber"
                     ng-change="changeCard()">
               <option value="" disabled >Select a credit card</option>
             </select>

@@ -27,7 +27,6 @@ angular.module('convenienceApp')
 
         if(team.attributes.type === 'grouped'){
           TeamService.getTeamsGrouped(teamID).then(function (teams) {
-            console.log('teams' , teams);
             $scope.teams = teams;
           }).catch(function (err) {
 
