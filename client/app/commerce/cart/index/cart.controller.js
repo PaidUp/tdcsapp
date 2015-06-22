@@ -46,8 +46,6 @@ angular.module('convenienceApp')
               periods: val.schedulePeriods
             });
             val.schedulePeriods.forEach(function(ele, idx, arr){
-              console.log(ele);
-              console.log(idx);
               $scope.totalPrice += parseFloat(ele.price) ;
             });
           });
