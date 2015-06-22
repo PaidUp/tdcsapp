@@ -162,6 +162,8 @@ function orderLoad(orderId, cb){
 
 function providerRequest(userId, dataProvider, cb) {
   dataProvider.ownerId = userId;
+  dataProvider.aba = providerService.encryptField(dataProvider.aba);
+  dataProvider.dda = providerService.encryptField(dataProvider.dda);
   var provider = new Provider(dataProvider);
   providerService.save(provider, function (err, data) {
     if (err) return cb(err);
@@ -172,6 +174,8 @@ function providerRequest(userId, dataProvider, cb) {
 function providerResponse(providerId, verifyState, cb) {
   providerService.findOne({_id:providerId,verify:verifyState},'', function (err, providerData) {
     if (err) return cb(err);
+    providerData.aba = providerService.decryptField(providerData.aba);
+    providerData.dda = providerService.decryptField(providerData.dda);
     return cb(null,providerData);
   });
 }
