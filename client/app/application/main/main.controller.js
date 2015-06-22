@@ -83,7 +83,6 @@ angular.module('convenienceApp')
     AuthService.isLoggedInAsync(function (isLoggin) {
       if (isLoggin && $location.$$path === '/') {
         $location.path('/athletes/dashboard');
-        console.log('$location' , $location.$$path)
       }
     });
   });
