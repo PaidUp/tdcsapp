@@ -24,18 +24,34 @@
             </div>
             <br>
             <div class="msg-account-type" ng-show="!showRole && hideRole">
-              <div class="text-CS">Choose if you are :</div>
-                <div>- Team owner</div>
-                <div>- Coach</div>
-                <div>- GM</div>
-                <div>- League admin</div>
-                <br>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="text-CS center-text-msg-team" align="center"><strong>Choose if you are :</strong></div>
+                </div>
+                <div class="col-sm-6">
+                  <ul style="list-style-type:square">
+                    <li>Team owner</li>
+                    <li>Coach</li>
+                    <li>GM</li>
+                    <li>League admin</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="msg-account-type" ng-show="showRole && hideRole">
-              <div class="text-CS">Choose if you are :</div>
-              <div>- Parent</div>
-              <div>- Athlete</div>
-              <br>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="text-CS center-text-msg-athlete" align="center"><strong>Choose if you are :</strong></div>
+                </div>
+                <div class="col-sm-6">
+                  <div>
+                  <ul style="list-style-type:square">
+                    <li>Parent</li>
+                    <li>Athlete</li>
+                  </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           <div class="text-CS text-center">
             <small class="text-CS" ng-show="error">{{error}}</small>
