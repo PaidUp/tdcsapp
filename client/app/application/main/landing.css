@@ -216,33 +216,33 @@
 .solutionsForTeams .item1{
   display: inline-block !important;
   background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
 }
 
 .solutionsForTeams .item1:hover{
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
 }
 .solutionsForTeams .item2{
   display: inline-block !important;
   background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
 }
 
 .solutionsForTeams .item2:hover{
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
   background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
 }
 
 .solutionsForTeams .item3:hover{
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.png);
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
 }
 
 .solutionDescTop{
