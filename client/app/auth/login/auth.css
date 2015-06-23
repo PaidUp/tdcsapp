@@ -39,12 +39,21 @@
   padding-left:5px;
   padding-right:5px;
 }
-.center-text-msg-team{
-  margin-top: 27%;
+
+@media (min-width: 770px) {
+  .center-text-msg-team{
+    margin-top: 27%;
+  }
+  .center-text-msg-athlete{
+    margin-top: 10%;
+  }
+  .msg-account-type ul{
+    padding-left: 0px;
+  }
 }
-.center-text-msg-athlete{
-  margin-top: 10%;
-}
-.msg-account-type ul{
-  padding-left: 0px;
+
+@media (max-width: 770px) {
+  .msg-account-type ul{
+    padding-left: 20px;
+  }
 }
