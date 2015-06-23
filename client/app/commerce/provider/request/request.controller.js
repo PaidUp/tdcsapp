@@ -1,8 +1,15 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('ProviderRequestCtrl', function ($scope, providerService, UserService, $state) {
+  .controller('ProviderRequestCtrl', function ($scope, providerService, UserService, $state, AuthService) {
     $scope.states = UserService.getStates();
+    var user = AuthService.getCurrentUser();
+    $scope.provider = {};
+    if(user){
+      $scope.provider.ownerFirstName = user.firstName;
+      $scope.provider.ownerLastName = user.lastName;
+    }
+
     var currentDate = moment();
     var minDate = moment().subtract(60, 'year');
     $scope.submitted = false;
