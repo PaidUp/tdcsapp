@@ -19,6 +19,7 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
+
     CommerceService.getOrders().then(function (orders) {
       if (orders.length === 0) {
         $scope.noEnrollments = true;

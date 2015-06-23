@@ -105,6 +105,8 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
           if(err) logger.log('error',err);
           var team = {
             name: shoppingCart.items[0].name,
+            productId: shoppingCart.items[0].productId,
+            createdAt: shoppingCart.items[0].createdAt,
             sku: shoppingCart.items[0].sku
           };
           userService.find({_id:orderData.athleteId}, function(err, child){
