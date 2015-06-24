@@ -1,3 +1,14 @@
+.cart-order-summary > thead{
+  color: #ff805d;
+  font-size: 12px;
+  border-bottom: none;
+}
+.cart-order-summary > thead > tr > th{
+  text-align: center;
+  border-bottom: 0px solid transparent;
+}
+
+
 .cart-table > thead{
   color: #ff805d;
   font-size: 12px;

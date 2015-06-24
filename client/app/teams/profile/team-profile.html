@@ -6,11 +6,11 @@
     <div class="col-sm-8 col-sm-offset-2">
 
       <div class="row">
-        <div class="col-sm-6">
-          <img ng-src="{{team.getImage('image').url}}" alt="" class="width-100">
+        <div class="col-sm-4">
+          <img style="max-width: 200px" ng-src="{{team.getImage('image').url}}" alt="" class="width-100">
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-8">
           <h2 class="text-CS">{{team.attributes.name}}</h2>
             <div ng-bind-html="team.attributes.description"> </div>
           <br>
