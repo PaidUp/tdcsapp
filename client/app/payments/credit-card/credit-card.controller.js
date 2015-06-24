@@ -223,7 +223,12 @@ angular.module('convenienceApp')
     //   }
     // };
 
-    $scope.placeOrder = function () {
+    $scope.placeOrder = function (isValid) {
+      if(!isValid){
+        $scope.sendAlertErrorMsg('Please check form fields');
+        $scope.placedOrder = false;
+
+      }
       $scope.submitted = true;
       $scope.placedOrder = true;
       if ($scope.createCard) {
