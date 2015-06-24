@@ -5,6 +5,7 @@ var Team = function(args) {
   self.attributes = args;
 
   self.getImage = function (type) {
+    console.log('self.attributes.images',self.attributes.images);
     var image = null;
     self.attributes.images.forEach(function (imageIter, index) {
       var imageTypeIndex = imageIter.types.indexOf(type);
