@@ -36,10 +36,10 @@ exports.config = {
 //      'client/e2e/loan/*.spec.js',
     ],
     creditPath: ['client/e2e/credit/credit.workflow.spec.js'],
-    provider: ['client/e2e/provider/provider.spec.js'],
+    //provider: ['client/e2e/provider/provider.spec.js'],
     //verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
     //testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
-    sadPath: [],
+    sadPath: []
     //authPath: ['client/e2e/user/auth/auth.spec.js']
   },
 
