@@ -14,7 +14,11 @@ angular.module('convenienceApp')
     var minDate = moment().subtract(60, 'year');
     $scope.submitted = false;
     $scope.registerProvider = function(){
+      console.log('message');
         $scope.submitted = true;
+        console.log('$scope.providerForm.$valid',$scope.providerForm.$valid);
+        console.log('$scope.providerForm.$valid',$scope.ownerForm.$valid);
+        console.log('$scope.providerForm.$valid',$scope.billingForm.$valid);
         if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber;
