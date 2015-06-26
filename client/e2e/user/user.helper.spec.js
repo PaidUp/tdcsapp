@@ -32,6 +32,10 @@ exports.signupUserEmail = function(userModel,dest) {
   ).toEqual('You have not verified your account yet, Didn\'t get account confirmation email? Resend');
 };
 
+exports.signupCoachEmail = function(userModel, dest){
+  //TODO
+};
+
 exports.signOut = function(){
 
   element(by.css('.dropdown')).click();

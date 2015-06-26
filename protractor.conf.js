@@ -21,7 +21,7 @@ exports.config = {
 
   suites: {
     authPath: ['client/e2e/user/auth/auth.spec.js'],
-    creditPath: ['client/e2e/credit/credit.workflow.spec.js']
+    //creditPath: ['client/e2e/credit/credit.workflow.spec.js']
     //loanPath: [
       // LOAN PAYMENT
       //'client/e2e/loan/loan.workflow.spec.js'

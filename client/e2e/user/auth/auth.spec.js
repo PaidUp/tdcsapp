@@ -4,21 +4,17 @@ var Utils = require('../../utils/utils');
 var models = require('../../models');
 var user = require('../../user/user.helper.spec.js');
 
-describe('Auth Workflow', function () {
+describe('Auth Workflow (parent)', function () {
 
   beforeEach(function () {});
 
-  it("redirect to provider request", function () {
-    //TODO redirect to /commerce/provider/landing
+  it("Auth parent", function () {
     browser.get('/commerce/provider/landing');
-    
+    //TODO: test available options to parent.
     user.signupUserEmail(models.signup);
     browser.getLocationAbsUrl().then(function (url) {
-        console.log('url:',url);
-        expect(url).toEqual('/commerce/provider/request');
+        expect(url).toEqual('/athletes/dashboard');
     });
-
   });
-
 });
 //browser.get(urlString);
