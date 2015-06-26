@@ -94,7 +94,7 @@ exports.providerResponse = function (req, res) {
                   name:provider.teamName,
                   websites:[config.commerce.products.defaultValue.websites],
                   shortDescription:provider.businessName,
-                  description:'account.id: ' + account.id,
+                  description:'',
                   status:config.commerce.products.defaultValue.status,
                   price:config.commerce.products.defaultValue.price,
                   taxClassId:config.commerce.products.defaultValue.taxClassId,
