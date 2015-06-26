@@ -20,7 +20,9 @@ exports.config = {
 //  chromeOnly: true,
 
   suites: {
-    loanPath: [
+    authPath: ['client/e2e/user/auth/auth.spec.js'],
+    creditPath: ['client/e2e/credit/credit.workflow.spec.js']
+    //loanPath: [
       // LOAN PAYMENT
       //'client/e2e/loan/loan.workflow.spec.js'
       // 'client/e2e/signup/*.spec.js',
@@ -32,15 +34,14 @@ exports.config = {
 
       // // CREDIT PAYMENT
 
-      // 'client/e2e/user/payments/user.payments.spec.js'
+       //'client/e2e/user/payments/user.payments.spec.js'
 //      'client/e2e/loan/*.spec.js',
-    ],
-    creditPath: ['client/e2e/credit/credit.workflow.spec.js'],
+    //],
+    
     //provider: ['client/e2e/provider/provider.spec.js'],
     //verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
     //testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
-    sadPath: []
-    //authPath: ['client/e2e/user/auth/auth.spec.js']
+    //sadPath: []
   },
 
   // Patterns to exclude.
