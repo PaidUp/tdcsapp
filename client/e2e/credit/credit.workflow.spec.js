@@ -22,11 +22,11 @@ describe('Credit Workflow', function () {
       //browser.ignoreSynchronization = false;
     //});
 
-  it("should be signed in", function () {
+  /*it("should be signed in", function () {
     browser.get('/').then(function () {
       user.signupUserEmail(models.signup);
     });
-  });
+  });*/
 
   it("should register a child", function () {
     driver.wait(function () {
