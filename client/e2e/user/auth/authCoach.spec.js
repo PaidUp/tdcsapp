@@ -10,7 +10,7 @@ describe('Auth Workflow', function () {
 
   it("redirect to provider request", function () {
     browser.get('/');
-    user.signupUserEmail(models.signup);
+    user.signupCoachEmail(models.signup);
     browser.getLocationAbsUrl().then(function (url) {
         expect(url).toEqual('/commerce/provider/request');
     });
