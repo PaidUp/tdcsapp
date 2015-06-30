@@ -7,7 +7,8 @@ exports.config = {
   baseUrl: 'http://localhost:' + (process.env.PORT || '9000'),
 
   suites: {
-    authPath: ['client/e2e/user/auth/authCoach.spec.js']
+    authPath: ['client/e2e/user/auth/authCoach.spec.js'],
+    providerRequest: ['client/e2e/commerce/provider/provider.request.spec.js']
   },
   exclude: [],
   capabilities: {
@@ -16,7 +17,7 @@ exports.config = {
 
   onPrepare: function(done) {
   },
-  framework: 'jasmine',
+  framework: 'jasmine2',
   jasmineNodeOpts: {
     showColors: true,
     defaultTimeoutInterval: 110000,

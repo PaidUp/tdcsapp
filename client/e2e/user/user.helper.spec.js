@@ -46,6 +46,7 @@ exports.signupCoachEmail = function(userModel,dest) {
   element(by.css('#submit-email-login')).click();
   browser.waitForAngular();
   element(by.css('.verify-email-modal .close')).click();
+  expect(browser.manage().getCookie('token')).toBeDefined();
 };
 
 exports.signOut = function(){
