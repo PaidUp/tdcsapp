@@ -34,11 +34,11 @@ exports.selectTeam = function (teamName) {
   browser.getLocationAbsUrl().then(function (url) {
     var athleteId = Utils.getIdFromURL(url);
     expect(url).toEqual('/athletes/slider/'+athleteId);
-    
+
     browser.wait(function () {
       return element(by.css('.container.teams')).isDisplayed();
     }, 10000);
-    
+
     expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
     var team = element(by.cssContainingText('.team-name', teamName));
     expect(team).toBeDefined();

@@ -3,14 +3,14 @@
 var faker = require('faker');
 
 var models = function () {
-  
+
   this.signup = {
     pass: 'qwerty1Q#!',
     fakeEmail: faker.internet.email(),
     firstname: 'Zuly',
     lastname: 'Alcaraz'
   };
-  
+
   this.athlete = {
     firstName: 'Santiago',
     lastName: 'Escobar',
@@ -21,7 +21,7 @@ var models = function () {
       year: '1995'
     }
   };
-  
+
   this.userLoan = {
     firstname: this.signup.firstname,
     lastname: this.signup.lastname,
@@ -49,7 +49,7 @@ var models = function () {
     phone: '3006004143'
   };
 
-  this.teamName = 'Austin Boom';
+  this.teamName = 'Austin Vipers';
 
   this.bankDetails = {
     routingNumber: '123123123',
@@ -85,7 +85,7 @@ var models = function () {
     teamAverageSize: faker.random.number()+1,
     teamSport:'Baseball',
     //End team info
-    
+
     //Owner info
     //ownerId: 'xxx',
     ownerName: faker.name.firstName(),
@@ -94,7 +94,7 @@ var models = function () {
     onwerEmail: faker.internet.email(),
     onwerPhone: faker.phone.phoneNumber(),
     //End owner info
-    
+
     //Billing info
     country: faker.address.country(),
     state: faker.address.state(),
@@ -106,7 +106,7 @@ var models = function () {
     businessName: faker.company.companyName(),
     phoneNumber: faker.phone.phoneNumber(),
     //End billing info
-    
+
     //Billing info
     aba: '123',
     dda: '321'
