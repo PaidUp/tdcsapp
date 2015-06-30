@@ -17,11 +17,11 @@ var driver = browser.driver;
 
 describe('Provider request', function () {
 
-  it("should be signed in", function () {
+  /*it("coach can not see options of parent", function () {
     browser.get('/commerce/provider/landing').then(function () {
       user.signupUserEmail(models.signup);
     });
-  });
+  });*/
 
   it("should fill form provider request", function() {
     browser.getLocationAbsUrl().then(function (url) {
@@ -49,3 +49,15 @@ describe('Provider request', function () {
   });
 
 });
+/*var addAthleteBtn = element(by.css('button#add-athlete-btn'));
+expect(addAthleteBtn.getAttribute('innerText')).toEqual('Add Athlete');
+
+expect(browser.manage().getCookie('token')).toBeDefined();
+expect(
+  element(by.css('.dropdown > .dropdown-toggle')).getText()
+).toEqual(userModel.firstname+' '+userModel.lastname);
+
+var alert = element.all(by.repeater('alert in alerts'));
+expect(
+  alert.get(0).getText()
+).toEqual('You have not verified your account yet, Didn\'t get account confirmation email? Resend');*/
