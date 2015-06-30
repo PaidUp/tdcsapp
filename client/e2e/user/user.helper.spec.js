@@ -32,6 +32,23 @@ exports.signupUserEmail = function(userModel,dest) {
   ).toEqual('You have not verified your account yet, Didn\'t get account confirmation email? Resend');
 };
 
+exports.signupCoachEmail = function(userModel,dest) {
+  signuppo.openSignupModal();
+  element(by.css('#IamCoach')).click();
+  signuppo.fillFormByEmail(userModel);
+
+  expect(signuppo.name).toEqual(userModel.firstname);
+  expect(signuppo.lastName).toEqual(userModel.lastname);
+  expect(signuppo.email).toEqual(userModel.fakeEmail);
+  expect(signuppo.password).toEqual(userModel.pass);
+  expect(signuppo.passwordConfirmation).toEqual(userModel.pass);
+
+  element(by.css('#submit-email-login')).click();
+  browser.waitForAngular();
+  element(by.css('.verify-email-modal .close')).click();
+  expect(browser.manage().getCookie('token')).toBeDefined();
+};
+
 exports.signOut = function(){
 
   element(by.css('.dropdown')).click();
