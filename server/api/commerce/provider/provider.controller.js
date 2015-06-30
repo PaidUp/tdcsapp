@@ -62,7 +62,9 @@ exports.providerResponse = function (req, res) {
           month:provider.ownerDOB.getMonth() + 1,
           year:provider.ownerDOB.getFullYear(),
           type:config.payment.legalEntity.type,
-          businessName:provider.businessName
+          businessName:provider.businessName,
+          last4:provider.ownerSSN,
+          EIN:provider.EIN
         };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
