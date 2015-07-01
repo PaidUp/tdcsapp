@@ -21,6 +21,7 @@ exports.config = {
 
   suites: {
     authPath: ['client/e2e/user/auth/auth.spec.js'],
+    athlete: ['client/e2e/athletes/add-athlete.spec.js']
     //creditPath: ['client/e2e/credit/credit.workflow.spec.js']
     //loanPath: [
       // LOAN PAYMENT
@@ -37,7 +38,7 @@ exports.config = {
        //'client/e2e/user/payments/user.payments.spec.js'
 //      'client/e2e/loan/*.spec.js',
     //],
-    
+
     //provider: ['client/e2e/provider/provider.spec.js'],
     //verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
     //testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
@@ -63,7 +64,7 @@ exports.config = {
       browser.wait(function () {
         return element(by.css('.dropdown')).isDisplayed();
       });
-      
+
       console.log('ON PREPARE ==============');
       var userMenu = element(by.css('.dropdown'));
     userMenu.isDisplayed().then(function (isVisible) {
@@ -77,9 +78,9 @@ exports.config = {
       }
       done()
     });
-    
+
     */
-    
+
   },
 
   // ----- The test framework -----
