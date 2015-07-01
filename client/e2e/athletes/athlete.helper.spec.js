@@ -74,4 +74,38 @@ exports.selectSingleTeam = function(){
 
 };
 
+exports.payNow = function(){
+  var buttonPay = element(by.css('.btnSignUp'));
+  buttonPay.getAttribute('type').then(function(text) {
+    expect(text).toEqual('submit');
+    buttonPay.click();
+    expect(element.all(by.repeater('team in teams')).count()).toEqual(1);
+  });
+};
 
+exports.checkOut = function() {
+  var buttonCheckOut = element(by.css('.btnSignUp'));
+  buttonCheckOut.getAttribute('type').then(function (text) {
+    expect(text).toEqual('button');
+    buttonCheckOut.click();
+
+
+    driver.wait(function() {
+      return element.all(by.repeater('schedule in schedules')).count().then(function(count) {
+        console.log('count' , count);
+        if(count > 0){
+          return true;
+        }
+        return false;
+      });
+    }, 50000).then(function(obj){
+      element.all(by.css('.selector')).then(function(elements) {
+        // elements is an array of ElementFinders.
+      });
+
+    });
+
+    browser.sleep(3000);
+    //expect(element.all(by.repeater('team in teams')).count()).toEqual(1);
+  });
+}

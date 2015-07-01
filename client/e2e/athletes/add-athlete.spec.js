@@ -35,6 +35,18 @@ describe('add athlete', function() {
     athleteHelper.selectSingleTeam();
 
   });
+
+  it('pay now', function() {
+
+    athleteHelper.payNow();
+
+  });
+
+  it('check out', function() {
+
+    athleteHelper.checkOut();
+
+  });
 /*
   it.skip('change password', function() {
     element(by.css('.dropdown')).click();
