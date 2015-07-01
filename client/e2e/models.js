@@ -79,37 +79,26 @@ var models = function () {
   };
 
   this.provider = {
-    //Team info
     teamName: faker.company.companyName(),
-    teamNumber: faker.random.number(),
-    teamAverageSize: faker.random.number()+1,
-    teamSport:'Baseball',
-    //End team info
-
-    //Owner info
-    //ownerId: 'xxx',
-    ownerName: faker.name.firstName(),
+    ownerFirstName: faker.name.firstName(),
+    ownerLastName: faker.name.lastName(),
     onwerDOB: faker.date.past(),
-    onwerSSN: faker.random.uuid(),
-    onwerEmail: faker.internet.email(),
-    onwerPhone: faker.phone.phoneNumber(),
-    //End owner info
-
-    //Billing info
-    country: faker.address.country(),
-    state: faker.address.state(),
-    city: faker.address.city(),
-    averagePayment: '500',
-    EIN: 'EIN',
+    month : '7',
+    day : '29',
+    year : '1987',
     Address: faker.address.streetAddress(),
-    website: faker.internet.domainName(),
+    ownerSSN: '1234',
+    ownerEmail: faker.internet.email(),
+    ownerPhone: faker.phone.phoneNumber(),
+    city: faker.address.city(),
+    state: 'Tx',
+    zipCode : '12312',
+    EIN: '000000000',
+    businessType: 'Corporation',
     businessName: faker.company.companyName(),
-    phoneNumber: faker.phone.phoneNumber(),
-    //End billing info
-
-    //Billing info
-    aba: '123',
-    dda: '321'
+    aba: '110000000',
+    dda: '000123456789',
+    ddaVerification: '000123456789'
   };
 };
 
