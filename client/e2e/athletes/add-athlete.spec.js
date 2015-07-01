@@ -29,6 +29,12 @@ describe('add athlete', function() {
     athleteHelper.selectTeam(models.teamName);
 
   });
+
+  it('select single team', function() {
+
+    athleteHelper.selectSingleTeam();
+
+  });
 /*
   it.skip('change password', function() {
     element(by.css('.dropdown')).click();

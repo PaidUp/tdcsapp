@@ -2,6 +2,7 @@
 
 var Utils = require('../utils/utils');
 var athlete = require('../page-objects/athletes.po.js');
+var driver = browser.driver;
 
 exports.addAthlete = function (athleteModel) {
 	element(by.css('button#add-athlete-btn')).click();
@@ -53,4 +54,24 @@ exports.selectTeam = function (teamName) {
     });
   });
 };
+
+exports.selectSingleTeam = function(){
+
+  driver.wait(function() {
+    return element(by.id('selectTeam')).all(by.tagName('option')).count().then(function(count) {
+      console.log('count' , count);
+      if(count > 0){
+        var mySelect = element(by.id('selectTeam'));
+        Utils.selectDropdownByNumber(mySelect, 1);
+        return true;
+      }
+      return false;
+    });
+  }, 50000).then(function(obj){
+    expect(element(by.id('selectTeam')).getAttribute('value')).toEqual('0');
+
+  });
+
+};
+
 
