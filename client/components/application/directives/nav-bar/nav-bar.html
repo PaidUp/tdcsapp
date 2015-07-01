@@ -33,10 +33,10 @@
           <li class="" ng-show="!isLoggedIn()">
             <a href="" ng-click="goTo('/faq'); toggleMenu()">FAQ</a>
           </li>
-          <li class="my-athletes" ng-show="isLoggedIn()">
+          <li class="my-athletes" ng-show="isLoggedIn()  && isUser()">
             <a href="" ui-sref="athletes">My Athlete(s)</a>
           </li>
-          <li ng-show="isLoggedIn()">
+          <li ng-show="isLoggedIn() && isUser()">
             <a href="" ui-sref="teams-dashboard">Teams</a>
           </li>
           <li ng-show="!isLoggedIn()">
@@ -83,7 +83,7 @@
               </li>
             </ul>
           </li>
-          <li ng-show="isLoggedIn()">
+          <li ng-show="isLoggedIn() && isUser()">
             <a ui-sref="cart">
               <i class="fa fa-shopping-cart cart" ng-class="{ 'text-CS': itemCount && itemCount > 0 }"></i>
               <!-- <div class="shopping-cart">{{itemCount}}</div> -->

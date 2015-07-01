@@ -62,7 +62,9 @@ exports.providerResponse = function (req, res) {
           month:provider.ownerDOB.getMonth() + 1,
           year:provider.ownerDOB.getFullYear(),
           type:config.payment.legalEntity.type,
-          businessName:provider.businessName
+          businessName:provider.businessName,
+          last4:provider.ownerSSN,
+          EIN:provider.EIN
         };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
@@ -94,7 +96,7 @@ exports.providerResponse = function (req, res) {
                   name:provider.teamName,
                   websites:[config.commerce.products.defaultValue.websites],
                   shortDescription:provider.businessName,
-                  description:'account.id: ' + account.id,
+                  description:'',
                   status:config.commerce.products.defaultValue.status,
                   price:config.commerce.products.defaultValue.price,
                   taxClassId:config.commerce.products.defaultValue.taxClassId,

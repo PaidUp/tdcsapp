@@ -1,4 +1,4 @@
-<form name="checkoutForm" ng-submit="placeOrder()" novalidate>
+<form name="checkoutForm" ng-submit="placeOrder(checkoutForm.$valid)" novalidate>
   <div class="container">
     <div class="row">
 
@@ -23,7 +23,7 @@
           </thead>
           <tbody>
           <tr ng-repeat="period in schedule.periods">
-            <td class="">{{period.nextPaymentDue | date:'dd/MM/yyyy'}} - {{period.description}}</td>
+            <td class="">{{period.nextPaymentDue | date:'MM/dd/yyyy'}} - {{period.description}}</td>
             <td>{{period.price | currency}}</td>
           </tr>
           </tbody>
@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4"> &blank;</div>
+      <div class="col-sm-4"></div>
       </div>
       <div class="row">
       <div class="col-sm-4 text-right">
@@ -180,7 +180,7 @@
                     class="form-control"
                     ng-model="cardDetails"
                     ng-required="cards.length > 1"
-                    ng-options="cardObj as cardObj.cardNumber for cardObj in cards track by cardObj.cardNumber"
+                    ng-options="cardObj as cardObj.brand + cardObj.cardNumber for cardObj in cards track by cardObj.cardNumber"
                     ng-change="changeCard()">
               <option value="" disabled >Select a credit card</option>
             </select>

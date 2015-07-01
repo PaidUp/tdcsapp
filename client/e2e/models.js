@@ -1,12 +1,12 @@
 'use strict';
 
-var Faker = require('faker');
+var faker = require('faker');
 
 var models = function () {
   
   this.signup = {
     pass: 'qwerty1Q#!',
-    fakeEmail: Faker.internet.email(),
+    fakeEmail: faker.internet.email(),
     firstname: 'Zuly',
     lastname: 'Alcaraz'
   };

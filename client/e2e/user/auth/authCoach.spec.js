@@ -8,11 +8,11 @@ describe('Auth Workflow', function () {
 
   beforeEach(function () {});
 
-  it("redirect to athletes dashboard", function () {
+  it("redirect to provider request", function () {
     browser.get('/');
-    user.signupUserEmail(models.signup);
+    user.signupCoachEmail(models.signup);
     browser.getLocationAbsUrl().then(function (url) {
-        expect(url).toEqual('/athletes/dashboard');
+        expect(url).toEqual('/commerce/provider/request');
     });
   });
 });

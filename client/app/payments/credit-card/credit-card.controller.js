@@ -65,6 +65,7 @@ angular.module('convenienceApp')
         card.expirationDate.year = card.expirationYear;
         card.securityCode = card.cvv;
         card.token = card.id;
+        card.brand = card.brand + ' ending in ';
       });
       $scope.cards.push({cardNumber: 'Create a new credit card'});
       if ($scope.cards.length === 1) {
@@ -222,7 +223,12 @@ angular.module('convenienceApp')
     //   }
     // };
 
-    $scope.placeOrder = function () {
+    $scope.placeOrder = function (isValid) {
+      if(!isValid){
+        $scope.sendAlertErrorMsg('Please check form fields');
+        $scope.placedOrder = false;
+
+      }
       $scope.submitted = true;
       $scope.placedOrder = true;
       if ($scope.createCard) {
@@ -346,11 +352,6 @@ angular.module('convenienceApp')
     };
 
     $scope.fieldNumberOnly = function (modelField) {
-      console.log('$scope.$parent.card', $scope.$parent.cards);
-
-      console.log('modelField', $scope.$parent.card[modelField]);
-
-      console.log('parseInt()', isNaN($scope.$parent.card[modelField]));
       if(!isNaN(modelField)){
         $scope.$parent.card[modelField] = '';
       }

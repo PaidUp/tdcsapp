@@ -1,7 +1,7 @@
 <div class="container" ng-if="total.amount > 0">
   <h4>Here's your order</h4>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 table-responsive" >
       <table class="table cart-table">
         <thead>
           <tr>
@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <tr class="items-required" ng-repeat="team in teams">
-            <td><img ng-src="{{team.getImage('small_image').url}}" alt=""></td>
+            <td><img style="max-width: 100px" ng-src="{{team.getImage('small_image').url}}" alt=""></td>
             <td>
               <strong>{{team.attributes.name}}</strong><br>
               {{team.attributes.season.name}} {{team.attributes.shortDescription}} <br>
@@ -41,54 +41,45 @@
       </table>
     </div>
 
-    <div class="col-md-4">
-      <ul class="order-summary">
-        <li>
-          <strong>ORDER SUMMARY</strong>
-        </li>
-        <li>
-          <div class="row">
-            <div class="col-sm-4">
-              <strong>Description</strong>
-            </div>
-            <div class="col-sm-4">
-              <strong>Date payment</strong>
-            </div>
-            <div class="col-sm-4">
-              <span><strong>Value</strong></span>
-            </div>
-          </div>
-        </li>
-        <li ng-repeat="schedule in schedules[0].periods">
-          <div class="row">
-            <div class="col-sm-4">
+    <div class="col-md-4 table-responsive" >
+      <table class="table cart-order-summary">
+        <thead>
+          <tr>
+            <th colspan="3"><span class="">ORDER SUMMARY</span></th>
+          </tr>
+          <tr>
+            <th>Description</th>
+            <th>Date payment</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="schedule in schedules[0].periods">
+            <td>
               <strong>{{schedule.description}}</strong>
-            </div>
-            <div class="col-sm-4">
-              <strong>{{schedule.nextPaymentDue  |  date:'dd-MM-yyyy'}}</strong>
-            </div>
-            <div class="col-sm-4">
+            </td>
+            <td>
+              <strong>{{schedule.nextPaymentDue  |  date:'MM-dd-yyyy'}}</strong>
+            </td>
+            <td>
               <span>{{schedule.price | currency}}</span>
-            </div>
-          </div>
-        </li>
-        <!--li>
-          <strong>{{subtotal.title  | uppercase}}</strong>
-          <span>{{subtotal.amount | currency}}</span>
-        </li-->
-        <!-- <li>
-          <strong>{{"shipping" | uppercase}}</strong>
-          <span>{{shipping | currency}}</span>
-        </li>
-        <li>
-          <strong>{{"tax" | uppercase}}</strong>
-          <span>{{tax | currency}}</span>
-        </li> -->
-        <li>
-          <strong>{{total.title | uppercase}}</strong>
-          <span>{{total.amount | currency}}</span>
-        </li>
-      </ul>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">
+              <strong>{{total.title | uppercase}}</strong>
+            </td>
+            <td>
+              <span>{{total.amount | currency}}</span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+
+
       <button class="btn btnSignUp btn-block btn-lg" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">
         Proceed to Checkout
       </button>

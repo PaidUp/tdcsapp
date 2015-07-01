@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesSliderCtrl', function ($scope, $rootScope, UserService, FlashService, AuthService, $state, $stateParams) {
+  .controller('AthletesSliderCtrl', function ($scope, $rootScope, TeamService, UserService, CommerceService, FlashService, AuthService, $state, $stateParams) {
     $scope.athletes =[];
     $scope.user = angular.copy(AuthService.getCurrentUser());
     $scope.fullDetails = false;
@@ -105,5 +105,68 @@ angular.module('convenienceApp')
       // return;
       // }
       // $state.transitionTo($state.current, {athleteId: nextSlide.$parent.childAthlete._id}, { location: true, inherit: true, relative: $state.$current, notify: false });
+    };
+
+    $scope.loading = true;
+    $scope.orders = [];
+    CommerceService.getOrders().then(function (orders) {
+
+
+      if (orders === 0) {
+        $scope.loading = false;
+        console.log("$scope.loading", $scope.loading);
+      }else{
+        angular.forEach(orders, function (order) {
+          if($stateParams.athleteId == order.athleteId){
+            $scope.orders.push(order);
+            TeamService.getTeam(order.products[0].productId).then(function (team) {
+              order.isOpen = false;
+              order.team = team;
+              console.log('order' , order);
+
+                order.nextPaymentDate = getNextPaymentDate(order.schedulePeriods);
+
+
+            });
+          }
+        });
+      }
+    }).catch(function (err) {
+      $scope.loading = false;
+      $scope.sendAlertErrorMsg(err.data.message);
+    }).finally(function(){
+      $scope.loading = false;
+    });
+
+    $scope.prettify = function (date) {
+      return moment(date).format('MMMM DD, YYYY');
+    };
+
+    function getNextPaymentDate (scheduleArray) {
+      var date;
+      var paymentNumber;
+      var schedule;
+      var hasPending;
+      var isDelinquent = false;
+      for (var i=0; i < scheduleArray.length; i++) {
+        schedule = scheduleArray[i];
+        if (schedule.state === 'failed') {
+          isDelinquent = true;
+          break;
+        }
+        if (schedule.state === 'pending') {
+          hasPending = true;
+          date = $scope.prettify(schedule.paymentDay);
+          paymentNumber = $scope.getGetOrdinal(i + 1);
+          break;
+        }
+      }
+      if (hasPending) {
+        return paymentNumber + ' payment ' + date;
+      } else if (isDelinquent) {
+        return 'None - Loan Delinquent';
+      }else {
+        return 'None - Loan Complete';
+      }
     };
   });
