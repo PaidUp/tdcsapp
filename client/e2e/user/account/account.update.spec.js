@@ -39,36 +39,26 @@ describe('User update account', function () {
     });
   });
 
-  /*it.skip("should fill form provider request", function (done) {
+  it("should fill form user account and update", function (done) {
+    sphone.sendKeys('1233211239');
+    saddress1.sendKeys('street one');
+    scity.sendKeys('medellin');
+    saddress2.sendKeys('street two');
+    sstate.sendKeys('tx');
+    szipCode.sendKeys('12312');
     btnSave.click();
-    //TODO: validate all message. for now happy path.
-    //var nameRequired = element(by.id('nameRequired'));
-    //expect(nameRequired.isDisplayed()).toBe(true);;
-    teamName.sendKeys(modelProvider.teamName);
-    //expect(nameRequired.isDisplayed()).toBe(false);
-    month.sendKeys(modelProvider.month);
-    day.sendKeys(modelProvider.day);
-    year.sendKeys(modelProvider.year);
-    Address.sendKeys(modelProvider.Address);
-    ownerEmail.sendKeys(modelProvider.ownerEmail);
-    ownerPhone.sendKeys(modelProvider.ownerPhone);
-    city.sendKeys(modelProvider.city);
-    state.sendKeys(modelProvider.state);
-    zipCode.sendKeys(modelProvider.zipCode);
-    ownerSSN.sendKeys(modelProvider.ownerSSN);
-    businessType.sendKeys(modelProvider.businessType);
-    businessName.sendKeys(modelProvider.businessName);
-    EIN.sendKeys(modelProvider.EIN);
-    aba.sendKeys(modelProvider.aba);
-    dda.sendKeys(modelProvider.dda);
-    ddaVerification.sendKeys(modelProvider.ddaVerification);
-    btnSave.click();
-    browser.getLocationAbsUrl().then(function (url) {
-      expect(url).toEqual('/commerce/provider/success');
-    });
-    /*browser.wait(function () {
-    }, 5000);
     done();
-  });*/
+  });
+
+  it("account updated", function (done) {
+    browser.get('/user/account');
+    element.all(by.css('button#add-athlete-btn')).then(function(elements) {
+      expect(elements).toEqual([]);
+      expect(sphone.getAttribute('value')).toEqual('1233211239');
+      expect(saddress1.getAttribute('value')).toEqual('street one');
+      expect(scity.getAttribute('value')).toEqual('medellin');
+      done();
+    });
+  });
 
 });
