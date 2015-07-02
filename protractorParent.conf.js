@@ -21,8 +21,10 @@ exports.config = {
 
   suites: {
     authPath: ['client/e2e/user/auth/auth.spec.js'],
-    athlete: ['client/e2e/athletes/add-athlete.spec.js'],
-    updateAccount: ['client/e2e/user/account/account.update.spec.js']
+    addCreditCard: ['client/e2e/user/card/create.spec.js']
+    //athlete: ['client/e2e/athletes/add-athlete.spec.js'],
+    //updateAccount: ['client/e2e/user/account/account.update.spec.js'],
+    //addCreditCard: ['client/e2e/user/card/create.spec.js']
   },
 
   // Patterns to exclude.

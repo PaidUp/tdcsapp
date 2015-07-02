@@ -1,7 +1,4 @@
 'use strict';
-//var Utils = require('../../utils/utils');
-//var modelProvider = require('../../models').provider;
-//var commerceRequestpo = require('../../page-objects/commerceRequest.po.js');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
