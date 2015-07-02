@@ -23,7 +23,7 @@ var creditCardPayment = function () {
     element(by.model('$parent.card.expirationDate.year')).sendKeys(userCreditCard.card.expirationDate.year);
     element(by.model('$parent.card.securityCode')).sendKeys(userCreditCard.card.securityCode);
 
-    element(by.id('agreeCheckbox')).click();
+    //element(by.id('agreeCheckbox')).click();
   };
 };
 
