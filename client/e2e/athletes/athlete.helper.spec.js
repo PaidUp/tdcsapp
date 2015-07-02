@@ -2,6 +2,7 @@
 
 var Utils = require('../utils/utils');
 var athlete = require('../page-objects/athletes.po.js');
+var creditCardPayment = require('../page-objects/credit-card-payment.po');
 var driver = browser.driver;
 
 exports.addAthlete = function (athleteModel) {
@@ -59,7 +60,6 @@ exports.selectSingleTeam = function(){
 
   driver.wait(function() {
     return element(by.id('selectTeam')).all(by.tagName('option')).count().then(function(count) {
-      console.log('count' , count);
       if(count > 0){
         var mySelect = element(by.id('selectTeam'));
         Utils.selectDropdownByNumber(mySelect, 1);
@@ -71,7 +71,6 @@ exports.selectSingleTeam = function(){
     expect(element(by.id('selectTeam')).getAttribute('value')).toEqual('0');
 
   });
-
 };
 
 exports.payNow = function(){
@@ -92,20 +91,32 @@ exports.checkOut = function() {
 
     driver.wait(function() {
       return element.all(by.repeater('schedule in schedules')).count().then(function(count) {
-        console.log('count' , count);
         if(count > 0){
           return true;
         }
         return false;
       });
-    }, 50000).then(function(obj){
-      element.all(by.css('.selector')).then(function(elements) {
-        // elements is an array of ElementFinders.
-      });
-
-    });
-
-    browser.sleep(3000);
-    //expect(element.all(by.repeater('team in teams')).count()).toEqual(1);
+    }, 50000);
   });
-}
+};
+
+exports.paymentCreditCard = function(model){
+  element.all(by.repeater('tab in tabs')).then(function(elements) {
+    expect(elements[0].getText()).toEqual('Credit Card');
+
+    creditCardPayment.fillForm(model);
+
+    element(by.css('.btnSignUp')).click();
+
+    driver.wait(function() {
+      return element(by.css('.titleThankyouBanner')).isPresent();
+
+    }, 50000).then(function(){
+      element(by.css('.titleThankyouBanner')).getText().then(function(txt){
+        expect(txt).toEqual('Thanks for your order!');
+      });
+    });
+  });
+
+
+};
