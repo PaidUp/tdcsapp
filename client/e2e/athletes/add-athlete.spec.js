@@ -47,6 +47,12 @@ describe('add athlete', function() {
     athleteHelper.checkOut();
 
   });
+
+  it('payment', function() {
+
+    athleteHelper.paymentCreditCard(models.creditCardDetails);
+
+  });
 /*
   it.skip('change password', function() {
     element(by.css('.dropdown')).click();
