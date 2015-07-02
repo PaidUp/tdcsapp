@@ -2,6 +2,7 @@
 
 var Utils = require('../utils/utils');
 var athlete = require('../page-objects/athletes.po.js');
+var driver = browser.driver;
 
 exports.addAthlete = function (athleteModel) {
 	element(by.css('button#add-athlete-btn')).click();
@@ -34,11 +35,11 @@ exports.selectTeam = function (teamName) {
   browser.getLocationAbsUrl().then(function (url) {
     var athleteId = Utils.getIdFromURL(url);
     expect(url).toEqual('/athletes/slider/'+athleteId);
-    
+
     browser.wait(function () {
       return element(by.css('.container.teams')).isDisplayed();
     }, 10000);
-    
+
     expect(element.all(by.repeater('team in teams')).count()).toBeGreaterThan(0);
     var team = element(by.cssContainingText('.team-name', teamName));
     expect(team).toBeDefined();
@@ -54,3 +55,57 @@ exports.selectTeam = function (teamName) {
   });
 };
 
+exports.selectSingleTeam = function(){
+
+  driver.wait(function() {
+    return element(by.id('selectTeam')).all(by.tagName('option')).count().then(function(count) {
+      console.log('count' , count);
+      if(count > 0){
+        var mySelect = element(by.id('selectTeam'));
+        Utils.selectDropdownByNumber(mySelect, 1);
+        return true;
+      }
+      return false;
+    });
+  }, 50000).then(function(obj){
+    expect(element(by.id('selectTeam')).getAttribute('value')).toEqual('0');
+
+  });
+
+};
+
+exports.payNow = function(){
+  var buttonPay = element(by.css('.btnSignUp'));
+  buttonPay.getAttribute('type').then(function(text) {
+    expect(text).toEqual('submit');
+    buttonPay.click();
+    expect(element.all(by.repeater('team in teams')).count()).toEqual(1);
+  });
+};
+
+exports.checkOut = function() {
+  var buttonCheckOut = element(by.css('.btnSignUp'));
+  buttonCheckOut.getAttribute('type').then(function (text) {
+    expect(text).toEqual('button');
+    buttonCheckOut.click();
+
+
+    driver.wait(function() {
+      return element.all(by.repeater('schedule in schedules')).count().then(function(count) {
+        console.log('count' , count);
+        if(count > 0){
+          return true;
+        }
+        return false;
+      });
+    }, 50000).then(function(obj){
+      element.all(by.css('.selector')).then(function(elements) {
+        // elements is an array of ElementFinders.
+      });
+
+    });
+
+    browser.sleep(3000);
+    //expect(element.all(by.repeater('team in teams')).count()).toEqual(1);
+  });
+}
