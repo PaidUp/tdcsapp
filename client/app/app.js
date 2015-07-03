@@ -25,7 +25,7 @@ angular.module('convenienceApp', [
   })
 
   .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
-    
+
     return {
       // Add authorization token to headers
       request: function (config) {
@@ -57,6 +57,9 @@ angular.module('convenienceApp', [
           });
           $location.path('/');
           // remove any state tokens
+          return $q.reject(response);
+        }else if(response.status === 503) {
+          $location.path('/maintenance');
           return $q.reject(response);
         }
         else {
@@ -102,7 +105,7 @@ angular.module('convenienceApp', [
         }
       });
     });
-    
+
     $rootScope.$on('$locationChangeSuccess', function(evt) {
       AuthService.isLoggedInAsync(function(loggedIn) {
         if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
