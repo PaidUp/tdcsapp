@@ -3,10 +3,25 @@
  */
 
 'use strict';
-
+var fs = require('fs');
+var config = require('./config/environment');
 var errors = require('./components/errors');
 
 module.exports = function(app) {
+
+
+  app.use(function(req, res, next) {
+    fs.stat(config.root+'/var/maintenance.pid', function(err, stat) {
+      if(err == null) {
+        return res.json(503, {
+          'code': 'maintenance',
+          'message': 'Site Maintenance: Please try later'
+        });
+      }else {
+        next();
+      }
+    });
+  });
 
   // Insert routes below
   app.use('/api/v1/payment', require('./api/payment'));
