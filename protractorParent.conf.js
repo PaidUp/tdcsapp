@@ -20,28 +20,12 @@ exports.config = {
 //  chromeOnly: true,
 
   suites: {
+    //IMPORTANT
+    //comment and uncomment specs. only authPath is necessary in all specs.
     authPath: ['client/e2e/user/auth/auth.spec.js'],
-    //creditPath: ['client/e2e/credit/credit.workflow.spec.js']
-    //loanPath: [
-      // LOAN PAYMENT
-      //'client/e2e/loan/loan.workflow.spec.js'
-      // 'client/e2e/signup/*.spec.js',
-      // 'client/e2e/add-athlete/*.spec.js',
-      // 'client/e2e/select-team-for-athlete/*.spec.js',
-      // 'client/e2e/loan/apply.spec.js',
-      // 'client/e2e/loan/signContract.spec.js',
-      // 'client/e2e/loan/payment.spec.js',
-
-      // // CREDIT PAYMENT
-
-       //'client/e2e/user/payments/user.payments.spec.js'
-//      'client/e2e/loan/*.spec.js',
-    //],
-    
-    //provider: ['client/e2e/provider/provider.spec.js'],
-    //verifyBankAccountPath: ['client/e2e/user/payments/verify-bank-account.workflow.spec.js'],
-    //testFlowPath:['client/e2e/test-flow/test-flow.spec.js'],
-    //sadPath: []
+    athlete: ['client/e2e/athletes/add-athlete.spec.js'],
+    //updateAccount: ['client/e2e/user/account/account.update.spec.js'],
+    //addCreditCard: ['client/e2e/user/card/create.spec.js']
   },
 
   // Patterns to exclude.
@@ -58,28 +42,6 @@ exports.config = {
   },
 
   onPrepare: function(done) {
-    /*
-    browser.get('/').then(function () {
-      browser.wait(function () {
-        return element(by.css('.dropdown')).isDisplayed();
-      });
-      
-      console.log('ON PREPARE ==============');
-      var userMenu = element(by.css('.dropdown'));
-    userMenu.isDisplayed().then(function (isVisible) {
-      if (isVisible) {
-        userMenu.click();
-        var userMenuItems = element(by.css('.dropdown .dropdown-menu')).all(by.css('li > a'));
-        // LOGOUT BUTTON
-        console.log('LOGGING OUT ==============');
-        userMenuItems.last().click();
-        console.log('LOGOUT ==============');
-      }
-      done()
-    });
-    
-    */
-    
   },
 
   // ----- The test framework -----
