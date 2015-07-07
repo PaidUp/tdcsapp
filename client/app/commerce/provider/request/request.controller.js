@@ -1,7 +1,16 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('ProviderRequestCtrl', function ($scope, providerService, UserService, $state, AuthService) {
+  .controller('ProviderRequestCtrl', function ($scope, $rootScope, providerService, UserService, $state, AuthService) {
+    $rootScope.$emit('bar-welcome', {
+      left:{
+        url: ''
+      } ,
+      right:{
+        url: ''
+      }
+    });
+
     $scope.states = UserService.getStates();
     var user = AuthService.getCurrentUser();
     $scope.provider = {};

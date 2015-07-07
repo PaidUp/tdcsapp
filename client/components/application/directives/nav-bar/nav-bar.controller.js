@@ -2,11 +2,12 @@
 
 angular.module('convenienceApp')
   .controller('NavbarCtrl', function ($scope, $rootScope, $state, AuthService, CartService) {
+
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
     }];
-
+    
     $scope.isLoggedIn = function(){
       return AuthService.isLoggedIn();
     };
