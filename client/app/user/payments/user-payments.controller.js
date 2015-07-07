@@ -11,7 +11,7 @@ angular.module('convenienceApp')
         url: ''
       }
     });
-    $scope.loadingBanks = true;
+    $scope.loadingBanks = false;
     $scope.loadingCards = true;
 
     $scope.sendAlertErrorMsg = function (msg) {
@@ -21,14 +21,14 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
-
-    PaymentService.listBankAccounts().then(function (response) {
+    //Comment for bank is disabled.
+    /*PaymentService.listBankAccounts().then(function (response) {
       $scope.bankAccounts = angular.copy(response.bankAccounts);
       $scope.loadingBanks = false;
     }).catch(function (err) {
       $scope.loadingBanks = false;
       $scope.sendAlertErrorMsg(err.data.message);
-    });
+    });*/
 
     PaymentService.listCards().then(function (response) {
       $scope.loadingCards = false;
