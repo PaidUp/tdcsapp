@@ -114,7 +114,6 @@ angular.module('convenienceApp')
 
       if (orders === 0) {
         $scope.loading = false;
-        console.log("$scope.loading", $scope.loading);
       }else{
         angular.forEach(orders, function (order) {
           if($stateParams.athleteId == order.athleteId){
@@ -122,8 +121,6 @@ angular.module('convenienceApp')
             TeamService.getTeam(order.products[0].productId).then(function (team) {
               order.isOpen = false;
               order.team = team;
-              console.log('order' , order);
-
                 order.nextPaymentDate = getNextPaymentDate(order.schedulePeriods);
 
 
