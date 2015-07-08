@@ -87,9 +87,9 @@ function passwordResetRequest(data, cb){
 
 function passwordReset(data, cb){
   tdAuthService.init(config.connections.user);
-  tdAuthService.passwordReset(req.body, function (err, data) {
+  tdAuthService.passwordReset(data, function (err, dat) {
     if(err) return cb(err);
-    return cb(null, data);
+    return cb(null, dat);
   });
 };
 

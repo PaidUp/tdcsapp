@@ -72,7 +72,7 @@ exports.listBanks = function (req, res) {
         } else {
           if(dataBanks.bankAccounts.length === 0){
             dataUser[0].payment = {};
-            userService.save(userPrepared, function(err, user){
+            userService.save(dataUser[0], function(err, user){
               if(err){
                 return res.json(500,err);
               }
