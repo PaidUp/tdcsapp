@@ -11,7 +11,6 @@ var ProviderSchema = new Schema({
     teamAverageSize: { type: String, default: '1' },//email
     teamSport:{type: String},
     //End team info
-    
     //Owner info
     ownerId: { type: String},
     ownerFirstName: { type: String, required: true},//required //email //newDesign
@@ -21,7 +20,6 @@ var ProviderSchema = new Schema({
     ownerEmail: { type: String}, //email //response
     ownerPhone: { type: String}, //email
     //End owner info
-    
     //Billing info
     country: { type: String, default: 'US'},//required //email //response
     state: { type: String, required: true},//required //email //newDesign
@@ -30,20 +28,18 @@ var ProviderSchema = new Schema({
     averagePayment: { type: String, default: '1'}, //email
     EIN: { type: String, required: true},//required //email //newDesign
     Address: { type: String, required: true},//required //email //newDesign
+    AddressLineTwo: { type: String, required: true},//required //email //newDesign
     website: { type: String, default: 'https://www.convenieceselect.com'}, //email
     businessName: { type: String, required: true},//required //email //newDesign
     phoneNumber: { type: String, default: '0000000000'}, //email
     businessType: { type: String, required: true},//required //newDesign
     //End billing info
-    
     //Billing info
     aba: { type: String, required: true},//required //email //response //newDesign
     dda: { type: String, required: true},//required //email //response //newDesign
     //End billing info
-
     createAt: {type: Date, default: new Date()},
     updateAt: {type: Date, default: new Date()},
-    
     verify: {type: String,default:'pending'}
 });
 
