@@ -46,7 +46,7 @@
       </div>
       <div class="enrollments-acordion">
         <accordion close-others="true">
-          <accordion-group ng-repeat="order in orders" is-disabled="order.card" is-open="order.isOpen">
+          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt'" is-disabled="order.card" is-open="order.isOpen">
             <accordion-heading>
 
               <table class="table table-bordered">
