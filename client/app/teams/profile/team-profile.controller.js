@@ -89,10 +89,13 @@ angular.module('convenienceApp')
       });
     });
 
+    $scope.renderSubmit = true;
+
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {
+        $scope.renderSubmit = false;
         CartService.createCart().then(function () {
           CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
             $state.go('cart');
