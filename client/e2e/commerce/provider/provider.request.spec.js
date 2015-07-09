@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 var expectChai = chai.expect;
 
 describe('Provider request', function () {
-  var teamName, btnSave, ownerFirstName, ownerLastName, month, day, year, Address, ownerEmail, ownerPhone, city, state,
+  var teamName, btnSave, ownerFirstName, ownerLastName, month, day, year, Address, AddressLineTwo, ownerEmail, ownerPhone, city, state,
   zipCode, ownerSSN, businessType, businessName, EIN, aba, dda, ddaVerification;
   beforeEach(function() {
       teamName = element(by.model('provider.teamName'));
@@ -18,6 +18,7 @@ describe('Provider request', function () {
       day = element(by.model('provider.date.day'));
       year = element(by.model('provider.date.year'));
       Address = element(by.model('provider.Address'));
+      AddressLineTwo = element(by.model('provider.AddressLineTwo'));
       ownerEmail = element(by.model('provider.ownerEmail'));
       ownerPhone = element(by.model('provider.ownerPhone'));
       city = element(by.model('provider.city'));
