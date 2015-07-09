@@ -100,6 +100,7 @@ angular.module('convenienceApp', [
               url: ''
             }
           });
+          console.log('0');
           $state.go('main');
           event.preventDefault();
         }
@@ -110,14 +111,18 @@ angular.module('convenienceApp', [
       AuthService.isLoggedInAsync(function(loggedIn) {
         if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
           var authorize = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
+          console.log('authorize',authorize);
           if(!authorize){
             var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles, AuthService.getCurrentUser().meta.providerStatus);
+            console.log('1', newLocation);
             $state.go(newLocation);
             evt.preventDefault();
           }else{
+            console.log('2');
             return true;
           }
         }else{
+          console.log('3');
           return true;
         }
       });
