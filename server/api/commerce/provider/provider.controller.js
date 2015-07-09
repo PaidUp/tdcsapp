@@ -64,7 +64,13 @@ exports.providerResponse = function (req, res) {
           type:config.payment.legalEntity.type,
           businessName:provider.businessName,
           last4:provider.ownerSSN,
-          EIN:provider.EIN
+          EIN:provider.EIN,
+          line1:provider.Address,
+          line2:provider.AddressLineTwo,
+          city:provider.city || 'Austin',
+          state:provider.state || 'Tx',
+          postalCode:provider.zipCode,
+          country:provider.country || 'US'
         };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
