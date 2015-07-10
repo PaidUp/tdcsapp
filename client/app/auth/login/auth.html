@@ -125,8 +125,11 @@
                     </label>
                   </div>
 
-                  <button class="btn btn-inverse btnSignUp btn-block" type="submit" id='submit-email-login'>
+                  <button class="btn btn-inverse btnSignUp btn-block" ng-hide="disabelSubmit" type="submit" id='submit-email-login'>
                     Sign up with email
+                  </button>
+                  <button class="btn btnCancel btnCancel btn-block" ng-show="disabelSubmit" type="button" id='submit-email-login-wait'>
+                    Please wait a moment...
                   </button>
                   <br>
                   <div class="text-center">
