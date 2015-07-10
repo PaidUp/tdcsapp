@@ -154,12 +154,20 @@
             <br>
 
             <div class="form-group">
-              <label>Home address</label>
-              <input type="text" name="Address" class="form-control" placeholder="Home address" ng-model="provider.Address" ng-maxlength="128" required ng-required="true">
+              <label>address</label>
+              <input type="text" name="Address" class="form-control" placeholder="Street address/PO Box/Company name" ng-model="provider.Address" ng-maxlength="128" required ng-required="true">
               <div class="text-CS text-center" ng-show="ownerForm.Address.$error.required && submitted">
                 <small class="text-CS">Home address is required</small>
               </div>
               <div class="text-CS text-center" ng-show="ownerForm.Address.$error.maxlength && submitted">
+                <small class="text-CS">Home address exceeds 128 characters</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <!--<label>Home address</label>-->
+              <input type="text" name="AddressLineTwo" class="form-control" placeholder="Apartment/Suite/Unit/Building" ng-model="provider.AddressLineTwo" ng-maxlength="128">
+              <div class="text-CS text-center" ng-show="ownerForm.AddressLineTwo.$error.maxlength && submitted">
                 <small class="text-CS">Home address exceeds 128 characters</small>
               </div>
             </div>
