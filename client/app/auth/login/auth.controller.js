@@ -9,10 +9,10 @@ angular.module('convenienceApp')
 
       openModal: function () {
         $rootScope.modalInstance = $modal.open({
-            templateUrl: 'auth.html',
-            controller: 'AuthCtrl',
-            size: 'sm'
-          });
+          templateUrl: 'auth.html',
+          controller: 'AuthCtrl',
+          size: 'sm'
+        });
       },
 
       showContent : function(content) {
@@ -117,9 +117,12 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
     $scope.emailClick = $scope.emailClick ? false : true;
   };
 
+  $scope.disabelSubmit = false;
+
   $scope.register = function(form) {
     $scope.submitted = true;
     if(form.$valid) {
+      $scope.disabelSubmit = true;
       var user = {
         firstName: $scope.user.firstName,
         lastName: $scope.user.lastName
@@ -145,6 +148,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
       var error = function (err) {
         $scope.error = err.message;
+        $scope.disabelSubmit = false;
       };
       AuthService.createUser(user, success, error);
     }
@@ -166,12 +170,12 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
     $scope.submitted = true;
     if (form.$valid) {
       AuthService.resetPassword($rootScope.token, $scope.password, function(){
-        delete $rootScope.token;
-        $scope.modal.closeModal();
-      },
-      function(err){
-        $scope.error = err.message;
-      });
+          delete $rootScope.token;
+          $scope.modal.closeModal();
+        },
+        function(err){
+          $scope.error = err.message;
+        });
     }
   };
   // END RESET function
