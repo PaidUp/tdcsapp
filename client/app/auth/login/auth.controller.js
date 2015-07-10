@@ -9,10 +9,10 @@ angular.module('convenienceApp')
 
       openModal: function () {
         $rootScope.modalInstance = $modal.open({
-            templateUrl: 'auth.html',
-            controller: 'AuthCtrl',
-            size: 'sm'
-          });
+          templateUrl: 'auth.html',
+          controller: 'AuthCtrl',
+          size: 'sm'
+        });
       },
 
       showContent : function(content) {
@@ -170,12 +170,12 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
     $scope.submitted = true;
     if (form.$valid) {
       AuthService.resetPassword($rootScope.token, $scope.password, function(){
-        delete $rootScope.token;
-        $scope.modal.closeModal();
-      },
-      function(err){
-        $scope.error = err.message;
-      });
+          delete $rootScope.token;
+          $scope.modal.closeModal();
+        },
+        function(err){
+          $scope.error = err.message;
+        });
     }
   };
   // END RESET function
