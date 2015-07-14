@@ -29,6 +29,7 @@ angular.module('convenienceApp', [
     }
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
+
   })
 
   .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
