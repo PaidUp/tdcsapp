@@ -1,4 +1,4 @@
-<!doctype html>
+<html data-ng-app="convenienceApp">
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -79,7 +79,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
 </script>-->
 
   </head>
-  <body ng-app="convenienceApp" ng-controller="MainCtrl" id="top">
+  <body  ng-controller="MainCtrl" id="top">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -108,9 +108,9 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
     <!-- Site footer -->
     <footer-bar class="hidden-print"></footer-bar>
 
-    <!--[if lt IE 9]>
+    <!--[if lt IE 11]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <script src="bower_components/json2/json2.js"></script>
     <![endif]-->
     <!-- BALANCED PAYMENTS -->
     <script type="text/javascript" src="https://js.balancedpayments.com/v1/balanced.min.js" async defer></script>
