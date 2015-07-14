@@ -1,4 +1,4 @@
-<html data-ng-app="convenienceApp">
+<!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -79,7 +79,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
 </script>-->
 
   </head>
-  <body  ng-controller="MainCtrl" id="top">
+  <body data-ng-app="convenienceApp" ng-controller="MainCtrl" id="top">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -99,8 +99,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
     <div class="main">
 
         <div class="space" ui-view autoscroll="true">
-
-        </div>
+      </div>
 
     </div>
     <!-- End Jumbotron -->
