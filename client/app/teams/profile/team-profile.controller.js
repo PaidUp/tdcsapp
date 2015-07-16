@@ -18,21 +18,22 @@ angular.module('convenienceApp')
     $scope.athletes = [];
     // $scope.athlete = {};
 
+    $scope.renderTeams = false;
+
+    function loadTeams(team){
+      if(team.attributes.type === 'grouped'){
+        $scope.renderTeams = true;
+        TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
+          $scope.teams = teams;
+        }).catch(function (err) {
+
+        });
+      }
+    };
 
 
-
-
-    function loadTeam(teamID){
+    function loadTeam(teamID, cb){
       TeamService.getTeam(teamID).then(function (team) {
-
-        if(team.attributes.type === 'grouped'){
-          TeamService.getTeamsGrouped(teamID).then(function (teams) {
-            $scope.teams = teams;
-          }).catch(function (err) {
-
-          });
-        }
-
         $scope.team = team;
         $scope.price = Number($scope.team.attributes.price);
         $scope.selectedCustomOptions = {
@@ -47,12 +48,14 @@ angular.module('convenienceApp')
             $scope.changeCustomOptions(element , element.values[0]);
           }
         });
-
+        cb(team);
       });
     };
 
 
-    loadTeam($stateParams.teamId);
+    loadTeam($stateParams.teamId, function(team){
+      loadTeams(team)
+    });
 
 
     $scope.underAges = TeamService.getTeamUnderAges($stateParams.teamId);
@@ -121,10 +124,12 @@ angular.module('convenienceApp')
     };
 
     $scope.updateTeam = function(teamSelected){
+      console.log('teamSelected' , teamSelected.attributes.productId);
+      loadTeam(teamSelected.attributes.productId);
       $scope.price = Number(teamSelected.attributes.price);
       $scope.selectedCustomOptions = {
-        productId: teamSelected.attributes.productId,
-        sku: teamSelected.attributes.sku,
+        //productId: teamSelected.attributes.productId,
+        //sku: teamSelected.attributes.sku,
         qty: 1,
         options: {}
       };

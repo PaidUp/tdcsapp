@@ -30,7 +30,7 @@
             </div>
             <br>
 
-            <div ng-if="team.attributes.type === 'grouped'">
+            <div ng-if="renderTeams">
               <label>Team</label>
               <select id="selectTeam"
                       class="form-control"
@@ -45,7 +45,7 @@
             </div>
 
 
-            <div ng-if="team.attributes.type === 'simple'" ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
+            <div ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
               <!-- <custom-options ng-model="optionModel"
                               type="customOption.type"
                               title="customOption.title"
