@@ -95,6 +95,8 @@ angular.module('convenienceApp')
     $scope.renderSubmit = true;
 
     $scope.enrollNow = function () {
+      CartService.setTeam($scope.team);
+      CartService.setProducts($scope.selectedCustomOptions);
       $scope.submitted = true;
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {
@@ -124,16 +126,9 @@ angular.module('convenienceApp')
     };
 
     $scope.updateTeam = function(teamSelected){
-      console.log('teamSelected' , teamSelected.attributes.productId);
-      loadTeam(teamSelected.attributes.productId);
-      $scope.price = Number(teamSelected.attributes.price);
-      $scope.selectedCustomOptions = {
-        //productId: teamSelected.attributes.productId,
-        //sku: teamSelected.attributes.sku,
-        qty: 1,
-        options: {}
-      };
+      loadTeam(teamSelected.attributes.productId, function(team){
 
+      });
     };
 
     // $scope.selectAthlete = function (athlete) {

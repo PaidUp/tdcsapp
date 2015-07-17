@@ -6,7 +6,7 @@ var config = require('../../../config/environment');
 var mix = require('../../../config/mixpanel');
 
 exports.getSchedule = function (req, res) {
-  commerceService.getSchedule(req.params.productId, function (err, data) {
+  commerceService.getSchedule(req.body.productId, req.body.price, req.body.isInFullPay, function (err, data) {
     if (err) {
       return handleError(res, err);
     }

@@ -38,9 +38,11 @@ angular.module('convenienceApp')
 
       var currentCartId = CartService.getCurrentCartId();
       CartService.getCart(currentCartId).then(function (value) {
+        console.log('cart' , value);
         var products = value.items;
         products.forEach(function (ele, idx, arr) {
-          CommerceService.getSchedule(ele.productId).then(function (val) {
+          var isInFullPay = CartService.hasProductBySKU('PMINFULL');
+          CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
             $scope.schedules.push({
               name: ele.name,
               periods: val.schedulePeriods
