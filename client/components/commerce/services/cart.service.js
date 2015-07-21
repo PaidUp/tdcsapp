@@ -11,6 +11,28 @@ angular.module('convenienceApp')
       CartService.removeCurrentCart();
     });
 
+    this.setTeam = function(team){
+      this.team = team;
+    }
+
+    this.setProducts = function(prod){
+      this.products = prod;
+    }
+
+    this.hasProductBySKU = function(sku){
+      var result = false;
+      CartService.team.attributes.customOptions.forEach(function(ele, idx, arr){
+        ele.forEach(function(option, idx2, arr2){
+          option.values.forEach(function(value, idx3, arr3){
+            if(value.sku == sku){
+              result = CartService.products.options[option.optionId] == value.valueId;
+            }
+          });
+        });
+      });
+      return result;
+    };
+
     this.createCart = function() {
       var deferred = $q.defer();
       var CartService = this;
@@ -34,6 +56,7 @@ angular.module('convenienceApp')
     };
 
     this.addProductToCart = function (products, athlete) {
+      console.log('this.products', this.products);
       var cartId = this.getCurrentCartId();
       var deferred = $q.defer();
       Cart.save({action: 'add'}, {
