@@ -6,6 +6,6 @@ var controller = require('./schedule.controller');
 
 var router = express.Router();
 
-router.get('/generate/product/:productId' , controller.getSchedule);
+router.post('/generate' , controller.getSchedule);
 
 module.exports = router;
