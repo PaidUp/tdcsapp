@@ -19,6 +19,7 @@ angular.module('convenienceApp')
     // $scope.athlete = {};
 
     $scope.renderTeams = false;
+    $scope.disablePayNow = false;
 
     function loadTeams(team){
       if(team.attributes.type === 'grouped'){
@@ -100,7 +101,7 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {
-        $scope.renderSubmit = false;
+        $scope.disablePayNow = true;
         CartService.createCart().then(function () {
           CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
             $state.go('cart');
@@ -110,6 +111,7 @@ angular.module('convenienceApp')
           });
         }).catch(function (err) {
           $scope.enrolled = false;
+          $scope.disablePayNow = false;
           $scope.sendAlertErrorMsg(err.data.message);
         });
       }
@@ -125,9 +127,11 @@ angular.module('convenienceApp')
         $scope.team.attributes.customOptions[0]);
     };
 
-    $scope.updateTeam = function(teamSelected){
-      loadTeam(teamSelected.attributes.productId, function(team){
 
+    $scope.updateTeam = function(teamSelected){
+      $scope.disablePayNow = true;
+      loadTeam(teamSelected.attributes.productId, function(team){
+        $scope.disablePayNow = false;
       });
     };
 

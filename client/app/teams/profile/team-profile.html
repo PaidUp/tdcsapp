@@ -108,7 +108,8 @@
             <br>
             <br>
             <br>
-            <button type="submit" ng-show="renderSubmit" class="btn btnSignUp btn-block btn-enroll"><strong class="">Pay Now</strong></button>
+            <button type="submit" ng-show="!disablePayNow" class="btn btnSignUp btn-block btn-enroll"><strong class="">Pay Now</strong></button>
+            <button type="button" ng-show="disablePayNow" class="btn btnCancel btn-block btn-enroll"><strong class="">Wait a moment...</strong></button>
           </form>
         </div>
       </div>
