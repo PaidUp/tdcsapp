@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .service('CartService', function ($cookieStore, $resource, $q, $rootScope) {
+  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService) {
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -11,21 +11,23 @@ angular.module('convenienceApp')
       CartService.removeCurrentCart();
     });
 
+    CartService.els = new encryptService('ZxssW2#e43,')
+
     this.setTeam = function(team){
-      this.team = team;
+      this.els.set('team', team);
     }
 
     this.setProducts = function(prod){
-      this.products = prod;
+      this.els.set('products', prod);
     }
 
     this.hasProductBySKU = function(sku){
       var result = false;
-      CartService.team.attributes.customOptions.forEach(function(ele, idx, arr){
+      this.els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
         ele.forEach(function(option, idx2, arr2){
           option.values.forEach(function(value, idx3, arr3){
             if(value.sku == sku){
-              result = CartService.products.options[option.optionId] == value.valueId;
+              result = CartService.els.get('products').options[option.optionId] == value.valueId;
             }
           });
         });
@@ -56,7 +58,6 @@ angular.module('convenienceApp')
     };
 
     this.addProductToCart = function (products, athlete) {
-      console.log('this.products', this.products);
       var cartId = this.getCurrentCartId();
       var deferred = $q.defer();
       Cart.save({action: 'add'}, {
@@ -76,6 +77,7 @@ angular.module('convenienceApp')
     this.removeCurrentCart = function() {
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
+      $cookieStore.remove('team');
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 

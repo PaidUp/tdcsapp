@@ -77,6 +77,10 @@ angular.module('convenienceApp', [
     };
   })
 
+  .factory('encryptService', [function() {
+    return EncryptedLocalStorage;
+  }])
+
   .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll, $urlRouter) {
 
     $anchorScroll.yOffset = 100;

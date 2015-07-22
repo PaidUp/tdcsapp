@@ -21,7 +21,8 @@
     "moment-range": "~1.0.7",
     "angular-number-picker": "~1.0.2",
     "angular-ui-utils": "~0.2.2",
-    "jquery-waypoints": "~3.1.1"
+    "jquery-waypoints": "~3.1.1",
+    "CryptoJS": "~3.1.12"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
