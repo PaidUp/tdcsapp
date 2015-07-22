@@ -5,7 +5,7 @@ angular.module('convenienceApp')
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
-      } ,
+      },
       right:{
         url: ''
       }
