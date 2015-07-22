@@ -115,6 +115,8 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+
+    <script src="bower_components/CryptoJS/build/rollups/tripledes.js"></script>
     <!-- BALANCED PAYMENTS -->
     <script type="text/javascript" src="https://js.balancedpayments.com/v1/balanced.min.js" async defer></script>
     <!-- END BALANCED PAYMENTS -->
@@ -260,12 +262,14 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
           <script src="components/teams/directives/list-teams/list-teams.controller.js"></script>
           <script src="components/teams/directives/list-teams/list-teams.directive.js"></script>
           <script src="components/teams/services/teams.service.js"></script>
+          <script src="components/util/encryptedLocalstorage.js"></script>
           <!-- endinjector -->
           <!-- injector:test -->
           <script src="bower_components/angular-mocks/angular-mocks.js"></script>
           <script src="e2e/e2e.mock.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
+
 
 
 

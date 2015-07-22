@@ -38,7 +38,6 @@ angular.module('convenienceApp')
 
       var currentCartId = CartService.getCurrentCartId();
       CartService.getCart(currentCartId).then(function (value) {
-        console.log('cart' , value);
         var products = value.items;
         products.forEach(function (ele, idx, arr) {
           var isInFullPay = CartService.hasProductBySKU('PMINFULL');
