@@ -16,7 +16,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -85,7 +87,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
         }
 </script>
   </head>
-  <body ng-app="convenienceApp" ng-controller="MainCtrl" id="top" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
+  <body data-ng-app="convenienceApp" ng-controller="MainCtrl" id="top" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -105,8 +107,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
     <div class="main">
 
         <div class="space" ui-view autoscroll="true">
-
-        </div>
+      </div>
 
     </div>
     <!-- End Jumbotron -->
@@ -118,6 +119,8 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+
+    <script src="bower_components/CryptoJS/build/rollups/tripledes.js"></script>
     <!-- BALANCED PAYMENTS -->
     <script type="text/javascript" src="https://js.balancedpayments.com/v1/balanced.min.js" async defer></script>
     <!-- END BALANCED PAYMENTS -->
@@ -225,6 +228,7 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
           <script src="app/user/payments/user-payments.controller.js"></script>
           <script src="app/user/payments/verify-bank-account/verify-bank-account.controller.js"></script>
           <script src="app/user/templates/user-bar.controller.js"></script>
+          <script src="components/application/directives/IEAlert/ie-alert.directive.js"></script>
           <script src="components/application/directives/alert/alert.directive.js"></script>
           <script src="components/application/directives/contact-us/contact-us.directive.js"></script>
           <script src="components/application/directives/footer-bar/footer-bar.directive.js"></script>
@@ -262,12 +266,17 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
           <script src="components/teams/directives/list-teams/list-teams.controller.js"></script>
           <script src="components/teams/directives/list-teams/list-teams.directive.js"></script>
           <script src="components/teams/services/teams.service.js"></script>
+          <script src="components/util/encryptedLocalstorage.js"></script>
           <!-- endinjector -->
           <!-- injector:test -->
           <script src="bower_components/angular-mocks/angular-mocks.js"></script>
           <script src="e2e/e2e.mock.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
+
+
+
+
         <!-- begin olark code -->
         <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
         f[z]=function(){

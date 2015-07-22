@@ -34,11 +34,16 @@ angular.module('convenienceApp')
 
 
 
+    var isInFullPay = null;
+    var price = null;
+
     var currentCartId = CartService.getCurrentCartId();
     CartService.getCart(currentCartId).then(function (value) {
       var products = value.items;
       products.forEach(function (ele, idx, arr) {
-        CommerceService.getSchedule(ele.productId).then(function (val) {
+        isInFullPay = CartService.hasProductBySKU('PMINFULL');
+        price = ele.price;
+        CommerceService.getSchedule(ele.productId, price, isInFullPay ).then(function (val) {
           $scope.schedules.push({
             name: ele.name,
             periods: val.schedulePeriods
@@ -336,7 +341,9 @@ angular.module('convenienceApp')
             athleteFirstName: CartService.getAthlete().firstName,
             athleteLastName: CartService.getAthlete().lastName,
             payment: 'onetime',
-            paymentMethod: 'creditcard'
+            paymentMethod: 'creditcard',
+            isInFullPay : isInFullPay,
+            price: price
           };
           PaymentService.sendPayment(payment).then(function () {
             CartService.removeCurrentCart();

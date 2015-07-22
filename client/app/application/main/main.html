@@ -252,7 +252,7 @@
           <div class="upTo">
             Up to <span>Unlimited Athletes</span>
           </div>
-          <button type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
+          <button id="btnSignup" type="submit" class="btn btnChoose btn-block btn-block" ng-click="modal.showContent('signup'); modal.openModal(); destPath('provider-request', false);" ng-show="!isLoggedIn()">Choose Plan</button>
         </div>
       </div>
 
@@ -290,3 +290,6 @@
     <!--carousel end-->
   </div>
 </div>
+<!--[if lt IE 10]>
+<iealert></iealert>
+<!--<![endif]-->

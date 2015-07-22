@@ -52,7 +52,10 @@ exports.place = function(req, res) {
     athleteFirstName: req.body.athleteFirstName,
     athleteLastName: req.body.athleteLastName,
     cardId: req.body.cardId,
-    customerId: req.user.meta.TDPaymentId
+    customerId: req.user.meta.TDPaymentId,
+    isInFullPay: req.body.isInFullPay,
+    price :req.body.price
+
   }
   // Process order
   if (req.body.payment == "loan") {

@@ -7,6 +7,7 @@ angular.module('convenienceApp')
     var minDate = moment().subtract(60, 'year');
     var currentUser = $rootScope.currentUser;
     $scope.modalFactory = ModalFactory;
+    $scope.renderSubmit = true;
 
     $scope.isValidDate = function () {
       // moment.js takes the month as an array position so:
@@ -72,6 +73,7 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       $scope.isValidDate();
       if ($scope.addAthleteForm.$valid) {
+        $scope.renderSubmit = false;
         $scope.createChild();
       }
     };

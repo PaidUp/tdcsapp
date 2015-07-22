@@ -33,10 +33,10 @@
           <li class="" ng-show="!isLoggedIn()">
             <a href="" ng-click="goTo('/faq'); toggleMenu()">FAQ</a>
           </li>
-          <li class="my-athletes" ng-show="isLoggedIn()  && isUser()">
+          <li class="my-athletes" ng-show="isLoggedIn()  && isUser()" ng-click="toggleMenu()">
             <a href="" ui-sref="athletes">My Athlete(s)</a>
           </li>
-          <li ng-show="isLoggedIn() && isUser()">
+          <li ng-show="isLoggedIn() && isUser()" ng-click="toggleMenu()">
             <a href="" ui-sref="teams-dashboard">Teams</a>
           </li>
           <li ng-show="!isLoggedIn()">
@@ -58,7 +58,7 @@
             </a>
             <ul class="dropdown-menu" role="menu">
               <li>
-                <a href="" ui-sref="user-account">
+                <a href="" ui-sref="user-account" ng-click="toggleMenu()">
                   <span class="glyphicon glyphicon-user"></span>
                   Profile
                 </a>
@@ -76,14 +76,14 @@
                 </a>
               </li> -->
               <li>
-                <a id="signout" href="#" ng-click="logout()">
+                <a id="signout" href="#" ng-click="logout(); toggleMenu()">
                   <span class="glyphicon glyphicon-off"></span>
                   Sign Out
                 </a>
               </li>
             </ul>
           </li>
-          <li ng-show="isLoggedIn() && isUser()">
+          <li ng-show="isLoggedIn() && isUser()" ng-click="toggleMenu()">
             <a ui-sref="cart">
               <i class="fa fa-shopping-cart cart" ng-class="{ 'text-CS': itemCount && itemCount > 0 }"></i>
               <!-- <div class="shopping-cart">{{itemCount}}</div> -->
