@@ -70,7 +70,6 @@ angular.module('convenienceApp', [
   })
 
   .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll, $urlRouter) {
-
     $anchorScroll.yOffset = 100;
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -100,33 +99,31 @@ angular.module('convenienceApp', [
               url: ''
             }
           });
-          console.log('0');
           $state.go('main');
           event.preventDefault();
         }
       });
     });
 
-    $rootScope.$on('$locationChangeSuccess', function(evt) {
+    /**
+      this method was comment because have a bug in the redirect.
+    */
+    /*$rootScope.$on('$locationChangeSuccess', function(evt) {
       AuthService.isLoggedInAsync(function(loggedIn) {
         if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
           var authorize = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
-          console.log('authorize',authorize);
           if(!authorize){
             var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles, AuthService.getCurrentUser().meta.providerStatus);
-            console.log('1', newLocation);
             $state.go(newLocation);
             evt.preventDefault();
           }else{
-            console.log('2');
             return true;
           }
         }else{
-          console.log('3');
           return true;
         }
       });
-    });
+    });*/
 
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
       $state.previous = fromState;
@@ -146,6 +143,14 @@ angular.module('convenienceApp', [
               type:'warning',
               templateUrl: 'components/application/directives/alert/alerts/verify-bank-account.html'
             });
+          }
+          if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
+            var authorize = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
+            if(!authorize){
+              var newLocation = AuthService.reLocation(AuthService.getCurrentUser().roles, AuthService.getCurrentUser().meta.providerStatus);
+              $state.go(newLocation);
+              event.preventDefault();
+            }
           }
         }
       });
