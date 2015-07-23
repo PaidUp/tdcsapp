@@ -477,10 +477,10 @@ exports.sendEmailReminderPyamentParents = function (order, cb) {
             if (error) {
               return cb(err);
             } else {
-              //return cb(null, info);
+              return cb(null, info);
             }
           });
-          return cb(null, true);
+          //return cb(null, true);
         });
       });
   });
