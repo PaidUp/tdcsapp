@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService) {
+  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -11,28 +11,37 @@ angular.module('convenienceApp')
       CartService.removeCurrentCart();
     });
 
-    CartService.els = new encryptService('ZxssW2#e43,')
-
-    this.setTeam = function(team){
-      this.els.set('team', team);
-    }
-
-    this.setProducts = function(prod){
-      this.els.set('products', prod);
-    }
-
-    this.hasProductBySKU = function(sku){
-      var result = false;
-      this.els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
-        ele.forEach(function(option, idx2, arr2){
-          option.values.forEach(function(value, idx3, arr3){
-            if(value.sku == sku){
-              result = CartService.els.get('products').options[option.optionId] == value.valueId;
-            }
-          });
-        });
+    this.setCartDetails = function(team , prod){
+      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+        if(err){
+          console.log('getSessionSalt',err);
+        }else{
+          var els = new encryptService(salt);
+          els.set('team', team);
+          els.set('products', prod);
+        }
       });
-      return result;
+    }
+
+    this.hasProductBySKU = function(sku, cb){
+      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+        if(err){
+          console.log('getSessionSalt',err);
+        }else{
+          var els = new encryptService(salt);
+          var result = false;
+          els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
+            ele.forEach(function(option, idx2, arr2){
+              option.values.forEach(function(value, idx3, arr3){
+                if(value.sku == sku){
+                  result = els.get('products').options[option.optionId] == value.valueId;
+                }
+              });
+            });
+          });
+          cb(result);
+        }
+      });
     };
 
     this.createCart = function() {

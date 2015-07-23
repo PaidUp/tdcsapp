@@ -32,28 +32,20 @@ angular.module('convenienceApp')
 
     $scope.schedules = [];
 
-
-
-    var isInFullPay = null;
-    var price = null;
-
     var currentCartId = CartService.getCurrentCartId();
     CartService.getCart(currentCartId).then(function (value) {
       var products = value.items;
       products.forEach(function (ele, idx, arr) {
-        isInFullPay = CartService.hasProductBySKU('PMINFULL');
-        price = ele.price;
-        CommerceService.getSchedule(ele.productId, price, isInFullPay ).then(function (val) {
-          $scope.schedules.push({
-            name: ele.name,
-            periods: val.schedulePeriods
+        CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
+          CommerceService.getSchedule(ele.productId, ele.price, isInFullPay ).then(function (val) {
+            $scope.schedules.push({
+              name: ele.name,
+              periods: val.schedulePeriods
+            });
           });
         });
       });
-
     });
-
-
 
     ApplicationConfigService.getConfig().then(function (config) {
       Stripe.setPublishableKey(config.stripeApiPublic);
@@ -311,8 +303,6 @@ angular.module('convenienceApp')
                   $scope.sendAlertErrorMsg(response.error[key]);
                 }
               });
-
-
             }
           });
         } else {
@@ -330,28 +320,42 @@ angular.module('convenienceApp')
           };
           var addressShipping = angular.extend({}, addressBilling);
           addressShipping.mode = 'shipping';
-          var payment = {
-            cartId: CartService.getCurrentCartId(),
-            addresses: [
-              addressBilling,
-              addressShipping
-            ],
-            cardId: $scope.card.token,
-            userId: CartService.getUserId(),
-            athleteFirstName: CartService.getAthlete().firstName,
-            athleteLastName: CartService.getAthlete().lastName,
-            payment: 'onetime',
-            paymentMethod: 'creditcard',
-            isInFullPay : isInFullPay,
-            price: price
-          };
-          PaymentService.sendPayment(payment).then(function () {
-            CartService.removeCurrentCart();
-            $scope.saveOrUpdateBillingAddress();
-            $state.go('thank-you');
-          }).catch(function (err) {
-            $scope.sendAlertErrorMsg(err);
-          });
+
+          var isInFullPay = null;
+          var price = null;
+
+          CartService.getCart(currentCartId).then(function (value) {
+            var products = value.items;
+            products.forEach(function (ele, idx, arr) {
+              CartService.hasProductBySKU('PMINFULL', function(isInFullP){
+                isInFullPay = isInFullP;
+                price = ele.price;
+
+                var payment = {
+                  cartId: CartService.getCurrentCartId(),
+                  addresses: [
+                    addressBilling,
+                    addressShipping
+                  ],
+                  cardId: $scope.card.token,
+                  userId: CartService.getUserId(),
+                  athleteFirstName: CartService.getAthlete().firstName,
+                  athleteLastName: CartService.getAthlete().lastName,
+                  payment: 'onetime',
+                  paymentMethod: 'creditcard',
+                  isInFullPay : isInFullPay,
+                  price: price
+                };
+                PaymentService.sendPayment(payment).then(function () {
+                  CartService.removeCurrentCart();
+                  $scope.saveOrUpdateBillingAddress();
+                  $state.go('thank-you');
+                }).catch(function (err) {
+                  $scope.sendAlertErrorMsg(err);
+                });
+              });
+              });
+            });
         }
       } else {
         $scope.placedOrder = false;
@@ -363,6 +367,4 @@ angular.module('convenienceApp')
         $scope.$parent.card[modelField] = '';
       }
     }
-
-
   });
