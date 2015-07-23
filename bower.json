@@ -22,7 +22,8 @@
     "angular-number-picker": "~1.0.2",
     "angular-ui-utils": "~0.2.2",
     "jquery-waypoints": "~3.1.1",
-    "CryptoJS": "~3.1.12"
+    "CryptoJS": "~3.1.12",
+    "node-uuid": "~1.4.3"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

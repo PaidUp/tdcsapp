@@ -52,7 +52,14 @@ exports.emailUpdate = function(req, res, next) {
 
 exports.passwordUpdate = function(req, res, next) {
   mix.panel.track("passwordUpdate", req.body);
-  authService.passwordUpdate(req.body, req.params.userId, function (err, data) { 
+  authService.passwordUpdate(req.body, req.params.userId, function (err, data) {
+    if(err) res.json(402, err);
+    res.json(200, data);
+  });
+};
+
+exports.getSessionSalt = function(req, res, next) {
+  authService.getSessionSalt(req.body.token, function (err, data) {
     if(err) res.json(402, err);
     res.json(200, data);
   });

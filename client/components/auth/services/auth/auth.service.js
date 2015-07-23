@@ -206,6 +206,18 @@ angular.module('convenienceApp')
         });
       },
 
+      getSessionSalt: function(token,cb) {
+        $http.post('/api/v1/auth/session/salt', {
+          token : token
+        }).
+          success(function(data) {
+            cb(null, data);
+          }).
+          error(function(err) {
+            cb(err);
+          });
+      },
+
       verifyEmailToken: function(token, successFn, errorFn){
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;

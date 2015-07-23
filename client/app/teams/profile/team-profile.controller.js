@@ -99,8 +99,7 @@ angular.module('convenienceApp')
     $scope.renderSubmit = true;
 
     $scope.enrollNow = function () {
-      CartService.setTeam($scope.team);
-      CartService.setProducts($scope.selectedCustomOptions);
+      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions);
       $scope.submitted = true;
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {

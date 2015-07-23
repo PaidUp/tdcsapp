@@ -40,18 +40,18 @@ angular.module('convenienceApp')
       CartService.getCart(currentCartId).then(function (value) {
         var products = value.items;
         products.forEach(function (ele, idx, arr) {
-          var isInFullPay = CartService.hasProductBySKU('PMINFULL');
-          CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
-            $scope.schedules.push({
-              name: ele.name,
-              periods: val.schedulePeriods
-            });
-            val.schedulePeriods.forEach(function(ele, idx, arr){
-              $scope.totalPrice += parseFloat(ele.price) ;
+          CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
+            CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
+              $scope.schedules.push({
+                name: ele.name,
+                periods: val.schedulePeriods
+              });
+              val.schedulePeriods.forEach(function(ele, idx, arr){
+                $scope.totalPrice += parseFloat(ele.price) ;
+              });
             });
           });
         });
-
       });
 
       CartService.getTotals(cartId).then(function (totals) {
