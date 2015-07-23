@@ -38,8 +38,10 @@
                       name="selectTeam"
                       ng-required="true"
                       ng-options="team.attributes.description for team in teams"
-                      ng-change="updateTeam(teamSelected)">
+                      ng-change="updateTeam(teamSelected)"
+                      ng-show="showDropDownTeams">
               </select>
+              <div ng-hide="showDropDownTeams" class="alert alert-warning">Loading teams...</div>
 
 
             </div>
