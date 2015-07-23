@@ -11,10 +11,10 @@ var jobs =
     // Reminder email before Payments
     function(callback) {
       logger.log('info','paymentCronService.reminderPayments');
-      //paymentCronService.collectCreditCard(function (err, data) {
-        //if (err) callback(err);
+      paymentCronService.sendEmailReminderParents(function (err, data) {
+        if (err) callback(err);
         callback(null, true);
-      //});
+      });
     },
     // Collect One Time Payments
     function(callback) {

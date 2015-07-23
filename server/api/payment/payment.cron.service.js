@@ -14,6 +14,21 @@ var loanApplicationService = require('../loan/application/loanApplication.servic
 var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 
+function sendEmailReminder(pendingOrders, callback){
+  pendingOrders.map(function(order){
+    //access to schedule payment and verify the paymentDue
+    //moment
+    //if(){
+
+    //}
+    paymentEmailService.sendEmailReminderPyamentParents(order, function (err, data){
+      if(err){
+        callback(err);
+      };
+      callback(null, data);//data = true
+    });
+  });
+};
 
 function collectPendingOrders(callback){
   paymentService.collectPendingOrders(function (err, pendingOrders){
@@ -75,7 +90,15 @@ exports.collectCreditCard = function(cb){
   ], function(err, result){
     cb(null, true);
   });
+};
 
+exports.sendEmailReminderParents = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    sendEmailReminder
+  ], function(err, result){
+    cb(null, true);
+  });
 };
 
 exports.collectOneTimePayments = function (cb) {

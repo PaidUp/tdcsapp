@@ -448,6 +448,44 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
   });
 };
 
+exports.sendEmailReminderPyamentParents = function (order, cb) {
+  //console.log('userId',order.userId);
+  //console.log('incrementId',order.incrementId);
+  //console.log('schedulePeriods',order.schedulePeriods);
+  userService.find({_id:order.userId}, function(err, user){
+    if (err) return cb(err);
+    if (!user[0]) return cb(false);
+    //console.log('user',user[0].email);
+
+      emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
+        if (errTemplate) return cb(errTemplate);
+        var emailVars = config.emailVars;
+        emailVars.userFirstName = user[0].firstName;
+        emailVars.Last4Digits = 'XXXX';
+        emailVars.amount = "100";//parseFloat(order.schedulePeriods[0].price).toFixed(2);
+        emailVars.datePaymentDue = new moment(order.schedulePeriods[0].datePaymentDue).format("dddd, MMMM Do YYYY");
+        emailVars.teamName = "Austin Boom";//order.sku;
+        template('payment/laterChargePayment', emailVars, function (err, html, text) {
+          if (err) return cb(err);
+          var mailOptions = config.emailOptions;
+          mailOptions.html = html;
+          mailOptions.to = user[0].email;
+          mailOptions.bcc = config.emailContacts.developer;
+          mailOptions.subject = 'Send email reminder to parents 72 hours before payment';
+          mailOptions.attachments = [];
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return cb(err);
+            } else {
+              //return cb(null, info);
+            }
+          });
+          return cb(null, true);
+        });
+      });
+  });
+};
+
 function getNameTeamFromOrder(orderId, cb){
   commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){
