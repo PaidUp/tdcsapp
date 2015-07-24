@@ -8,20 +8,24 @@ var logger = require('../../config/logger');
 
 var jobs =
   [
-    // Reminder email before Payments
-    function(callback) {
-      logger.log('info','paymentCronService.reminderPayments');
-      paymentCronService.sendEmailReminderParents(function (err, data) {
-        if (err) callback(err);
-        callback(null, true);
-      });
-    },
     // Collect One Time Payments
     function(callback) {
       logger.log('info','paymentCronService.collectCreditCard');
       paymentCronService.collectCreditCard(function (err, data) {
         if (err) callback(err);
         callback(null, data);
+      });
+    }
+  ];
+
+var jobsReminderPayments =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      logger.log('info','paymentCronService.reminderPayments');
+      paymentCronService.sendEmailReminderParents(function (err, data) {
+        if (err) callback(err);
+        callback(null, true);
       });
     }
   ];
@@ -64,4 +68,19 @@ exports.run = function(cb) {
     return cb({name:'cronjob.pid is created'});
   }
 }
+//pidFileReminderPayments
+exports.runReminderPayments = function(cb) {
+  //if(canStart()) {
+    logger.log('info', Date() + ' running cronReminderPayments...');
+    //start();
 
+    async.series(
+      jobsReminderPayments,
+      function (err, results) {
+        end();
+        return cb(null,results);
+      });
+  //}else{
+  //  return cb({name:'pidFileReminderPayments.pid is created'});
+  //}
+}

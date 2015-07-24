@@ -349,6 +349,21 @@ describe.only('Cronjob workflow OK', function (){
     });
   });
 
+  describe('RUN cronjob II reminder payments', function (){
+    it('/cron', function(done) {
+      this.timeout(60000);
+      request(app)
+        .get('/api/v1/application/cron/reminder/payments')
+        .expect(200)
+        .expect('Content-Type', 'application/json')
+        .end(function(err, res) {
+          if (err) return done(err);
+          assert(res.body);
+          done();
+        });
+    });
+  });
+
   /**
   describe('Add method payment', function (){
     it('createBank (front)', function (done) {
