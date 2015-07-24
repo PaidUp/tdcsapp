@@ -87,6 +87,18 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
+      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+        if(err){
+          console.log('getSessionSalt',err);
+        }else{
+          var els = new encryptService(salt);
+          els.remove('team');
+          els.remove('products');
+        }
+      });
+      
+      
+      
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
