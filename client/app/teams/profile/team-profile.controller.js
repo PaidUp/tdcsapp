@@ -19,13 +19,16 @@ angular.module('convenienceApp')
     // $scope.athlete = {};
 
     $scope.renderTeams = false;
+    $scope.showDropDownTeams = false;
     $scope.disablePayNow = false;
 
     function loadTeams(team){
+      $scope.showDropDownTeams = false;
       if(team.attributes.type === 'grouped'){
         $scope.renderTeams = true;
         TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
           $scope.teams = teams;
+          $scope.showDropDownTeams = true;
         }).catch(function (err) {
 
         });
@@ -96,8 +99,7 @@ angular.module('convenienceApp')
     $scope.renderSubmit = true;
 
     $scope.enrollNow = function () {
-      CartService.setTeam($scope.team);
-      CartService.setProducts($scope.selectedCustomOptions);
+      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions);
       $scope.submitted = true;
       $scope.enrolled = true;
       if ($scope.teamSelectionForm.$valid) {
