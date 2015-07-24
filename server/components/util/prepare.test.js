@@ -106,17 +106,16 @@ function remove(cb){
 function prepareEnvironment(cb){
   cancelOrders(function(err, data){
     if(err) return cb(err);
-    cancelLoans(function(err2 , data2){
+    /*cancelLoans(function(err2 , data2){
       if(err2) {
         return cb(err2)
-      }else{
+      }else{*/
         remove(function(errRem, passedRem) {
           if(errRem) return cb(errRem);
           cb(null, true);
         });
-      }
-    });
-
+      /*}
+    });*/
   });
 }
 

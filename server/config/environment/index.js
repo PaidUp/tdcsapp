@@ -237,10 +237,15 @@ var all = {
     reminderChargeAccount:{
       period:'days',
       value:1
+    },
+    reminderEmailPayment:{
+      period:'hours',
+      value:72
     }
   },
   cronjob: {
-    pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid'
+    pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid',
+    pidFileReminderPayments : path.normalize(__dirname + '/../../..') + '/var/cronjobPayments.pid'
   },
   connections:{
     user: {

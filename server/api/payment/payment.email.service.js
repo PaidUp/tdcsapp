@@ -448,6 +448,46 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
   });
 };
 
+exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, value, period, cb) {
+  userService.find({_id:userId}, function(err, user){
+    if (err) return cb(err);
+    if (!user[0]) return cb(false);
+    paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+      if(err){
+        callback(err);
+      };
+      var card4 = card.data[0].last4 ||'XXXX';
+      var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
+      emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
+        if (errTemplate) return cb(errTemplate);
+        var emailVars = config.emailVars;
+        emailVars.userFirstName = user[0].firstName;
+        emailVars.Last4Digits = card4;
+        emailVars.amount = parseFloat(schedule.price).toFixed(2);
+        emailVars.datePaymentDue = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
+        emailVars.teamName = nameTeam;
+        template('payment/laterChargePayment', emailVars, function (err, html, text) {
+          if (err) return cb(err);
+          var mailOptions = config.emailOptions;
+          mailOptions.html = html;
+          mailOptions.to = user[0].email;
+          mailOptions.bcc = config.emailContacts.developer;
+          mailOptions.subject = 'Send email reminder to parents '+value+' '+period+' before payment';
+          mailOptions.attachments = [];
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return cb(err);
+            } else {
+              //return cb(null, info);
+            }
+          });
+          return cb(null, true);
+        });
+      });
+    });
+  });
+};
+
 function getNameTeamFromOrder(orderId, cb){
   commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){

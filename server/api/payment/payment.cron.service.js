@@ -14,6 +14,24 @@ var loanApplicationService = require('../loan/application/loanApplication.servic
 var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 
+function sendEmailReminder(pendingOrders, callback){
+  var reminderPeriod = config.notifications.reminderEmailPayment.period;
+  var reminderValue = config.notifications.reminderEmailPayment.value;
+  pendingOrders.map(function(order){
+    order.schedulePeriods.map(function(schedule){
+      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
+      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
+      if(shouldReminder){
+        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
+          if(err){
+            callback(err);
+          };
+          callback(null, data);//data = true
+        });
+      }
+    });
+  });
+};
 
 function collectPendingOrders(callback){
   paymentService.collectPendingOrders(function (err, pendingOrders){
@@ -75,7 +93,15 @@ exports.collectCreditCard = function(cb){
   ], function(err, result){
     cb(null, true);
   });
+};
 
+exports.sendEmailReminderParents = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    sendEmailReminder
+  ], function(err, result){
+    cb(null, true);
+  });
 };
 
 exports.collectOneTimePayments = function (cb) {

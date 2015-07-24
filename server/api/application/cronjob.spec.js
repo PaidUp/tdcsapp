@@ -21,7 +21,7 @@ describe.only('Cronjob workflow OK', function (){
       if(err) return done(err);
       return done();
     });
-  })
+  });
 
   describe('Prepare user', function (){
     it('Create fake user', function(done){
@@ -149,6 +149,7 @@ describe.only('Cronjob workflow OK', function (){
     });
 
     it('placeOrder debit card' , function(done){
+      this.timeout(60000);
       var dataPlaceCart = {cartId:modelSpec.cartId, cardId:modelSpec.cardId, addresses:[
         {mode:"billing",firstName:modelSpec.firstName,lastName:modelSpec.lastName,address1:"address1",city:"Austin",state:"TX",zipCode:11111,country:"US",telephone:"1234444555"},
         {mode:"shipping",firstName:modelSpec.firstName,lastName:modelSpec.lastName,address1:"address2",city:"Austin",state:"TX",zipCode:11111,country:"US",telephone:"1234444555"}],
@@ -338,6 +339,21 @@ describe.only('Cronjob workflow OK', function (){
       this.timeout(60000);
       request(app)
         .get('/api/v1/application/cron')
+        .expect(200)
+        .expect('Content-Type', 'application/json')
+        .end(function(err, res) {
+          if (err) return done(err);
+          assert(res.body);
+          done();
+        });
+    });
+  });
+
+  describe('RUN cronjob II reminder payments', function (){
+    it('/cron', function(done) {
+      this.timeout(60000);
+      request(app)
+        .get('/api/v1/application/cron/reminder/payments')
         .expect(200)
         .expect('Content-Type', 'application/json')
         .end(function(err, res) {
