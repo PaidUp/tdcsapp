@@ -2,8 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService,
-                                          AuthService, FlashService, CartService, $state, PaymentService,
-                                          ApplicationConfigService, CommerceService) {
+    AuthService, FlashService, CartService, $state, PaymentService,
+    ApplicationConfigService, CommerceService) {
     $rootScope.$emit('bar-welcome', {
       left: {
         url: 'app/payments/templates/loan-bar.html'
@@ -36,8 +36,8 @@ angular.module('convenienceApp')
     CartService.getCart(currentCartId).then(function (value) {
       var products = value.items;
       products.forEach(function (ele, idx, arr) {
-        CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
-          CommerceService.getSchedule(ele.productId, ele.price, isInFullPay ).then(function (val) {
+        CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
+          CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
             $scope.schedules.push({
               name: ele.name,
               periods: val.schedulePeriods
@@ -64,7 +64,7 @@ angular.module('convenienceApp')
         card.token = card.id;
         card.brand = card.brand + ' ending in ';
       });
-      $scope.cards.push({cardNumber: 'Create a new credit card'});
+      $scope.cards.push({ cardNumber: 'Create a new credit card' });
       if ($scope.cards.length === 1) {
         $scope.createCard = true;
       }
@@ -221,7 +221,7 @@ angular.module('convenienceApp')
     // };
 
     $scope.placeOrder = function (isValid) {
-      if(!isValid){
+      if (!isValid) {
         $scope.sendAlertErrorMsg('Please check form fields');
         $scope.placedOrder = false;
 
@@ -272,36 +272,52 @@ angular.module('convenienceApp')
                 };
                 var addressShipping = angular.extend({}, addressBilling);
                 addressShipping.mode = 'shipping';
-                var payment = {
-                  cartId: CartService.getCurrentCartId(),
-                  athleteFirstName: CartService.getAthlete().firstName,
-                  athleteLastName: CartService.getAthlete().lastName,
-                  addresses: [
-                    addressBilling,
-                    addressShipping
-                  ],
-                  cardId: newCard.id,
-                  userId: CartService.getUserId(),
-                  payment: 'onetime',
-                  paymentMethod: 'creditcard'
-                };
-                PaymentService.sendPayment(payment).then(function () {
-                  CartService.removeCurrentCart();
-                  CartService.createCart();
-                  $scope.saveOrUpdateBillingAddress();
-                  $state.go('thank-you');
-                }).catch(function (err) {
-                  if (err.data) {
-                    $scope.sendAlertErrorMsg(err.data.message);
-                  }
+
+                var isInFullPay = null;
+                var price = null;
+
+                CartService.getCart(currentCartId).then(function (value) {
+                  var products = value.items;
+                  products.forEach(function (ele, idx, arr) {
+                    CartService.hasProductBySKU('PMINFULL', function (isInFullP) {
+                      isInFullPay = isInFullP;
+                      price = ele.price;
+
+                      var payment = {
+                        cartId: CartService.getCurrentCartId(),
+                        athleteFirstName: CartService.getAthlete().firstName,
+                        athleteLastName: CartService.getAthlete().lastName,
+                        addresses: [
+                          addressBilling,
+                          addressShipping
+                        ],
+                        cardId: newCard.id,
+                        userId: CartService.getUserId(),
+                        payment: 'onetime',
+                        paymentMethod: 'creditcard',
+                        isInFullPay: isInFullPay,
+                        price: price
+                      };
+                      PaymentService.sendPayment(payment).then(function () {
+                        CartService.removeCurrentCart();
+                        CartService.createCart();
+                        $scope.saveOrUpdateBillingAddress();
+                        $state.go('thank-you');
+                      }).catch(function (err) {
+                        if (err.data) {
+                          $scope.sendAlertErrorMsg(err.data.message);
+                        }
+                      });
+                    }).catch(function (err) {
+                      $scope.placedOrder = false;
+                      for (var key in response.error) {
+                        $scope.sendAlertErrorMsg(response.error[key]);
+                      }
+                    });
+
+
+                  });
                 });
-
-
-              }).catch(function (err) {
-                $scope.placedOrder = false;
-                for (var key in response.error) {
-                  $scope.sendAlertErrorMsg(response.error[key]);
-                }
               });
             }
           });
@@ -327,7 +343,7 @@ angular.module('convenienceApp')
           CartService.getCart(currentCartId).then(function (value) {
             var products = value.items;
             products.forEach(function (ele, idx, arr) {
-              CartService.hasProductBySKU('PMINFULL', function(isInFullP){
+              CartService.hasProductBySKU('PMINFULL', function (isInFullP) {
                 isInFullPay = isInFullP;
                 price = ele.price;
 
@@ -343,7 +359,7 @@ angular.module('convenienceApp')
                   athleteLastName: CartService.getAthlete().lastName,
                   payment: 'onetime',
                   paymentMethod: 'creditcard',
-                  isInFullPay : isInFullPay,
+                  isInFullPay: isInFullPay,
                   price: price
                 };
                 PaymentService.sendPayment(payment).then(function () {
@@ -354,16 +370,15 @@ angular.module('convenienceApp')
                   $scope.sendAlertErrorMsg(err);
                 });
               });
-              });
             });
+          });
         }
       } else {
         $scope.placedOrder = false;
       }
     };
-
     $scope.fieldNumberOnly = function (modelField) {
-      if(!isNaN(modelField)){
+      if (!isNaN(modelField)) {
         $scope.$parent.card[modelField] = '';
       }
     }
