@@ -245,7 +245,7 @@ var all = {
   },
   cronjob: {
     pidFile : path.normalize(__dirname + '/../../..') + '/var/cronjob.pid',
-    pidFileReminderPayments : path.normalize(__dirname + '/../../..') + '/var/cronjobPayments.pid'
+    pathPidFile : path.normalize(__dirname + '/../../..') + '/var/'
   },
   connections:{
     user: {

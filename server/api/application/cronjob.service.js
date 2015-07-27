@@ -5,6 +5,8 @@ var fs = require("fs");
 var async = require('async');
 var paymentCronService = require('../payment/payment.cron.service');
 var logger = require('../../config/logger');
+var path = require('path');
+var moment = require('moment');
 
 var jobs =
   [
@@ -50,7 +52,20 @@ function end() {
   }
   catch (e) {
   }
+}
 
+function canStartGiveNameFile(nameFile) {
+  if (fs.existsSync(config.cronjob.pathPidFile+nameFile)) {
+    return false;
+  }
+  return true;
+}
+
+function startGiveName(nameFile) {
+  fs.open(config.cronjob.pathPidFile+nameFile, "wx", function (err, fd) {
+    fs.close(fd, function (err) {
+    });
+  });
 }
 
 exports.run = function(cb) {
@@ -68,11 +83,12 @@ exports.run = function(cb) {
     return cb({name:'cronjob.pid is created'});
   }
 }
-//pidFileReminderPayments
+
 exports.runReminderPayments = function(cb) {
-  //if(canStart()) {
+  var name = new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
     logger.log('info', Date() + ' running cronReminderPayments...');
-    //start();
+    startGiveName(name);
 
     async.series(
       jobsReminderPayments,
@@ -80,7 +96,7 @@ exports.runReminderPayments = function(cb) {
         end();
         return cb(null,results);
       });
-  //}else{
-  //  return cb({name:'pidFileReminderPayments.pid is created'});
-  //}
+  }else{
+    return cb(null,{name:name+'.pid is created'});
+  }
 }
