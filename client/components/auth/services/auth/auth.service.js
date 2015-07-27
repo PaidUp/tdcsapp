@@ -207,10 +207,7 @@ angular.module('convenienceApp')
       },
 
       getSessionSalt: function(token,cb) {
-        console.log('token' , token);
         if(token){
-
-
           $http.post('/api/v1/auth/session/salt', {
             token : token
           }).
