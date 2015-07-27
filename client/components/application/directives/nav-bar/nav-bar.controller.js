@@ -7,7 +7,6 @@ angular.module('convenienceApp')
       'title': 'Home',
       'link': '/'
     }];
-    
     $scope.isLoggedIn = function(){
       return AuthService.isLoggedIn();
     };
@@ -40,7 +39,7 @@ angular.module('convenienceApp')
     });
 
     $scope.logout = function() {
-      AuthService.logout();
+      $rootScope.$emit('logout', {});
       $scope.itemCount = 0;
       $rootScope.$emit('bar-welcome', {
         left:{
@@ -50,7 +49,8 @@ angular.module('convenienceApp')
           url: ''
         }
       });
-      $rootScope.$emit('logout', {});
+      $rootScope.$emit('postlogout', {});
+      AuthService.logout();
       $state.go('main');
     };
 
