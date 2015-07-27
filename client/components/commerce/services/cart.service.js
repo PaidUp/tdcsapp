@@ -96,9 +96,9 @@ angular.module('convenienceApp')
           els.remove('products');
         }
       });
-      
-      
-      
+
+
+
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
