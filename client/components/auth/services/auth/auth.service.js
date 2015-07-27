@@ -207,15 +207,24 @@ angular.module('convenienceApp')
       },
 
       getSessionSalt: function(token,cb) {
-        $http.post('/api/v1/auth/session/salt', {
-          token : token
-        }).
-          success(function(data) {
-            cb(null, data);
+        console.log('token' , token);
+        if(token){
+
+
+          $http.post('/api/v1/auth/session/salt', {
+            token : token
           }).
-          error(function(err) {
-            cb(err);
-          });
+            success(function(data) {
+              cb(null, data);
+            }).
+            error(function(err) {
+              console.log('err', err)
+              cb(err);
+            });
+        }else{
+          cb(null, true);
+        }
+
       },
 
       verifyEmailToken: function(token, successFn, errorFn){

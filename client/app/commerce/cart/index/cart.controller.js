@@ -42,13 +42,14 @@ angular.module('convenienceApp')
         products.forEach(function (ele, idx, arr) {
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
             CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
-              $scope.schedules.push({
-                name: ele.name,
-                periods: val.schedulePeriods
-              });
-              val.schedulePeriods.forEach(function(ele, idx, arr){
-                $scope.totalPrice += parseFloat(ele.price) ;
-              });
+              if(val.error){
+                $scope.isScheduleError = true;
+              }else{
+                $scope.schedules.push({
+                  name: ele.name,
+                  periods: val.schedulePeriods
+                });
+              }
             });
           });
         });

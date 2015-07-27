@@ -47,7 +47,10 @@
           <tr>
             <th colspan="3"><span class="">ORDER SUMMARY</span></th>
           </tr>
-          <tr>
+          <tr ng-if="isScheduleError">
+            <th colspan="3"><span class=""><div class="alert alert-danger">We can't create payments plan, please contact us</div></span></th>
+          </tr>
+          <tr ng-if="!isScheduleError">
             <th>Description</th>
             <th>Date payment</th>
             <th>Value</th>
@@ -80,7 +83,7 @@
 
 
 
-      <button class="btn btnSignUp btn-block btn-lg" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">
+      <button class="btn btnSignUp btn-block btn-lg" ng-hide="isScheduleError" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">
         Proceed to Checkout
       </button>
     </div>
