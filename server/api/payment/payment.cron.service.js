@@ -15,8 +15,12 @@ var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 
 function sendEmailReminder(pendingOrders, callback){
-  var reminderPeriod = config.notifications.reminderEmailPayment.period;
-  var reminderValue = config.notifications.reminderEmailPayment.value;
+  logger.log('info','paymentCronService.sendEmailReminder');
+  var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
+  var reminderValue = config.notifications.reminderEmailPayment.value || 72;
+  if(pendingOrders.length === 0){
+    callback(null, true);
+  }
   pendingOrders.map(function(order){
     order.schedulePeriods.map(function(schedule){
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
@@ -26,7 +30,7 @@ function sendEmailReminder(pendingOrders, callback){
           if(err){
             callback(err);
           };
-          callback(null, data);//data = true
+          callback(null, data);
         });
       }
     });
@@ -34,6 +38,7 @@ function sendEmailReminder(pendingOrders, callback){
 };
 
 function collectPendingOrders(callback){
+  logger.log('info','paymentCronService.collectPendingOrders');
   paymentService.collectPendingOrders(function (err, pendingOrders){
     if(err){
       callback(err);
