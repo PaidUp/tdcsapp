@@ -32,15 +32,12 @@ angular.module('convenienceApp')
             }
           });
         });
-      });
 
-      $scope.schedules = [];
-      $scope.totalPrice   = 0;
+        $scope.schedules = [];
+        $scope.totalPrice   = 0;
 
-      var currentCartId = CartService.getCurrentCartId();
-      CartService.getCart(currentCartId).then(function (value) {
-        console.log('value' , value);
-        var products = value.items;
+        console.log('cart' , cart);
+        var products = cart.items;
         products.forEach(function (ele, idx, arr) {
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
             CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
@@ -55,6 +52,8 @@ angular.module('convenienceApp')
             });
           });
         });
+
+
       });
 
       CartService.getTotals(cartId).then(function (totals) {
