@@ -57,6 +57,7 @@ angular.module('convenienceApp')
 
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
+          console.log('total' , total);
           if (total.title === 'Grand Total') {
             $scope.total = total;
           } else if (total.title === 'Subtotal') {
