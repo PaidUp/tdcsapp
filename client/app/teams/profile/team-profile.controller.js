@@ -38,7 +38,9 @@ angular.module('convenienceApp')
 
 
     function loadTeam(teamID, cb){
+      console.log('teamzz id',teamID);
       TeamService.getTeam(teamID).then(function (team) {
+        console.log('teamzz',team);
         $scope.team = team;
         $scope.price = Number($scope.team.attributes.price);
         $scope.selectedCustomOptions = {
