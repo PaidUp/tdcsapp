@@ -15,6 +15,7 @@ angular.module('convenienceApp')
     if (cartId) {
       $scope.teams = [];
       CartService.getCart(cartId).then(function (cart) {
+        console.log('cart', cart);
         var feeItem;
         angular.forEach(cart.items, function (cartItem, index) {
           TeamService.getTeam(cartItem.productId).then(function (team) {
@@ -38,6 +39,7 @@ angular.module('convenienceApp')
 
       var currentCartId = CartService.getCurrentCartId();
       CartService.getCart(currentCartId).then(function (value) {
+        console.log('value' , value);
         var products = value.items;
         products.forEach(function (ele, idx, arr) {
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
@@ -57,7 +59,6 @@ angular.module('convenienceApp')
 
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
-          console.log('total' , total);
           if (total.title === 'Grand Total') {
             $scope.total = total;
           } else if (total.title === 'Subtotal') {
