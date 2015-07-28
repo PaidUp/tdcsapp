@@ -23,7 +23,6 @@ angular.module('convenienceApp')
     $scope.disablePayNow = false;
 
     function loadTeams(team){
-      console.log('team' , team);
       $scope.showDropDownTeams = false;
       if(team.attributes.type === 'grouped'){
         $scope.renderTeams = true;
@@ -38,9 +37,7 @@ angular.module('convenienceApp')
 
 
     function loadTeam(teamID, cb){
-      console.log('teamzz id',teamID);
       TeamService.getTeam(teamID).then(function (team) {
-        console.log('teamzz',team);
         $scope.team = team;
         $scope.price = Number($scope.team.attributes.price);
         $scope.selectedCustomOptions = {
@@ -135,7 +132,6 @@ angular.module('convenienceApp')
 
 
     $scope.updateTeam = function(teamSelected){
-      console.log('teamSelected' , teamSelected);
       $scope.disablePayNow = true;
       loadTeam(teamSelected.attributes.productId, function(team){
         $scope.disablePayNow = false;
