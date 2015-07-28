@@ -11,14 +11,16 @@ angular.module('convenienceApp')
       CartService.removeCurrentCart();
     });
 
-    this.setCartDetails = function(team , prod){
+    this.setCartDetails = function(team , prod, cb){
       AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
         if(err){
           console.log('getSessionSalt',err);
+          cb(err);
         }else{
           var els = new encryptService(salt);
           els.set('team', team);
           els.set('products', prod);
+          cb(null , true);
         }
       });
     }
