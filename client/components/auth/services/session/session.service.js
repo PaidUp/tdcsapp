@@ -4,7 +4,7 @@ angular.module('convenienceApp')
   .service('SessionService', function ($cookieStore, $rootScope) {
 
     var SessionService = this;
-    $rootScope.$on('postlogout', function () {
+    $rootScope.$on('logout', function () {
       SessionService.removeCurrentSession();
     });
 
