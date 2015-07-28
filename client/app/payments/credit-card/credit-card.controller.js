@@ -3,7 +3,7 @@
 angular.module('convenienceApp')
   .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService,
     AuthService, FlashService, CartService, $state, PaymentService,
-    ApplicationConfigService, CommerceService) {
+    ApplicationConfigService, CommerceService, NotificationEmailService) {
     $rootScope.$emit('bar-welcome', {
       left: {
         url: 'app/payments/templates/loan-bar.html'
@@ -38,6 +38,16 @@ angular.module('convenienceApp')
       products.forEach(function (ele, idx, arr) {
         CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
           CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
+            if(val.error){
+              var user = AuthService.getCurrentUser;
+              $scope.isScheduleError = true;
+              NotificationEmailService.sendNotificationEmail('Get schedule error', {
+                productId:ele.productId,
+                price:ele.price,
+                isInFullPay: isInFullPay,
+                email: user.email
+              });
+            }
             $scope.schedules.push({
               name: ele.name,
               periods: val.schedulePeriods

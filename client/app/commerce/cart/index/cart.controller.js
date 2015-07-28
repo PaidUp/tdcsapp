@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService) {
+  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService, NotificationEmailService, AuthService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -40,7 +40,15 @@ angular.module('convenienceApp')
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
             CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
               if(val.error){
+                var user = AuthService.getCurrentUser();
                 $scope.isScheduleError = true;
+                NotificationEmailService.sendNotificationEmail('Get schedule error', {
+                  productId:ele.productId,
+                  price:ele.price,
+                  isInFullPay: isInFullPay,
+                  name: user.firstName + ' ' + user.lastName,
+                  email: user.email
+                });
               }else{
                 $scope.schedules.push({
                   name: ele.name,
