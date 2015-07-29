@@ -254,7 +254,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
           mailOptions.to = user.email;
           mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
           mailOptions.html = html;
-          mailOptions.subject = 'Oh Oh – Insufficient Funds In Your Account – ' + emailVars.team;
+          mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -425,7 +425,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
               mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
               mailOptions.html = html;
-              mailOptions.subject = 'Oh Oh – Insufficient Funds In Your Account – ' + emailVars.team;
+              mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
 
               mailOptions.attachments = [];
 
