@@ -59,7 +59,8 @@
                               ng-click="changeCustomOptions(customOption, optionModel)">
               </custom-options> -->
 
-              <div ng-if="customOption.isRequire === '1' && customOption.values.length === 1">
+              <!--div ng-if="customOption.isRequire === '1' && customOption.values.length === 1"-->
+                 <div ng-if="customOption.values.length === 1">
                 <label>{{customOption.title}}</label><br>
                 {{customOption.values[0].title}}
                 <br>
@@ -68,19 +69,20 @@
 
 
 
-              <div ng-if="!(customOption.isRequire === '1' && customOption.values.length === 1)">
+              <!--div ng-if="!(customOption.isRequire === '1' && customOption.values.length === 1)"-->
+                <div ng-if="customOption.values.length !== 1">
                 <div ng-if="customOption.type === 'drop_down'" class="customDropDown">
                   <label>{{customOption.title}}</label>
                   <select id="select{{indexCustomOp}}"
                           class="form-control"
                           ng-model="optionModel"
                           name="select{{customOption.optionId}}"
-                          ng-required="customOption.isRequire === '1'"
+                          ng-required="true"
                           ng-options="option as option.title for option in customOption.values track by option.valueId"
                           ng-change="changeCustomOptions(customOption, optionModel)">
                   </select>
 
-                  <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
+                  <div class="text-CS text-center" ng-show="teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
                     <small class="text-CS">{{customOption.title}} is required</small>
                   </div>
                 </div>
@@ -97,13 +99,13 @@
                                 name="radio{{customOption.optionId}}"
                                 ng-value="item"
                                 ng-model="optionModel"
-                                ng-required="customOption.isRequire === '1' && !customOption.isSelected"
+                                ng-required="!customOption.isSelected"
                                 ng-click="changeCustomOptions(customOption, optionModel)">
                         <div><strong>{{item.title}}</strong></div>
                       </label>
                     </div>
                   </div>
-                  <div class="text-CS text-center" ng-show="customOption.isRequire === '1' && !customOption.isSelected && submitted">
+                  <div class="text-CS text-center" ng-show="!customOption.isSelected && submitted">
                     <small class="text-CS">{{customOption.title}} is required</small>
                   </div>
                 </div>
