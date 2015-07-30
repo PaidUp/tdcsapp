@@ -31,10 +31,14 @@ function sendEmailReminder(pendingOrders, callback){
       if(shouldReminder){
         logger.log('info','should send Email Reminder',schedule.id);
         paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          logger.log('info','send Email Reminder',data);
+          logger.log('info','send Email Reminder data',data);
+          logger.log('info','send Email Reminder err',err);
+
         });
+        return callback(null, true);
+      }else{
+        return callback(null, true);
       }
-      return callback(null, true);
     });
   });
 };

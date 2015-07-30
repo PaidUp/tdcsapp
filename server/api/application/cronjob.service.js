@@ -27,7 +27,7 @@ var jobsReminderPayments =
       logger.log('info','paymentCronService.reminderPayments');
       paymentCronService.sendEmailReminderParents(function (err, data) {
         if (err) callback(err);
-        callback(null, true);
+        callback(null, data);
       });
     }
   ];
