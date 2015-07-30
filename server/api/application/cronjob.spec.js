@@ -153,7 +153,7 @@ describe.only('Cronjob workflow OK', function (){
       var dataPlaceCart = {cartId:modelSpec.cartId, cardId:modelSpec.cardId, addresses:[
         {mode:"billing",firstName:modelSpec.firstName,lastName:modelSpec.lastName,address1:"address1",city:"Austin",state:"TX",zipCode:11111,country:"US",telephone:"1234444555"},
         {mode:"shipping",firstName:modelSpec.firstName,lastName:modelSpec.lastName,address1:"address2",city:"Austin",state:"TX",zipCode:11111,country:"US",telephone:"1234444555"}],
-        userId: modelSpec.childId,paymentMethod: "creditcard",payment: "onetime"};
+        userId: modelSpec.childId,paymentMethod: "creditcard",payment: "onetime",isInFullPay: false,price: "2020.0000"};
       request(app)
         .post('/api/v1/commerce/checkout/place')
         .set('Authorization', "Bearer "+modelSpec.token)
