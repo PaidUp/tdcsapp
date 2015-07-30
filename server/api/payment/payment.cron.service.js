@@ -20,18 +20,21 @@ function sendEmailReminder(pendingOrders, callback){
   var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
   var reminderValue = config.notifications.reminderEmailPayment.value || 72;
   if(pendingOrders.length === 0){
-    callback(null, true);
+    return callback(null, true);
   }
   pendingOrders.map(function(order){
+    logger.log('info','iterate each order', order.incrementId);
     order.schedulePeriods.map(function(schedule){
+      logger.log('info','iterate each orderSchedule', schedule.id);
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
       if(shouldReminder){
+        logger.log('info','should send Email Reminder',schedule.id);
         paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
           logger.log('info','send Email Reminder',data);
         });
       }
-      callback(null, true);
+      return callback(null, true);
     });
   });
 };
