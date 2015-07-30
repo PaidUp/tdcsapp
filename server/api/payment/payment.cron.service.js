@@ -28,14 +28,10 @@ function sendEmailReminder(pendingOrders, callback){
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
       if(shouldReminder){
         paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          if(err){
-            callback(err);
-          };
-          callback(null, data);
+          logger.log('info','send Email Reminder',data);
         });
-      }else{
-        callback(null, true);
       }
+      callback(null, true);
     });
   });
 };
