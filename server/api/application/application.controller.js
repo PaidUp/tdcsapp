@@ -32,6 +32,6 @@ exports.cron = function(req, res) {
 
 exports.cronReminderPayments = function(req, res) {
     cronjobService.runReminderPayments(function(err, data){
-        res.json(200, data);
+      res.json(200, data);
     });
 }
