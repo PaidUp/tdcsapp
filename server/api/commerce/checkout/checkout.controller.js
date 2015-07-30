@@ -57,6 +57,7 @@ exports.place = function(req, res) {
     price :req.body.price
 
   }
+
   // Process order
   if (req.body.payment == "loan") {
     loanService.findOne({_id: req.body.loanId}, function (err,loan){

@@ -13,6 +13,7 @@ var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
+var notifications = require('../notifications/notifications.service')
 
 function sendEmailReminder(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminder');
@@ -32,6 +33,8 @@ function sendEmailReminder(pendingOrders, callback){
           };
           callback(null, data);
         });
+      }else{
+        callback(null, true);
       }
     });
   });
@@ -56,7 +59,8 @@ function paymentSchedule(pendingOrders, callbackSchedule){
         };
         if(!orderSchedule.scheduled.schedulePeriods){
           logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          return callbackEach(new Error('order without schedulePeriods'));
+          callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
         }
         async.eachSeries(orderSchedule.scheduled.schedulePeriods,
           function(schedulePeriod, callbackEach2){
@@ -65,7 +69,9 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                 paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                   order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, function(err , data){
                   if(err){
-                    return callbackEach2(err);
+                    notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
+                    });
+                    return callbackEach2(err);//here, return ok, and send email.
                   }
                   return callbackEach2();
                 });
