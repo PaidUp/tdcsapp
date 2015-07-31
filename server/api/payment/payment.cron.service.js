@@ -126,10 +126,11 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                 paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                   order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, function(err , data){
                   if(err){
-                    notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
+                    notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
                     });
-                    return callbackEach2(err);//here, return ok, and send email.
+                    return callbackEach2();//here, return ok, and send email.
                   }
+
                   return callbackEach2();
                 });
               });
