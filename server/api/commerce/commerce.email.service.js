@@ -22,9 +22,10 @@ exports.sendContactEmail = function(dataProvider, cb) {
     emailVars.provider = dataProvider;
     template('commerce/provider',emailVars,function(err, html, text){
       if(err) return cb(err);
-      var mailOptions = config.emailOptions;
+      var mailOptions = config.emailOptionsAlerts;
       mailOptions.to = config.emailContacts.admin;
-      mailOptions.bcc = config.emailContacts.developer;
+      //mailOptions.to = config.emailContacts.admin;
+      //mailOptions.bcc = config.emailContacts.developer;
       mailOptions.html = html;
       mailOptions.subject = 'Message to ' + emailVars.companyName;
       mailOptions.baseUrl = emailVars.baseUrl;
