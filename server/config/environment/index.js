@@ -62,16 +62,20 @@ var all = {
   emailTemplateRoot:path.normalize(__dirname + '/../../../server/views/email'),
   emailOptions:{
     from: 'Convenience Select <ourteam@convenienceselect.com>',
-    subject: 'Default Subject'
+    subject: 'Default Subject (ourteam)'
+  },
+  emailOptionsAlerts:{
+    from: 'Convenience Select <alerts@convenienceselect.com>',
+    subject: 'Default Subject (alerts)'
   },
   emailVars: {
     companyName : "Convenience Select",
     baseUrl : "http://localhost:9000"
   },
   emailContacts : {
-    contact : 'convenieceselect@gmail.com',
-    admin : 'convenieceselect@gmail.com',
-    developer : 'convenieceselect@gmail.com'
+    contact : 'convenieceselect@gmail.com',//ourteam@cs.com
+    admin : 'convenieceselect@gmail.com',//alerts@cs.com
+    developer : 'convenieceselect@gmail.com'//alerts@cs.com
   },
 
   // contract data
