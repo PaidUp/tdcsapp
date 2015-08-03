@@ -67,7 +67,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
             if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
               userService.find({_id : order.userId}, function(err, users){
                 paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                  order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, function(err , data){
+                  order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
                   if(err){
                     notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
                     });
@@ -95,6 +95,73 @@ function paymentSchedule(pendingOrders, callbackSchedule){
       }
       return callbackSchedule();
     })
+}
+
+
+
+
+
+exports.retryPaymentSchedule = function (callbackSchedule){
+  commerceService.getListRetryPayment(function(err, pendingOrders){
+    if(err){
+      logger.error(err);
+      throw new Error(err);
+    }else{
+      async.eachSeries(pendingOrders, function(order, callbackEach){
+
+          if(!order.schedulePeriods){
+            logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+            callbackEach();
+            //return callbackEach(new Error('order without schedulePeriods'));
+          }
+          if(!order.retrySchedules){
+            logger.log('warn', 'order without retrySchedules: ' + order.incrementId );
+            callbackEach();
+            //return callbackEach(new Error('order without schedulePeriods'));
+          }else{
+            async.eachSeries(order.retrySchedules, function(retrySchedule, cbRetry){
+              async.eachSeries(order.schedulePeriods,
+                function(schedulePeriod, callbackEach2){
+                  if(retrySchedule.scheduleId === schedulePeriod.id){
+
+                    userService.find({_id : order.userId}, function(err, users){
+                      paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                        order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, order.meta, retrySchedule.retryId, function(err , data){
+                          if(err){
+                            notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
+                            });
+                            return callbackEach2(err);//here, return ok, and send email.
+                          }
+                          return callbackEach2();
+                        });
+                    });
+                  } else{
+                    callbackEach2();
+                  }
+                },
+                function(err){
+                  if(err){
+                    logger.error(err);
+                  };
+                  cbRetry();
+                });
+              //callback(null, schedule);
+
+            },function(retryErr){
+              if(retryErr) logger.error(retryErr);
+              callbackEach();
+            });
+          }
+        },
+        function(err){
+          if(err){
+            return callbackSchedule();
+          }
+          return callbackSchedule();
+        })
+    }
+
+  });
 }
 
 exports.collectCreditCard = function(cb){
