@@ -24,7 +24,7 @@ exports.sendContactEmail = function(dataContact, cb) {
       if(err) return cb(err);
       var mailOptions = config.emailOptions;
       mailOptions.to = config.emailContacts.contact;
-      mailOptions.bcc = config.emailContacts.developer;
+      //mailOptions.bcc = config.emailContacts.developer;
       mailOptions.html = html;
       mailOptions.subject = 'Message to ' + emailVars.companyName;
       mailOptions.attachments = [];
