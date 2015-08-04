@@ -40,7 +40,7 @@ var jobsRetryPayments =
       paymentCronService.retryPaymentSchedule(function (err, data) {
         logger.log('info','paymentCronService.retryPayments');
         if (err) callback(err);
-        callback(null, true);
+        callback(null, data);
       });
     }
   ];
