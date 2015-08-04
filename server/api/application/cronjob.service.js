@@ -36,8 +36,9 @@ var jobsRetryPayments =
   [
     // Reminder email before Payments
     function(callback) {
-      logger.log('info','paymentCronService.retryPayments');
+      logger.log('info','paymentCronService.retryPayments2');
       paymentCronService.retryPaymentSchedule(function (err, data) {
+        logger.log('info','paymentCronService.retryPayments');
         if (err) callback(err);
         callback(null, true);
       });
@@ -120,9 +121,9 @@ exports.runReminderPayments = function(cb) {
 }
 
 exports.runRetryPayments = function(cb) {
-  var name = 'cronReminderPayments' + new moment(new Date()).format("YYYYMMDD");
+  var name = 'runRetryPayments' + new moment(new Date()).format("YYYYMMDD");
   if(canStartGiveNameFile(name)) {
-    logger.log('info', Date() + ' running cronReminderPayments...');
+    logger.log('info', Date() + ' running runRetryPayments...');
     startGiveName(name);
 
     async.series(

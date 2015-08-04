@@ -102,6 +102,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
 
 
 exports.retryPaymentSchedule = function (callbackSchedule){
+  logger.info('init retryPaymentSchedule');
   commerceService.getListRetryPayment(function(err, pendingOrders){
     if(err){
       logger.error(err);
