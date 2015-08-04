@@ -5,13 +5,27 @@ var fs = require("fs");
 var async = require('async');
 var paymentCronService = require('../payment/payment.cron.service');
 var logger = require('../../config/logger');
+var path = require('path');
+var moment = require('moment');
 
 var jobs =
   [
-   // Collect One Time Payments
+    // Collect One Time Payments
     function(callback) {
       logger.log('info','paymentCronService.collectCreditCard');
       paymentCronService.collectCreditCard(function (err, data) {
+        if (err) callback(err);
+        callback(null, data);
+      });
+    }
+  ];
+
+var jobsReminderPayments =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      logger.log('info','paymentCronService.reminderPayments');
+      paymentCronService.sendEmailReminderParents(function (err, data) {
         if (err) callback(err);
         callback(null, data);
       });
@@ -38,7 +52,20 @@ function end() {
   }
   catch (e) {
   }
+}
 
+function canStartGiveNameFile(nameFile) {
+  if (fs.existsSync(config.cronjob.pathPidFile+nameFile)) {
+    return false;
+  }
+  return true;
+}
+
+function startGiveName(nameFile) {
+  fs.open(config.cronjob.pathPidFile+nameFile, "wx", function (err, fd) {
+    fs.close(fd, function (err) {
+    });
+  });
 }
 
 exports.run = function(cb) {
@@ -57,3 +84,19 @@ exports.run = function(cb) {
   }
 }
 
+exports.runReminderPayments = function(cb) {
+  var name = new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running cronReminderPayments...');
+    startGiveName(name);
+
+    async.series(
+      jobsReminderPayments,
+      function (err, results) {
+        end();
+        return cb(null,results);
+      });
+  }else{
+    return cb(null,{name:name+'.pid is created'});
+  }
+}

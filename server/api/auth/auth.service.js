@@ -109,6 +109,14 @@ function passwordUpdate(data, userId, cb){
   });
 };
 
+function getSessionSalt(token, cb){
+  tdAuthService.init(config.connections.user);
+  tdAuthService.getSessionSalt(token, function(err, data){
+    if(err) return cb(err);
+    return cb(null , data);
+  });
+};
+
 exports.logout = logout;
 exports.verifyRequest = verifyRequest;
 exports.verify = verify;
@@ -117,3 +125,4 @@ exports.passwordReset = passwordReset;
 exports.emailUpdate = emailUpdate;
 exports.passwordUpdate = passwordUpdate;
 exports.isAuthenticated = isAuthenticated;
+exports.getSessionSalt = getSessionSalt;

@@ -13,9 +13,92 @@ var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
 var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
+var notifications = require('../notifications/notifications.service');
+var async = require('async');
 
+function sendEmailReminder(pendingOrders, callback){
+  logger.log('info','paymentCronService.sendEmailReminder');
+  var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
+  var reminderValue = config.notifications.reminderEmailPayment.value || 72;
+  if(pendingOrders.length === 0){
+    return callback(null, true);
+  }/*
+  pendingOrders.map(function(order){
+    logger.log('info','iterate each order', order.incrementId);
+    order.schedulePeriods.map(function(schedule){
+      logger.log('info','iterate each orderSchedule', schedule.id);
+      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
+      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
+      if(shouldReminder){
+        logger.log('info','should send Email Reminder',schedule.id);
+        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
+          logger.log('info','send Email Reminder data',data);
+          logger.log('info','send Email Reminder err',err);
+          return callback(null, true);
+        });
+      }else{
+        return callback(null, true);
+      }
+    });
+  });*/
+
+  async.eachSeries(pendingOrders, function(order, cb) {
+    logger.log('info','iterate each order', order.incrementId);
+    
+    /*order.schedulePeriods.map(function(schedule){
+      logger.log('info','iterate each orderSchedule', schedule.id);
+      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
+      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
+      if(shouldReminder){
+        logger.log('info','should send Email Reminder',schedule.id);
+        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
+          logger.log('info','send Email Reminder data',data);
+          logger.log('info','send Email Reminder err',err);  
+        });
+        return cb(null,true);
+      }else{
+      return cb(null,true);
+      }
+    });*/
+
+    async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
+      
+      logger.log('info','iterate each orderSchedule', schedule.id);
+      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
+      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
+      if(shouldReminder){
+        logger.log('info','should send Email Reminder',schedule.id);
+        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
+          logger.log('info','send Email Reminder data',data);
+          logger.log('info','send Email Reminder err',err);  
+        });
+        return cbSchedule(null,true);
+      }else{
+      return cbSchedule(null,true);
+      }
+
+    }, function(err){
+        // if any of the file processing produced an error, err would equal that error
+      if( err ) {
+      } else {
+        logger.log('info','All order.schedule have been processed successfully');
+        return cb(null, true);
+      }
+    });
+
+  }, function(err){
+      // if any of the file processing produced an error, err would equal that error
+      if( err ) {
+      } else {
+        logger.log('info','All orders have been processed successfully');
+        return callback(null, true);
+      }
+  });
+
+};
 
 function collectPendingOrders(callback){
+  logger.log('info','paymentCronService.collectPendingOrders');
   paymentService.collectPendingOrders(function (err, pendingOrders){
     if(err){
       callback(err);
@@ -33,7 +116,8 @@ function paymentSchedule(pendingOrders, callbackSchedule){
         };
         if(!orderSchedule.scheduled.schedulePeriods){
           logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          return callbackEach(new Error('order without schedulePeriods'));
+          callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
         }
         async.eachSeries(orderSchedule.scheduled.schedulePeriods,
           function(schedulePeriod, callbackEach2){
@@ -42,8 +126,11 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                 paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                   order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, function(err , data){
                   if(err){
-                    return callbackEach2(err);
+                    notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
+                    });
+                    return callbackEach2();//here, return ok, and send email.
                   }
+
                   return callbackEach2();
                 });
               });
@@ -75,7 +162,15 @@ exports.collectCreditCard = function(cb){
   ], function(err, result){
     cb(null, true);
   });
+};
 
+exports.sendEmailReminderParents = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    sendEmailReminder
+  ], function(err, result){
+    cb(null, true);
+  });
 };
 
 exports.collectOneTimePayments = function (cb) {

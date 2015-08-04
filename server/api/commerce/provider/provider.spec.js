@@ -75,7 +75,7 @@ describe('User', function() {
 
     describe('provider.controller', function() {
 
-        it.only('response', function (done) {
+        it('response', function (done) {
             var provider = new Provider(providerSpecModel.provider);
             providerService.save(provider, function(err, data){
                 assert.equal(err, null);

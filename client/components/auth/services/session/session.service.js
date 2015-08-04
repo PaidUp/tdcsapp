@@ -12,7 +12,7 @@ angular.module('convenienceApp')
       $cookieStore.put('token', data.token);
     };
 
-    this.removeCurrentSession = function() {
+    this. removeCurrentSession = function() {
       $cookieStore.remove('token');
     };
 

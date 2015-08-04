@@ -30,7 +30,7 @@
                         <% for(var i=0; i < schedules.length; i++) {
                           var nextPaymentDue = new Date(schedules[i].nextPaymentDue);
                         %>
-                        <%= nextPaymentDue.getMonth() %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
+                        <%= nextPaymentDue.getMonth()+1 %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
                         <% } %>
                         <br />
                         Total: $ <%= amount %>

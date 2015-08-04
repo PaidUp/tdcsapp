@@ -35,6 +35,8 @@ module.exports = function(app) {
 
   app.use('/api/v1/auth', require('./api/auth'));
 
+  app.use('/api/v1/notification', require('./api/notifications'));
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|components|app|bower_components|assets)/*')
    .get(errors[404]);

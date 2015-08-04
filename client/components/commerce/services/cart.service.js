@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .service('CartService', function ($cookieStore, $resource, $q, $rootScope) {
+  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -10,6 +10,41 @@ angular.module('convenienceApp')
     $rootScope.$on('logout', function () {
       CartService.removeCurrentCart();
     });
+
+    this.setCartDetails = function(team , prod, cb){
+      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+        if(err){
+          console.log('getSessionSalt',err);
+          cb(err);
+        }else{
+          var els = new encryptService(salt);
+          els.set('team', team);
+          els.set('products', prod);
+          cb(null , true);
+        }
+      });
+    }
+
+    this.hasProductBySKU = function(sku, cb){
+      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+        if(err){
+          console.log('getSessionSalt',err);
+        }else{
+          var els = new encryptService(salt);
+          var result = false;
+          els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
+            ele.forEach(function(option, idx2, arr2){
+              option.values.forEach(function(value, idx3, arr3){
+                if(value.sku == sku){
+                  result = els.get('products').options[option.optionId] == value.valueId;
+                }
+              });
+            });
+          });
+          cb(result);
+        }
+      });
+    };
 
     this.createCart = function() {
       var deferred = $q.defer();
@@ -53,6 +88,18 @@ angular.module('convenienceApp')
     this.removeCurrentCart = function() {
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
+      $cookieStore.remove('team');
+      if($cookieStore.get('token')){
+        AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
+          if(err){
+            console.log('getSessionSalt',err);
+          }else{
+            var els = new encryptService(salt);
+            els.remove('team');
+            els.remove('products');
+          }
+        })
+      }
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 

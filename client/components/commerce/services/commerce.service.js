@@ -5,7 +5,8 @@ angular.module('convenienceApp')
     var Orders = $resource('/api/v1/commerce/order/list', {}, {});
     var Transactions = $resource('/api/v1/commerce/transaction/list', {}, {});
     var Provider = $resource('/api/v1/commerce/provider/request', {}, {});
-    var Schedule = $resource('/api/v1/commerce/schedule/generate/product/:productId', {}, {});
+    var Schedule = $resource('/api/v1/commerce/schedule/generate', {}, {
+      post: { method:'POST', isArray: false }});
 
     this.getOrders = function () {
       return Orders.query().$promise;
@@ -15,7 +16,7 @@ angular.module('convenienceApp')
       return Transactions.query().$promise;
     };
 
-    this.getSchedule = function(productId){
-      return Schedule.get({productId: productId},{}).$promise;
+    this.getSchedule = function(productId, price, isInFullPay){
+      return Schedule.post({productId: productId, price : price, isInFullPay: isInFullPay}).$promise;
     };
   });

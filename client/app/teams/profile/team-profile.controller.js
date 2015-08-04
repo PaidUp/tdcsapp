@@ -18,21 +18,26 @@ angular.module('convenienceApp')
     $scope.athletes = [];
     // $scope.athlete = {};
 
+    $scope.renderTeams = false;
+    $scope.showDropDownTeams = false;
+    $scope.disablePayNow = false;
+
+    function loadTeams(team){
+      $scope.showDropDownTeams = false;
+      if(team.attributes.type === 'grouped'){
+        $scope.renderTeams = true;
+        TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
+          $scope.teams = teams;
+          $scope.showDropDownTeams = true;
+        }).catch(function (err) {
+
+        });
+      }
+    };
 
 
-
-
-    function loadTeam(teamID){
+    function loadTeam(teamID, cb){
       TeamService.getTeam(teamID).then(function (team) {
-
-        if(team.attributes.type === 'grouped'){
-          TeamService.getTeamsGrouped(teamID).then(function (teams) {
-            $scope.teams = teams;
-          }).catch(function (err) {
-
-          });
-        }
-
         $scope.team = team;
         $scope.price = Number($scope.team.attributes.price);
         $scope.selectedCustomOptions = {
@@ -47,12 +52,14 @@ angular.module('convenienceApp')
             $scope.changeCustomOptions(element , element.values[0]);
           }
         });
-
+        cb(team);
       });
     };
 
 
-    loadTeam($stateParams.teamId);
+    loadTeam($stateParams.teamId, function(team){
+      loadTeams(team)
+    });
 
 
     $scope.underAges = TeamService.getTeamUnderAges($stateParams.teamId);
@@ -94,20 +101,23 @@ angular.module('convenienceApp')
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;
-      if ($scope.teamSelectionForm.$valid) {
-        $scope.renderSubmit = false;
-        CartService.createCart().then(function () {
-          CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
-            $state.go('cart');
+      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions, function(err, data){
+        if ($scope.teamSelectionForm.$valid) {
+          $scope.disablePayNow = true;
+          CartService.createCart().then(function () {
+            CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
+              $state.go('cart');
+            }).catch(function (err) {
+              $scope.enrolled = false;
+              $scope.sendAlertErrorMsg(err.data.message);
+            });
           }).catch(function (err) {
             $scope.enrolled = false;
+            $scope.disablePayNow = false;
             $scope.sendAlertErrorMsg(err.data.message);
           });
-        }).catch(function (err) {
-          $scope.enrolled = false;
-          $scope.sendAlertErrorMsg(err.data.message);
-        });
-      }
+        }
+      });
     };
 
     $scope.changeCustomOptions = function (customOption, optionModel) {
@@ -120,15 +130,12 @@ angular.module('convenienceApp')
         $scope.team.attributes.customOptions[0]);
     };
 
-    $scope.updateTeam = function(teamSelected){
-      $scope.price = Number(teamSelected.attributes.price);
-      $scope.selectedCustomOptions = {
-        productId: teamSelected.attributes.productId,
-        sku: teamSelected.attributes.sku,
-        qty: 1,
-        options: {}
-      };
 
+    $scope.updateTeam = function(teamSelected){
+      $scope.disablePayNow = true;
+      loadTeam(teamSelected.attributes.productId, function(team){
+        $scope.disablePayNow = false;
+      });
     };
 
     // $scope.selectAthlete = function (athlete) {

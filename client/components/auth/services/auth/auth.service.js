@@ -18,7 +18,7 @@ angular.module('convenienceApp')
       delete $rootScope.currentUser;
     });
 
-    var dest = 'user-enrollments';
+    var dest = 'athletes';//var dest = 'user-enrollments';
     var isParent = true;
 
     return {
@@ -204,6 +204,24 @@ angular.module('convenienceApp')
           currentPassword: oldPassword,
           newPassword: newPassword
         });
+      },
+
+      getSessionSalt: function(token,cb) {
+        if(token){
+          $http.post('/api/v1/auth/session/salt', {
+            token : token
+          }).
+            success(function(data) {
+              cb(null, data);
+            }).
+            error(function(err) {
+              console.log('err', err)
+              cb(err);
+            });
+        }else{
+          cb(null, true);
+        }
+
       },
 
       verifyEmailToken: function(token, successFn, errorFn){
