@@ -44,7 +44,7 @@ function sendEmailReminder(pendingOrders, callback){
 
   async.eachSeries(pendingOrders, function(order, cb) {
     logger.log('info','iterate each order', order.incrementId);
-    
+
     /*order.schedulePeriods.map(function(schedule){
       logger.log('info','iterate each orderSchedule', schedule.id);
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
@@ -53,7 +53,7 @@ function sendEmailReminder(pendingOrders, callback){
         logger.log('info','should send Email Reminder',schedule.id);
         paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
           logger.log('info','send Email Reminder data',data);
-          logger.log('info','send Email Reminder err',err);  
+          logger.log('info','send Email Reminder err',err);
         });
         return cb(null,true);
       }else{
@@ -62,7 +62,7 @@ function sendEmailReminder(pendingOrders, callback){
     });*/
 
     async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
-      
+
       logger.log('info','iterate each orderSchedule', schedule.id);
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
@@ -70,7 +70,7 @@ function sendEmailReminder(pendingOrders, callback){
         logger.log('info','should send Email Reminder',schedule.id);
         paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
           logger.log('info','send Email Reminder data',data);
-          logger.log('info','send Email Reminder err',err);  
+          logger.log('info','send Email Reminder err',err);
         });
         return cbSchedule(null,true);
       }else{

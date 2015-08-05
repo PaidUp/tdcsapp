@@ -67,11 +67,12 @@ function end() {
   }
 }
 
-function end(nameFile) {
+function endName(nameFile) {
   try {
     fs.unlinkSync(config.cronjob.pathPidFile+nameFile);
   }
   catch (e) {
+    logger.error(e)
   }
 }
 
@@ -129,7 +130,7 @@ exports.runRetryPayments = function(cb) {
     async.series(
       jobsRetryPayments,
       function (err, results) {
-        end(name);
+        endName(name);
         return cb(null,results);
       });
   }else{
