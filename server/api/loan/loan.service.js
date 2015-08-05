@@ -98,7 +98,6 @@ function captureLoanSchedule(loan, scheduledIndex, cb) {
        });
      });
    });
-
  }
 
 exports.simulate = simulate;

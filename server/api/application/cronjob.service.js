@@ -26,6 +26,19 @@ var jobsReminderPayments =
     function(callback) {
       logger.log('info','paymentCronService.reminderPayments');
       paymentCronService.sendEmailReminderParents(function (err, data) {
+        if (err) return callback(err);
+        callback(null, true);
+      });
+    }
+  ];
+
+var jobsRetryPayments =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      logger.log('info','paymentCronService.retryPayments2');
+      paymentCronService.retryPaymentSchedule(function (err, data) {
+        logger.log('info','paymentCronService.retryPayments');
         if (err) callback(err);
         callback(null, data);
       });
@@ -51,6 +64,15 @@ function end() {
     fs.unlinkSync(config.cronjob.pidFile);
   }
   catch (e) {
+  }
+}
+
+function endName(nameFile) {
+  try {
+    fs.unlinkSync(config.cronjob.pathPidFile+nameFile);
+  }
+  catch (e) {
+    logger.error(e)
   }
 }
 
@@ -85,15 +107,30 @@ exports.run = function(cb) {
 }
 
 exports.runReminderPayments = function(cb) {
-  var name = new moment(new Date()).format("YYYYMMDD");
+  var name = 'retryPayment'+new moment(new Date()).format("YYYYMMDD");
   if(canStartGiveNameFile(name)) {
-    logger.log('info', Date() + ' running cronReminderPayments...');
+    logger.log('info', Date() + ' running cronRetryPayments...');
     startGiveName(name);
-
     async.series(
       jobsReminderPayments,
       function (err, results) {
-        end();
+        return cb(null,results);
+      });
+  }else{
+    return cb(null,{name:name+'.pid is created'});
+  }
+}
+
+exports.runRetryPayments = function(cb) {
+  var name = 'runRetryPayments' + new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running runRetryPayments...');
+    startGiveName(name);
+
+    async.series(
+      jobsRetryPayments,
+      function (err, results) {
+        endName(name);
         return cb(null,results);
       });
   }else{

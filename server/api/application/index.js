@@ -9,6 +9,7 @@ router.post('/contact', controller.contact);
 router.get('/config', controller.config);
 router.get('/cron', controller.cron);
 router.get('/cron/reminder/payments', controller.cronReminderPayments);
+router.get('/cron/retry/payments', controller.cronRetrayPayments);
 
 //router.use('/report', require('./report/index'));
 
