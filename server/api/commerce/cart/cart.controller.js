@@ -102,3 +102,17 @@ function handleError (res, err) {
 
   return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
 }
+
+exports.couponAdd = function (req, res) {
+  if(!req.body && !req.body.coupon  && !req.body.cartId) {
+    return res.json(400, {
+      "code": "ValidationError",
+      "message": "Cart Id and coupon are required"
+    });
+  }
+  cartService.cartCouponAdd(req.body, function (err, isAddCoupon) {
+    if(err) return handleError(res, err);
+    mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
+    res.json(200, isAddCoupon);
+  });
+}
