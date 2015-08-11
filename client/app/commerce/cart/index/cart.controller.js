@@ -12,7 +12,7 @@ angular.module('convenienceApp')
     });
     var cartId = CartService.getCurrentCartId();
 
-    var getTotals = function (){
+    var getTotals = function (cb){
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {
@@ -23,6 +23,9 @@ angular.module('convenienceApp')
             $scope.discount = total;
           }
         });
+        cb(null, true);
+      }).catch(function(err){
+        cb(err);
       });
     };
 
@@ -53,7 +56,9 @@ angular.module('convenienceApp')
         var products = cart.items;
         products.forEach(function (ele, idx, arr) {
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
+            console.log('ele' , ele);
             CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
+              console.log('val' , val);
               if(val.error){
                 var user = AuthService.getCurrentUser();
                 $scope.isScheduleError = true;
@@ -75,7 +80,9 @@ angular.module('convenienceApp')
         });
       });
 
-      getTotals();
+      getTotals(function(err, data){
+
+      });
 
     } else {
       $scope.hasCart = false;

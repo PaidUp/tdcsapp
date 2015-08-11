@@ -101,23 +101,23 @@ angular.module('convenienceApp')
     $scope.enrollNow = function () {
       $scope.submitted = true;
       $scope.enrolled = true;
-      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions, function(err, data){
-        if ($scope.teamSelectionForm.$valid) {
-          $scope.disablePayNow = true;
-          CartService.createCart().then(function () {
-            CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
-              $state.go('cart');
-            }).catch(function (err) {
-              $scope.enrolled = false;
-              $scope.sendAlertErrorMsg(err.data.message);
-            });
+      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions);
+
+      if ($scope.teamSelectionForm.$valid) {
+        $scope.disablePayNow = true;
+        CartService.createCart().then(function () {
+          CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
+            $state.go('cart');
           }).catch(function (err) {
             $scope.enrolled = false;
-            $scope.disablePayNow = false;
             $scope.sendAlertErrorMsg(err.data.message);
           });
-        }
-      });
+        }).catch(function (err) {
+          $scope.enrolled = false;
+          $scope.disablePayNow = false;
+          $scope.sendAlertErrorMsg(err.data.message);
+        });
+      }
     };
 
     $scope.changeCustomOptions = function (customOption, optionModel) {

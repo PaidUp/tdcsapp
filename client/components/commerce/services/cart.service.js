@@ -14,44 +14,61 @@ angular.module('convenienceApp')
     });
 
     var CartService = this;
-    $rootScope.$on('logout', function () {
-      CartService.removeCurrentCart();
-    });
 
-    this.setCartDetails = function(team , prod, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
+    var getSessionSalt = function(cb) {
+      AuthService.getSessionSalt($cookieStore.get('token'), function (err, salt) {
+        if (err) {
+          console.log('getSessionSalt', err);
           cb(err);
-        }else{
-          var els = new encryptService(salt);
-          els.set('team', team);
-          els.set('products', prod);
-          cb(null , true);
+        } else {
+          CartService.els = new encryptService(salt);
+          cb(null, true);
         }
-      });
-    }
+      })
+    };
 
-    this.hasProductBySKU = function(sku, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
-        }else{
-          var els = new encryptService(salt);
+    getSessionSalt(function(err, data){
+      if(data) {
+
+        CartService.setCartDetails = function (team, prod) {
+          CartService.els.set('team', team);
+          CartService.els.set('products', prod);
+        };
+
+
+        CartService.setCartGrandTotal = function (productId, grandTotal) {
+          CartService.els.set('productId', productId);
+          CartService.els.set('grandTotal', grandTotal);
+        };
+
+
+        CartService.getCartGrandTotal = function () {
+          var result = {
+            productId: CartService.els.get('productId'),
+            grandTotal: CartService.els.get('grandTotal')
+          }
+        };
+
+        CartService.hasProductBySKU = function (sku, cb) {
           var result = false;
-          els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
-            ele.forEach(function(option, idx2, arr2){
-              option.values.forEach(function(value, idx3, arr3){
-                if(value.sku == sku){
-                  result = els.get('products').options[option.optionId] == value.valueId;
+          CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
+            ele.forEach(function (option, idx2, arr2) {
+              option.values.forEach(function (value, idx3, arr3) {
+                if (value.sku == sku) {
+                  result = CartService.els.get('products').options[option.optionId] == value.valueId;
                 }
               });
             });
           });
           cb(result);
-        }
-      });
-    };
+        };
+      }
+
+    });
+
+    $rootScope.$on('logout', function () {
+      CartService.removeCurrentCart();
+    });
 
     this.createCart = function() {
       var deferred = $q.defer();
