@@ -1,7 +1,7 @@
 <div class="container" ng-show="teams">
   <h4>Here's your order</h4>
   <div class="row">
-    <div class="col-md-8 table-responsive" >
+    <div class="col-md-8 table- responsive" >
       <table class="table cart-table">
         <thead>
           <tr>
@@ -42,6 +42,12 @@
     </div>
 
     <div class="col-md-4 table-responsive" >
+      <div id="couponArea" class="row">
+        <div class="col-sm-3"><strong class="titles">Discount Code</strong> </div>
+        <div class="col-sm-7"><input id="codeDiscounts" class="form-control" ng-model="codeDiscounts" type="text"> </div>
+        <div class="col-sm-2"><button class="btn btnSignUp" type="button" ng-click="applyDiscount()">Apply</button> </div>
+      </div>
+      <hr style="border-width: 3px">
       <table class="table cart-order-summary">
         <thead>
           <tr>
@@ -70,6 +76,22 @@
           </tr>
         </tbody>
         <tfoot>
+        <tr>
+          <td colspan="2">
+            <strong>{{subtotal.title | uppercase}}</strong>
+          </td>
+          <td>
+            <span>{{subtotal.amount | currency}}</span>
+          </td>
+        </tr>
+        <tr ng-show="discount">
+          <td colspan="2">
+            <strong>{{discount.title | uppercase}}</strong>
+          </td>
+          <td>
+            <span>{{discount.amount | currency}}</span>
+          </td>
+        </tr>
           <tr>
             <td colspan="2">
               <strong>{{total.title | uppercase}}</strong>
