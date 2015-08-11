@@ -119,6 +119,14 @@ exports.addFee = function (cartId, cb){
   });
 }
 
+function cartCouponAdd (cartCoupon, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.cartCouponAdd(cartCoupon, function(err, data) {
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 exports.cartCreate = cartCreate;
 exports.cartList = cartList;
 exports.cartAdd = cartAdd;
@@ -127,3 +135,4 @@ exports.cartAddress = cartAddress;
 exports.cartView = cartView;
 exports.cartTotals = cartTotals;
 exports.prepareMerchantProducts = prepareMerchantProducts;
+exports.cartCouponAdd = cartCouponAdd;

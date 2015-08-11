@@ -6,6 +6,13 @@ angular.module('convenienceApp')
       cartId: ''
     },{});
 
+    var discount = $resource('/api/v1/commerce/cart/coupon/add',{},{
+      apply:{
+        method:'POST',
+        isArray:false
+      }
+    });
+
     var CartService = this;
     $rootScope.$on('logout', function () {
       CartService.removeCurrentCart();
@@ -151,6 +158,17 @@ angular.module('convenienceApp')
       });
       subTotal = resp;
       return resp;
+    };
+
+    this.applyDiscount = function(coupon, cartId, cb){
+      discount.apply({coupon:coupon,
+      cartId:cartId}).$promise.then(function(result){
+          cb(null, result);
+        }).catch(function(err){
+        console.log(err);
+          cb(err);
+      });
+
     };
 
   });

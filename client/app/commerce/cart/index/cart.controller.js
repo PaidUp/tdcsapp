@@ -11,6 +11,21 @@ angular.module('convenienceApp')
       }
     });
     var cartId = CartService.getCurrentCartId();
+
+    var getTotals = function (){
+      CartService.getTotals(cartId).then(function (totals) {
+        angular.forEach(totals, function (total) {
+          if (total.title === 'Grand Total') {
+            $scope.total = total;
+          } else if (total.title === 'Subtotal') {
+            $scope.subtotal = total;
+          } else if (total.title.indexOf("Discount") > -1) {
+            $scope.discount = total;
+          }
+        });
+      });
+    };
+
     $scope.modalFactory = ModalFactory;
     if (cartId) {
       $scope.teams = [];
@@ -58,19 +73,10 @@ angular.module('convenienceApp')
             });
           });
         });
-
-
       });
 
-      CartService.getTotals(cartId).then(function (totals) {
-        angular.forEach(totals, function (total) {
-          if (total.title === 'Grand Total') {
-            $scope.total = total;
-          } else if (total.title === 'Subtotal') {
-            $scope.subtotal = total;
-          }
-        });
-      });
+      getTotals();
+
     } else {
       $scope.hasCart = false;
     }
@@ -90,4 +96,15 @@ angular.module('convenienceApp')
       //   $state.go('athletes');
       // });
     };
+
+    $scope.codeDiscounts = '';
+
+    $scope.applyDiscount = function(){
+      CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
+        console.log('err',err);
+        if(data){
+          getTotals();
+        }
+      });
+    }
   });
