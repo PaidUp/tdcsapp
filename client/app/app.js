@@ -81,7 +81,7 @@ angular.module('convenienceApp', [
     return EncryptedLocalStorage;
   }])
 
-  .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll, $urlRouter) {
+  .run(function ($rootScope, $state, $stateParams, AuthService, $analytics, FlashService, $anchorScroll) {
     $anchorScroll.yOffset = 100;
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

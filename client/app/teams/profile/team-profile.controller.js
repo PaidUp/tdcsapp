@@ -11,6 +11,8 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+
+    $rootScope.$emit('init-cart-service' , {});
     // $scope.athletes = [{
     //   _id: 'addAthlete',
     //   firstName: 'Add New Athlete'

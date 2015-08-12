@@ -2,6 +2,24 @@
 
 angular.module('convenienceApp')
   .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
+    var CartService = this;
+
+    $rootScope.$on('init-cart-service', function () {
+      if(!CartService.els){
+        AuthService.getSessionSalt($cookieStore.get('token'), function (err, salt) {
+          if (err) {
+            console.log(err);
+          } else {
+            CartService.els = new encryptService(salt);
+          }
+        })
+      }
+    });
+
+    $rootScope.$on('logout', function () {
+      CartService.els = null;
+    });
+
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -13,40 +31,19 @@ angular.module('convenienceApp')
       }
     });
 
-    var CartService = this;
-
-    var getSessionSalt = function(cb) {
-      AuthService.getSessionSalt($cookieStore.get('token'), function (err, salt) {
-        if (err) {
-          console.log('getSessionSalt', err);
-          cb(err);
-        } else {
-          CartService.els = new encryptService(salt);
-          cb(null, true);
-        }
-      })
-    };
-
-    getSessionSalt(function(err, data){
-      if(data) {
 
         CartService.setCartDetails = function (team, prod) {
+          console.log();
           CartService.els.set('team', team);
           CartService.els.set('products', prod);
         };
 
-
-        CartService.setCartGrandTotal = function (productId, grandTotal) {
-          CartService.els.set('productId', productId);
+        CartService.setCartGrandTotal = function (grandTotal) {
           CartService.els.set('grandTotal', grandTotal);
         };
 
-
         CartService.getCartGrandTotal = function () {
-          var result = {
-            productId: CartService.els.get('productId'),
-            grandTotal: CartService.els.get('grandTotal')
-          }
+          return CartService.els.get('grandTotal')
         };
 
         CartService.hasProductBySKU = function (sku, cb) {
@@ -62,9 +59,6 @@ angular.module('convenienceApp')
           });
           cb(result);
         };
-      }
-
-    });
 
     $rootScope.$on('logout', function () {
       CartService.removeCurrentCart();
@@ -113,17 +107,9 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
-      if($cookieStore.get('token')){
-        AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-          if(err){
-            console.log('getSessionSalt',err);
-          }else{
-            var els = new encryptService(salt);
-            els.remove('team');
-            els.remove('products');
-          }
-        })
-      }
+      CartService.els.remove('team');
+      CartService.els.remove('products');
+      CartService.els.remove('grandTotal');
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
