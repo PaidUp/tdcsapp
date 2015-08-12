@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService, NotificationEmailService, AuthService) {
+  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService, NotificationEmailService, AuthService, FlashService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -115,7 +115,13 @@ angular.module('convenienceApp')
 
     $scope.applyDiscount = function(){
       CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
-        if(data){
+        if(err){
+          FlashService.addAlert({
+            type: 'warning',
+            msg: 'Coupon is not valid',
+            timeout: 10000
+          });
+        } else{
           $scope.schedules = [];
           getTotals(function(err,data){
             CartController.loadSchedule();
