@@ -10,17 +10,50 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+
+    $rootScope.$emit('init-cart-service' , {});
+
+    var CartController = this;
+
     var cartId = CartService.getCurrentCartId();
 
-    var getTotals = function (){
+    var getTotals = function (cb){
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {
             $scope.total = total;
+            CartService.setCartGrandTotal(total.amount);
           } else if (total.title === 'Subtotal') {
             $scope.subtotal = total;
           } else if (total.title.indexOf("Discount") > -1) {
             $scope.discount = total;
+          }
+        });
+        cb(null, true);
+      }).catch(function(err){
+        cb(err);
+      });
+    };
+
+    CartController.loadSchedule = function(){
+      var ele = CartController.cart.items[0];
+      CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
+        CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay).then(function (val) {
+          if(val.error){
+            var user = AuthService.getCurrentUser();
+            $scope.isScheduleError = true;
+            NotificationEmailService.sendNotificationEmail('Get schedule error', {
+              productId:ele.productId,
+              price:CartService.getCartGrandTotal(),
+              isInFullPay: isInFullPay,
+              name: user.firstName + ' ' + user.lastName,
+              email: user.email
+            });
+          }else{
+            $scope.schedules.push({
+              name: ele.name,
+              periods: val.schedulePeriods
+            });
           }
         });
       });
@@ -31,6 +64,7 @@ angular.module('convenienceApp')
       $scope.teams = [];
       CartService.getCart(cartId).then(function (cart) {
         var feeItem;
+        CartController.cart = cart;
         angular.forEach(cart.items, function (cartItem, index) {
           TeamService.getTeam(cartItem.productId).then(function (team) {
             team.attributes.qty = cartItem.qty;
@@ -50,32 +84,12 @@ angular.module('convenienceApp')
         $scope.schedules = [];
         $scope.totalPrice   = 0;
 
-        var products = cart.items;
-        products.forEach(function (ele, idx, arr) {
-          CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
-            CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
-              if(val.error){
-                var user = AuthService.getCurrentUser();
-                $scope.isScheduleError = true;
-                NotificationEmailService.sendNotificationEmail('Get schedule error', {
-                  productId:ele.productId,
-                  price:ele.price,
-                  isInFullPay: isInFullPay,
-                  name: user.firstName + ' ' + user.lastName,
-                  email: user.email
-                });
-              }else{
-                $scope.schedules.push({
-                  name: ele.name,
-                  periods: val.schedulePeriods
-                });
-              }
-            });
-          });
-        });
+        CartController.loadSchedule();
       });
 
-      getTotals();
+      getTotals(function(err, data){
+
+      });
 
     } else {
       $scope.hasCart = false;
@@ -101,9 +115,11 @@ angular.module('convenienceApp')
 
     $scope.applyDiscount = function(){
       CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
-        console.log('err',err);
         if(data){
-          getTotals();
+          $scope.schedules = [];
+          getTotals(function(err,data){
+            CartController.loadSchedule();
+          });
         }
       });
     }

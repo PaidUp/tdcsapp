@@ -2,6 +2,24 @@
 
 angular.module('convenienceApp')
   .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
+    var CartService = this;
+
+    $rootScope.$on('init-cart-service', function () {
+      if(!CartService.els){
+        AuthService.getSessionSalt($cookieStore.get('token'), function (err, salt) {
+          if (err) {
+            console.log(err);
+          } else {
+            CartService.els = new encryptService(salt);
+          }
+        })
+      }
+    });
+
+    $rootScope.$on('logout', function () {
+      CartService.els = null;
+    });
+
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -13,45 +31,38 @@ angular.module('convenienceApp')
       }
     });
 
-    var CartService = this;
-    $rootScope.$on('logout', function () {
-      CartService.removeCurrentCart();
-    });
 
-    this.setCartDetails = function(team , prod, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
-          cb(err);
-        }else{
-          var els = new encryptService(salt);
-          els.set('team', team);
-          els.set('products', prod);
-          cb(null , true);
-        }
-      });
-    }
+        CartService.setCartDetails = function (team, prod) {
+          console.log();
+          CartService.els.set('team', team);
+          CartService.els.set('products', prod);
+        };
 
-    this.hasProductBySKU = function(sku, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
-        }else{
-          var els = new encryptService(salt);
+        CartService.setCartGrandTotal = function (grandTotal) {
+          CartService.els.set('grandTotal', grandTotal);
+        };
+
+        CartService.getCartGrandTotal = function () {
+          return CartService.els.get('grandTotal')
+        };
+
+        CartService.hasProductBySKU = function (sku, cb) {
           var result = false;
-          els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
-            ele.forEach(function(option, idx2, arr2){
-              option.values.forEach(function(value, idx3, arr3){
-                if(value.sku == sku){
-                  result = els.get('products').options[option.optionId] == value.valueId;
+          CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
+            ele.forEach(function (option, idx2, arr2) {
+              option.values.forEach(function (value, idx3, arr3) {
+                if (value.sku == sku) {
+                  result = CartService.els.get('products').options[option.optionId] == value.valueId;
                 }
               });
             });
           });
           cb(result);
-        }
-      });
-    };
+        };
+
+    $rootScope.$on('logout', function () {
+      CartService.removeCurrentCart();
+    });
 
     this.createCart = function() {
       var deferred = $q.defer();
@@ -96,17 +107,9 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
-      if($cookieStore.get('token')){
-        AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-          if(err){
-            console.log('getSessionSalt',err);
-          }else{
-            var els = new encryptService(salt);
-            els.remove('team');
-            els.remove('products');
-          }
-        })
-      }
+      CartService.els.remove('team');
+      CartService.els.remove('products');
+      CartService.els.remove('grandTotal');
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
