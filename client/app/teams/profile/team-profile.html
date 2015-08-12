@@ -37,7 +37,7 @@
                       ng-model="teamSelected"
                       name="selectTeam"
                       ng-required="true"
-                      ng-options="team.attributes.description for team in teams"
+                      ng-options="team.attributes.description for team in teams | orderBy:'attributes.description'"
                       ng-change="updateTeam(teamSelected)"
                       ng-show="showDropDownTeams">
               </select>
