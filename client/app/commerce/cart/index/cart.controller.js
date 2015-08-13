@@ -84,13 +84,11 @@ angular.module('convenienceApp')
         $scope.schedules = [];
         $scope.totalPrice   = 0;
 
-        CartController.loadSchedule();
+        getTotals(function(err, data){
+          CartController.loadSchedule();
+        });
+
       });
-
-      getTotals(function(err, data){
-
-      });
-
     } else {
       $scope.hasCart = false;
     }
