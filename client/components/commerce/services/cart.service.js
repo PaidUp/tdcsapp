@@ -16,10 +16,6 @@ angular.module('convenienceApp')
       }
     });
 
-    $rootScope.$on('logout', function () {
-      CartService.els = null;
-    });
-
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
@@ -33,7 +29,6 @@ angular.module('convenienceApp')
 
 
         CartService.setCartDetails = function (team, prod) {
-          console.log();
           CartService.els.set('team', team);
           CartService.els.set('products', prod);
         };
@@ -110,6 +105,7 @@ angular.module('convenienceApp')
       CartService.els.remove('team');
       CartService.els.remove('products');
       CartService.els.remove('grandTotal');
+      CartService.els = null;
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
