@@ -51,8 +51,10 @@ angular.module('convenienceApp')
           TeamService.getTeam(teamItem.productId).then(function (team) {
             if(team) {
               teams.push(team);
+              if(teams.length === teamsResponse.length){
+                deferred.resolve(teams);
+              }
             }
-            deferred.resolve(teams);
           }).catch(function (err) {
 
           });
