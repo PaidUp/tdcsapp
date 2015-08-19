@@ -68,7 +68,10 @@
             <td>
               <!-- <img ng-src="{{card.logo}}" alt="Card Logo" class="pull-left"> -->
               <strong>{{card.name}}</strong><br>
-              xxxxxxxxxxxx{{card.last4}}
+              xxxxxxxxxxxx{{card.last4}} 
+              <a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id === defaultSource' style='position: absolute;right: 20px;'> default</a>
+              <a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id != defaultSource' style='position: absolute;right: 20px;'> no default</a>
+              <br>
             </td>
           </tr>
         </tbody>

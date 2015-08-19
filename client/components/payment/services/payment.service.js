@@ -7,6 +7,7 @@ angular.module('convenienceApp')
     var BankPayment = $resource('/api/v1/payment/bank/:action', {}, {});
     var DeleteBank = $resource('/api/v1/payment/bank/delete/:customerId/:bankId', {}, {});
     var CardPayment = $resource('/api/v1/payment/card/:action', {}, {});
+    var CustomerPayment = $resource('/api/v1/payment/customer/:action', {}, {});
 
     this.sendPayment = function (payment) {
       return Payment.save(payment).$promise;
@@ -43,5 +44,9 @@ angular.module('convenienceApp')
     var CardService = $resource('/api/v1/payment/card/associate', {}, {});
     this.associateCard = function (cardId) {
       return CardService.save({cardId: cardId}).$promise;
+    };
+
+    this.updateCustomer = function (dataCustomer) {
+      return CustomerPayment.save({action: 'update'},dataCustomer).$promise;
     };
   });

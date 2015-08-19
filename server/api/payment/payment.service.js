@@ -29,6 +29,22 @@ function createCustomer(user, cb) {
   });
 }
 
+function updateCustomer(dataCustomer, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.updateCustomer(dataCustomer, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function fetchCustomer(customerId, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.fetchCustomer(customerId, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 function createCard(cardDetails, cb) {
   tdPaymentService.init(config.connections.payment);
   tdPaymentService.createCard(cardDetails, function(err, data){
@@ -589,3 +605,5 @@ exports.addBankConnectAccount = addBankConnectAccount;
 exports.addToSCustomer = addToSCustomer;
 exports.addLegalCustomer = addLegalCustomer;
 exports.updateAccount = updateAccount;
+exports.updateCustomer = updateCustomer;
+exports.fetchCustomer = fetchCustomer;
