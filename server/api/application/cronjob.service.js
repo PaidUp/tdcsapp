@@ -4,6 +4,7 @@ var config = require('../../config/environment');
 var fs = require("fs");
 var async = require('async');
 var paymentCronService = require('../payment/payment.cron.service');
+var commerceService = require('../commerce/commerce.service');
 var logger = require('../../config/logger');
 var path = require('path');
 var moment = require('moment');
@@ -42,6 +43,22 @@ var jobsRetryPayments =
         if (err) callback(err);
         callback(null, data);
       });
+    }
+  ];
+
+var jobsCompleteOrders =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      commerceService.getListOrdersComplete(function (err, data) {
+        if (err) {
+          callback(err);
+          logger.error('error', err);
+        } else {
+          logger.log('info', data);
+          callback(null, data);
+        }
+      })
     }
   ];
 
@@ -134,6 +151,23 @@ exports.runRetryPayments = function(cb) {
         return cb(null,results);
       });
   }else{
+    return cb(null,{name:name+'.pid is created'});
+  }
+}
+
+exports.runCompleteOrders = function(cb) {
+  var name = 'runCompleteOrders' + new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running runCompleteOrders...');
+    startGiveName(name);
+
+    async.series(
+      jobsCompleteOrders,
+      function (err, results) {
+        endName(name);
+        return cb(null,results);
+      });
+  } else {
     return cb(null,{name:name+'.pid is created'});
   }
 }

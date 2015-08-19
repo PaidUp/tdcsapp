@@ -206,9 +206,21 @@ function paymentsSchedule(params, cb) {
 function getListRetryPayment(cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.listRetryPayments(function (err, data) {
-    console.log('err',err);
-    console.log('data',data);
-    if (err) return cb(err);
+    if (err){
+      logger.error(err);
+      return cb(err)
+    }
+    return cb(null,data);
+  });
+}
+
+function getListOrdersComplete(cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.listOrdersComplete(function (err, data) {
+    if (err){
+      logger.error(err);
+      return cb(err);
+    } 
     return cb(null,data);
   });
 }
@@ -228,3 +240,4 @@ exports.providerResponseUpdate = providerResponseUpdate;
 exports.getSchedule = getSchedule;
 exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
+exports.getListOrdersComplete = getListOrdersComplete;

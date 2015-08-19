@@ -41,3 +41,9 @@ exports.cronRetrayPayments = function(req, res) {
     res.json(200, data);
   });
 }
+
+exports.cronCompleteOrders = function(req, res) {
+  cronjobService.runCompleteOrders(function(err, data){
+    res.json(200, data);
+  });
+}
