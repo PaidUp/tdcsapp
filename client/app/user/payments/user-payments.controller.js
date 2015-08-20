@@ -31,6 +31,9 @@ angular.module('convenienceApp')
     });*/
 
     PaymentService.listCards().then(function (response) {
+      //console.log('response.data',response.data);
+      //console.log('response.defaultSource',response.defaultSource);
+      $scope.defaultSource = response.defaultSource;
       $scope.loadingCards = false;
       $scope.cards = angular.copy(response.data);
     }).catch(function (err) {
@@ -55,6 +58,14 @@ angular.module('convenienceApp')
           msg: $scope.msg,
           timeout: 10000
         });  
+      }).catch(function(err){
+        $scope.sendAlertErrorMsg(err.data.message);
+      });
+    };
+
+    $scope.updateCardDefault = function(cardId){
+      PaymentService.updateCustomer({cardId:cardId}).then(function(res){
+        $scope.defaultSource = res.defaultSource;
       }).catch(function(err){
         $scope.sendAlertErrorMsg(err.data.message);
       });

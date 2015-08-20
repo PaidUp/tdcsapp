@@ -47,20 +47,23 @@ exports.listCards = function(req, res){
       return handleError(res, err);
     }
     if(dataUser[0].meta.TDPaymentId !== ''){
-      paymentService.listCards(dataUser[0].meta.TDPaymentId, function(err, dataCards){
-        if(err){
-          return res.json(400,{
-            "code": "ValidationError",
-              "message": "Card is not valid"
-          });
-        }
-        if(!dataCards){
-          return res.json(400,{
-            "code": "ValidationError",
-              "message": "User without cards"
-          });
-        }
-        return res.json(200, camelize(dataCards));
+      paymentService.listCards(dataUser[0].meta.TDPaymentId, function(errCard, dataCards){
+        paymentService.fetchCustomer(dataUser[0].meta.TDPaymentId, function(errCustomer, dataCustomer){
+          if(errCard || errCustomer){
+            return res.json(400,{
+              "code": "ValidationError",
+                "message": "customer Card is not valid"
+            });
+          }
+          if(!dataCards){
+            return res.json(400,{
+              "code": "ValidationError",
+                "message": "User without cards"
+            });
+          }
+          dataCards.defaultSource = dataCustomer.defaultSource
+          return res.json(200, camelize(dataCards));
+        });
       });
     } else{
       return res.json(200, {data:[]});
