@@ -220,7 +220,7 @@ function getListOrdersComplete(cb) {
     if (err){
       logger.error(err);
       return cb(err);
-    } 
+    }
     return cb(null,data);
   });
 }
