@@ -27,7 +27,7 @@ exports.sendContactEmail = function(dataProvider, cb) {
       //mailOptions.to = config.emailContacts.admin;
       //mailOptions.bcc = config.emailContacts.developer;
       mailOptions.html = html;
-      mailOptions.subject = 'Message to ' + emailVars.companyName;
+      mailOptions.subject = emailVars.prefix+'Message to ' + emailVars.companyName;
       mailOptions.baseUrl = emailVars.baseUrl;
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function(error, info){

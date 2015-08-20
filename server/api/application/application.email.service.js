@@ -18,7 +18,7 @@ exports.sendContactEmail = function(dataContact, cb) {
     if(err) return cb(err);
     var emailVars = config.emailVars;
     emailVars.email = dataContact.email;
-    emailVars.subject = dataContact.subject;
+    emailVars.subject = emailVars.prefix + dataContact.subject;
     emailVars.content = dataContact.content;
     template('application/contact',emailVars,function(err, html, text){
       if(err) return cb(err);
