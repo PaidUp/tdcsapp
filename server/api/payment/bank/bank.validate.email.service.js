@@ -27,7 +27,7 @@ exports.sendValidateEmail = function  (userFirstName, email, accountLast4Digits,
       mailOptions.to = email;
       //mailOptions.bcc = config.emailContacts.developer;
       mailOptions.html = html;
-      mailOptions.subject = 'Contract ';
+      mailOptions.subject = emailVars.prefix + 'Contract ';
 
       mailOptions.attachments = [];
 

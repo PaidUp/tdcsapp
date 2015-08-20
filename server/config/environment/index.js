@@ -70,7 +70,8 @@ var all = {
   },
   emailVars: {
     companyName : "Convenience Select",
-    baseUrl : "http://localhost:9000"
+    baseUrl : "http://localhost:9000",
+    prefix : '[DEV] '
   },
   emailContacts : {
     contact : 'convenieceselect@gmail.com',//ourteam@cs.com
