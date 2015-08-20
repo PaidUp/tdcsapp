@@ -163,7 +163,6 @@ exports.retryPaymentSchedule = function (callbackSchedule){
       throw new Error(err);
     }else{
       async.eachSeries(pendingOrders, function(order, callbackEach){
-
           if(!order.schedulePeriods){
             logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
             callbackEach();
@@ -178,10 +177,13 @@ exports.retryPaymentSchedule = function (callbackSchedule){
               async.eachSeries(order.schedulePeriods,
                 function(schedulePeriod, callbackEach2){
                   if(retrySchedule.scheduleId === schedulePeriod.id){
-
                     userService.find({_id : order.userId}, function(err, users){
-                      paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                        order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, order.meta, retrySchedule.retryId, function(err , data){
+                      paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                        if(paymentUser && paymentUser.defaultSource){
+                          order.cardId = paymentUser.defaultSource;
+                        }
+                        paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                          order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, order.meta, retrySchedule.retryId, function(err , data){
                           if(err){
                             notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
                             });
@@ -189,6 +191,7 @@ exports.retryPaymentSchedule = function (callbackSchedule){
                           }
                           return callbackEach2();
                         });
+                      });
                     });
                   } else{
                     callbackEach2();
