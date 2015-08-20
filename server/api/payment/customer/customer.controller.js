@@ -4,7 +4,6 @@ var paymentService = require('../payment.service');
 var camelize = require('camelize');
 
 exports.updateCustomer = function (req, res) {
-  console.info('req.user',req.user.meta.TDPaymentId);
   var data = {accountId:req.user.meta.TDPaymentId,data:{default_source:req.body.cardId}}
   paymentService.updateCustomer(data, function(err, data){
     if (err){

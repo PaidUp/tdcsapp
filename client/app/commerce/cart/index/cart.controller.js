@@ -56,9 +56,7 @@ angular.module('convenienceApp')
         var products = cart.items;
         products.forEach(function (ele, idx, arr) {
           CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
-            console.log('ele' , ele);
             CommerceService.getSchedule(ele.productId, ele.price, isInFullPay).then(function (val) {
-              console.log('val' , val);
               if(val.error){
                 var user = AuthService.getCurrentUser();
                 $scope.isScheduleError = true;
@@ -108,7 +106,6 @@ angular.module('convenienceApp')
 
     $scope.applyDiscount = function(){
       CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
-        console.log('err',err);
         if(data){
           getTotals();
         }
