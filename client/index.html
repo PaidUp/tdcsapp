@@ -297,7 +297,27 @@ mixpanel.init("ec0a4bdcce8b969299299e0710f4775a");</script><!-- end Mixpanel -->
         b[k]=o+'d.write("'+p().replace(/"/g,String.fromCharCode(92)+'"')+'");d.close();'}a.P(2)};ld()};nt()})({
         loader: "static.olark.com/jsclient/loader0.js",name:"olark",methods:["configure","extend","declare","identify"]});
         /* custom configuration goes here (www.olark.com/documentation) */
-        olark.identify('9293-999-10-7448');/*]]>*/</script><noscript><a href="https://www.olark.com/site/9293-999-10-7448/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
+        olark.identify('9293-999-10-7448');/*]]>*/</script>
+
+    <script type="text/javascript">
+      //change the following for your office's timezone offset!!!
+      var myTimeZoneOffset = 300;
+
+      var GMTAdjust = (new Date().getTime() -myTimeZoneOffset*60000);
+      var GMTAdjustedDate = new Date(GMTAdjust);
+
+      //use dayOfWeek if we want to force offline to enjoy our weekends
+      var dayOfWeek = GMTAdjustedDate.getDay();
+      var hourOfDay = GMTAdjustedDate.getUTCHours();
+
+      // Force Olark to show as unavailable in the evening after 9pm
+      // and in the morning before 7am as well as Sundays, even if we have operators available.
+      if (dayOfWeek == 0 || hourOfDay > 21 || hourOfDay <= 7) {
+        olark.configure("system.force_offline", true);
+      }
+    </script>
+
+    <noscript><a href="https://www.olark.com/site/9293-999-10-7448/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
         <!-- end olark code -->
 </body>
 </html>

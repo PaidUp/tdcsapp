@@ -2,11 +2,13 @@
 
 angular.module('convenienceApp')
   .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
-  
+
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
-    
+
+    $rootScope.$emit('init-cart-service' , {});
+
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/athletes/templates/my-athletes-title.html'
@@ -17,7 +19,7 @@ angular.module('convenienceApp')
     });
 
     AuthService.isLoggedInAsync(function(loggedIn) {
-      $scope.user = angular.extend({}, AuthService.getCurrentUser()); 
+      $scope.user = angular.extend({}, AuthService.getCurrentUser());
       UserService.listRelations($scope.user._id).then(function (data) {
         if(data.length==0){
           $scope.isChildCharged = true;
@@ -52,7 +54,7 @@ angular.module('convenienceApp')
           timeout: 10000
         });
       });
-    }); 
+    });
 
     $scope.selectAthlete = function (athlete) {
       $state.go('athletes-slider', {athleteId: athlete._id});
