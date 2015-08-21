@@ -41,7 +41,7 @@
       <strong class="pull-right"> + <a ui-sref="user-card-create" href="" id="hrefAddNewCard">ADD NEW CARD</a></strong>
       <table class="table table-payment-methods">
         <thead>
-          <!-- <td><strong>{{'primary' | uppercase}}</strong></td> -->
+          <td><strong>{{'primary' | uppercase}}</strong></td>
           <td><strong>{{'details' | uppercase}}</strong></td>
         </thead>
         <tbody>
@@ -51,26 +51,28 @@
             </td>
           </tr>
           <tr ng-repeat="card in cards">
-            <!-- <td>
+            <td>
               <div class="radio center-block">
                 <label>
                   <input type="radio"
                           name="primaryCard"
                           ng-value="true"
-                          ng-model="card.primary"
+                          ng-model='card.id === defaultSource'
                           required
-                          ng-required="true">
+                          ng-required="true"
+                          ng-click="updateCardDefault(card.id)">
+
                   <div></div>
                 </label>
               </div>
-            </td> -->
-            <!-- <td></td> -->
+              <!--<a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id === defaultSource' > default</a>
+              <a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id != defaultSource' > no default</a>-->
+            </td>
+            <!--<td></td>-->
             <td>
               <!-- <img ng-src="{{card.logo}}" alt="Card Logo" class="pull-left"> -->
               <strong>{{card.name}}</strong><br>
               xxxxxxxxxxxx{{card.last4}} 
-              <a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id === defaultSource' style='position: absolute;right: 20px;'> default</a>
-              <a id="{{card.id}}" ng-click="updateCardDefault(card.id)" ng-if='card.id != defaultSource' style='position: absolute;right: 20px;'> no default</a>
               <br>
             </td>
           </tr>
