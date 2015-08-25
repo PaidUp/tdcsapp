@@ -31,11 +31,17 @@ angular.module('convenienceApp')
     });*/
 
     PaymentService.listCards().then(function (response) {
-      //console.log('response.data',response.data);
-      //console.log('response.defaultSource',response.defaultSource);
       $scope.defaultSource = response.defaultSource;
       $scope.loadingCards = false;
       $scope.cards = angular.copy(response.data);
+      var i;
+      for (i=0; i<$scope.cards.length; i++) {
+        if ($scope.cards[i].id === response.defaultSource) {
+          $scope.cards[i].radio = true;
+        } else {
+          $scope.cards[i].radio = false;
+        }
+      }
     }).catch(function (err) {
       $scope.loadingCards = false;
       $scope.sendAlertErrorMsg(err.data.message);
