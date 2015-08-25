@@ -100,6 +100,7 @@
     "karma-script-launcher": "~0.1.0",
     "mocha-cobertura-reporter": "^1.0.4",
     "mocha-jenkins-reporter": "^0.1.6",
+    "nightwatch": "^0.7.11",
     "open": "~0.0.4",
     "requirejs": "~2.1.11",
     "should": "~3.3.1",

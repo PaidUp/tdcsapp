@@ -13,7 +13,7 @@ commerce/app/etc/local.xml
 node_modules
 bower_components
 build/*
-
+bin
 # path to emails #
 ######################
 server/api/auth/auth.spec.js
