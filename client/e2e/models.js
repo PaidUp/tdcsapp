@@ -74,7 +74,8 @@ var models = function () {
         month: '10',
         year: '2020'
       },
-      securityCode: '123'
+      securityCode: '123',
+      zipCode: '12321'
     }
   };
 
