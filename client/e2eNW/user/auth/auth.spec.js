@@ -9,11 +9,12 @@ module.exports = {
       .waitForElementVisible('#sign-up-email', 1000)
       .click('#sign-up-email')
   },
-  'fillForm' : function (browser) {
+  'fillFormRegisterParent' : function (browser) {
     browser
       .setValue('input[name=name]',model.firstname)
       .setValue('input[name=lastName]',model.lastname)
-      .setValue('input[name=email]',model.fakeEmail)
+      //.setValue('input[name=email]',model.fakeEmail)
+      .setValue('input[name=email]','email'+Math.random()+'@gmail.com')
       .setValue('input[name=password]',model.pass)
       .setValue('input[name=confirm]',model.pass)
       //.setValue('input[ng-model=user.signupRememberMe]','123456')
@@ -25,7 +26,7 @@ module.exports = {
     browser
       .waitForElementVisible('#submit-email-login', 1000)
       .click('#submit-email-login')
-      .pause(5000)
+      .pause(10000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/athletes/dashboard')
       })
