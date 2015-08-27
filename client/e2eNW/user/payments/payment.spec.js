@@ -1,4 +1,4 @@
-var login = require('../auth/auth.spec');
+var login = require('../auth/authParent.spec');
 var model = require('../../../e2e/models').creditCardDetails;
 
 module.exports = {
@@ -64,7 +64,7 @@ module.exports = {
     browser
       .waitForElementVisible('button[type=submit]', 1000)
       .click('button[type=submit]')
-      .pause(5000)
+      .pause(10000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/user/payments')
       })
