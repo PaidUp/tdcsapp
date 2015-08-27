@@ -187,9 +187,9 @@ function providerResponseUpdate(providerId, value, cb) {
   });
 }
 
-function getSchedule(productId, price, isInFullPay, cb) {
+function getSchedule(productId, price, isInFullPay, discount, cb) {
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.generateScheduleV2({productId: productId, price: price, isInFullPay:isInFullPay}, function (err, data) {
+  TDCommerceService.generateScheduleV2({productId: productId, price: price, isInFullPay:isInFullPay, discount:discount}, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
   });

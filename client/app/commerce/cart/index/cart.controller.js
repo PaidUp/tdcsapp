@@ -17,7 +17,7 @@ angular.module('convenienceApp')
 
     var cartId = CartService.getCurrentCartId();
 
-    var getTotals = function (cb){
+    var getTotals = function (applyDiscountToFee, cb){
       CartService.getTotals(cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
           if (total.title === 'Grand Total') {
@@ -25,8 +25,11 @@ angular.module('convenienceApp')
             CartService.setCartGrandTotal(total.amount);
           } else if (total.title === 'Subtotal') {
             $scope.subtotal = total;
-          } else if (total.title.indexOf("Discount") > -1) {
+          } else if (total.title.indexOf("Discount")===0) {
             $scope.discount = total;
+            if(applyDiscountToFee){
+              CartService.setCartDiscount(total.amount * -1);
+            }
           }
         });
         cb(null, true);
@@ -38,7 +41,7 @@ angular.module('convenienceApp')
     CartController.loadSchedule = function(){
       var ele = CartController.cart.items[0];
       CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
-        CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay).then(function (val) {
+        CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay, CartService.getCartDiscount()).then(function (val) {
           if(val.error){
             var user = AuthService.getCurrentUser();
             $scope.isScheduleError = true;
@@ -84,7 +87,7 @@ angular.module('convenienceApp')
         $scope.schedules = [];
         $scope.totalPrice   = 0;
 
-        getTotals(function(err, data){
+        getTotals(false, function(err, data){
           CartController.loadSchedule();
         });
 
@@ -121,7 +124,7 @@ angular.module('convenienceApp')
           });
         } else{
           $scope.schedules = [];
-          getTotals(function(err,data){
+          getTotals($scope.codeDiscounts.indexOf('CS-') === 0, function(err,data){
             CartController.loadSchedule();
           });
         }

@@ -40,7 +40,7 @@ angular.module('convenienceApp')
       var ele = value.items[0];
 
         CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
-          CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal() , isInFullPay).then(function (val) {
+          CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal() , isInFullPay, CartService.getCartDiscount()).then(function (val) {
             if(val.error){
               var user = AuthService.getCurrentUser;
               $scope.isScheduleError = true;
@@ -301,7 +301,8 @@ angular.module('convenienceApp')
                         payment: 'onetime',
                         paymentMethod: 'creditcard',
                         isInFullPay: isInFullPay,
-                        price: CartService.getCartGrandTotal()
+                        price: CartService.getCartGrandTotal(),
+                        discount : CartService.getCartDiscount()
                       };
                       PaymentService.sendPayment(payment).then(function () {
                         CartService.removeCurrentCart();
@@ -359,7 +360,8 @@ angular.module('convenienceApp')
                   payment: 'onetime',
                   paymentMethod: 'creditcard',
                   isInFullPay: isInFullPay,
-                  price: CartService.getCartGrandTotal()
+                  price: CartService.getCartGrandTotal(),
+                  discount : CartService.getCartDiscount()
                 };
                 PaymentService.sendPayment(payment).then(function () {
                   CartService.removeCurrentCart();

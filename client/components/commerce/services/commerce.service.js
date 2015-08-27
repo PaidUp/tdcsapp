@@ -16,7 +16,7 @@ angular.module('convenienceApp')
       return Transactions.query().$promise;
     };
 
-    this.getSchedule = function(productId, price, isInFullPay){
-      return Schedule.post({productId: productId, price : price, isInFullPay: isInFullPay}).$promise;
+    this.getSchedule = function(productId, price, isInFullPay, discount){
+      return Schedule.post({productId: productId, price : price, isInFullPay: isInFullPay, discount:discount}).$promise;
     };
   });
