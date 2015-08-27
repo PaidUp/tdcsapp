@@ -88,7 +88,7 @@ var models = function () {
     day : '29',
     year : '1987',
     Address: faker.address.streetAddress(),
-    ownerSSN: '1234',
+    ownerSSN: '123456789',
     ownerEmail: faker.internet.email(),
     ownerPhone: faker.phone.phoneNumber(),
     city: faker.address.city(),

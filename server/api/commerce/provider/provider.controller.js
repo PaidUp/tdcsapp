@@ -37,7 +37,7 @@ exports.providerResponse = function (req, res) {
       return handleError(res, err);
     }
     if (!provider) {
-      return res.json(200);
+      return res.json(200, {});
     }
     var stripeInfo = {
       email:provider.ownerEmail,
@@ -63,14 +63,15 @@ exports.providerResponse = function (req, res) {
           year:provider.ownerDOB.getFullYear(),
           type:config.payment.legalEntity.type,
           businessName:provider.businessName,
-          last4:provider.ownerSSN,
+          last4:provider.ownerSSN.slice(-4),
           EIN:provider.EIN,
           line1:provider.Address,
           line2:provider.AddressLineTwo,
           city:provider.city || 'Austin',
           state:provider.state || 'Tx',
           postalCode:provider.zipCode,
-          country:provider.country || 'US'
+          country:provider.country || 'US',
+          personalIdNumber: provider.ownerSSN
         };
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
