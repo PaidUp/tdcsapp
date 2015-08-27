@@ -24,9 +24,11 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
               if(err) {return cb(err);}
               tdCommerceService.cartPlace(cartId.cartId, function(err, dataOrderId) {
                 if(err) {return cb(err);}
-                var paramsSchedule = {productId :orderData.products[0].productId,
+                var paramsSchedule = {
+                  productId :orderData.products[0].productId,
                   price: orderData.price,
-                  isInFullPay: orderData.isInFullPay};
+                  isInFullPay: orderData.isInFullPay,
+                  discount: orderData.discount};
                 tdCommerceService.generateScheduleV2(paramsSchedule, function(err,schedule){
                   if(err) {return cb(err);}
                   schedule.meta = {
