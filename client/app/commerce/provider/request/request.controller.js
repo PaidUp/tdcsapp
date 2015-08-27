@@ -135,7 +135,7 @@ angular.module('convenienceApp')
     $scope.validateSSN = function () {
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
       if ($scope.bankAccount.securitySocial) {
-        var pattern = /^\d{4}$/;
+        var pattern = /^\d{9}$/;
         $scope.ownerForm.ownerSSN.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
       } else {
         $scope.ownerForm.ownerSSN.$setValidity('pattern', false);

@@ -164,6 +164,7 @@ function providerRequest(userId, dataProvider, cb) {
   dataProvider.ownerId = userId;
   dataProvider.aba = providerService.encryptField(dataProvider.aba);
   dataProvider.dda = providerService.encryptField(dataProvider.dda);
+  dataProvider.ownerSSN = providerService.encryptField(dataProvider.ownerSSN);
   var provider = new Provider(dataProvider);
   providerService.save(provider, function (err, data) {
     if (err) return cb(err);
@@ -176,6 +177,7 @@ function providerResponse(providerId, verifyState, cb) {
     if (err) return cb(err);
     providerData.aba = providerService.decryptField(providerData.aba);
     providerData.dda = providerService.decryptField(providerData.dda);
+    providerData.ownerSSN = providerService.decryptField(providerData.ownerSSN);
     return cb(null,providerData);
   });
 }
