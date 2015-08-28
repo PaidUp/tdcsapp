@@ -12,8 +12,8 @@ angular.module('convenienceApp', [
   'facebook',
   'angularNumberPicker',
   'ui.mask'
-])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider, FacebookProvider, $uiViewScrollProvider) {
+]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider,
+                    FacebookProvider, $uiViewScrollProvider, $provide) {
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
@@ -30,9 +30,23 @@ angular.module('convenienceApp', [
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
-  })
+  /*
+  $provide.decorator('$exceptionHandler', ['$log', '$delegate',
+    function($log, $delegate) {
+      return function(exception, cause) {
+        exceptionHandler().error(exception.stack.toString());
+        $delegate(exception, cause);
+      };
+    }
+  ]);
+  */
 
-  .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
+  }).factory('$exceptionHandler', function() {
+  return function(exception, cause) {
+    exception.message += ' (caused by "' + cause + '")';
+    exceptionHandler().error(exception.stack.toString());
+  };
+}).factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
 
     return {
       // Add authorization token to headers
