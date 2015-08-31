@@ -14,6 +14,7 @@ angular.module('convenienceApp')
       });
     },
     function(err){
+      console.log('err',err);
       FlashService.addAlert({
         type: 'danger' ,
         msg: err.message,

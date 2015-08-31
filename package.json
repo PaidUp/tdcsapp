@@ -4,7 +4,7 @@
   "main": "server/app.js",
   "dependencies": {
     "ABAValidator": "^1.0.5",
-    "TDCore": "https://github.com/talosdigital/TDCore/tarball/master",
+    "TDCore": "https://github.com/talosdigital/TDCore/tarball/refactorGenericIssues",
     "async": "^0.9.0",
     "balanced-official": "^1.4.0",
     "blind": "^1.0.0",
