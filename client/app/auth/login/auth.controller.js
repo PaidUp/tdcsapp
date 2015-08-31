@@ -184,8 +184,15 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.forgot = function (form) {
     $scope.submitted = true;
     if (form.$valid) {
-      AuthService.forgotPassword($scope.user.email, function () {});
-      $scope.sent = true;
+      AuthService.forgotPassword($scope.user.email, function (data) {
+        if(data.message){
+          $scope.message = true;
+          //$scope.message = data.message;
+        }else{
+          $scope.sent = true;
+          $scope.message = false;
+        }
+      });
     }
   };
   // END FORTGOT function
