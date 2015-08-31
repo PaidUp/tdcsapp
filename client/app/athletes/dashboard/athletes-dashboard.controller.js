@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory, ErrorService) {
+  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
 
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
@@ -17,9 +17,6 @@ angular.module('convenienceApp')
         url: 'app/athletes/create/create-athlete.html'
       }
     });
-
-    //casosTESt = 'asfassd';
-    $log.error('AAAAAA test');
 
     AuthService.isLoggedInAsync(function(loggedIn) {
       $scope.user = angular.extend({}, AuthService.getCurrentUser());

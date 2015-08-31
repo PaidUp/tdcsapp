@@ -30,22 +30,22 @@ angular.module('convenienceApp', [
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
-  /*
-  $provide.decorator('$exceptionHandler', ['$log', '$delegate',
-    function($log, $delegate) {
+  $provide.decorator('$exceptionHandler', ['$log', '$delegate','$injector',
+    function($log, $delegate,$injector) {
       return function(exception, cause) {
-        exceptionHandler().error(exception.stack.toString());
+        var AuthService = $injector.get('AuthService');
+        var $location = $injector.get('$location');
+        var LoggerService = $injector.get('LoggerService');
+        var currentUser = AuthService.getCurrentUser();
+
+        exception.message += ' :'+JSON.stringify(LoggerService.getBrowserDetails());
+        exception.message += ' :'+JSON.stringify({email : currentUser.email});
+        exception.message += ' :'+JSON.stringify({path : $location.path()});
+        LoggerService.error(exception.message);
         $delegate(exception, cause);
       };
     }
   ]);
-  */
-
-  }).factory('$exceptionHandler', function() {
-  return function(exception, cause) {
-    exception.message += ' (caused by "' + cause + '")';
-    exceptionHandler().error(exception.stack.toString());
-  };
 }).factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
 
     return {
