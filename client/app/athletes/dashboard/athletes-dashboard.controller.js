@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
+  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
 
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
