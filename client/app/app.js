@@ -12,8 +12,8 @@ angular.module('convenienceApp', [
   'facebook',
   'angularNumberPicker',
   'ui.mask'
-])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider, FacebookProvider, $uiViewScrollProvider) {
+]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider,
+                    FacebookProvider, $uiViewScrollProvider, $provide) {
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
@@ -30,9 +30,23 @@ angular.module('convenienceApp', [
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
-  })
+  $provide.decorator('$exceptionHandler', ['$log', '$delegate','$injector',
+    function($log, $delegate,$injector) {
+      return function(exception, cause) {
+        var AuthService = $injector.get('AuthService');
+        var $location = $injector.get('$location');
+        var LoggerService = $injector.get('LoggerService');
+        var currentUser = AuthService.getCurrentUser();
 
-  .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
+        exception.message += ' :'+JSON.stringify(LoggerService.getBrowserDetails());
+        exception.message += ' :'+JSON.stringify({email : currentUser.email});
+        exception.message += ' :'+JSON.stringify({path : $location.path()});
+        LoggerService.error(exception.message);
+        $delegate(exception, cause);
+      };
+    }
+  ]);
+}).factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
 
     return {
       // Add authorization token to headers

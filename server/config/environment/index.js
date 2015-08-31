@@ -288,6 +288,9 @@ var all = {
       port: 9010,
       token: 'TDUserLoanToken-CHANGE-ME!'
     }
+  },
+  logger : {
+    token : 'f5ea6cdf-b8c0-44ca-962f-1328873c5974'
   }
 };
 
