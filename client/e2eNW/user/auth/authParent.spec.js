@@ -41,7 +41,7 @@ module.exports = {
       .click('a[aria-haspopup=true]')
       .pause(1000)
       .click('#signout')
-      .pause(1000)
+      .pause(5000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/')
       })

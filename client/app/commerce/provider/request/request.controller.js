@@ -28,7 +28,7 @@ angular.module('convenienceApp')
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber;
             $scope.provider.aba = $scope.bankAccount.routingNumber;
-            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial;
+            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial.replace(/-/g,'');;
             providerService.providerRequest($scope.provider).then(function(data){
                 $state.go('provider-success');
             }).catch(function(err){
@@ -135,7 +135,7 @@ angular.module('convenienceApp')
     $scope.validateSSN = function () {
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
       if ($scope.bankAccount.securitySocial) {
-        var pattern = /^\d{9}$/;
+        var pattern = /^(?=.*?[1-9])[0-9()-]+$/;
         $scope.ownerForm.ownerSSN.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial));
       } else {
         $scope.ownerForm.ownerSSN.$setValidity('pattern', false);
@@ -193,6 +193,16 @@ angular.module('convenienceApp')
       }else{
         $scope.billingForm.EIN.$error.pattern = false;
       }
+    });
+
+    $scope.$watch('provider.ownerSSN', function (value, oldvalue){
+        if(oldvalue && value && oldvalue.length === 2 && value.length === 3){
+          $scope.provider.ownerSSN = value + '-';
+        }
+        if(oldvalue && value && oldvalue.length === 5 && value.length === 6){
+          $scope.provider.ownerSSN = value + '-';
+        }
+        //$scope.billingForm.EIN.$error.pattern = true;
     });
 
     function validateEin(einValue) {

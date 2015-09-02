@@ -50,7 +50,7 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('#btnSave', 1000)
       .click('#btnSave')
-      .pause(10000)
+      .pause(5000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/commerce/provider/success')
       })
