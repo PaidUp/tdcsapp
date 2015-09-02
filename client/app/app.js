@@ -39,7 +39,7 @@ angular.module('convenienceApp', [
         var currentUser = AuthService.getCurrentUser();
 
         exception.message += ' :'+JSON.stringify(LoggerService.getBrowserDetails());
-        exception.message += ' :'+JSON.stringify({email : currentUser.email});
+        //exception.message += ' :'+JSON.stringify({email : currentUser.email});
         exception.message += ' :'+JSON.stringify({path : $location.path()});
         LoggerService.error(exception.message);
         $delegate(exception, cause);

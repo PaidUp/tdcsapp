@@ -6,7 +6,6 @@ var paymentService = require('../payment.service');
 var camelize = require('camelize');
 
 exports.associate = function (req, res) {
-
   if(!req.body || !req.body.cardId){
     return res.json(400, {
         "code": "ValidationError",
@@ -115,7 +114,7 @@ exports.getCard = function(req, res){
 function handleError(res, err) {
   var httpErrorCode = 500;
   var errors = [];
-  if (err.name === "ValidationError") {
+  if (err.name === "ValidationError" || err.code === "StripeCardError") {
     httpErrorCode = 400;
   }
   return res.json(httpErrorCode, {
