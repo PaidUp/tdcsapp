@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService,
-    AuthService, FlashService, CartService, $state, PaymentService,
-    ApplicationConfigService, CommerceService, NotificationEmailService) {
+  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService,
+                                          CartService, $state, PaymentService, ApplicationConfigService, CommerceService,
+                                          NotificationEmailService, TrackerService) {
     $rootScope.$emit('bar-welcome', {
       left: {
         url: 'app/payments/templates/loan-bar.html'
@@ -233,6 +233,7 @@ angular.module('convenienceApp')
     // };
 
     $scope.placeOrder = function (isValid) {
+      TrackerService.trackFormErrors('place order form' , $scope.checkoutForm);
       if (!isValid) {
         $scope.sendAlertErrorMsg('Please check form fields');
         $scope.placedOrder = false;
@@ -320,9 +321,6 @@ angular.module('convenienceApp')
                         $scope.sendAlertErrorMsg(response.error[key]);
                       }
                     });
-
-
-
                 });
               });
             }
@@ -367,7 +365,9 @@ angular.module('convenienceApp')
                   CartService.removeCurrentCart();
                   $scope.saveOrUpdateBillingAddress();
                   $state.go('thank-you');
+                  TrackerService.create('Place Order');
                 }).catch(function (err) {
+                  TrackerService.create('Place Order Error', err.message);
                   $scope.sendAlertErrorMsg(err);
                 });
               });
