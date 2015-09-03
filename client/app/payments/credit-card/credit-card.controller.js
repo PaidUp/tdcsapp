@@ -267,9 +267,7 @@ angular.module('convenienceApp')
               }
             }
             else {
-
               PaymentService.associateCard(response.id).then(function (newCard) {
-
                 // Send to your backend
                 var addressBilling = {
                   mode: 'billing',
@@ -315,13 +313,16 @@ angular.module('convenienceApp')
                           $scope.sendAlertErrorMsg(err.data.message);
                         }
                       });
-                    }).catch(function (err) {
+                    },function (err) {
                       $scope.placedOrder = false;
                       for (var key in response.error) {
                         $scope.sendAlertErrorMsg(response.error[key]);
                       }
                     });
                 });
+              },function(err){
+                $scope.sendAlertErrorMsg('please, revise your card information. ' + err.data.message);
+                $scope.placedOrder = false;
               });
             }
           });
