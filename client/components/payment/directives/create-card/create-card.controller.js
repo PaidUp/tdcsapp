@@ -70,7 +70,7 @@ angular.module('convenienceApp')
                   $scope.sendAlertErrorMsg(response.error[key]);
                 }
               }else {
-                $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+                $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
               }
             } else {
               var token = response.id;
@@ -109,7 +109,7 @@ angular.module('convenienceApp')
           }
         });*/
       }else {
-        $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+        $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
       }
     };
   });
