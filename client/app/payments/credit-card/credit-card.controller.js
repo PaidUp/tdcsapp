@@ -234,7 +234,7 @@ angular.module('convenienceApp')
 
     $scope.placeOrder = function (isValid) {
       if (!isValid) {
-        $scope.sendAlertErrorMsg('Please check form fields');
+        $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
         $scope.placedOrder = false;
 
       }
@@ -256,13 +256,14 @@ angular.module('convenienceApp')
             if (response.error) {
               $scope.placedOrder = false;
               if (response.error && response.error.message) {
+                $scope.placedOrder = false;
                 $scope.sendAlertErrorMsg(response.error.message);
               } else if (Object.keys(response.error).length !== 0) {
                 for (var key in response.error) {
                   $scope.sendAlertErrorMsg(response.error[key]);
                 }
               } else {
-                $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+                $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
               }
             }
             else {
