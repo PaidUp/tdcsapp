@@ -320,7 +320,7 @@ angular.module('convenienceApp')
                     });
                 });
               },function(err){
-                $scope.sendAlertErrorMsg('please, revise your card information. ' + err.data.message);
+                $scope.sendAlertErrorMsg('Oops. Invalid card. Please check the number and try again.');
                 $scope.placedOrder = false;
               });
             }
