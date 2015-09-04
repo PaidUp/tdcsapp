@@ -79,7 +79,8 @@ angular.module('convenienceApp')
                 $state.go('user-payments');
               }).catch(function (err) {
                 $scope.loading = false;
-                $scope.sendAlertErrorMsg(err.data.message);
+                $scope.sendAlertErrorMsg('Oops. Invalid card. Please check the number and try again.');
+                //$scope.sendAlertErrorMsg(err.data.message);
               });
             }
           });
