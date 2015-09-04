@@ -253,29 +253,20 @@ angular.module('convenienceApp')
             exp_year: $scope.card.expirationDate.year
           };
           Stripe.card.createToken(payload, function stripeResponseHandler(status, response) {
-            console.log('0');
             if (response.error) {
-              console.log('0.1');
               $scope.placedOrder = false;
-              console.log('0.2');
               if (response.error && response.error.message) {
-                console.log('0.3',response.error.message);
                 $scope.placedOrder = false;
                 $scope.sendAlertErrorMsg(response.error.message);
               } else if (Object.keys(response.error).length !== 0) {
-                console.log('0.4');
                 for (var key in response.error) {
-                  console.log('0.5');
                   $scope.sendAlertErrorMsg(response.error[key]);
                 }
-                console.log('0.6');
               } else {
-                console.log('1');
                 $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
               }
             }
             else {
-              console.log('2');
               PaymentService.associateCard(response.id).then(function (newCard) {
                 // Send to your backend
                 var addressBilling = {
