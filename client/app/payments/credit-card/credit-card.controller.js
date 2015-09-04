@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService,
-    AuthService, FlashService, CartService, $state, PaymentService,
-    ApplicationConfigService, CommerceService, NotificationEmailService) {
+  .controller('CreditCardCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService,
+                                          CartService, $state, PaymentService, ApplicationConfigService, CommerceService,
+                                          NotificationEmailService, TrackerService) {
     $rootScope.$emit('bar-welcome', {
       left: {
         url: 'app/payments/templates/loan-bar.html'
@@ -233,6 +233,7 @@ angular.module('convenienceApp')
     // };
 
     $scope.placeOrder = function (isValid) {
+      TrackerService.trackFormErrors('place order form' , $scope.checkoutForm);
       if (!isValid) {
         $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
         $scope.placedOrder = false;
@@ -258,12 +259,15 @@ angular.module('convenienceApp')
               if (response.error && response.error.message) {
                 $scope.placedOrder = false;
                 $scope.sendAlertErrorMsg(response.error.message);
+                TrackerService.create('place order create token error', response.error.message);
               } else if (Object.keys(response.error).length !== 0) {
                 for (var key in response.error) {
                   $scope.sendAlertErrorMsg(response.error[key]);
+                  TrackerService.create('place order create token error', response.error[key]);
                 }
               } else {
                 $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
+                TrackerService.create('place order create token error', 'Hey, you left some fields blank. Please fill them out.');
               }
             }
             else {
@@ -311,17 +315,20 @@ angular.module('convenienceApp')
                       }).catch(function (err) {
                         if (err.data) {
                           $scope.sendAlertErrorMsg(err.data.message);
+                          TrackerService.create('Place order send payment error' , err.data.message);
                         }
                       });
                     },function (err) {
                       $scope.placedOrder = false;
                       for (var key in response.error) {
                         $scope.sendAlertErrorMsg(response.error[key]);
+                        TrackerService.create('Place order send payment error' , response.error[key]);
                       }
                     });
                 });
               },function(err){
                 $scope.sendAlertErrorMsg('Oops. Invalid card. Please check the number and try again.');
+                TrackerService.create('Oops. Invalid card. Please check the number and try again.');
                 $scope.placedOrder = false;
               });
             }
@@ -366,7 +373,9 @@ angular.module('convenienceApp')
                   CartService.removeCurrentCart();
                   $scope.saveOrUpdateBillingAddress();
                   $state.go('thank-you');
+                  TrackerService.create('Place Order');
                 }).catch(function (err) {
+                  TrackerService.create('Place Order Error', err.message);
                   $scope.sendAlertErrorMsg(err);
                 });
               });

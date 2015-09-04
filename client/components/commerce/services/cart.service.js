@@ -110,11 +110,13 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
-      CartService.els.remove('team');
-      CartService.els.remove('products');
-      CartService.els.remove('grandTotal');
-      CartService.els.remove('discount');
-      CartService.els = null;
+      if(CartService  && CartService.els){
+        CartService.els.remove('team');
+        CartService.els.remove('products');
+        CartService.els.remove('grandTotal');
+        CartService.els.remove('discount');
+        CartService.els = null;
+      }
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 

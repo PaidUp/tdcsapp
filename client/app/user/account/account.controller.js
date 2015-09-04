@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AccountCtrl', function ($scope, $rootScope, $state, UserService, AuthService, FlashService, ModalService) {
+  .controller('AccountCtrl', function ($scope, $rootScope, $state, UserService, AuthService, FlashService, ModalService,
+  TrackerService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -11,6 +12,7 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+    TrackerService.pageTrack();
 
     $scope.user = angular.extend({}, AuthService.getCurrentUser());
     $scope.oldUser = angular.extend({}, AuthService.getCurrentUser());
@@ -72,9 +74,9 @@ angular.module('convenienceApp')
         });
       });
     };
-    
+
     $scope.load();
-    
+
     $scope.sendAlertUpdateProfileSuccess = function () {
       FlashService.addAlert({
         type: 'success',
@@ -178,15 +180,25 @@ angular.module('convenienceApp')
       $scope.submitted = true;
 
       if ($scope.profileForm.$dirty && $scope.profileForm.$valid) {
-        if ($scope.user.firstName !== $scope.oldUser.firstName ||    
+        if ($scope.user.firstName !== $scope.oldUser.firstName ||
             $scope.user.lastName  !== $scope.oldUser.lastName) {
           // submit profile update
           $scope.updateProfile();
+          TrackerService.create('Update account name' , {
+            oldFistName : $scope.oldUser.firstName,
+            oldLastName : $scope.oldUser.lastName,
+            newFistName : $scope.user.firstName,
+            newLastName : $scope.user.lastName
+          })
           $scope.profileForm.$setPristine();
         }
         if ($scope.user.email !== '' && $scope.user.email !== $scope.oldUser.email) {
           // submit email update
           $scope.updateEmail();
+          TrackerService.create('Update account email' , {
+            oldEmail :  $scope.oldUser.email,
+            newEmail :  $scope.user.email
+          })
           $scope.profileForm.$setPristine();
         }
       }
@@ -195,14 +207,19 @@ angular.module('convenienceApp')
         if ($scope.passwordForm.$valid) {
           // submit password update
           $scope.updatePassword();
+          TrackerService.create('Update account password',{});
           $scope.passwordForm.$setPristine();
         }
       }
 
       if ($scope.shippingPhoneForm.$dirty && $scope.shipping.phone && $scope.shipping.phone !== '') {
+
         // Object.keys(a) if for check empty object
         if (Object.keys($scope.oldShippingPhone).length !== 0) {
           // submit shipping phone update
+          TrackerService.create('Update account info phone',{
+            oldShippingPhone :$scope.oldShippingPhone.value,
+          });
           $scope.oldShippingPhone.value  = $scope.shipping.phone;
           $scope.oldShippingPhone.userId = $scope.user._id;
           $scope.updateInfoPhone($scope.oldShippingPhone);
@@ -210,6 +227,9 @@ angular.module('convenienceApp')
         } else {
           // submit create shipping phone
           $scope.createInfoPhone($scope.shipping.phone, 'shipping');
+          TrackerService.create('Update account create info phone',{
+            oldShippingPhone :$scope.oldShippingPhone.value,
+          });
           $scope.oldShippingPhone.value  = $scope.shipping.phone;
           $scope.oldShippingPhone.userId = $scope.user._id;
           $scope.shippingPhoneForm.$setPristine();
