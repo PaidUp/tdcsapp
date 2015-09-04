@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory, CommerceService, NotificationEmailService, AuthService, FlashService) {
+  .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory,
+                                    CommerceService, NotificationEmailService, AuthService, FlashService, TrackerService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -100,11 +101,13 @@ angular.module('convenienceApp')
     // $scope.tax = 0;
 
     $scope.checkouOrder = function () {
+      TrackerService.create('Checkou Order');
       // $state.go('checkout');
       $state.go('payment-credit-card');
     };
 
     $scope.removeCart = function () {
+      TrackerService.create('Remove cart');
       CartService.removeCurrentCart();
       $state.go('athletes');
       // CartService.createCart().then(function () {
@@ -115,19 +118,30 @@ angular.module('convenienceApp')
     $scope.codeDiscounts = '';
 
     $scope.applyDiscount = function(){
-      CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
-        if(err){
-          FlashService.addAlert({
-            type: 'warning',
-            msg: 'Coupon is not valid',
-            timeout: 10000
-          });
-        } else{
-          $scope.schedules = [];
-          getTotals($scope.codeDiscounts.indexOf('CS-') === 0, function(err,data){
-            CartController.loadSchedule();
-          });
-        }
-      });
+      if(!$scope.codeDiscounts.trim().length){
+        TrackerService.create('Apply discount error',{errorMessage : 'Discount code is required'});
+        FlashService.addAlert({
+          type: 'danger',
+          msg: 'Discount code is required',
+          timeout: 10000
+        });
+      }else{
+        CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
+          if(err){
+            TrackerService.create('Apply discount error' , {errorMessage : 'Coupon in not valid'});
+            FlashService.addAlert({
+              type: 'danger',
+              msg: 'Coupon is not valid',
+              timeout: 10000
+            });
+          } else{
+            TrackerService.create('Apply discount success',{coupon : $scope.codeDiscounts});
+            $scope.schedules = [];
+            getTotals($scope.codeDiscounts.indexOf('CS-') === 0, function(err,data){
+              CartController.loadSchedule();
+            });
+          }
+        });
+      }
     }
   });

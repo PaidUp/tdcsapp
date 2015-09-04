@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('UserPaymentsCtrl', function ($rootScope, $scope, $state, PaymentService, FlashService, AuthService) {
+  .controller('UserPaymentsCtrl', function ($rootScope, $scope, $state, PaymentService, FlashService, AuthService,
+                                            TrackerService) {
+    TrackerService.pageTrack();
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -63,7 +65,7 @@ angular.module('convenienceApp')
           type: 'success',
           msg: $scope.msg,
           timeout: 10000
-        });  
+        });
       }).catch(function(err){
         $scope.sendAlertErrorMsg(err.data.message);
       });
@@ -72,7 +74,9 @@ angular.module('convenienceApp')
     $scope.updateCardDefault = function(cardId){
       PaymentService.updateCustomer({cardId:cardId}).then(function(res){
         $scope.defaultSource = res.defaultSource;
+        TrackerService.create('Update card default' , {});
       }).catch(function(err){
+        TrackerService.create('Update card default', err.data.message);
         $scope.sendAlertErrorMsg(err.data.message);
       });
     };

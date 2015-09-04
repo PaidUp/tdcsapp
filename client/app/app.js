@@ -33,15 +33,10 @@ angular.module('convenienceApp', [
   $provide.decorator('$exceptionHandler', ['$log', '$delegate','$injector',
     function($log, $delegate,$injector) {
       return function(exception, cause) {
-        var AuthService = $injector.get('AuthService');
-        var $location = $injector.get('$location');
-        var LoggerService = $injector.get('LoggerService');
-        var currentUser = AuthService.getCurrentUser();
-
-        exception.message += ' :'+JSON.stringify(LoggerService.getBrowserDetails());
-        //exception.message += ' :'+JSON.stringify({email : currentUser.email});
-        exception.message += ' :'+JSON.stringify({path : $location.path()});
-        LoggerService.error(exception.message);
+        var trackerService = $injector.get('TrackerService');
+        trackerService.create('exceptionHandler', {
+          message : exception.message
+        });
         $delegate(exception, cause);
       };
     }
@@ -100,6 +95,7 @@ angular.module('convenienceApp', [
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       //Mixpanel page tracker
+      /*
       $analytics.pageTrack(next.url);
       var currentUserMp = AuthService.getCurrentUser();
       if(currentUserMp && currentUserMp._id){
@@ -113,7 +109,7 @@ angular.module('convenienceApp', [
         delete currentUserMp.__v;
         delete currentUserMp.$promise;
         $analytics.setUserProperties(currentUserMp);
-      }
+      }*/
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (next.auth && !loggedIn) {
           $rootScope.$emit('logout', {});
