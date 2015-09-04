@@ -3,6 +3,7 @@
 angular.module('convenienceApp')
   .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService,
                                                  FlashService, $state, ModalFactory, TrackerService) {
+    TrackerService.pageTrack();
 
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
@@ -58,7 +59,10 @@ angular.module('convenienceApp')
     });
 
     $scope.selectAthlete = function (athlete) {
-      TrackerService.create('selectAthlete');
+      TrackerService.create('selectAthlete',{
+        firsName : athlete.firstName,
+        lastName : athlete.lastName
+      });
       $state.go('athletes-slider', {athleteId: athlete._id});
     };
 

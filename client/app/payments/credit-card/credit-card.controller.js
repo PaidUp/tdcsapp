@@ -258,12 +258,15 @@ angular.module('convenienceApp')
               $scope.placedOrder = false;
               if (response.error && response.error.message) {
                 $scope.sendAlertErrorMsg(response.error.message);
+                TrackerService.create('place order create token error', response.error.message);
               } else if (Object.keys(response.error).length !== 0) {
                 for (var key in response.error) {
                   $scope.sendAlertErrorMsg(response.error[key]);
+                  TrackerService.create('place order create token error', response.error[key]);
                 }
               } else {
                 $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+                TrackerService.create('place order create token error', 'Failed to Billing you, check your information');
               }
             }
             else {
@@ -311,17 +314,20 @@ angular.module('convenienceApp')
                       }).catch(function (err) {
                         if (err.data) {
                           $scope.sendAlertErrorMsg(err.data.message);
+                          TrackerService.create('Place order send payment error' , err.data.message);
                         }
                       });
                     },function (err) {
                       $scope.placedOrder = false;
                       for (var key in response.error) {
                         $scope.sendAlertErrorMsg(response.error[key]);
+                        TrackerService.create('Place order send payment error' , response.error[key]);
                       }
                     });
                 });
               },function(err){
                 $scope.sendAlertErrorMsg('please, revise your card information. ' + err.data.message);
+                TrackerService.create('Place order send payment error' , 'Place order send payment error');
                 $scope.placedOrder = false;
               });
             }

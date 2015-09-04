@@ -84,8 +84,9 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   // LOGIN function
   $scope.login = function(form) {
     $scope.submitted = true;
-
-    TrackerService.trackFormErrors('login' , form);
+    TrackerService.trackFormErrors('login error form' , form, {
+      email : $scope.user.email
+    });
 
     if(form.$valid) {
       var credentials = {
@@ -110,7 +111,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
         TrackerService.trackFormErrors('login error' , err.message);
         $scope.error = err.message;
         TrackerService.create('login error', {
-          errorMessage : err.message
+          errorMessage : err.message,
+          email : $scope.user.email
         });
       };
       AuthService.login(credentials, success, error);

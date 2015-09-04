@@ -50,7 +50,6 @@ angular.module('convenienceApp')
           url: ''
         }
       });
-
       $state.go('main');
     };
 

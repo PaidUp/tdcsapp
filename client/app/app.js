@@ -95,6 +95,7 @@ angular.module('convenienceApp', [
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       //Mixpanel page tracker
+      /*
       $analytics.pageTrack(next.url);
       var currentUserMp = AuthService.getCurrentUser();
       if(currentUserMp && currentUserMp._id){
@@ -108,7 +109,7 @@ angular.module('convenienceApp', [
         delete currentUserMp.__v;
         delete currentUserMp.$promise;
         $analytics.setUserProperties(currentUserMp);
-      }
+      }*/
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (next.auth && !loggedIn) {
           $rootScope.$emit('logout', {});
