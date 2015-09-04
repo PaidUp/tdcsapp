@@ -21,6 +21,7 @@ angular.module('convenienceApp')
     AuthService.isLoggedInAsync(function(loggedIn) {
       $scope.user = angular.extend({}, AuthService.getCurrentUser());
       UserService.listRelations($scope.user._id).then(function (data) {
+        console.log('data',data);
         if(data.length==0){
           $scope.isChildCharged = true;
           return;
@@ -34,7 +35,10 @@ angular.module('convenienceApp')
         angular.forEach(data, function (relation) {
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (user) {
+              //HERE
+              console.log('user',user);
               if (user[0].teams){
+                console.log('user[0].teams',user[0].teams);
                 user[0].team = user[0].teams[0];
               }
               $scope.athletes.push(user[0]);
