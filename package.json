@@ -1,5 +1,5 @@
 {
-  "name": "tdcs-app",
+  "name": "TDCsApp",
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
@@ -11,10 +11,12 @@
     "body-parser": "~1.5.0",
     "camelize": "^1.0.0",
     "chai": "^2.2.0",
+    "chalk": "^1.1.1",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
     "connect-mongo": "^0.4.1",
     "cookie-parser": "~1.0.1",
+    "david": "^6.2.0",
     "ejs": "~0.8.4",
     "email-templates": "^1.2.0",
     "errorhandler": "~1.0.0",
