@@ -18,7 +18,7 @@ exports.list = function(req, res) {
   }
   catalogService.catalogList(categoryId, function(err, dataService){
     if(err) return handleError(res, err);
-    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
+    //mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     res.json(200, dataService);
   });
 }
