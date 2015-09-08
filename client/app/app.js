@@ -12,8 +12,8 @@ angular.module('convenienceApp', [
   'facebook',
   'angularNumberPicker',
   'ui.mask'
-])
-  .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider, FacebookProvider, $uiViewScrollProvider) {
+]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider,
+                    FacebookProvider, $uiViewScrollProvider, $provide) {
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider
@@ -30,9 +30,18 @@ angular.module('convenienceApp', [
     // disable IE ajax request caching
     $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
-  })
-
-  .factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
+  $provide.decorator('$exceptionHandler', ['$log', '$delegate','$injector',
+    function($log, $delegate,$injector) {
+      return function(exception, cause) {
+        var trackerService = $injector.get('TrackerService');
+        trackerService.create('exceptionHandler', {
+          message : exception.message
+        });
+        $delegate(exception, cause);
+      };
+    }
+  ]);
+}).factory('authInterceptor', function ($rootScope, $q, SessionService, $location, FlashService) {
 
     return {
       // Add authorization token to headers
@@ -86,6 +95,7 @@ angular.module('convenienceApp', [
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       //Mixpanel page tracker
+      /*
       $analytics.pageTrack(next.url);
       var currentUserMp = AuthService.getCurrentUser();
       if(currentUserMp && currentUserMp._id){
@@ -99,7 +109,7 @@ angular.module('convenienceApp', [
         delete currentUserMp.__v;
         delete currentUserMp.$promise;
         $analytics.setUserProperties(currentUserMp);
-      }
+      }*/
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (next.auth && !loggedIn) {
           $rootScope.$emit('logout', {});

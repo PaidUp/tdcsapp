@@ -25,7 +25,7 @@ exports.sendNotification = function (subject, jsonMessage, cb) {
       mailOptions.html = html;
       mailOptions.to = email;
       //mailOptions.bcc = config.emailContacts.developer;
-      mailOptions.subject = subject + emailVars.companyName;
+      mailOptions.subject = emailVars.prefix + subject + emailVars.companyName;
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

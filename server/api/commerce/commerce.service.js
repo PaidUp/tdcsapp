@@ -164,6 +164,7 @@ function providerRequest(userId, dataProvider, cb) {
   dataProvider.ownerId = userId;
   dataProvider.aba = providerService.encryptField(dataProvider.aba);
   dataProvider.dda = providerService.encryptField(dataProvider.dda);
+  dataProvider.ownerSSN = providerService.encryptField(dataProvider.ownerSSN);
   var provider = new Provider(dataProvider);
   providerService.save(provider, function (err, data) {
     if (err) return cb(err);
@@ -176,6 +177,7 @@ function providerResponse(providerId, verifyState, cb) {
     if (err) return cb(err);
     providerData.aba = providerService.decryptField(providerData.aba);
     providerData.dda = providerService.decryptField(providerData.dda);
+    providerData.ownerSSN = providerService.decryptField(providerData.ownerSSN);
     return cb(null,providerData);
   });
 }
@@ -187,9 +189,9 @@ function providerResponseUpdate(providerId, value, cb) {
   });
 }
 
-function getSchedule(productId, price, isInFullPay, cb) {
+function getSchedule(productId, price, isInFullPay, discount, cb) {
   TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.generateScheduleV2({productId: productId, price: price, isInFullPay:isInFullPay}, function (err, data) {
+  TDCommerceService.generateScheduleV2({productId: productId, price: price, isInFullPay:isInFullPay, discount:discount}, function (err, data) {
     if (err) return cb(err);
     return cb(null,data);
   });
@@ -206,9 +208,21 @@ function paymentsSchedule(params, cb) {
 function getListRetryPayment(cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.listRetryPayments(function (err, data) {
-    console.log('err',err);
-    console.log('data',data);
-    if (err) return cb(err);
+    if (err){
+      logger.error(err);
+      return cb(err)
+    }
+    return cb(null,data);
+  });
+}
+
+function getListOrdersComplete(cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.listOrdersComplete(function (err, data) {
+    if (err){
+      logger.error(err);
+      return cb(err);
+    }
     return cb(null,data);
   });
 }
@@ -228,3 +242,4 @@ exports.providerResponseUpdate = providerResponseUpdate;
 exports.getSchedule = getSchedule;
 exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
+exports.getListOrdersComplete = getListOrdersComplete;

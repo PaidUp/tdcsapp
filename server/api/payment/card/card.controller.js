@@ -6,7 +6,6 @@ var paymentService = require('../payment.service');
 var camelize = require('camelize');
 
 exports.associate = function (req, res) {
-
   if(!req.body || !req.body.cardId){
     return res.json(400, {
         "code": "ValidationError",
@@ -47,20 +46,23 @@ exports.listCards = function(req, res){
       return handleError(res, err);
     }
     if(dataUser[0].meta.TDPaymentId !== ''){
-      paymentService.listCards(dataUser[0].meta.TDPaymentId, function(err, dataCards){
-        if(err){
-          return res.json(400,{
-            "code": "ValidationError",
-              "message": "Card is not valid"
-          });
-        }
-        if(!dataCards){
-          return res.json(400,{
-            "code": "ValidationError",
-              "message": "User without cards"
-          });
-        }
-        return res.json(200, camelize(dataCards));
+      paymentService.listCards(dataUser[0].meta.TDPaymentId, function(errCard, dataCards){
+        paymentService.fetchCustomer(dataUser[0].meta.TDPaymentId, function(errCustomer, dataCustomer){
+          if(errCard || errCustomer){
+            return res.json(400,{
+              "code": "ValidationError",
+                "message": "customer Card is not valid"
+            });
+          }
+          if(!dataCards){
+            return res.json(400,{
+              "code": "ValidationError",
+                "message": "User without cards"
+            });
+          }
+          dataCards.defaultSource = dataCustomer.defaultSource
+          return res.json(200, camelize(dataCards));
+        });
       });
     } else{
       return res.json(200, {data:[]});
@@ -112,7 +114,7 @@ exports.getCard = function(req, res){
 function handleError(res, err) {
   var httpErrorCode = 500;
   var errors = [];
-  if (err.name === "ValidationError") {
+  if (err.name === "ValidationError" || err.code === "StripeCardError") {
     httpErrorCode = 400;
   }
   return res.json(httpErrorCode, {

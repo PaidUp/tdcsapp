@@ -28,32 +28,40 @@ angular.module('convenienceApp')
     });
 
 
-        CartService.setCartDetails = function (team, prod) {
-          CartService.els.set('team', team);
-          CartService.els.set('products', prod);
-        };
+    CartService.setCartDetails = function (team, prod) {
+      CartService.els.set('team', team);
+      CartService.els.set('products', prod);
+    };
 
-        CartService.setCartGrandTotal = function (grandTotal) {
-          CartService.els.set('grandTotal', grandTotal);
-        };
+    CartService.setCartGrandTotal = function (grandTotal) {
+      CartService.els.set('grandTotal', grandTotal);
+    };
 
-        CartService.getCartGrandTotal = function () {
-          return CartService.els.get('grandTotal')
-        };
+    CartService.setCartDiscount = function (discount) {
+      CartService.els.set('discount', discount);
+    };
 
-        CartService.hasProductBySKU = function (sku, cb) {
-          var result = false;
-          CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
-            ele.forEach(function (option, idx2, arr2) {
-              option.values.forEach(function (value, idx3, arr3) {
-                if (value.sku == sku) {
-                  result = CartService.els.get('products').options[option.optionId] == value.valueId;
-                }
-              });
-            });
+    CartService.getCartGrandTotal = function () {
+      return CartService.els.get('grandTotal')
+    };
+
+    CartService.getCartDiscount = function () {
+      return CartService.els.get('discount')
+    };
+
+    CartService.hasProductBySKU = function (sku, cb) {
+      var result = false;
+      CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
+        ele.forEach(function (option, idx2, arr2) {
+          option.values.forEach(function (value, idx3, arr3) {
+            if (value.sku == sku) {
+              result = CartService.els.get('products').options[option.optionId] == value.valueId;
+            }
           });
-          cb(result);
-        };
+        });
+      });
+      cb(result);
+    };
 
     $rootScope.$on('logout', function () {
       CartService.removeCurrentCart();
@@ -88,13 +96,13 @@ angular.module('convenienceApp')
         cartId: cartId,
         products: products
       }).$promise.then(function (cart) {
-        $cookieStore.put('userId', athlete._id);
-        $cookieStore.put('athlete', athlete);
-        $rootScope.$emit('event:cart-state-changed', undefined);
-        deferred.resolve(cart);
-      }).catch(function (err) {
-        deferred.reject(err);
-      });
+          $cookieStore.put('userId', athlete._id);
+          $cookieStore.put('athlete', athlete);
+          $rootScope.$emit('event:cart-state-changed', undefined);
+          deferred.resolve(cart);
+        }).catch(function (err) {
+          deferred.reject(err);
+        });
       return deferred.promise;
     };
 
@@ -102,10 +110,13 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
-      CartService.els.remove('team');
-      CartService.els.remove('products');
-      CartService.els.remove('grandTotal');
-      CartService.els = null;
+      if(CartService  && CartService.els){
+        CartService.els.remove('team');
+        CartService.els.remove('products');
+        CartService.els.remove('grandTotal');
+        CartService.els.remove('discount');
+        CartService.els = null;
+      }
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
@@ -161,12 +172,12 @@ angular.module('convenienceApp')
 
     this.applyDiscount = function(coupon, cartId, cb){
       discount.apply({coupon:coupon,
-      cartId:cartId}).$promise.then(function(result){
+        cartId:cartId}).$promise.then(function(result){
           cb(null, result);
         }).catch(function(err){
-        console.log(err);
+          console.log(err);
           cb(err);
-      });
+        });
 
     };
 

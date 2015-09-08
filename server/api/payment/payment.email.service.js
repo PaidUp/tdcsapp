@@ -31,7 +31,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
       mailOptions.html = html;
       mailOptions.to = email;
       //mailOptions.bcc = config.emailContacts.developer;
-      mailOptions.subject = 'New Order from ' + emailVars.companyName;
+      mailOptions.subject = emailVars.prefix + 'New Order from ' + emailVars.companyName;
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
@@ -77,7 +77,7 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
             mailOptions.html = html;
             mailOptions.to = userEmail;
             //mailOptions.bcc = config.emailContacts.developer;
-            mailOptions.subject = 'Oops…You Forgot To Add Your Bank Account - ' + team;
+            mailOptions.subject = emailVars.prefix + 'Oops…You Forgot To Add Your Bank Account - ' + team;
 
             mailOptions.attachments = [];
 
@@ -472,7 +472,7 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
           mailOptions.html = html;
           mailOptions.to = user[0].email;
           //mailOptions.bcc = config.emailContacts.developer;
-          mailOptions.subject = 'Send email reminder to parents '+value+' '+period+' before payment';
+          mailOptions.subject = 'Head Up: '+nameTeam+' Payment Coming Up In A Couple Of Days';
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {

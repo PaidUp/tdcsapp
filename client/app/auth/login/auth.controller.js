@@ -51,7 +51,7 @@ angular.module('convenienceApp')
     };
   });
 
-angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalService, AuthService, $state, $rootScope, FlashService, $timeout) {
+angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalService, AuthService, $state, $rootScope, FlashService, $timeout, TrackerService) {
   $scope.showRole = AuthService.getIsParent();
   $scope.hideRole = true;
   $scope.user = {};
@@ -84,6 +84,9 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   // LOGIN function
   $scope.login = function(form) {
     $scope.submitted = true;
+    TrackerService.trackFormErrors('login error form' , form, {
+      email : $scope.user.email
+    });
 
     if(form.$valid) {
       var credentials = {
@@ -102,9 +105,15 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
             templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
           });
         }
+        TrackerService.create('login success');
       };
       var error = function(err) {
+        TrackerService.trackFormErrors('login error' , err.message);
         $scope.error = err.message;
+        TrackerService.create('login error', {
+          errorMessage : err.message,
+          email : $scope.user.email
+        });
       };
       AuthService.login(credentials, success, error);
     }
@@ -120,6 +129,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.disabelSubmit = false;
 
   $scope.register = function(form) {
+    TrackerService.trackFormErrors('register form', form);
     $scope.submitted = true;
     if(form.$valid) {
       $scope.disabelSubmit = true;
@@ -144,11 +154,22 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
           $state.go(AuthService.getDest());
           AuthService.setDest();
         }, error);
+        TrackerService.create('register success',{
+          firstName: $scope.user.firstName,
+          lastName: $scope.user.lastName,
+          email: $scope.user.email
+        });
       };
 
       var error = function (err) {
         $scope.error = err.message;
         $scope.disabelSubmit = false;
+        TrackerService.create('register error' , {
+          firstName: $scope.user.firstName,
+          lastName: $scope.user.lastName,
+          email: $scope.user.email,
+          errorMessage : err.message
+        });
       };
       AuthService.createUser(user, success, error);
     }
@@ -157,24 +178,31 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.goToTermsOfService = function () {
     $scope.modal.closeModal();
     $state.go('terms-of-service');
+    TrackerService.create('TermsOfService');
   };
 
   $scope.goToPrivacyPolicy = function () {
     $scope.modal.closeModal();
     $state.go('privacy-policy');
+    TrackerService.create('PrivacyPolicy');
   };
   // END SIGNUP function
 
   // RESET function
   $scope.reset = function (form) {
+    TrackerService.trackFormErrors('reset password form');
     $scope.submitted = true;
     if (form.$valid) {
       AuthService.resetPassword($rootScope.token, $scope.password, function(){
           delete $rootScope.token;
           $scope.modal.closeModal();
+          TrackerService.create('reset password');
         },
         function(err){
           $scope.error = err.message;
+          TrackerService.create('reset password error' , {
+            errorMessage : err.message
+          });
         });
     }
   };
@@ -182,10 +210,21 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
   // FORTGOT function
   $scope.forgot = function (form) {
+    TrackerService.trackFormErrors('forgot form' , form);
     $scope.submitted = true;
     if (form.$valid) {
-      AuthService.forgotPassword($scope.user.email, function () {});
-      $scope.sent = true;
+      AuthService.forgotPassword($scope.user.email, function (data) {
+        TrackerService.create('forgot', {
+          email : $scope.user.email
+        });
+        if(data.message){
+          $scope.message = true;
+          //$scope.message = data.message;
+        }else{
+          $scope.sent = true;
+          $scope.message = false;
+        }
+      });
     }
   };
   // END FORTGOT function

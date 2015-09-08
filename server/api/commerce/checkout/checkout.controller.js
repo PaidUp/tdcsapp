@@ -54,7 +54,8 @@ exports.place = function(req, res) {
     cardId: req.body.cardId,
     customerId: req.user.meta.TDPaymentId,
     isInFullPay: req.body.isInFullPay,
-    price :req.body.price
+    price :req.body.price,
+    discount :req.body.discount
 
   }
 

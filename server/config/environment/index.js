@@ -70,7 +70,8 @@ var all = {
   },
   emailVars: {
     companyName : "Convenience Select",
-    baseUrl : "http://localhost:9000"
+    baseUrl : "http://localhost:9000",
+    prefix : '[DEV] '
   },
   emailContacts : {
     contact : 'convenieceselect@gmail.com',//ourteam@cs.com
@@ -188,7 +189,7 @@ var all = {
     apiPublic: "pk_test_J5gfockQi2DP28GszFZvTnwS"
   },
   mixpanel:{
-    apiKey: "ec0a4bdcce8b969299299e0710f4775a"
+    apiKey: "d04804c3577e2ddecee3b634247a3b92"
   },
   encryptKey:'PZ3oXv2v6Pq5HAPFI9NFbQ==',
   loan:{
@@ -287,6 +288,9 @@ var all = {
       port: 9010,
       token: 'TDUserLoanToken-CHANGE-ME!'
     }
+  },
+  logger : {
+    token : 'f5ea6cdf-b8c0-44ca-962f-1328873c5974'
   }
 };
 

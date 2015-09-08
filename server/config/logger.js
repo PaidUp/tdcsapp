@@ -1,33 +1,13 @@
-'use strict';
-var config = require('./environment');
+/**
+ * Created by riclara on 8/28/15.
+ */
 
-var winston = require('winston');
-winston.emitErrs = true;
+var logger = require('winston');
+var logsene = require('winston-logsene');
+var config = require('../config/environment');
 
-var logger = new winston.Logger({
-  transports: [
-    new winston.transports.File({
-      level: 'info',
-      filename: config.root + '/var/logs/all-logs.log',
-      handleExceptions: true,
-      json: true,
-      maxsize: 5242880, //5MB
-      maxFiles: 5,
-      colorize: false
-    }),
-    new winston.transports.Console({
-      level: 'debug',
-      handleExceptions: true,
-      json: false,
-      colorize: true
-    })
-  ],
-  exitOnError: false
+logger.add(logsene, {
+  token: config.logger.token
 });
 
 module.exports = logger;
-module.exports.stream = {
-  write: function(message, encoding){
-    logger.info(message);
-  }
-};
