@@ -9,7 +9,13 @@ angular.module('convenienceApp')
         data:{
           roles:['guest']
         }
-      }).state('faq', {
+      }).state('main-pn', {
+      url: '/pn/:team',
+      templateUrl: 'app/application/main/main.html',
+      data:{
+        roles:['guest']
+      }
+    }).state('faq', {
         url: '/faq',
         templateUrl: 'app/application/main/faq.html',
         controller : 'FaqCtrl'
