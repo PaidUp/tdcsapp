@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService,
-                                                 FlashService, $state, ModalFactory, TrackerService) {
+  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService, FlashService, $state,
+                                                 ModalFactory, TrackerService, $localStorage) {
     TrackerService.pageTrack();
 
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
+    $scope.$storage = $localStorage.$default({});
 
     $rootScope.$emit('init-cart-service' , {});
 
@@ -63,7 +64,12 @@ angular.module('convenienceApp')
         firsName : athlete.firstName,
         lastName : athlete.lastName
       });
-      $state.go('athletes-slider', {athleteId: athlete._id});
+      if($scope.$storage.pnTeam){
+        $state.go('teams-profile-athlete', {teamId : $scope.$storage.pnTeam, athleteId: athlete._id});
+      }else{
+        $state.go('athletes-slider', {athleteId: athlete._id});
+      }
+
     };
 
     $scope.updateAthlete = function (athlete) {
