@@ -472,7 +472,7 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
           mailOptions.html = html;
           mailOptions.to = user[0].email;
           //mailOptions.bcc = config.emailContacts.developer;
-          mailOptions.subject = 'Send email reminder to parents '+value+' '+period+' before payment';
+          mailOptions.subject = 'Head Up: '+nameTeam+' Payment Coming Up In A Couple Of Days';
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {

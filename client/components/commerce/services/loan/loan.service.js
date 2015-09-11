@@ -122,7 +122,7 @@ angular.module('convenienceApp')
       this.getLoanApplicationUser(loanUserId).then(function (user) {
         loanUser = user[0];
         LoanApplication.save(
-          {action: 'contract'}, 
+          {action: 'contract'},
           {
             applicationId: applicationId,
             loanUser: loanUser
@@ -133,7 +133,7 @@ angular.module('convenienceApp')
           deferred.reject(err);
         });
       });
-      
+
       return deferred.promise;
     };
 
