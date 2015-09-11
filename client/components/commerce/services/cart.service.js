@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
+  .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService, $localStorage) {
+
+    var storage = $localStorage.$default({});
+
     var CartService = this;
 
     $rootScope.$on('init-cart-service', function () {
@@ -117,6 +120,7 @@ angular.module('convenienceApp')
         CartService.els.remove('discount');
         CartService.els = null;
       }
+      storage.$reset();
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
 
