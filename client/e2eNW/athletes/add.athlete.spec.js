@@ -38,6 +38,7 @@ module.exports = {
       .pause(5000)
       .waitForElementVisible('.img-circle', 1000)
       //HERE TODO validate with athlete was create.
+      .assert.elementPresent(".athlete-card")
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/athletes/dashboard')
       })
