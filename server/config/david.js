@@ -1,5 +1,3 @@
-var filter = process.env;
-console.log('FILTER',filter);
 var david = require('david');
 var manifest = require('../../package.json');
 var chalk = require('chalk');
