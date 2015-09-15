@@ -37,6 +37,7 @@ angular.module('convenienceApp')
         angular.forEach(data, function (relation) {
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (user) {
+              //Important: check file athletes-slider.controller.js. and change the same logic.
               user[0].nameTeams = "";
               for(var i=0; i < user[0].teams.length; i++){
                 if (user[0].teams && user[0].teams[i].seasonEnd && new Date(user[0].teams[i].seasonEnd) != 'Invalid Date'){
