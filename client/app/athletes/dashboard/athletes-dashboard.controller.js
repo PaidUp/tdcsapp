@@ -37,9 +37,17 @@ angular.module('convenienceApp')
         angular.forEach(data, function (relation) {
           if (relation.type === 'child') {
             UserService.getUser(relation.targetUserId).then(function (user) {
-              if (user[0].teams){
-                user[0].team = user[0].teams[0];
+              //Important: check file athletes-slider.controller.js. and change the same logic.
+              user[0].nameTeams = "";
+              for(var i=0; i < user[0].teams.length; i++){
+                if (user[0].teams && user[0].teams[i].seasonEnd && new Date(user[0].teams[i].seasonEnd) != 'Invalid Date'){
+                  if(new Date(user[0].teams[i].seasonEnd) > new Date()){
+                    user[0].nameTeams += user[0].teams[i].name + " and ";
+                    user[0].team = user[0].teams[i];//This line is important in the athletes-dashboard.html, is necessary for validate if the athlete have teams and show your names.
+                  }
+                }
               }
+              user[0].nameTeams = user[0].nameTeams.slice(0, -5);//remember this line remove the last "and" if you change this one word, please change the number 5 for the quantity the words you want delete.
               $scope.athletes.push(user[0]);
             }). catch(function (err) {
               FlashService.addAlert({

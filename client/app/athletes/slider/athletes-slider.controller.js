@@ -48,7 +48,17 @@ angular.module('convenienceApp')
         $scope.athletes.push(athlete[0]);
         $scope.selectAthlete(athlete[0]);
         if ($scope.athlete.teams) {
-          $scope.athlete.team = $scope.athlete.teams[0];
+          //Important: check file athletes-dashboard.controller.js. and change the same logic.
+          $scope.athlete.nameTeams = "";
+          for(var i=0; i < $scope.athlete.teams.length; i++){
+            if ($scope.athlete.teams && $scope.athlete.teams[i].seasonEnd && new Date($scope.athlete.teams[i].seasonEnd) != 'Invalid Date'){
+              if(new Date($scope.athlete.teams[i].seasonEnd) > new Date()){
+                $scope.athlete.nameTeams += $scope.athlete.teams[i].name + " and ";
+                $scope.athlete.team = $scope.athlete.teams[i];//This line is important in the athletes-dashboard.html, is necessary for validate if the athlete have teams and show your names.
+              }
+            }
+          }
+          $scope.athlete.nameTeams = $scope.athlete.nameTeams.slice(0, -5);//remember this line remove the last "and" if you change this one word, please change the number 5 for the quantity the words you want delete.
         }
       }).catch(function (err) {
         FlashService.addAlert({
