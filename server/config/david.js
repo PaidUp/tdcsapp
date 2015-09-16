@@ -1,5 +1,3 @@
-var filter = process.env;
-console.log('FILTER',filter);
 var david = require('david');
 var manifest = require('../../package.json');
 var chalk = require('chalk');
@@ -39,6 +37,8 @@ function listDependencies(deps) {
     var required = deps[depName].required || '*';
     var stable = deps[depName].stable || 'None';
     var latest = deps[depName].latest;
-    console.log('%s Required: %s Stable: %s Latest: %s', chalk.gray.italic(depName), chalk.red(required), chalk.green(stable), chalk.yellow(latest));
+    if(required != stable){
+      console.log('%s Required: %s Stable: %s Latest: %s', chalk.gray.italic(depName), chalk.red(required), chalk.green(stable), chalk.yellow(latest));
+    }
   });
 }
