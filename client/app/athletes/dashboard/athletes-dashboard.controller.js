@@ -86,6 +86,10 @@ angular.module('convenienceApp')
       $state.go('update-athlete', {athleteId: update._id});
     };
 
+    $scope.selectAthleteEdit = function(athlete){
+      $rootScope.athleteEdit = athlete;
+    }
+
     // $scope.$watch('athlete.team', function () {
     //   if ($scope.athlete) {
     //     console.log('Team Selected: ', $scope.athlete.team);
