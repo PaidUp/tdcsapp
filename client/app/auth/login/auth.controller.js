@@ -190,13 +190,19 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
   // RESET function
   $scope.reset = function (form) {
-    TrackerService.trackFormErrors('reset password form');
+    TrackerService.trackFormErrors('reset password form', form);
     $scope.submitted = true;
     if (form.$valid) {
       AuthService.resetPassword($rootScope.token, $scope.password, function(){
           delete $rootScope.token;
           $scope.modal.closeModal();
           TrackerService.create('reset password');
+          $state.go('main');
+          FlashService.addAlert({
+            type: 'success',
+            msg: 'Your password has been changed',
+            timeout: 10000
+          });
         },
         function(err){
           $scope.error = err.message;
