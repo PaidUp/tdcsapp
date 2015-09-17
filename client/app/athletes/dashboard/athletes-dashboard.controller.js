@@ -50,6 +50,7 @@ angular.module('convenienceApp')
               user[0].nameTeams = user[0].nameTeams.slice(0, -5);//remember this line remove the last "and" if you change this one word, please change the number 5 for the quantity the words you want delete.
               $scope.athletes.push(user[0]);
             }). catch(function (err) {
+              console.log('err' , err);
               FlashService.addAlert({
                 type: 'danger',
                 msg: err.data.message,
