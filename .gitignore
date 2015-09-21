@@ -11,6 +11,7 @@ commerce/var
 commerce/media
 commerce/app/etc/local.xml
 node_modules
+node_modules_old
 bower_components
 build/*
 bin
