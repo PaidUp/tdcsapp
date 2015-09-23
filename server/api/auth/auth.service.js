@@ -19,7 +19,7 @@ function isAuthenticated() {
       tdUserService.current(token, function(err, data){
         if(err)
           next(err);
-        if(data._id){
+        if(data && data._id){
           req.user =  data;
           //this line register the user in mixpanel, for tracking your steps in the CS
           mix.panel.people.set(req.user._id,req.user);
