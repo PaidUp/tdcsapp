@@ -6,26 +6,26 @@ var mix = require('../../../config/mixpanel');
 
 exports.simulate = function(req, res) {
   loanApplicationService.simulate(req.body, function (err, dataSimulate) {
-    if (err) return res.json(409, err);
+    if (err) return res.status(409).json(err);
     mix.panel.track("simulateAppLoan", mergeDataMixpanel(req.body, req.user._id));
-    res.json(200, dataSimulate);
+    res.status(200).json(dataSimulate);
   });
 };
 
 exports.create = function(req, res) {
   req.body.userId = req.user._id;
   loanApplicationService.create(req.body, function (err, data){
-  	if (err) return res.json(409, err);
+  	if (err) return res.status(409).json(err);
   	mix.panel.track("createAppLoan", mergeDataMixpanel(req.body, req.user._id));
-    res.json(200, data);
+    res.status(200).json(data);
   });
 };
 
 exports.state = function(req, res) {
    loanApplicationService.state(req.body, function (err, data){
-     if (err) return res.json(409, err);
+     if (err) return res.status(409).json(err);
      mix.panel.track("stateAppLoan", mergeDataMixpanel(req.body, req.user._id));
-     res.json(200, data);
+     res.status(200).json(data);
    });
 };
 
@@ -35,14 +35,14 @@ exports.sign = function(req, res) {
     mix.panel.track("signAppLoan", mergeDataMixpanel(req.body, req.user._id));
   }
   userService.sign(req.body, function (err, sign){
-    if (err) return res.json(409, err);
+    if (err) return res.status(409).json(err);
     if (sign.isCorrect) {
       loanApplicationService.sign(req.body, function (err, data){
-        if (err) return res.json(409, err);
-        res.json(200, data);
+        if (err) return res.status(409).json(err);
+        res.status(200).json(data);
       });
     }else {
-      res.json(400, {
+      res.status(400).json({
         "code": "ValidationError",
         "message": "sign is not accepted"
       });
@@ -52,29 +52,29 @@ exports.sign = function(req, res) {
 
 exports.payment = function(req, res) {
   loanApplicationService.payment(req.body, function (err, data){
-    if (err) return res.json(409, err);
+    if (err) return res.status(409).json(err);
     mix.panel.track("paymentAppLoan", mergeDataMixpanel(req.body, req.user._id));
-    res.json(200, data);
+    res.status(200).json(data);
   });
 };
 
 exports.application = function(req, res) {
   loanApplicationService.findOne(req.params.id, function (err, applicationData){
      if(!applicationData){
-       return res.json(400, {
+       return res.status(400).json({
          "code": "ValidationError",
          "message": "loan Application not exist."
        });
     };
-  res.json(200,applicationData);
+  res.status(200).json(applicationData);
   });
 };
 
 exports.getcontract = function (req, res) {
   req.body.userId = req.user._id;
   loanApplicationService.contract(req.body, function (err, data){
-    if (err) return res.json(409, err);
-    res.json(200, data);
+    if (err) return res.status(409).json(err);
+    res.status(200).json(data);
   });
 };
 

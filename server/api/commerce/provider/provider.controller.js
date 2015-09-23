@@ -25,7 +25,7 @@ exports.providerRequest = function (req, res) {
           logger.info(err);
         }
       });
-      return res.json(200);
+      return res.status(200).json({});
     });
   });
 }
@@ -37,7 +37,7 @@ exports.providerResponse = function (req, res) {
       return handleError(res, err);
     }
     if (!provider) {
-      return res.json(200, {});
+      return res.status(200).json({});
     }
     var stripeInfo = {
       email:provider.ownerEmail,
@@ -46,12 +46,12 @@ exports.providerResponse = function (req, res) {
     paymentService.createConnectAccount(stripeInfo, function(err, account){
       if(err){
         //return handleError(res, err);
-        return res.json(400);
+        return res.status(200).json({});
       }
       paymentService.addBankConnectAccount({accountId:account.id,bankAccount:{country:provider.country,routingNumber:provider.aba,accountNumber:provider.dda}}, function(err, bank){
         if(err){
           //return handleError(res, err);
-          return res.json(401);
+          return res.status(401).json({});
         }
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.client.remoteAddress;
         var legalEntity={
@@ -76,7 +76,7 @@ exports.providerResponse = function (req, res) {
         paymentService.addToSCustomer({accountId:account.id, ip:ip}, function(err, acceptedToS){
           if(err){
             //return handleError(res, err);
-            return res.json(401);
+            return res.status(401).json({});
           }
           paymentService.addLegalCustomer(legalEntity, function(err, acceptedLegal){
             var updateDrescriptor = {
@@ -88,12 +88,12 @@ exports.providerResponse = function (req, res) {
             paymentService.updateAccount(updateDrescriptor, function(err, descriptor){
             if(err){
               //return handleError(res, err);
-              return res.json(401);
+              return res.status(401).json({});
             }
 
               if(err){
                 //return handleError(res, err);
-                return res.json(401);
+                return res.status(401).json({});
               }
               var productTeam = {
                 type:config.commerce.products.defaultValue.type,
@@ -119,13 +119,13 @@ exports.providerResponse = function (req, res) {
               catalogService.catalogCreate(productTeam, function(err, teamId){
                 if(err){
                   //return handleError(res, err);
-                  return res.json(402);
+                  return res.status(402).json({});
                 }
                 //TODO save account.id - and teamId in mongodb - provider in data value.
                 commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, providerData) {
                   if(err){
                     //return handleError(res, err);
-                    return res.json(403);
+                    return res.status(403).json({});
                   }
                   userService.find({_id:provider.ownerId},function(err , users){
                     if(err) return handleError(res, err);
@@ -136,7 +136,7 @@ exports.providerResponse = function (req, res) {
                       if (err) {
                         return handleError(res, err);
                       }
-                      return res.json(200);
+                      return res.status(200).json({});
                     });
                   });
                 });
@@ -159,5 +159,5 @@ function handleError(res, err) {
   }
   logger.log('error', err);
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }

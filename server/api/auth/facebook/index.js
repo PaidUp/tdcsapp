@@ -10,9 +10,9 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
     tdAuthService.init(config.connections.user);
     tdAuthService.facebook(req.body, function (err, data) {
-        if(err) res.json(402, err);
+        if(err) res.status(402).json(err);
         mix.panel.track("facebook",req.body);
-        res.json(200, data);
+        res.status(200).json(data);
     });
 });
 

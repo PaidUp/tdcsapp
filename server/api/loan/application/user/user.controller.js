@@ -4,8 +4,8 @@ var userService = require('./user.service');
 
 exports.create = function(req, res) {
 	userService.create(req.body, function (err, data){
-    if(err) res.json(402, err);
-    res.json(200, data);
+    if(err) res.status(402).json(err);
+    res.status(200).json(data);
   });
 };
 
@@ -14,11 +14,11 @@ exports.getUser = function(req, res, next) {
   var filter = {_id: req.body.id};
   userService.findOne(filter, function(err, userLoan) {
     if(err) return handleError(res, err);
-    if (!userLoan) return res.json(404,{
+    if (!userLoan) return res.status(404).json({
       "code": "ValidationError",
       "message": "User Id does not exist"
     });
-    res.json(200, userLoan);
+    res.status(200).json(userLoan);
   });
 };
 

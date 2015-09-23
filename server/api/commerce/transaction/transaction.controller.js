@@ -16,7 +16,7 @@ exports.listTransactions = function (req, res) {
       return handleError(res, err);
     }
     mix.panel.track("transactionList", mix.mergeDataMixpanel(transactions, req.user._id));
-    return res.json(200, transactions);
+    return res.status(200).json(transactions);
   });
 }
 
@@ -29,7 +29,7 @@ function handleError(res, err) {
   }
   logger.log('error', err);
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }
 
 exports.generatePDF = function (req, res) {

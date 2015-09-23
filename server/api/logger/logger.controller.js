@@ -13,5 +13,5 @@ exports.logger = function(req, res){
     logger.put('error','param message is required');
   }
   logger.put(req.body.type, req.body.message);
-  return res.json(200, true);
+  return res.status(200).json(true);
 };

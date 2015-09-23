@@ -7,7 +7,7 @@ var camelize = require('camelize');
 
 exports.associate = function (req, res) {
   if(!req.body || !req.body.cardId){
-    return res.json(400, {
+    return res.status(400).json({
         "code": "ValidationError",
         "message": "Card id is missing"
       });
@@ -23,7 +23,7 @@ exports.associate = function (req, res) {
           return handleError(res, err);
       }
       if(!userPrepared.meta.TDPaymentId){
-      return res.json(400, {
+      return res.status(400).json({
           "code": "ValidationError",
           "message": "user without TDPaymentId"
         });
@@ -33,7 +33,7 @@ exports.associate = function (req, res) {
         if(err){
           return handleError(res, err);
         }
-          return res.json(200, dataAssociate);
+          return res.status(200).json(dataAssociate);
       });
     });
   });
@@ -49,30 +49,30 @@ exports.listCards = function(req, res){
       paymentService.listCards(dataUser[0].meta.TDPaymentId, function(errCard, dataCards){
         paymentService.fetchCustomer(dataUser[0].meta.TDPaymentId, function(errCustomer, dataCustomer){
           if(errCard || errCustomer){
-            return res.json(400,{
+            return res.status(400).json({
               "code": "ValidationError",
                 "message": "customer Card is not valid"
             });
           }
           if(!dataCards){
-            return res.json(400,{
+            return res.status(400).json({
               "code": "ValidationError",
                 "message": "User without cards"
             });
           }
           dataCards.defaultSource = dataCustomer.defaultSource
-          return res.json(200, camelize(dataCards));
+          return res.status(200).json(camelize(dataCards));
         });
       });
     } else{
-      return res.json(200, {data:[]});
+      return res.status(200).json({data:[]});
     };
   });
 }
 
 exports.getCard = function(req, res){
 	if(!req.params.id){
-		return res.json({
+		return res.status(400).json({
 			"code": "ValidationError",
       "message": "Card number is required"
     });
@@ -87,25 +87,25 @@ exports.getCard = function(req, res){
         return handleError(res, err);
       }
       if(!userPrepared.meta.TDPaymentId){
-        return res.json(400,{
+        return res.status(400).json({
           "code": "ValidationError",
           "message": "User without TDPaymentId"
         });
       }
       paymentService.fetchCard(req.params.id, function(err, dataCard){
         if(err){
-          return res.json(400,{
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "Card is not valid"
           });
         }
         if(!dataCard){
-          return res.json(400,{
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "User without Card"
           });
         }
-        return res.json(200, camelize(dataCard));
+        return res.status(200).json(camelize(dataCard));
       });
     });
   });
@@ -117,7 +117,7 @@ function handleError(res, err) {
   if (err.name === "ValidationError" || err.code === "StripeCardError") {
     httpErrorCode = 400;
   }
-  return res.json(httpErrorCode, {
+  return res.status(httpErrorCode).json({
     code: err.type,
     message: err.message,
     errors: err.details

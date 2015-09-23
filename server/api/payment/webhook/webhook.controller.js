@@ -5,13 +5,13 @@ var camelize = require('camelize');
 
 exports.webpost = function (req, res) {
   webhookService.sendEmail(req.body, function(err, data){
-    return res.json(200,{webhook:"POST"});
+    return res.status(200).json({webhook:"POST"});
   });
 };
 
 exports.webget = function (req, res) {
   webhookService.sendEmail(req.query, function(err, data){
-    return res.json(200,{webhook:"GET"});
+    return res.status(200).json({webhook:"GET"});
   });
 };
 
@@ -23,7 +23,7 @@ function handleError(res, err) {
     httpErrorCode = 400;
   }
 
-  return res.json(httpErrorCode, {
+  return res.status(httpErrorCode).json({
     code: err.name,
     message: err.message,
     errors: err.errors

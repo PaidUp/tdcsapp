@@ -29,7 +29,7 @@ exports.listOrders = function (req, res) {
     }, function (err) {
       if (err) { return handleError(res, err); }
       mix.panel.track("orderList", mix.mergeDataMixpanel(orders, req.user._id));
-      return res.json(200, orders);
+      return res.status(200).json(orders);
     });
   });
 }
@@ -43,5 +43,5 @@ function handleError(res, err) {
   }
   logger.log('error', err);
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }
