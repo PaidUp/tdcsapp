@@ -2,11 +2,21 @@
 
 angular.module('convenienceApp')
   .controller('MainCtrl', function ($rootScope, $scope, $timeout, FlashService, AuthService, ContactService,
-                                    ModalService, ModalFactory, $anchorScroll, $location, TrackerService) {
+                                    ModalService, ModalFactory, $anchorScroll, $location, TrackerService, $state, $stateParams,
+                                    $localStorage) {
 
     $rootScope.alerts = [];
     $scope.modalFactory = ModalFactory;
     $scope.modal = ModalService;
+    $scope.$storage = $localStorage.$default({});
+
+    $scope.setPnTeam = function(){
+      var pnTeam = $stateParams.team;
+
+      if(pnTeam){
+        $scope.$storage.pnTeam = pnTeam;
+      }
+    };
 
     $scope.destPath = function(value, isParent){
       AuthService.destPath(value, isParent);

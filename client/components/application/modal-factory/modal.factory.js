@@ -72,6 +72,13 @@ angular.module('convenienceApp')
           size: 'sm'
         });
       },
+      UpdateAthleteModal: function () {
+        openModal({
+          templateUrl: 'app/athletes/update/update-athlete-modal.html',
+          controller: 'UpdateAthleteModalCtrl',
+          size: 'sm'
+        });
+      },
       CreditReportAuthModal: function () {
         openModal({
           templateUrl: 'app/application/credit-report-pull-auth/credit-report-modal.html',

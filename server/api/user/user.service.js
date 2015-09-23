@@ -21,7 +21,9 @@ function current (data, cb) {
 
 function update (data, cb) {
   tdUserService.init(config.connections.user);
-  tdUserService.update(data, data.userId, function(err, data){
+  var userId = data.parentId ? data.parentId : data.userId;
+
+  tdUserService.update(data, userId, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });

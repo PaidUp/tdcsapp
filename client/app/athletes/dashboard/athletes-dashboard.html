@@ -1,15 +1,24 @@
 <div class="container">
   <div class="col-sm-6 col-sm-offset-3">
     <div class="row text-center" ng-if="athletes.length > 0">
-        <div class="col-sm-4 athlete-card" ng-repeat="athlete in athletes" ng-click="selectAthlete(athlete)">
+        <div class="col-sm-4 athlete-card" ng-repeat="athlete in athletes" >
+          <div  ng-click="selectAthlete(athlete)">
             <img src="/assets/images/avatar.jpg" alt="" class="img-circle">
             <h2 class="header">{{athlete.firstName}} {{athlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete(athlete)"></span> --></h2>
             <p ng-show="!athlete.team" class="header">
-                {{athlete.firstName}} doesn't have team yet
+              {{athlete.firstName}} doesn't have team yet
             </p>
             <p ng-show="athlete.team" class="header">
-              <strong>{{athlete.team.name}}</strong>
+              <!--<strong>{{athlete.team.name}}</strong> <br>-->
+              <strong>{{athlete.nameTeams}}</strong>
             </p>
+          </div>
+          <div>
+            <button type="button" class="btn bar-btn" ng-click="selectAthleteEdit(athlete); modalFactory.UpdateAthleteModal()">
+              <i class="fa fa-edit"></i>
+              <b>{{'Edit'| uppercase}}</b>
+            </button>
+          </div>
         </div>
     </div>
     <div class="row" ng-show="athletes.length === 0 && isChildCharged">

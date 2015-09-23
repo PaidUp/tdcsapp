@@ -11,7 +11,8 @@ angular.module('convenienceApp', [
   'angulartics.google.analytics',
   'facebook',
   'angularNumberPicker',
-  'ui.mask'
+  'ui.mask',
+  'ngStorage'
 ]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider,
                     FacebookProvider, $uiViewScrollProvider, $provide) {
     $analyticsProvider.virtualPageviews(false);

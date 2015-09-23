@@ -109,6 +109,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
         paymentService.prepareUser(user, function (err, user) {
           if(err) logger.log('error',err);
           var team = {
+            seasonEnd: merchantProducts[0].seasonEnd,
             name: shoppingCart.items[0].name,
             productId: shoppingCart.items[0].productId,
             createdAt: shoppingCart.items[0].createdAt,
