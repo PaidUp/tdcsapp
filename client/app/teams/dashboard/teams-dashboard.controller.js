@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('TeamsDashboardCtrl', function ($scope, UserService, $rootScope, $state, $stateParams, FlashService, AuthService) {
+  .controller('TeamsDashboardCtrl', function ($scope, UserService, $rootScope, $state, $localStorage) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -11,6 +11,14 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+
+    $scope.$storage = $localStorage.$default({});
+
+    if($scope.$storage.pnTeam){
+      $state.go('teams-profile',{
+        teamId: $scope.$storage.pnTeam
+      });
+    }
 
     $scope.viewTeamProfile = function () {
       if ($scope.team) {

@@ -64,7 +64,7 @@ module.exports = {
     browser
       .waitForElementVisible('button[type=submit]', 1000)
       .click('button[type=submit]')
-      .pause(10000)
+      .pause(20000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/user/payments')
       })
