@@ -99,6 +99,7 @@
     "karma-phantomjs-launcher": "0.2.1",
     "karma-requirejs": "0.2.2",
     "karma-script-launcher": "0.1.0",
+    "mocha-cobertura-reporter": "1.0.4",
     "mocha-jenkins-reporter": "0.1.9",
     "nightwatch": "0.8.3",
     "open": "0.0.5",
