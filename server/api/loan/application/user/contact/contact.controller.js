@@ -5,8 +5,8 @@ var contactService = require('./contact.service');
 
 exports.create = function(req, res, next) {
   contactService.create(req.body, function (err, data){
-    if(err) res.json(402, err);
-    res.json(200, data);
+    if(err) res.status(402).json(err);
+    res.status(200).json(data);
   });
 };
 
@@ -103,9 +103,9 @@ exports.create = function(req, res, next) {
 //       }
 //       User.update(filter, { $pull: { "contacts" : { 'contactId': contactId} } },function(err,data){
 //         if(err) return handleError(res, err);
-//         return res.send(200);  
+//         return res.send(200);
 //       });
-      
+
 //     }
 //   );
 // };

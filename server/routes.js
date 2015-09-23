@@ -13,7 +13,7 @@ module.exports = function(app) {
   app.use(function(req, res, next) {
     fs.stat(config.root+'/var/maintenance.pid', function(err, stat) {
       if(err == null) {
-        return res.json(503, {
+        return res.status(503).json({
           'code': 'maintenance',
           'message': 'Site Maintenance: Please try later'
         });

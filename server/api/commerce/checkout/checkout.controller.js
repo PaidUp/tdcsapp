@@ -18,26 +18,26 @@ var mix = require('../../../config/mixpanel');
 exports.place = function(req, res) {
   mix.panel.track("placeCheckoutStart", mix.mergeDataMixpanel(req.body, req.user._id));
   if(!req.body || !req.body.addresses || !req.body.paymentMethod || !req.body.payment) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Addresses, paymentMethod and payment are required params."
     });
   }
   if(! req.body.cardId && req.body.payment == "onetime") {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "CardId is required with onetime payment."
     });
   }
 
   if(! (['creditcard','directdebit'].indexOf(req.body.paymentMethod) > -1)) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Payment method invalid."
     });
   }
   if(! (['onetime','loan'].indexOf(req.body.payment) > -1)) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Payment type invalid."
     });
@@ -82,7 +82,7 @@ exports.place = function(req, res) {
                 });
               });
 
-              return res.json(200, magentoOrderId);
+              return res.status(200).json(magentoOrderId);
             });
           });
 
@@ -93,7 +93,7 @@ exports.place = function(req, res) {
   else if (req.body.payment == "onetime") {
     placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function(err, magentoOrderId){
       if (err) return handleError(res, err);
-      return res.json(200, magentoOrderId);
+      return res.status(200).json(magentoOrderId);
     });
   }
 }
@@ -158,5 +158,5 @@ function handleError(res, err) {
   }
   logger.log('error', err);
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }

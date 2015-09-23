@@ -7,7 +7,7 @@ var mix = require('../../../config/mixpanel');
 
 exports.list = function(req, res) {
   if(!req.params && !req.params.categoryId) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Category Id is required"
     });
@@ -19,13 +19,13 @@ exports.list = function(req, res) {
   catalogService.catalogList(categoryId, function(err, dataService){
     if(err) return handleError(res, err);
     //mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
-    res.json(200, dataService);
+    res.status(200).json(dataService);
   });
 }
 
 exports.catalogInfo = function(req, res) {
   if(!req.params && !req.params.productId) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Product Id is required"
     });
@@ -33,13 +33,13 @@ exports.catalogInfo = function(req, res) {
   catalogService.catalogProduct(req.params.productId, function(err, dataService){
     mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
-    res.json(200, dataService);
+    res.status(200).json(dataService);
   });
 }
 
 exports.groupedProducts = function(req, res) {
   if(!req.params && !req.params.productId) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Product Id is required"
     });
@@ -47,7 +47,7 @@ exports.groupedProducts = function(req, res) {
   catalogService.groupedList(req.params.productId, function(err, dataService){
     mix.panel.track("groupedList", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
-    res.json(200, dataService);
+    res.status(200).json(dataService);
   });
 }
 
@@ -59,5 +59,5 @@ function handleError(res, err) {
     httpErrorCode = 400;
   }
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }
