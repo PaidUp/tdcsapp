@@ -14,7 +14,7 @@ exports.getSchedule = function (req, res) {
       return handleError(res, err);
     }
 
-    return res.json(200, data);
+    return res.status(200).json(data);
   });
 }
 
@@ -27,5 +27,5 @@ function handleError(res, err) {
   }
   logger.log('error', err);
 
-  return res.json(httpErrorCode, {code : err.name, message : err.message, errors : err.errors});
+  return res.status(httpErrorCode).json({code : err.name, message : err.message, errors : err.errors});
 }

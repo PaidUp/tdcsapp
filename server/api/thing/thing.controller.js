@@ -17,7 +17,7 @@ var emailService = require('../auth/auth.email.service');
 // Creates a new thing in the DB.
 exports.create = function(req, res) {
   emailService.sendWelcomeEmail({email:'jesse.cogollo@talosdigital.com',name:'sergio robledo'},function(cb){
-    if(cb.err) return res.json(500,cb.err);
-    return res.json(200,cb.success);
+    if(cb.err) return res.status(500).json(cb.err);
+    return res.status(200).json(cb.success);
   });
 };

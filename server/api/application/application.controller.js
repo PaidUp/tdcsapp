@@ -14,36 +14,36 @@ exports.contact = function(req, res) {
 			logger.info(err, err);
 		}
     });
-	res.json(200,{});
+	res.status(200).json({});
 }
 
 exports.config = function(req, res) {
 	applicationService.configView(function(err, data) {
-      res.json(200,data);
+      res.status(200).json(data);
   });
 }
 
 exports.cron = function(req, res) {
     mix.panel.track("cron", {});
     cronjobService.run(function(err, data){
-        res.json(200, data);
+        res.status(200).json(data);
     });
 }
 
 exports.cronReminderPayments = function(req, res) {
     cronjobService.runReminderPayments(function(err, data){
-      res.json(200, data);
+      res.status(200).json(data);
     });
 }
 
 exports.cronRetrayPayments = function(req, res) {
   cronjobService.runRetryPayments(function(err, data){
-    res.json(200, data);
+    res.status(200).json(data);
   });
 }
 
 exports.cronCompleteOrders = function(req, res) {
   cronjobService.runCompleteOrders(function(err, data){
-    res.json(200, data);
+    res.status(200).json(data);
   });
 }

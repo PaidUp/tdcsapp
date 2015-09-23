@@ -61,7 +61,7 @@ describe('application.controller', function() {
 	    .get('/api/v1/application/config')
 	    .send()
 	    .expect(200)
-	    .expect('Content-Type', 'application/json')
+	    .expect('Content-Type', 'application/json; charset=utf-8')
 	    .end(function(err, res) {
 	        if (err) return done(err);
 	        assert(res.body.marketplace);
@@ -74,7 +74,7 @@ describe('application.controller', function() {
 	    .post('/api/v1/application/contact')
 	    .send(dataContact)
 	    .expect(200)
-	    .expect('Content-Type', 'application/json')
+	    .expect('Content-Type', 'application/json; charset=utf-8')
 	    .end(function(err, res) {
 	        if (err) return done(err);
 	        assert(res.body);

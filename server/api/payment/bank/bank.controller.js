@@ -13,7 +13,7 @@ var camelize = require('camelize');
 
 exports.create = function (req, res) {
   if (!req.body || !req.body.bankId) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Bank id is required"
     });
@@ -31,7 +31,7 @@ exports.create = function (req, res) {
 
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.meta.TDPaymentId) {
-        return res.json(400, {
+        return res.status(400).json({
           "code": "ValidationError",
           "message": "User without TDPaymentId"
         });
@@ -48,7 +48,7 @@ exports.create = function (req, res) {
             if (err) {
               return handleError(res, err);
             }
-            return res.json(200, {});
+            return res.status(200).json({});
           });
         });
       });
@@ -74,15 +74,15 @@ exports.listBanks = function (req, res) {
             dataUser[0].payment = {};
             userService.save(dataUser[0], function(err, user){
               if(err){
-                return res.json(500,err);
+                return res.status(500).json(err);
               }
             });
           }
-          return res.json(200, camelize(dataBanks));
+          return res.status(200).json(camelize(dataBanks));
         }
       });
     }else{
-      return res.json(200, {data:[]});
+      return res.status(200).json({data:[]});
     };
   });
 }
@@ -92,14 +92,14 @@ exports.verify = function (req, res) {
   var deposit1 = req.body.deposit1;
   var deposit2 = req.body.deposit2;
   if (!verificationId) {
-    return res.json(400, {
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "VerificationId is required"
     });
   }
   bankService.verifyAmounts(deposit1, function (valid) {
     if (!valid) {
-      return res.json(400, {
+      return res.status(400).json({
         "code": "ValidationError",
         "message": "Deposit1 is not valid"
       });
@@ -107,7 +107,7 @@ exports.verify = function (req, res) {
   });
   bankService.verifyAmounts(deposit2, function (valid) {
     if (!valid) {
-      return res.json(400, {
+      return res.status(400).json({
         "code": "ValidationError",
         "message": "Deposit2 is not valid"
       });
@@ -122,7 +122,7 @@ exports.verify = function (req, res) {
     }
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.meta.TDPaymentId) {
-        return res.json(400, {
+        return res.status(400).json({
           "code": "ValidationError",
           "message": "User without TDPaymentId"
         });
@@ -134,7 +134,7 @@ exports.verify = function (req, res) {
               return handleError(res, err);
             }
             if(bank.bankAccountVerifications[0].attemptsRemaining <= 0){
-              return res.json(400, {
+              return res.status(400).json({
                 "code": "ValidationError",
                 "message": "You have exceeded the max number of attempts",
                 "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
@@ -142,7 +142,7 @@ exports.verify = function (req, res) {
               });
             }
             else{
-              return res.json(400, {
+              return res.status(400).json({
                 "code": "ValidationError",
                 "message": "Your bank account has not been verified",
                 "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
@@ -152,7 +152,7 @@ exports.verify = function (req, res) {
           });
         } else {
           if (!data) {
-            return res.json(400, {
+            return res.status(400).json({
               "code": "ValidationError",
               "message": "Your bank account has not been verified correctly",
               "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
@@ -167,7 +167,7 @@ exports.verify = function (req, res) {
               if (err) {
                 return handleError(res, err);
               }
-              return res.json(200, data);
+              return res.status(200).json(data);
             });
           });
         }
@@ -186,25 +186,24 @@ exports.pending = function (req, res) {
     }
     paymentService.prepareUser(dataUser, function (err, userPrepared) {
       if (!userPrepared.meta.TDPaymentId) {
-        return res.json(400, {
+        return res.status(400).json({
           "code": "ValidationError",
           "message": "user without TDPaymentId"
         });
       }
       paymentService.listBanks(req.user.meta.TDPaymentId, function (err, dataBanks) {
         if (err) {
-          return res.json(400, {
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "Error banks"
           });
         }
         if (!dataBanks) {
-          return res.json(400, {
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "user without Banks"
           });
         }
-
         dataBanks.forEach(function (bank) {
 
         });
@@ -215,7 +214,7 @@ exports.pending = function (req, res) {
 
 exports.getBank = function (req, res) {
   if (!req.params.id) {
-    return res.json({
+    return res.status(400).json({
       "code": "ValidationError",
       "message": "Bank id is required"
     });
@@ -229,7 +228,7 @@ exports.getBank = function (req, res) {
     }
     paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
       if (!userPrepared.meta.TDPaymentId) {
-        return res.json(400, {
+        return res.status(400).json({
           "code": "ValidationError",
           "message": "User without TDPaymentId"
         });
@@ -237,18 +236,18 @@ exports.getBank = function (req, res) {
 
       paymentService.fetchBank(req.params.id, function (err, dataBank) {
         if (err) {
-          return res.json(400, {
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "Bank is not valid"
           });
         }
         if (!dataBank) {
-          return res.json(400, {
+          return res.status(400).json({
             "code": "ValidationError",
             "message": "User without Bank"
           });
         }
-        return res.json(200, camelize(dataBank));
+        return res.status(200).json(camelize(dataBank));
       });
 
     });
@@ -258,13 +257,13 @@ exports.getBank = function (req, res) {
 exports.deleteBankAccount = function(req, res){
   paymentService.deleteBankAccount(req.params.customerId, req.params.bankId, function(err, data){
     if (err) {
-      return res.json(400, {
+      return res.status(400).json({
         "code": "ValidationError",
         "message": "Bank is not valid"
       });
     }
 
-    return res.json(200, {});
+    return res.status(200).json({});
 
   });
 }
@@ -277,7 +276,7 @@ function handleError(res, err) {
     httpErrorCode = 400;
   }
 
-  return res.json(httpErrorCode, {
+  return res.status(httpErrorCode).json({
     code: err.name,
     message: err.message,
     errors: err.errors
