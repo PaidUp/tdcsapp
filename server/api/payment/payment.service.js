@@ -29,6 +29,22 @@ function createCustomer(user, cb) {
   });
 }
 
+function updateCustomer(dataCustomer, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.updateCustomer(dataCustomer, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
+function fetchCustomer(customerId, cb) {
+  tdPaymentService.init(config.connections.payment);
+  tdPaymentService.fetchCustomer(customerId, function(err, data){
+    if(err) return cb(err);
+    return cb(null, data);
+  });
+}
+
 function createCard(cardDetails, cb) {
   tdPaymentService.init(config.connections.payment);
   tdPaymentService.createCard(cardDetails, function(err, data){
@@ -281,7 +297,7 @@ function fetchDebit(debitId, cb){
   });
 }
 
-function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, fee, metaPayment, cb) {
+function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, fee, metaPayment, retryId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -303,7 +319,8 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
                 var result = {amount: amount, OrderId: data.id, DebitId: data.id,
-                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId, status:data.status};
+                  paymentMethod: "creditcard", number: cardDetails.last4,
+                  brand : cardDetails.brand, scheduleId : scheduleId, status:data.status, retryId:retryId};
                 commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
@@ -311,7 +328,8 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
               }
               else {
                 var result = {amount: amount, OrderId: uuid.v4(), DebitId: uuid.v4(),
-                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand, scheduleId : scheduleId, status:'failed', message:err.message};
+                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand,
+                  scheduleId : scheduleId, status:'failed', message:err.message, retryId:retryId};
                 commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
                   if(err) return cb(err);
                   return cb(data);
@@ -374,11 +392,11 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
   });
 }
 
-function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, cb) {
+function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, retryId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, metaPayment, function (err, resultDebit) {
+    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, metaPayment, retryId, function (err, resultDebit) {
       // Debit failed
       if (err) {
         //logger.info('Failed, add a comment and mark order as "on hold"');
@@ -587,3 +605,5 @@ exports.addBankConnectAccount = addBankConnectAccount;
 exports.addToSCustomer = addToSCustomer;
 exports.addLegalCustomer = addLegalCustomer;
 exports.updateAccount = updateAccount;
+exports.updateCustomer = updateCustomer;
+exports.fetchCustomer = fetchCustomer;

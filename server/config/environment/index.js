@@ -62,16 +62,21 @@ var all = {
   emailTemplateRoot:path.normalize(__dirname + '/../../../server/views/email'),
   emailOptions:{
     from: 'Convenience Select <ourteam@convenienceselect.com>',
-    subject: 'Default Subject'
+    subject: 'Default Subject (ourteam)'
+  },
+  emailOptionsAlerts:{
+    from: 'Convenience Select <alerts@convenienceselect.com>',
+    subject: 'Default Subject (alerts)'
   },
   emailVars: {
     companyName : "Convenience Select",
-    baseUrl : "http://localhost:9000"
+    baseUrl : "http://localhost:9000",
+    prefix : '[DEV] '
   },
   emailContacts : {
-    contact : 'convenieceselect@gmail.com',
-    admin : 'convenieceselect@gmail.com',
-    developer : 'convenieceselect@gmail.com'
+    contact : 'convenieceselect@gmail.com',//ourteam@cs.com
+    admin : 'convenieceselect@gmail.com',//alerts@cs.com
+    developer : 'convenieceselect@gmail.com'//alerts@cs.com
   },
 
   // contract data
@@ -80,7 +85,7 @@ var all = {
     convenienceSelect: {
       state: 'Texas',
       creditor: 'Convenience Select, LLC',
-      address: '11200 Woodland Hills Trl',
+      address: '2900 North Quinlan Park Rd. Suite 240-320.',
       city: 'Austin',
       zip: '78732',
       phone: '(888) 419-8479',
@@ -98,7 +103,7 @@ var all = {
     },
     clientData: {
       DisputesTelephoneNumber: '(888) 419-8479',
-      canSendMailAt: '11200 Woodland Hills Trl. Autin, TX 78732',
+      canSendMailAt: '2900 North Quinlan Park Rd. Suite 240-320. Autin, TX 78732',
       canCallYouAt: '(888) 419-8479'
     }
   },
@@ -184,7 +189,7 @@ var all = {
     apiPublic: "pk_test_J5gfockQi2DP28GszFZvTnwS"
   },
   mixpanel:{
-    apiKey: "ec0a4bdcce8b969299299e0710f4775a"
+    apiKey: "d04804c3577e2ddecee3b634247a3b92"
   },
   encryptKey:'PZ3oXv2v6Pq5HAPFI9NFbQ==',
   loan:{
@@ -283,6 +288,9 @@ var all = {
       port: 9010,
       token: 'TDUserLoanToken-CHANGE-ME!'
     }
+  },
+  logger : {
+    token : 'f5ea6cdf-b8c0-44ca-962f-1328873c5974'
   }
 };
 

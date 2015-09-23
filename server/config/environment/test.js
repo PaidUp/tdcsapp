@@ -27,7 +27,8 @@ module.exports = {
   },
   emailVars: {
     companyName : "Convenience Select (testCsApp)",
-    baseUrl : "https://develop.convenienceselect.com"
+    baseUrl : "https://develop.convenienceselect.com",
+    prefix : '[TEST] '
   },
   stripe:{
     apiPublic: "pk_test_J5gfockQi2DP28GszFZvTnwS"

@@ -75,6 +75,7 @@ angular.module('convenienceApp')
         .error(function(err) {
           context.logout();
           error(err);
+            err.email = user.email;
         });
       },
 

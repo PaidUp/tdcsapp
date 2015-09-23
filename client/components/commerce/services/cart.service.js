@@ -2,49 +2,70 @@
 
 angular.module('convenienceApp')
   .service('CartService', function ($cookieStore, $resource, $q, $rootScope, encryptService, AuthService) {
+    var CartService = this;
+
+    $rootScope.$on('init-cart-service', function () {
+      if(!CartService.els){
+        AuthService.getSessionSalt($cookieStore.get('token'), function (err, salt) {
+          if (err) {
+            console.log(err);
+          } else {
+            CartService.els = new encryptService(salt);
+          }
+        })
+      }
+    });
+
     var Cart = $resource('/api/v1/commerce/cart/:action/:cartId',{
       cartId: ''
     },{});
 
-    var CartService = this;
+    var discount = $resource('/api/v1/commerce/cart/coupon/add',{},{
+      apply:{
+        method:'POST',
+        isArray:false
+      }
+    });
+
+
+    CartService.setCartDetails = function (team, prod) {
+      CartService.els.set('team', team);
+      CartService.els.set('products', prod);
+    };
+
+    CartService.setCartGrandTotal = function (grandTotal) {
+      CartService.els.set('grandTotal', grandTotal);
+    };
+
+    CartService.setCartDiscount = function (discount) {
+      CartService.els.set('discount', discount);
+    };
+
+    CartService.getCartGrandTotal = function () {
+      return CartService.els.get('grandTotal')
+    };
+
+    CartService.getCartDiscount = function () {
+      return CartService.els.get('discount')
+    };
+
+    CartService.hasProductBySKU = function (sku, cb) {
+      var result = false;
+      CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
+        ele.forEach(function (option, idx2, arr2) {
+          option.values.forEach(function (value, idx3, arr3) {
+            if (value.sku == sku) {
+              result = CartService.els.get('products').options[option.optionId] == value.valueId;
+            }
+          });
+        });
+      });
+      cb(result);
+    };
+
     $rootScope.$on('logout', function () {
       CartService.removeCurrentCart();
     });
-
-    this.setCartDetails = function(team , prod, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
-          cb(err);
-        }else{
-          var els = new encryptService(salt);
-          els.set('team', team);
-          els.set('products', prod);
-          cb(null , true);
-        }
-      });
-    }
-
-    this.hasProductBySKU = function(sku, cb){
-      AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-        if(err){
-          console.log('getSessionSalt',err);
-        }else{
-          var els = new encryptService(salt);
-          var result = false;
-          els.get('team').attributes.customOptions.forEach(function(ele, idx, arr){
-            ele.forEach(function(option, idx2, arr2){
-              option.values.forEach(function(value, idx3, arr3){
-                if(value.sku == sku){
-                  result = els.get('products').options[option.optionId] == value.valueId;
-                }
-              });
-            });
-          });
-          cb(result);
-        }
-      });
-    };
 
     this.createCart = function() {
       var deferred = $q.defer();
@@ -75,13 +96,13 @@ angular.module('convenienceApp')
         cartId: cartId,
         products: products
       }).$promise.then(function (cart) {
-        $cookieStore.put('userId', athlete._id);
-        $cookieStore.put('athlete', athlete);
-        $rootScope.$emit('event:cart-state-changed', undefined);
-        deferred.resolve(cart);
-      }).catch(function (err) {
-        deferred.reject(err);
-      });
+          $cookieStore.put('userId', athlete._id);
+          $cookieStore.put('athlete', athlete);
+          $rootScope.$emit('event:cart-state-changed', undefined);
+          deferred.resolve(cart);
+        }).catch(function (err) {
+          deferred.reject(err);
+        });
       return deferred.promise;
     };
 
@@ -89,16 +110,12 @@ angular.module('convenienceApp')
       $cookieStore.remove('cartId');
       $cookieStore.remove('userId');
       $cookieStore.remove('team');
-      if($cookieStore.get('token')){
-        AuthService.getSessionSalt($cookieStore.get('token'), function(err, salt){
-          if(err){
-            console.log('getSessionSalt',err);
-          }else{
-            var els = new encryptService(salt);
-            els.remove('team');
-            els.remove('products');
-          }
-        })
+      if(CartService  && CartService.els){
+        CartService.els.remove('team');
+        CartService.els.remove('products');
+        CartService.els.remove('grandTotal');
+        CartService.els.remove('discount');
+        CartService.els = null;
       }
       $rootScope.$emit('event:cart-state-changed', undefined);
     };
@@ -151,6 +168,17 @@ angular.module('convenienceApp')
       });
       subTotal = resp;
       return resp;
+    };
+
+    this.applyDiscount = function(coupon, cartId, cb){
+      discount.apply({coupon:coupon,
+        cartId:cartId}).$promise.then(function(result){
+          cb(null, result);
+        }).catch(function(err){
+          console.log(err);
+          cb(err);
+        });
+
     };
 
   });

@@ -30,8 +30,8 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
       var mailOptions = config.emailOptions;
       mailOptions.html = html;
       mailOptions.to = email;
-      mailOptions.bcc = config.emailContacts.developer;
-      mailOptions.subject = 'New Order from ' + emailVars.companyName;
+      //mailOptions.bcc = config.emailContacts.developer;
+      mailOptions.subject = emailVars.prefix + 'New Order from ' + emailVars.companyName;
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
@@ -76,8 +76,8 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
 
             mailOptions.html = html;
             mailOptions.to = userEmail;
-            mailOptions.bcc = config.emailContacts.developer;
-            mailOptions.subject = 'Oops…You Forgot To Add Your Bank Account - ' + team;
+            //mailOptions.bcc = config.emailContacts.developer;
+            mailOptions.subject = emailVars.prefix + 'Oops…You Forgot To Add Your Bank Account - ' + team;
 
             mailOptions.attachments = [];
 
@@ -135,7 +135,7 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
                 var mailOptions = config.emailOptions;
                 mailOptions.html = html;
                 mailOptions.to = userEmail;
-                mailOptions.bcc = config.emailContacts.developer;
+                //mailOptions.bcc = config.emailContacts.developer;
                 mailOptions.subject = 'Reminder: Verify Your Bank Account – ' + team;
                 mailOptions.attachments = [];
                 transporter.sendMail(mailOptions, function (error, info) {
@@ -207,7 +207,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
                   var mailOptions = config.emailOptions;
                   mailOptions.html = html;
                   mailOptions.to = userEmail;
-                  mailOptions.bcc = config.emailContacts.developer;
+                  //mailOptions.bcc = config.emailContacts.developer;
                   mailOptions.subject = 'Reminder: Your Account Will Be Debited in '+ requestObject.days +' Days – ' + team;
 
                   mailOptions.attachments = [];
@@ -252,7 +252,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
           var mailOptions = config.emailOptions;
           mailOptions.to = user.email;
-          mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
+          //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
           mailOptions.html = html;
           mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
           mailOptions.attachments = [];
@@ -294,7 +294,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 
               var mailOptions = config.emailOptions;
               mailOptions.to = user.email;
-              mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
+              //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
               mailOptions.html = html;
               mailOptions.subject = 'Payment Processed Successfully – ' + team;
@@ -337,7 +337,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
 
         var mailOptions = config.emailOptions;
         mailOptions.to = user.email;
-        mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
+        //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
         mailOptions.html = html;
         mailOptions.subject = 'Payment Processed Successfully – ' + team;
@@ -376,7 +376,7 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 
       var mailOptions = config.emailOptions;
       mailOptions.to = email;
-      mailOptions.bcc = config.emailContacts.developer;
+      //mailOptions.bcc = config.emailContacts.developer;
       mailOptions.html = html;
       mailOptions.subject = 'Payment notification: Payment failed. We will retry in a few days. ';
 
@@ -422,7 +422,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
 
               var mailOptions = config.emailOptions;
               mailOptions.to = user.email;
-              mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
+              //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
               mailOptions.html = html;
               mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
@@ -471,8 +471,8 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
           var mailOptions = config.emailOptions;
           mailOptions.html = html;
           mailOptions.to = user[0].email;
-          mailOptions.bcc = config.emailContacts.developer;
-          mailOptions.subject = 'Send email reminder to parents '+value+' '+period+' before payment';
+          //mailOptions.bcc = config.emailContacts.developer;
+          mailOptions.subject = 'Head Up: '+nameTeam+' Payment Coming Up In A Couple Of Days';
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {

@@ -2,7 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('MainCtrl', function ($rootScope, $scope, $timeout, FlashService, AuthService, ContactService,
-                                    ModalService, ModalFactory, $anchorScroll, $location) {
+                                    ModalService, ModalFactory, $anchorScroll, $location, TrackerService) {
 
     $rootScope.alerts = [];
     $scope.modalFactory = ModalFactory;
@@ -74,15 +74,23 @@ angular.module('convenienceApp')
       }else{
         $location.hash('');
       }
+      TrackerService.pageTrack({anchor : anchor});
     };
 
-    $scope.toggleMenu = function(){
-      $(".navbar-toggle").click();
+    //$scope.toggleMenu = function(){
+    //  $(".navbar-toggle").click();
+    //};
+
+    $scope.toggleMenu = function () {
+      $timeout(function() {
+        angular.element('.navbar-toggle').trigger('click');
+      }, 1000);
     };
 
     AuthService.isLoggedInAsync(function (isLoggin) {
       if (isLoggin && $location.$$path === '/') {
         $location.path('/athletes/dashboard');
       }
+      TrackerService.pageTrack();
     });
   });

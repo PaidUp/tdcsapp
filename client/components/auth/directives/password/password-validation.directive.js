@@ -12,18 +12,18 @@ angular.module('convenienceApp')
             //  pattern: /[a-z]+/,
             //  msg: 'lowerCase'
             //},
-            {
-              pattern: /[A-Z]+/,
-              msg: 'upperCase'
-            },
+            //{
+            //  pattern: /[A-Z]+/,
+            //  msg: 'upperCase'
+            //},
             //{
             //  pattern: /\d+/,
             //  msg: 'digits'
             //},
-            {
-              pattern: /\W+/,
-              msg: 'specialCharacter'
-            }
+            //{
+            //  pattern: /\W+/,
+            //  msg: 'specialCharacter'
+            //}
           ];
           var valid = true;
           angular.forEach(validations, function(validation){
@@ -34,7 +34,7 @@ angular.module('convenienceApp')
               ctrl.$setValidity(validation.msg, true);
             }
           });
-          if (viewValue.length < 8) {
+          if (viewValue.length < 6) {
             ctrl.$setValidity('minlength', false);
           } else {
             ctrl.$setValidity('minlength', true);

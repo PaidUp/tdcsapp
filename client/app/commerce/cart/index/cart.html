@@ -1,7 +1,7 @@
 <div class="container" ng-show="teams">
   <h4>Here's your order</h4>
   <div class="row">
-    <div class="col-md-8 table-responsive" >
+    <div class="col-md-8 table- responsive" >
       <table class="table cart-table">
         <thead>
           <tr>
@@ -42,34 +42,38 @@
     </div>
 
     <div class="col-md-4 table-responsive" >
+      <div id="couponArea" class="row" ng-show="!discount">
+        <div class="col-sm-3"><strong class="titles">Discount Code</strong> </div>
+        <div class="col-sm-7"><input id="codeDiscounts" class="form-control" ng-model="codeDiscounts" type="text"> </div>
+        <div class="col-sm-2"><button class="btn btnSignUp" type="button" ng-click="applyDiscount()">Apply</button> </div>
+      </div>
       <table class="table cart-order-summary">
         <thead>
           <tr>
             <th colspan="3"><span class="">ORDER SUMMARY</span></th>
           </tr>
-          <tr ng-if="isScheduleError">
-            <th colspan="3"><span class=""><div class="alert alert-danger">There's a problem. We've been notified and will fix it. Please try again later.</div></span></th>
-          </tr>
-          <tr ng-if="!isScheduleError">
+          <tr>
             <th>Description</th>
-            <th>Date payment</th>
             <th>Value</th>
           </tr>
         </thead>
-        <tbody>
-          <tr ng-repeat="schedule in schedules[0].periods">
-            <td>
-              <strong>{{schedule.description}}</strong>
-            </td>
-            <td>
-              <strong>{{schedule.nextPaymentDue  |  date:'MM-dd-yyyy'}}</strong>
-            </td>
-            <td>
-              <span>{{schedule.price | currency}}</span>
-            </td>
-          </tr>
-        </tbody>
         <tfoot>
+        <tr>
+          <td colspan="2">
+            <strong>{{subtotal.title | uppercase}}</strong>
+          </td>
+          <td>
+            <span>{{subtotal.amount | currency}}</span>
+          </td>
+        </tr>
+        <tr ng-show="discount">
+          <td colspan="2">
+            <strong>{{discount.title | uppercase}}</strong>
+          </td>
+          <td>
+            <span>{{discount.amount | currency}}</span>
+          </td>
+        </tr>
           <tr>
             <td colspan="2">
               <strong>{{total.title | uppercase}}</strong>
@@ -81,6 +85,35 @@
         </tfoot>
       </table>
 
+      <hr style="border-width: 3px">
+      <table class="table cart-order-summary">
+        <thead>
+        <tr>
+          <th colspan="3"><span class="">PAYMENT PLAN</span></th>
+        </tr>
+        <tr ng-if="isScheduleError">
+          <th colspan="3"><span class=""><div class="alert alert-danger">There's a problem. We've been notified and will fix it. Please try again later.</div></span></th>
+        </tr>
+        <tr ng-if="!isScheduleError">
+          <th>Description</th>
+          <th>Date payment</th>
+          <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="schedule in schedules[0].periods">
+          <td>
+            <strong>{{schedule.description}}</strong>
+          </td>
+          <td>
+            <strong>{{schedule.nextPaymentDue  |  date:'MM-dd-yyyy'}}</strong>
+          </td>
+          <td>
+            <span>{{schedule.price | currency}}</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
 
 
       <button class="btn btnSignUp btn-block btn-lg" ng-hide="isScheduleError" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">

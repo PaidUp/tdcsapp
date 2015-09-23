@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CreateCardCtrl', function ($scope, $rootScope, $state, LoanService, PaymentService, FlashService, ApplicationConfigService) {
+  .controller('CreateCardCtrl', function ($scope, $rootScope, $state, LoanService, PaymentService, FlashService,
+                                          ApplicationConfigService, TrackerService) {
+    TrackerService.pageTrack();
     $scope.card = {};
     $scope.loading = false;
 
@@ -36,6 +38,7 @@ angular.module('convenienceApp')
     };
 
     $scope.createCard = function () {
+      TrackerService.trackFormErrors('Create card form',$scope.createCardForm);
       $scope.submitted = true
       if ($scope.createCardForm.$valid) {
         $scope.loading = true;
@@ -65,21 +68,27 @@ angular.module('convenienceApp')
               $scope.placedOrder = false;
               if (response.error && response.error.message) {
                 $scope.sendAlertErrorMsg(response.error.message);
+                TrackerService.create('Create credit card error' , response.error.message);
               } else if (Object.keys(response.error).length !== 0) {
                 for (var key in response.error) {
                   $scope.sendAlertErrorMsg(response.error[key]);
+                  TrackerService.create('Create credit card error' , response.error[key]);
                 }
               }else {
-                $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+                $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
+                TrackerService.create('Create credit card error' , 'Hey, you left some fields blank. Please fill them out.');
               }
             } else {
               var token = response.id;
               PaymentService.associateCard(token).then(function () {
                 $scope.loading = false;
                 $state.go('user-payments');
+                TrackerService.create('Create card success',{});
               }).catch(function (err) {
                 $scope.loading = false;
-                $scope.sendAlertErrorMsg(err.data.message);
+                $scope.sendAlertErrorMsg('Oops. Invalid card. Please check the number and try again.');
+                //$scope.sendAlertErrorMsg(err.data.message);
+                TrackerService.create('Create card error', 'Oops. Invalid card. Please check the number and try again.');
               });
             }
           });
@@ -108,7 +117,8 @@ angular.module('convenienceApp')
           }
         });*/
       }else {
-        $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
+        $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
+        TrackerService.create('Create card error' , 'Hey, you left some fields blank. Please fill them out.');
       }
     };
   });

@@ -1,12 +1,16 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesDashboardCtrl', function ($scope, $rootScope, UserService, AuthService, FlashService, $state, ModalFactory) {
-  
+  .controller('AthletesDashboardCtrl', function ($log,$scope, $rootScope, UserService, AuthService,
+                                                 FlashService, $state, ModalFactory, TrackerService) {
+    TrackerService.pageTrack();
+
     $scope.modalFactory = ModalFactory;
     $scope.isChildCharged = false;
     $scope.athletes = [];
-    
+
+    $rootScope.$emit('init-cart-service' , {});
+
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/athletes/templates/my-athletes-title.html'
@@ -17,7 +21,7 @@ angular.module('convenienceApp')
     });
 
     AuthService.isLoggedInAsync(function(loggedIn) {
-      $scope.user = angular.extend({}, AuthService.getCurrentUser()); 
+      $scope.user = angular.extend({}, AuthService.getCurrentUser());
       UserService.listRelations($scope.user._id).then(function (data) {
         if(data.length==0){
           $scope.isChildCharged = true;
@@ -52,13 +56,18 @@ angular.module('convenienceApp')
           timeout: 10000
         });
       });
-    }); 
+    });
 
     $scope.selectAthlete = function (athlete) {
+      TrackerService.create('selectAthlete',{
+        firsName : athlete.firstName,
+        lastName : athlete.lastName
+      });
       $state.go('athletes-slider', {athleteId: athlete._id});
     };
 
     $scope.updateAthlete = function (athlete) {
+      TrackerService.create('updateAthlete');
       var update = athlete || $scope.athlete;
       $state.go('update-athlete', {athleteId: update._id});
     };

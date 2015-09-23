@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService, ContactService, $state, $stateParams, TeamService, CartService) {
+  .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService,
+                                            ContactService, $state, $stateParams, TeamService, CartService, TrackerService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -11,6 +12,8 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+
+    $rootScope.$emit('init-cart-service' , {});
     // $scope.athletes = [{
     //   _id: 'addAthlete',
     //   firstName: 'Add New Athlete'
@@ -99,28 +102,39 @@ angular.module('convenienceApp')
     $scope.renderSubmit = true;
 
     $scope.enrollNow = function () {
+      TrackerService.trackFormErrors('enrollNow', $scope.teamSelectionForm);
       $scope.submitted = true;
       $scope.enrolled = true;
-      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions, function(err, data){
-        if ($scope.teamSelectionForm.$valid) {
-          $scope.disablePayNow = true;
-          CartService.createCart().then(function () {
-            CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
-              $state.go('cart');
-            }).catch(function (err) {
-              $scope.enrolled = false;
-              $scope.sendAlertErrorMsg(err.data.message);
-            });
+      CartService.setCartDetails($scope.team, $scope.selectedCustomOptions);
+
+      if ($scope.teamSelectionForm.$valid) {
+        $scope.disablePayNow = true;
+        CartService.createCart().then(function () {
+          CartService.addProductToCart([$scope.selectedCustomOptions], $scope.athlete).then(function () {
+            $state.go('cart');
+            TrackerService.create('pay now success');
           }).catch(function (err) {
             $scope.enrolled = false;
-            $scope.disablePayNow = false;
             $scope.sendAlertErrorMsg(err.data.message);
+            TrackerService.create('pay now error' , {
+              errorMessage : err.data.message
+            });
           });
-        }
-      });
+        }).catch(function (err) {
+          $scope.enrolled = false;
+          $scope.disablePayNow = false;
+          $scope.sendAlertErrorMsg(err.data.message);
+          TrackerService.create('pay now error' , {
+            errorMessage : err.data.message
+          });
+        });
+      }
     };
 
     $scope.changeCustomOptions = function (customOption, optionModel) {
+      TrackerService.create('changeCustomOptions', {
+        optionSelected : customOption.title +' '+optionModel.title
+      });
       if (optionModel && optionModel.valueId) {
         $scope.selectedCustomOptions.options[customOption.optionId] = optionModel.valueId;
         customOption.isSelected=true;
@@ -132,6 +146,7 @@ angular.module('convenienceApp')
 
 
     $scope.updateTeam = function(teamSelected){
+      TrackerService.create('Team Selected', {team : teamSelected.attributes.description});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.attributes.productId, function(team){
         $scope.disablePayNow = false;

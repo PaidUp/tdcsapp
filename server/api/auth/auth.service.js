@@ -79,7 +79,7 @@ function verify(data, cb) {
 
 function passwordResetRequest(data, cb){
   tdAuthService.init(config.connections.user);
-  tdAuthService.passwordResetRequest(data, config.connections.user, function (err, data) {
+  tdAuthService.passwordResetRequest(data, function (err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });

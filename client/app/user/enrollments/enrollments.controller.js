@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('EnrollmentsCtrl', function ($scope, $rootScope, CommerceService, FlashService, TeamService) {
+  .controller('EnrollmentsCtrl', function ($scope, $rootScope, CommerceService, FlashService, TeamService, TrackerService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: 'app/user/templates/user-bar.html'
@@ -10,6 +10,7 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+    TrackerService.pageTrack();
     $scope.loading = true;
 
     $scope.sendAlertErrorMsg = function (msg) {

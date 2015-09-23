@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('AthletesSliderCtrl', function ($scope, $rootScope, TeamService, UserService, CommerceService, FlashService, AuthService, $state, $stateParams) {
+  .controller('AthletesSliderCtrl', function ($scope, $rootScope, TeamService, UserService, CommerceService, FlashService,
+                                              AuthService, $state, $stateParams, TrackerService) {
     $scope.athletes =[];
     $scope.user = angular.copy(AuthService.getCurrentUser());
     $scope.fullDetails = false;
@@ -92,6 +93,7 @@ angular.module('convenienceApp')
     };
 
     $scope.selectTeamForAthlete = function () {
+      TrackerService.create('selectTeamForAthlete');
       $state.go('teams-profile-athlete',{
         // teamId: $scope.athlete.team.product_id,
         teamId: $scope.team.attributes.productId,

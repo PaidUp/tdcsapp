@@ -21,11 +21,11 @@ exports.sendNotification = function (subject, jsonMessage, cb) {
     emailVars.arrMsj = arrMsj;
     template('notifications', emailVars, function (err, html, text) {
       if (err) return cb(err);
-      var mailOptions = config.emailOptions;
+      var mailOptions = config.emailOptionsAlerts;
       mailOptions.html = html;
       mailOptions.to = email;
-      mailOptions.bcc = config.emailContacts.developer;
-      mailOptions.subject = subject + emailVars.companyName;
+      //mailOptions.bcc = config.emailContacts.developer;
+      mailOptions.subject = emailVars.prefix + subject + emailVars.companyName;
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {

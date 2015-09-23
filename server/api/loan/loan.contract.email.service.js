@@ -45,7 +45,7 @@ function sendContractEmail (loanUser, loan, cb) {
           mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
           mailOptions.html = html;
-          mailOptions.subject = 'Your Loan Documents – ' + team;
+          mailOptions.subject = emailVars.prefix + 'Your Loan Documents – ' + team;
 
           mailOptions.attachments = [
             {
@@ -140,7 +140,7 @@ function setContractData (loanUser, loan) {
     effectiveDate: todayNow,
     schedule: loan.schedule
   };
-  
+
   contractTemplate.contractData.client = {
     borrower: loanUser[0].firstName + ', ' + loanUser[0].lastName,
     address: contractTemplate.searchData.userAddressLoan.address1,

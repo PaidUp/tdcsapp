@@ -42,6 +42,7 @@
     "socketio-jwt": "^2.0.2",
     "urlencode": "^1.0.1",
     "winston": "^0.9.0",
+    "winston-logsene": "^1.0.4",
     "wkhtmltopdf": "^0.1.5"
   },
   "devDependencies": {
@@ -100,6 +101,7 @@
     "karma-script-launcher": "~0.1.0",
     "mocha-cobertura-reporter": "^1.0.4",
     "mocha-jenkins-reporter": "^0.1.6",
+    "nightwatch": "^0.7.11",
     "open": "~0.0.4",
     "requirejs": "~2.1.11",
     "should": "~3.3.1",
