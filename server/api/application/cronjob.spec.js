@@ -50,7 +50,7 @@ describe.only('Cronjob workflow OK', function (){
         .post('/api/v1/auth/local/signup')
         .send(credentialFake)
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(function(err, res) {
           if (err) return done(err);
           assert(res.body.token);
@@ -340,7 +340,7 @@ describe.only('Cronjob workflow OK', function (){
       request(app)
         .get('/api/v1/application/cron')
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(function(err, res) {
           if (err) return done(err);
           assert(res.body);
@@ -355,7 +355,7 @@ describe.only('Cronjob workflow OK', function (){
       request(app)
         .get('/api/v1/application/cron/reminder/payments')
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(function(err, res) {
           if (err) return done(err);
           assert(res.body);
@@ -412,7 +412,7 @@ describe.only('Cronjob workflow OK', function (){
       request(app)
         .get('/api/v1/application/cron')
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(function(err, res) {
           if (err) return done(err);
           assert(res.body);
@@ -462,7 +462,7 @@ describe.only('Cronjob workflow OK', function (){
       request(app)
         .get('/api/v1/application/cron')
         .expect(200)
-        .expect('Content-Type', 'application/json')
+        .expect('Content-Type', 'application/json; charset=utf-8')
         .end(function(err, res) {
           if (err) return done(err);
           assert(res.body);

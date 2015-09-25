@@ -5,8 +5,8 @@ var addressService = require('./address.service');
 
 exports.create = function(req, res, next) {
   addressService.create(req.body, function (err, data){
-    if(err) res.json(402, err);
-    res.json(200, data);
+    if(err) res.status(402).json(err);
+    res.status(200).json(data);
   });
 };
 
@@ -65,7 +65,7 @@ exports.create = function(req, res, next) {
 //           "message": "Address does not exist"
 //         });
 //       }
-//       User.update(filter, {'$set': 
+//       User.update(filter, {'$set':
 //         { 'addresses.$.label': req.body.label,
 //           'addresses.$.address1': req.body.address1,
 //           'addresses.$.address2': req.body.address2,
@@ -101,9 +101,9 @@ exports.create = function(req, res, next) {
 //       }
 //       User.update(filter, { $pull: { "addresses" : { 'addressId': addressId} } },function(err,data){
 //         if(err) return handleError(res, err);
-//         return res.send(200);  
+//         return res.send(200);
 //       });
-      
+
 //     }
 //   );
 // };

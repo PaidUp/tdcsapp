@@ -9,7 +9,7 @@ exports.updateCustomer = function (req, res) {
     if (err){
       handleError(res, err);
     }
-    return res.json(200,data);
+    return res.status(200).json(data);
   });
 };
 
@@ -21,7 +21,7 @@ function handleError(res, err) {
     httpErrorCode = 400;
   }
 
-  return res.json(httpErrorCode, {
+  return res.status(httpErrorCode).json({
     code: err.name,
     message: err.message,
     errors: err.errors
