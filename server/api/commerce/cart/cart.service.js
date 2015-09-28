@@ -1,13 +1,15 @@
 'use strict';
 var config = require('../../../config/environment');
 var TDCommerceService = require('TDCore').commerceService;
+var logger = require('../../../config/logger');
 
 function cartCreate (cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.cartCreate(function (err, cartId){
     if(err) return cb(err);
     TDCommerceService.cartAddress(cartId, config.commerce.defaultAddress,function(err, dataAddress) {
-      if(err) {return cb(err);}
+      //if(err) {return cb(err);}
+      if(err) {logger.log(err, err);}
     });
     return cb(null, cartId);
   });
