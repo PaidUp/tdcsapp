@@ -398,7 +398,7 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 };
 
 exports.sendFinalEmail = function  (user, amount, orderId, cb) {
-  JSON.parse(JSON.stringify(config.emailVars));
+  var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
