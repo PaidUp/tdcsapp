@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport(config.emailService);
 exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
-    var emailVars = config.emailVars;
+    var emailVars = JSON.parse(JSON.stringify(config.emailVars));
     emailVars.orderId = orderId;
     emailVars.paymentMethod = paymentMethod;
     emailVars.last4Digits = last4Digits;
@@ -27,7 +27,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
     emailVars.schedules = schedules
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
-      var mailOptions = config.emailOptions;
+      var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
       mailOptions.html = html;
       mailOptions.to = email;
       //mailOptions.bcc = config.emailContacts.developer;
@@ -65,14 +65,14 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
 
           if (err) return cb(err);
 
-          var emailVars = config.emailVars;
+          var emailVars = JSON.parse(JSON.stringify(config.emailVars));
           emailVars.userFirstName = userFirstName;
 
           template('payment/remindPaymentMethod', emailVars, function (err, html, text) {
 
             if (err) return cb(err);
 
-            var mailOptions = config.emailOptions;
+            var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
 
             mailOptions.html = html;
             mailOptions.to = userEmail;
@@ -126,13 +126,13 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
             userAccountNumber = account.bankAccounts[0].accountNumber;
             if (errTemplate) return cb(errTemplate);
             emailTemplates(config.emailTemplateRoot, function (err, template) {
-              var emailVars = config.emailVars;
+              var emailVars = JSON.parse(JSON.stringify(config.emailVars));
               emailVars.userFirstName = userFirstName;
               emailVars.userAccountNumber = userAccountNumber;
 
               template('payment/remindToVerifyAccount', emailVars, function (err, html, text) {
                 if (err) return cb(err);
-                var mailOptions = config.emailOptions;
+                var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
                 mailOptions.html = html;
                 mailOptions.to = userEmail;
                 //mailOptions.bcc = config.emailContacts.developer;
@@ -196,7 +196,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
 
                 if (errTemplate) return cb(errTemplate);
 
-                var emailVars = config.emailVars;
+                var emailVars = JSON.parse(JSON.stringify(config.emailVars));
                 emailVars.userFirstName = userFirstName;
                 emailVars.accountNumber = accountNumber;
                 emailVars.amount = parseFloat(schedule.installment).toFixed(2);
@@ -204,7 +204,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
 
                 template('payment/tomorrowChargeLoan', emailVars, function (err, html, text) {
                   if (err) return cb(err);
-                  var mailOptions = config.emailOptions;
+                  var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
                   mailOptions.html = html;
                   mailOptions.to = userEmail;
                   //mailOptions.bcc = config.emailContacts.developer;
@@ -233,7 +233,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
 
 exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
-  var emailVars = config.emailVars;
+  var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
@@ -250,7 +250,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
           if (err) return cb(err);
 
-          var mailOptions = config.emailOptions;
+          var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
           mailOptions.to = user.email;
           //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
           mailOptions.html = html;
@@ -272,7 +272,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 };
 
 exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
-  var emailVars = config.emailVars;
+  var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);
@@ -292,7 +292,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 
               if (err) return cb(err);
 
-              var mailOptions = config.emailOptions;
+              var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
               mailOptions.to = user.email;
               //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
@@ -319,7 +319,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 };
 
 exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard, orderId, cb) {
-  var emailVars = config.emailVars;
+  var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);
@@ -335,7 +335,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
 
         if (err) return cb(err);
 
-        var mailOptions = config.emailOptions;
+        var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
         mailOptions.to = user.email;
         //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
 
@@ -359,7 +359,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
 
 exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, amount, daysToTry, cb) {
 
-  var emailVars = config.emailVars;
+  var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = userFirstName;
   emailVars.accountLast4Digits = accountLast4Digits;
@@ -398,7 +398,7 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 };
 
 exports.sendFinalEmail = function  (user, amount, orderId, cb) {
-  var emailVars = config.emailVars;
+  JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
@@ -460,7 +460,7 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
       var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
       emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
         if (errTemplate) return cb(errTemplate);
-        var emailVars = config.emailVars;
+        var emailVars = JSON.parse(JSON.stringify(config.emailVars));
         emailVars.userFirstName = user[0].firstName;
         emailVars.Last4Digits = card4;
         emailVars.amount = parseFloat(schedule.price).toFixed(2);
@@ -468,11 +468,11 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
         emailVars.teamName = nameTeam;
         template('payment/laterChargePayment', emailVars, function (err, html, text) {
           if (err) return cb(err);
-          var mailOptions = config.emailOptions;
+          var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
           mailOptions.html = html;
           mailOptions.to = user[0].email;
           //mailOptions.bcc = config.emailContacts.developer;
-          mailOptions.subject = 'Head Up: '+nameTeam+' Payment Coming Up In A Couple Of Days';
+          mailOptions.subject = 'Heads Up: '+nameTeam+' Payment Coming Up In A Couple Of Days ';
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
