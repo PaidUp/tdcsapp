@@ -320,10 +320,10 @@
 
             <div class="form-group">
               <label>EIN</label>
-              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" ng-required="true" >
-              <div class="text-CS text-center" ng-show="billingForm.EIN.$error.required && submitted">
+              <input type="text" name="EIN" class="form-control" placeholder="00-0000000" ng-model="provider.EIN" ng-maxlength="128" ng-required="false" >
+              <!--<div class="text-CS text-center" ng-show="billingForm.EIN.$error.required && submitted">
                 <small class="text-CS">EIN is required</small>
-              </div>
+              </div>-->
               <div class="text-CS text-center" ng-show="billingForm.EIN.$error.maxlength && submitted">
                 <small class="text-CS">EIN exceeds 128 characters</small>
               </div>
