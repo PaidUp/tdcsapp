@@ -12,28 +12,31 @@ var data = {
         
         //Owner info
         ownerId: 'xxx',
-        ownerName: faker.name.firstName(),
+        ownerFirstName: faker.name.firstName(),
+        ownerLastName: faker.name.lastName(),
         ownerDOB: faker.date.past(),
-        ownerSSN: faker.random.uuid(),
+        ownerSSN: 'uVCqIzCZ+zGw',
         ownerEmail: faker.internet.email(),
         ownerPhone: faker.phone.phoneNumber(),
         //End owner info
         
         //Billing info
-        country: faker.address.country(),
-        state: faker.address.state(),
+        country: 'US',
+        state: 'TX',
         city: faker.address.city(),
+        zipCode: '12312',
         averagePayment: '500',
-        EIN: 'EIN',
+        EIN: '00-0000000',
         Address: faker.address.streetAddress(),
         website: faker.internet.domainName(),
         businessName: faker.company.companyName(),
         phoneNumber: faker.phone.phoneNumber(),
+        businessType:'Corporation',
         //End billing info
         
         //Billing info
-        aba: '110000000',
-        dda: '000123456789'
+        aba: 'uVOpJzWf/Dm5',//'110000000',
+        dda: 'uFKpJjec+Dy/Foz/',//'000123456789'
     }
         //encryptKey : 'PZ3oXv2v6Pq5HAPFI9NFbQ==',
         //encryptValue : ''

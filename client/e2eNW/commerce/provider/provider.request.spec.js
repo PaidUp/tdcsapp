@@ -39,7 +39,7 @@ module.exports = {
       .setValue('#businessType',model.businessType)
       
       .setValue('input[name=businessName]',model.businessName)
-      .setValue('input[name=EIN]',model.EIN)
+      //.setValue('input[name=EIN]',model.EIN)
       .setValue('input[name=aba]',model.aba)
       .setValue('input[name=dda]',model.dda)
       .setValue('input[name=ddaVerification]',model.ddaVerification)

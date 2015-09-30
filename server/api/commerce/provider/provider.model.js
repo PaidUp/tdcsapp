@@ -26,7 +26,7 @@ var ProviderSchema = new Schema({
     city: { type: String, required: true},//required //email //newDesign
     zipCode: { type: String, required: true},//required //newDesign
     averagePayment: { type: String, default: '1'}, //email
-    EIN: { type: String, required: true},//required //email //newDesign
+    EIN: { type: String},//required //email //newDesign
     Address: { type: String, required: true},//required //email //newDesign
     AddressLineTwo: { type: String},//required //email //newDesign
     website: { type: String, default: 'https://www.convenieceselect.com'}, //email

@@ -11,13 +11,36 @@ var providerSpecModel = require('./provider.model.spec');
 
 describe('User', function() {
 
-    describe('provider.service', function() {
+    describe.only('provider.service', function() {
 
         it('save', function (done) {
             var provider = new Provider(providerSpecModel.provider);
             providerService.save(provider, function(err, data){
+              if(err) return done(err);
                 assert.equal(err, null);
                 assert(data._id);
+                assert.equal(data.teamName, provider.teamName);
+                assert.equal(data.teamSport, provider.teamSport);
+                assert.equal(data.ownerId, provider.ownerId);
+                assert.equal(data.ownerFirstName, provider.ownerFirstName);
+                assert.equal(data.ownerLastName, provider.ownerLastName);
+                assert.equal(data.ownerEmail, provider.ownerEmail);
+                assert.equal(data.ownerPhone, provider.ownerPhone);
+                assert.equal(data.state, provider.state);
+                assert.equal(data.city, provider.city);
+                assert.equal(data.zipCode, provider.zipCode);
+                assert.equal(data.Address, provider.Address);
+                assert.equal(data.businessName, provider.businessName);
+                assert.equal(data.businessType, provider.businessType);
+                assert.equal(data.aba, provider.aba);
+                assert.equal(data.dda, provider.dda);
+                assert.equal(data.verify, provider.verify);
+                assert.equal(data.phoneNumber, provider.phoneNumber);
+                assert.equal(data.website, provider.website);
+                assert.equal(data.averagePayment, provider.averagePayment);
+                assert.equal(data.country, provider.country);
+                assert.equal(data.teamAverageSize, provider.teamAverageSize);
+                assert.equal(data.teamNumber, provider.teamNumber);
                 done();
             });
         });
@@ -73,7 +96,7 @@ describe('User', function() {
     */
     });
 
-    describe('provider.controller', function() {
+    describe.skip('provider.controller', function() {
 
         it('response', function (done) {
             var provider = new Provider(providerSpecModel.provider);
