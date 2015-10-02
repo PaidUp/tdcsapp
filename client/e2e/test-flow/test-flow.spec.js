@@ -60,9 +60,9 @@ describe('Convenience Select test flow', function() {
 
       element(by.css('button[type=submit]')).click();
       expect(element(by.css('button#add-athlete-btn')).isDisplayed()).toBeFalsy();
-      
+
       expect(element.all(by.repeater('athlete in athletes')).count()).toEqual(1);
-      expect($('[ng-show="!athlete.team"]').getText()).toEqual('Santiago doesn\'t have team yet');
+      expect($('[ng-show="!athlete.team"]').getText()).toEqual('Choose a team for this athlete');
     });
   });
 
