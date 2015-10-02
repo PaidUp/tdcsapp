@@ -15,10 +15,10 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="col-sm-6 text-CS text-center btn-account-type {{showRole?'active' : ''}}" ng-click="destPath('athletes', true);" id='IamParent'>
-            I have an athlete
+            Athlete
           </div>
           <div class="col-sm-6 text-CS text-center btn-account-type {{!showRole?'active' : ''}}" ng-click="destPath('provider-request', false);" id='IamCoach'>
-            I have a team
+            Team
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
       <div class="msg-account-type" ng-show="!showRole && hideRole">
         <div class="row">
           <div class="col-sm-6">
-            <div class="text-CS center-text-msg-team" align="center"><strong>Choose if you are:</strong></div>
+            <div class="text-CS center-text-msg-team" align="center"><strong>Account is for a</strong></div>
           </div>
           <div class="col-sm-6">
             <ul style="list-style-type:square">
@@ -41,7 +41,7 @@
       <div class="msg-account-type" ng-show="showRole && hideRole">
         <div class="row">
           <div class="col-sm-6">
-            <div class="text-CS center-text-msg-athlete" align="center"><strong>Choose if you are:</strong></div>
+            <div class="text-CS center-text-msg-athlete" align="center"><strong>Account is for a</strong></div>
           </div>
           <div class="col-sm-6">
             <div>
