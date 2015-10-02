@@ -16,14 +16,16 @@ module.exports = {
   'fillFormProviderRequest' : function (browser) {
     browser
       .getValue('input[name=ownerFirstName]',function(result){
-        this.assert.equal(result.value,modelCoach.firstname)
+        this.assert.equal(result.value,"")
       })
       .getValue('input[name=ownerLastName]',function(result){
-        this.assert.equal(result.value,modelCoach.lastname)
+        this.assert.equal(result.value,"")
       })
       .getText('small[name=smallQuoteLegalName]',function(result){
         this.assert.equal(result.value,'Provide your name as it appears on legal documents to avoid money transfer delays.')
       })
+      .setValue('input[name=ownerFirstName]',model.ownerFirstName)
+      .setValue('input[name=ownerLastName]',model.ownerLastName)
       .setValue('input[name=teamName]',model.teamName)
       .setValue('input[name=month]',model.month)
       .setValue('input[name=day]',model.day)
