@@ -24,6 +24,12 @@ module.exports = {
       .getText('small[name=smallQuoteLegalName]',function(result){
         this.assert.equal(result.value,'Provide your name as it appears on legal documents to avoid money transfer delays.')
       })
+      .getText('div[name=labelQuoteIdentifyVerification]',function(result){
+        this.assert.equal(result.value,'We require someone from your organization to verify their identity. If your organization is a legal entity, like an LLC or Inc., choose a representative to input their info.')
+      })
+      .getText('div[name=labelQuoteOrganizationDisplayName]',function(result){
+        this.assert.equal(result.value,'This is the name of your organization that will be displayed to users on our site (e.g. Austin Tigers). This may be different than the legal name (e.g. Tigers Baseball, LLC) which you will provide below.')
+      })
       .setValue('input[name=ownerFirstName]',model.ownerFirstName)
       .setValue('input[name=ownerLastName]',model.ownerLastName)
       .setValue('input[name=teamName]',model.teamName)
