@@ -19,6 +19,7 @@ var winston = require('winston');
 
 module.exports = function(app) {
   var env = app.get('env');
+  var oneDay = 86400000;
 
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
@@ -31,7 +32,7 @@ module.exports = function(app) {
   app.use(passport.initialize());
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
-    app.use(express.static(path.join(config.root, 'public')));
+    app.use(express.static(path.join(config.root, 'public'),{maxAge: oneDay}));
     app.set('appPath', config.root + '/public');
     app.use(morgan('dev'));
   }
