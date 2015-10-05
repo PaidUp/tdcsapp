@@ -34,7 +34,7 @@
                 required
                 ng-required="true"
                 ng-change="validateInput()">
-        <div class="text-CS text-center" ng-show="createCardForm.cardNumber.$error.format || submitted">
+        <div class="text-CS text-center" ng-show="createCardForm.cardNumber.$error.format">
           <small class="text-CS">Invalid Card Number</small>
         </div>
       </div>

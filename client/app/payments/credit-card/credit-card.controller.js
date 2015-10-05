@@ -61,7 +61,6 @@ angular.module('convenienceApp')
 
     ApplicationConfigService.getConfig().then(function (config) {
       Stripe.setPublishableKey(config.stripeApiPublic);
-      balanced.init('/v1/marketplaces/' + config.marketplace);
     });
 
     PaymentService.listCards().then(function (response) {
@@ -181,7 +180,7 @@ angular.module('convenienceApp')
     };
 
     $scope.validateInput = function () {
-      if ($scope.card && $scope.card.cardNumber && balanced.card.isCardNumberValid($scope.card.cardNumber)) {
+      if ($scope.card && $scope.card.cardNumber && Stripe.card.validateCardNumber($scope.card.cardNumber)) {
         $scope.checkoutForm.cardNumber.$setValidity('format', true);
       } else {
         $scope.checkoutForm.cardNumber.$setValidity('format', false);
@@ -189,7 +188,7 @@ angular.module('convenienceApp')
 
       if ($scope.card && $scope.card.expirationDate && $scope.card.expirationDate.month &&
         $scope.card.expirationDate.year &&
-        balanced.card.isExpiryValid($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
+        Stripe.card.validateExpiry($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
         $scope.checkoutForm.$setValidity('expiration', true);
       } else {
         $scope.checkoutForm.$setValidity('expiration', false);
