@@ -13,7 +13,7 @@ module.exports = {
     login.logoutCoach(browser);
   },
 
-  'fillFormProviderRequest' : function (browser) {
+  'validatePageProviderRequest' : function (browser) {
     browser
       .getValue('input[name=ownerFirstName]',function(result){
         this.assert.equal(result.value,"")
@@ -30,6 +30,13 @@ module.exports = {
       .getText('div[name=labelQuoteOrganizationDisplayName]',function(result){
         this.assert.equal(result.value,'This is the name of your organization that will be displayed to users on our site (e.g. Austin Tigers). This may be different than the legal name (e.g. Tigers Baseball, LLC) which you will provide below.')
       })
+      .getText('div[name=divQuoteFundsRecipient]',function(result){
+        this.assert.equal(result.value,'Identify verification helps to ensure users that there is a real organization behind every payment.')
+      })
+  },
+
+  'fillFormProviderRequest' : function (browser) {
+    browser
       .setValue('input[name=ownerFirstName]',model.ownerFirstName)
       .setValue('input[name=ownerLastName]',model.ownerLastName)
       .setValue('input[name=teamName]',model.teamName)
