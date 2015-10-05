@@ -303,7 +303,7 @@ module.exports = function (grunt) {
           collapseWhitespace: true
         },
         files: {                                   // Dictionary of files
-          '<%= yeoman.dist %>/public/index.html': '<%= yeoman.client %>/index.html'     // 'destination': 'source'
+          '<%= yeoman.dist %>/public/index.html': '<%= yeoman.dist %>/public/index.html'     // 'destination': 'source'
         }
       }
     },
