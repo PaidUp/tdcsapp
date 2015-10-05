@@ -8,9 +8,7 @@ angular.module('convenienceApp')
     $scope.loading = false;
 
     ApplicationConfigService.getConfig().then(function (config) {
-      //jesse
       Stripe.setPublishableKey(config.stripeApiPublic);
-      balanced.init('/v1/marketplaces/'+config.marketplace);
     });
 
     $scope.sendAlertErrorMsg = function (msg) {
@@ -22,15 +20,14 @@ angular.module('convenienceApp')
     };
 
     $scope.validateInput = function () {
-      if ($scope.card && $scope.card.cardNumber && balanced.card.isCardNumberValid($scope.card.cardNumber)) {
+      if ($scope.card && $scope.card.cardNumber && Stripe.card.validateCardNumber($scope.card.cardNumber)) {
         $scope.createCardForm.cardNumber.$setValidity('format', true);
       } else {
         $scope.createCardForm.cardNumber.$setValidity('format', false);
       }
-
       if ($scope.card && $scope.card.expirationDate && $scope.card.expirationDate.month &&
           $scope.card.expirationDate.year &&
-          balanced.card.isExpiryValid($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
+          Stripe.card.validateExpiry($scope.card.expirationDate.month, $scope.card.expirationDate.year)) {
         $scope.createCardForm.$setValidity('expiration', true);
       } else {
         $scope.createCardForm.$setValidity('expiration', false);
