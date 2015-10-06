@@ -48,6 +48,36 @@
     <!-- endbuild -->
 
 
+  </head>
+  <body data-ng-app="convenienceApp" ng-controller="MainCtrl" id="top" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="fixedTop">
+      <!-- <img src="assets/images/CS-Logo.png" width="280" alt="Talos Logo" class="visible-print"> -->
+      <nav-bar class="hidden-print"></nav-bar>
+      <welcome-bar class="hidden-print"></welcome-bar>
+      <alerts class="hidden-print"> </alerts>
+    </div>
+    <!-- Jumbotron -->
+    <div ng-show="alerts.length > 0">
+      <br>
+      <br>
+    </div>
+    <div class="main">
+
+        <div class="space" ui-view autoscroll="true">
+      </div>
+
+    </div>
+    <!-- End Jumbotron -->
+
+    <!-- Site footer -->
+    <footer-bar class="hidden-print"></footer-bar>
+
+
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
@@ -215,35 +245,6 @@
     <script src="e2e/e2e.mock.js"></script>
     <!-- endinjector -->
     <!-- endbuild -->
-
-  </head>
-  <body data-ng-app="convenienceApp" ng-controller="MainCtrl" id="top" onLoad="noBack();" onpageshow="if (event.persisted) noBack();" onUnload="">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
-    <!-- Add your site or application content here -->
-    <div class="fixedTop">
-      <!-- <img src="assets/images/CS-Logo.png" width="280" alt="Talos Logo" class="visible-print"> -->
-      <nav-bar class="hidden-print"></nav-bar>
-      <welcome-bar class="hidden-print"></welcome-bar>
-      <alerts class="hidden-print"> </alerts>
-    </div>
-    <!-- Jumbotron -->
-    <div ng-show="alerts.length > 0">
-      <br>
-      <br>
-    </div>
-    <div class="main">
-
-        <div class="space" ui-view autoscroll="true">
-      </div>
-
-    </div>
-    <!-- End Jumbotron -->
-
-    <!-- Site footer -->
-    <footer-bar class="hidden-print"></footer-bar>
 
 
     <noscript><a href="https://www.olark.com/site/9293-999-10-7448/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
