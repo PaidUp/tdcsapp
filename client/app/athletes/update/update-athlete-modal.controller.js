@@ -24,7 +24,6 @@ angular.module('convenienceApp')
       }else{
         $scope.athleteEdit = {};
       }
-      console.log('$rootScope.athleteEdit',$rootScope.athleteEdit);
     };
 
     $scope.isValidDate = function () {
