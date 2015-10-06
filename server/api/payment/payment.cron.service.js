@@ -95,17 +95,17 @@ function sendEmailReminder(pendingOrders, callback){
       }
   });
 
-};
+}
 
 function collectPendingOrders(callback){
   logger.log('info','paymentCronService.collectPendingOrders');
   paymentService.collectPendingOrders(function (err, pendingOrders){
     if(err){
       callback(err);
-    };
+    }
     callback(null, pendingOrders);
   });
-};
+}
 
 function paymentSchedule(pendingOrders, callbackSchedule){
   async.eachSeries(pendingOrders,
@@ -113,7 +113,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
       commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
         if(err){
           return callbackEach(err);
-        };
+        }
         if(!orderSchedule.scheduled.schedulePeriods){
           logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
           callbackEach();
@@ -123,15 +123,20 @@ function paymentSchedule(pendingOrders, callbackSchedule){
           function(schedulePeriod, callbackEach2){
             if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
               userService.find({_id : order.userId}, function(err, users){
-                paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                  order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
-                  if(err){
-                    notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
-                    });
-                    return callbackEach2();//here, return ok, and send email.
+                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                  if(paymentUser && paymentUser.defaultSource){
+                    order.cardId = paymentUser.defaultSource;
                   }
+                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
+                    if(err){
+                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
+                      });
+                      return callbackEach2();//here, return ok, and send email.
+                    }
 
-                  return callbackEach2();
+                    return callbackEach2();
+                  });
                 });
               });
             }else{
@@ -141,7 +146,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
           function(err){
             if(err){
               return callbackEach(err);
-            };
+            }
             callbackEach();
           });
         //callback(null, schedule);
@@ -200,7 +205,7 @@ exports.retryPaymentSchedule = function (callbackSchedule){
                 function(err){
                   if(err){
                     logger.error(err);
-                  };
+                  }
                   cbRetry();
                 });
               //callback(null, schedule);
