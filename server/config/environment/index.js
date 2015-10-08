@@ -88,7 +88,7 @@ var all = {
       address: '2900 North Quinlan Park Rd. Suite 240-320.',
       city: 'Austin',
       zip: '78732',
-      phone: '(888) 419-8479',
+      phone: '(855) 764-3232',
       lateChargeDays: '10',
       lateChargePercentage: '5%',
       paymentWithin: '10',
@@ -98,13 +98,13 @@ var all = {
       calendarDaysAferDebit: 'ten',
       CellPhoneNumber: 6466623303,
       unsubscribeEmailTo: 'ourteam@convenienceselect.com',
-      customerServiceTelephoneNumber: '(888) 419-8479',
+      customerServiceTelephoneNumber: '(855) 764-3232',
       signedAt: 'Convenience Select, LLC'
     },
     clientData: {
-      DisputesTelephoneNumber: '(888) 419-8479',
+      DisputesTelephoneNumber: '(855) 764-3232',
       canSendMailAt: '2900 North Quinlan Park Rd. Suite 240-320. Autin, TX 78732',
-      canCallYouAt: '(888) 419-8479'
+      canCallYouAt: '(855) 764-3232'
     }
   },
 
