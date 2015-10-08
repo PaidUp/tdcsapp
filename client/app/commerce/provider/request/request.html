@@ -389,7 +389,7 @@
                 <small class="text-CS">Account number format error</small>
               </div>
               <label>Repeat Account number (DDA)</label><!-- ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()" -->
-              <input type="text" name="ddaVerification" ng-model="provider.ddaVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()">
+              <input type="text" name="ddaVerification" ng-model="provider.ddaVerification" class="form-control" placeholder="" required ng-required="true" ng-blur="maskDDAVerification()" ng-focus="unmaskDDAVerification()" ng-change="validateDDAVerification()" >
               <div class="text-CS text-center" ng-show="bankForm.ddaVerification.$error.required && submitted">
                 <small class="text-CS">Account number verification is required</small>
               </div>
