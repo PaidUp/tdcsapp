@@ -12,12 +12,13 @@ angular.module('convenienceApp')
     });
 
     $scope.states = UserService.getStates();
-    var user = AuthService.getCurrentUser();
+    //var user = AuthService.getCurrentUser();
     $scope.provider = {};
-    if(user){
+    //this code is comment because we do not need pre populated the fields firtname and lastname.
+    /*if(user){
       $scope.provider.ownerFirstName = user.firstName;
       $scope.provider.ownerLastName = user.lastName;
-    }
+    }*/
 
     var currentDate = moment();
     var minDate = moment().subtract(60, 'year');

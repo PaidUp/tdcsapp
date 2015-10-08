@@ -35,7 +35,7 @@ angular.module('convenienceApp')
         //   $scope.createInfoPhone();
         // }
         UserService.createRelation(currentUser._id, data.userId, 'child').then(function () {
-          angular.element('#addAthlete').modal('toggle');
+          //angular.element('#addAthlete').modal('toggle');
           $scope.submitted = false;
           $scope.addAthleteForm.$setPristine();
           delete $scope.athlete;

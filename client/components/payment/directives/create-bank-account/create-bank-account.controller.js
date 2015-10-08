@@ -14,7 +14,7 @@ angular.module('convenienceApp')
     };
 
     ApplicationConfigService.getConfig().then(function (config) {
-      balanced.init('/v1/marketplaces/'+config.marketplace);
+      //balanced.init('/v1/marketplaces/'+config.marketplace);
     });
 
     $scope.maskABA = function () {
@@ -155,7 +155,7 @@ angular.module('convenienceApp')
           routing_number: $scope.bankAccount.routingNumber
         };
 
-        balanced.bankAccount.create(payload, function (response) {
+        /*balanced.bankAccount.create(payload, function (response) {
           if(response.status === 201) {
             PaymentService.createBankPayment({bankId: response.data.id}).then(function () {
               if ($state.current.name === 'user-bank-create') {
@@ -181,7 +181,7 @@ angular.module('convenienceApp')
               $scope.sendAlertErrorMsg(response.error.description);
             }, 1000);
           }
-        });
+        });*/
       }
     };
   });
