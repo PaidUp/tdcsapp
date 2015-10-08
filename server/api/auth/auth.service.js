@@ -25,7 +25,7 @@ function isAuthenticated() {
           mix.panel.people.set(req.user._id,req.user);
           return next();
         }else{
-          return res.send(401);
+          return res.sendStatus(401);
         }
       });
     })

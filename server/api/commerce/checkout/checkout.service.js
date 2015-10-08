@@ -4,6 +4,7 @@ var loanService = require('../../loan/loan.service')
 var config = require('../../../config/environment');
 var tdCommerceService = require('TDCore').commerceService;
 var tdUserService = require('TDCore').userService;
+var emailNotification = require('../../../components/util/notifications/email-notifications');
 
 exports.placeOrder = function(user, cartId, addresses, orderData, cb){
   tdCommerceService.init(config.connections.commerce);
@@ -41,10 +42,23 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                     if(err) {return cb(err);}
                     tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                       if(err) {return cb(err);}
-                      return cb(null, dataOrderId, schedule);
+                      tdCommerceService.createOrderInvoice(dataOrderId, function(err, data){
+                        if(err){
+                          err.orderId = dataOrderId
+                          emailNotification.sendNotification('Error create order invoice', err, function(err, data){
+                          });
+                        }else if(data.invoiceErr){
+                          emailNotification.sendNotification('Error create order invoice', data, function(err, data){
+                          });
+                        }
+                        return cb(null, dataOrderId, schedule);
+                      });
+
                     });
                   });
                 });
+
+
               });
             });
           });
