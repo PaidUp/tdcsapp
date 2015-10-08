@@ -25,7 +25,7 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid){
+        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid && $scope.bankForm.$valid){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber;
             $scope.provider.aba = $scope.bankAccount.routingNumber;
@@ -133,6 +133,14 @@ angular.module('convenienceApp')
       }
     };
 
+    $scope.validateDDAVerification = function () {
+      if ($scope.bankAccount.accountNumber != $scope.provider.ddaVerification) {
+        $scope.bankForm.ddaVerification.$setValidity('match', false);
+      }else{
+        $scope.bankForm.ddaVerification.$setValidity('match', true);
+      }
+    };
+
     $scope.validateSSN = function () {
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN);
       if ($scope.bankAccount.securitySocial) {
@@ -190,9 +198,9 @@ angular.module('convenienceApp')
         if(oldvalue && value && oldvalue.length === 1 && value.length === 2){
           $scope.provider.EIN = value + '-';
         }
-        $scope.billingForm.EIN.$error.pattern = true;
+        $scope.billingForm.EIN.$setValidity('match', false);
       }else{
-        $scope.billingForm.EIN.$error.pattern = false;
+        $scope.billingForm.EIN.$setValidity('match', true);
       }
     });
 
