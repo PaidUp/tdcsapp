@@ -25,7 +25,7 @@ function isAuthenticated() {
           mix.panel.people.set(req.user._id,req.user);
           return next();
         }else{
-          return res.send(401);
+          res.sendStatus(401)
         }
       });
     })
@@ -71,7 +71,7 @@ function verifyRequest(userId, cb) {
 
 function verify(data, cb) {
   tdAuthService.init(config.connections.user);
-  tdAuthService.verify(data, data.userId, function (err, data){
+  tdAuthService.verify(data, function (err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
