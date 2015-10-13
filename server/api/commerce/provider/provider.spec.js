@@ -44,6 +44,20 @@ describe('User', function() {
                 done();
             });
         });
+
+        it('decryptField ABA' , function(done){
+          var tempABA = 'uVOpJzWf/Dm5';
+          var field = providerService.decryptField(tempABA);
+          assert.equal('110000000', field);
+          done();
+        });
+
+        it('decryptField DDA' , function(done){
+          var tempDDA = 'uFKpJjec+Dy/Foz/';
+          var field = providerService.decryptField(tempDDA);
+          assert.equal('000123456789', field);
+          done();
+        });
     /*
         it('create', function (done) {
           var user = new User({
