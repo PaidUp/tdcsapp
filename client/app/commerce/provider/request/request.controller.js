@@ -25,11 +25,12 @@ angular.module('convenienceApp')
     $scope.submitted = false;
     $scope.registerProvider = function(){
         $scope.submitted = true;
-        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.billingForm.$valid && $scope.bankForm.$valid){
+        //&& $scope.billingForm.$valid removed because the EIN is optional
+        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
-            $scope.provider.dda = $scope.bankAccount.accountNumber;
-            $scope.provider.aba = $scope.bankAccount.routingNumber;
-            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial.replace(/-/g,'');;
+            $scope.provider.dda = $scope.bankAccount.accountNumber.replace(/ /g,'');
+            $scope.provider.aba = $scope.bankAccount.routingNumber.replace(/ /g,'');
+            $scope.provider.ownerSSN = $scope.bankAccount.securitySocial.replace(/-/g,'');
             providerService.providerRequest($scope.provider).then(function(data){
                 $state.go('provider-success');
             }).catch(function(err){
@@ -127,17 +128,20 @@ angular.module('convenienceApp')
       $scope.bankAccount.accountNumber = angular.copy($scope.provider.dda);
       if ($scope.bankAccount.accountNumber) {
         var pattern = /^\d{4,}$/;
-        $scope.bankForm.dda.$setValidity('pattern', pattern.test($scope.bankAccount.accountNumber));
+        $scope.bankForm.dda.$setValidity('pattern', pattern.test($scope.bankAccount.accountNumber.replace(/ /g,'')));
       } else {
         $scope.bankForm.dda.$setValidity('pattern', false);
       }
     };
 
     $scope.validateDDAVerification = function () {
-      if ($scope.bankAccount.accountNumber != $scope.provider.ddaVerification) {
-        $scope.bankForm.ddaVerification.$setValidity('match', false);
-      }else{
-        $scope.bankForm.ddaVerification.$setValidity('match', true);
+      $scope.bankAccount.ddaVerification = angular.copy($scope.provider.ddaVerification);
+      if($scope.bankAccount.ddaVerification){
+        if ($scope.bankAccount.accountNumber.replace(/ /g,'') != $scope.provider.ddaVerification.replace(/ /g,'')) {
+          $scope.bankForm.ddaVerification.$setValidity('match', false);
+        }else{
+          $scope.bankForm.ddaVerification.$setValidity('match', true);
+        }
       }
     };
 
