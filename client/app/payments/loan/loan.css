@@ -109,6 +109,8 @@
   .ex-loan-plan{
     bottom: -100px;
   }
+
+
 }
 .ex-loan-plan .explanation{
   width: 100%;
@@ -306,17 +308,18 @@
   background-image: url(/assets/images/bannerHome.jpg);
   background-size: cover;
   color: #000;
-  font-size: 20px;
-  font-weight: 300;
+  font-size: 18px;
+  font-weight: 400;
 }
 .thankyouBanner .col-sm-8{
   background-color: rgba(255, 255, 255, 0.6);
+  padding-top: 100px;
   padding-right: 80px;
   padding-left: 80px;
 }
 .titleThankyouBanner{
   color: #fff;
-  font-size: 63px;
+  font-size: 53px;
   /* text-shadow: 0px 0px 6px rgba(255, 255, 255, 1); */
 }
 .contract-block{
