@@ -60,6 +60,7 @@ angular.module('convenienceApp')
           var currentUser = AuthService.getCurrentUser();
           if (currentUser.verify && currentUser.verify.status !== 'verified') {
             FlashService.addAlert({
+              alias : 'verify-email',
               type:'warning',
               templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
             });

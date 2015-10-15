@@ -50,8 +50,7 @@ angular.module('convenienceApp')
       },
       updateCurrentUserSync: function (cb) {
         UserService.get(SessionService.getCurrentSession()).$promise.then(function(user){
-          $rootScope.currentUser = user;
-          cb();
+          cb(user);
         });
       },
 
