@@ -80,8 +80,8 @@
           <div class="col-sm-6 col-sm-pull-6">
             <br>
             <div class="form-group">
-              <label>Your Legal Name</label>
-              <input type="text" name="ownerFirstName" class="form-control" placeholder="Legal name" ng-model="provider.ownerFirstName" ng-maxlength="128" ng-required="true" ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
+              <label>Your Legal First Name</label>
+              <input type="text" name="ownerFirstName" class="form-control" placeholder="First name" ng-model="provider.ownerFirstName" ng-maxlength="128" ng-required="true" ng-required="true" ng-pattern="/^[a-zA-Z\s]*$/">
               <div class="text-CS text-center" ng-show="ownerForm.ownerFirstName.$error.required && submitted">
                 <small class="text-CS">Legal name is required</small>
               </div>
@@ -311,7 +311,7 @@
             </div>
 
             <div class="form-group">
-              <label>Business name</label>
+              <label>Legal Business name</label>
               <input type="text" name="businessName" class="form-control" placeholder="Business name" ng-model="provider.businessName" ng-maxlength="128" required ng-required="true">
               <div class="text-CS text-center" ng-show="billingForm.businessName.$error.required && submitted">
                 <small class="text-CS">Business name is required</small>
@@ -319,7 +319,10 @@
               <div class="text-CS text-center" ng-show="billingForm.businessName.$error.maxlength && submitted">
                 <small class="text-CS">Business name exceeds 128 characters</small>
               </div>
-            </div>
+
+              <small class="smallQuoteLegalName">Please provide the legal name of your business exactly as it appears on your tax
+                  documents to avoid any delays in getting paid.</small>
+              </div>
 
             <div class="form-group">
               <label>EIN</label>
