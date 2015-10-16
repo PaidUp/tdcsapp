@@ -26,9 +26,13 @@ require('./routes')(app);
 
 // Start server
 if(config.env != 'test') {
-  server.listen(config.port, config.ip, function () {
-    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-  });
+  try{
+    server.listen(config.port, config.ip, function () {
+      console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    });
+  }catch(err){
+    console.log('error:' , err);
+  }
 }
 
 var TDError = require('./components/TD/Error');

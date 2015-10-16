@@ -48,6 +48,11 @@ angular.module('convenienceApp')
         $rootScope.$emit('close-alerts');
         $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
       },
+      updateCurrentUserSync: function (cb) {
+        UserService.get(SessionService.getCurrentSession()).$promise.then(function(user){
+          cb(user);
+        });
+      },
 
       /**
        * Authenticate user and save token

@@ -5,7 +5,12 @@
 
       </div>
       <div class="col-sm-8 col-sm-offset-2">
-        <div class="titleThankyouBanner text-center"><strong>Thanks for your order!</strong></div>
+        <div class="titleThankyouBanner text-center"><strong>Thanks for your order!</strong>
+
+        </div>
+        <div class="text-center" ng-hide="displayInfo">
+          Check your email for a receipt with all the order details.
+        </div>
         <!-- Convenience Select allows you to focus on the <br> most important part of the team, the kids! -->
         <br>
         <div ng-show="displayInfo">
@@ -22,9 +27,7 @@
           <br>
           Step 4. Sit back and watch your athlete knock it out of the park this season.
         </div>
-        <div ng-hide="displayInfo">
-          Now sit back and watch your athlete knock it out of the park this season.
-        </div>
+
         <br>
         <br>
         <br>

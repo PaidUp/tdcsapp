@@ -17,7 +17,8 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    htmlmin: 'grunt-contrib-htmlmin'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -293,6 +294,17 @@ module.exports = function (grunt) {
           src: '*/**.js',
           dest: '.tmp/concat'
         }]
+      }
+    },
+    htmlmin: {                                     // Task
+      dist: {                                      // Target
+        options: {                                 // Target options
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {                                   // Dictionary of files
+          '<%= yeoman.dist %>/public/index.html': '<%= yeoman.dist %>/public/index.html'     // 'destination': 'source'
+        }
       }
     },
 
@@ -724,7 +736,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [

@@ -54,6 +54,23 @@ angular.module('convenienceApp')
       $rootScope.alerts = [];
     });
 
+    $rootScope.$on('verify-email', function () {
+      AuthService.isLoggedInAsync(function(loggedIn) {
+        if (loggedIn) {
+          var currentUser = AuthService.getCurrentUser();
+          if (currentUser.verify && currentUser.verify.status !== 'verified') {
+            FlashService.addAlert({
+              alias : 'verify-email',
+              type:'warning',
+              templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
+            });
+          }
+        }
+      });
+    });
+
+    $rootScope.$emit('verify-email', {});
+
     $scope.closeAlert = function(index) {
       $rootScope.alerts.splice(index, 1);
     };

@@ -226,7 +226,7 @@
                     placeholder="Card Number"
                     ng-required="$parent.cards.length === 1 || $parent.createCard"
                     ng-change="$parent.validateInput() ">
-            <div class="text-CS text-center" ng-show="$parent.checkoutForm.cardNumber.$error.format || $parent.submitted ">
+            <div class="text-CS text-center" ng-show="$parent.checkoutForm.cardNumber.$error.format">
               <small class="text-CS">Invalid Card Number</small>
             </div>
           </div>

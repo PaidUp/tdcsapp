@@ -13,14 +13,32 @@ module.exports = {
     login.logoutCoach(browser);
   },
 
-  'fillFormProviderRequest' : function (browser) {
+  'validatePageProviderRequest' : function (browser) {
     browser
       .getValue('input[name=ownerFirstName]',function(result){
-        this.assert.equal(result.value,modelCoach.firstname)
+        this.assert.equal(result.value,"")
       })
       .getValue('input[name=ownerLastName]',function(result){
-        this.assert.equal(result.value,modelCoach.lastname)
+        this.assert.equal(result.value,"")
       })
+      .getText('small[name=smallQuoteLegalName]',function(result){
+        this.assert.equal(result.value,'Provide your name as it appears on legal documents to avoid money transfer delays.')
+      })
+      .getText('div[name=labelQuoteIdentifyVerification]',function(result){
+        this.assert.equal(result.value,'We require someone from your organization to verify their identity. If your organization is a legal entity, like an LLC or Inc., choose a representative to input their info.')
+      })
+      .getText('div[name=labelQuoteOrganizationDisplayName]',function(result){
+        this.assert.equal(result.value,'This is the name of your organization that will be displayed to users on our site (e.g. Austin Tigers). This may be different than the legal name (e.g. Tigers Baseball, LLC) which you will provide below.')
+      })
+      .getText('div[name=divQuoteFundsRecipient]',function(result){
+        this.assert.equal(result.value,'Identify verification helps to ensure users that there is a real organization behind every payment.')
+      })
+  },
+
+  'fillFormProviderRequest' : function (browser) {
+    browser
+      .setValue('input[name=ownerFirstName]',model.ownerFirstName)
+      .setValue('input[name=ownerLastName]',model.ownerLastName)
       .setValue('input[name=teamName]',model.teamName)
       .setValue('input[name=month]',model.month)
       .setValue('input[name=day]',model.day)
@@ -39,7 +57,7 @@ module.exports = {
       .setValue('#businessType',model.businessType)
       
       .setValue('input[name=businessName]',model.businessName)
-      .setValue('input[name=EIN]',model.EIN)
+      //.setValue('input[name=EIN]',model.EIN)
       .setValue('input[name=aba]',model.aba)
       .setValue('input[name=dda]',model.dda)
       .setValue('input[name=ddaVerification]',model.ddaVerification)
