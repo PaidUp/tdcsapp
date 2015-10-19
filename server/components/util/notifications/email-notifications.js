@@ -9,32 +9,40 @@ var emailTemplates = require('email-templates');
 var transporter = nodemailer.createTransport(config.emailService);
 
 exports.sendNotification = function (subject, jsonMessage, cb) {
-  var email = config.emailContacts.admin;
-  emailTemplates(config.emailTemplateRoot, function (err, template) {
+  try{
 
-    if (err) return cb(err);
-    var emailVars = config.emailVars;
-    var arrMsj = [];
-    for(var key in jsonMessage){
-      arrMsj.push(key+': '+jsonMessage[key]);
-    }
-    emailVars.arrMsj = arrMsj;
-    template('notifications', emailVars, function (err, html, text) {
+    var email = config.emailContacts.admin;
+    emailTemplates(config.emailTemplateRoot, function (err, template) {
+
       if (err) return cb(err);
-      var mailOptions = config.emailOptionsAlerts;
-      mailOptions.html = html;
-      mailOptions.to = email;
-      //mailOptions.bcc = config.emailContacts.developer;
-      mailOptions.subject = emailVars.prefix + subject + emailVars.companyName;
-      mailOptions.attachments = [];
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          return cb(err);
-        } else {
-          return cb(null, info);
-        }
+      var emailVars = config.emailVars;
+      var arrMsj = [];
+      for(var key in jsonMessage){
+        arrMsj.push(key+': '+jsonMessage[key]);
+      }
+      emailVars.arrMsj = arrMsj;
+      template('notifications', emailVars, function (err, html, text) {
+        if (err) return cb(err);
+        var mailOptions = config.emailOptionsAlerts;
+        mailOptions.html = html;
+        mailOptions.to = email;
+        //mailOptions.bcc = config.emailContacts.developer;
+        mailOptions.subject = emailVars.prefix + subject + emailVars.companyName;
+        mailOptions.attachments = [];
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            return cb(err);
+          } else {
+            return cb(null, info);
+          }
+        });
+        //return cb(err, null);
       });
-      return cb(err, null);
     });
-  });
+
+  }catch(e){
+    return cb(e, null);
+  }
+
+
 };

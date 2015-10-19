@@ -14,7 +14,10 @@ exports.sendEmailNotification = function(req, res){
     logger.error('param jsonMessage is required');
   }
   notificationsService.sendEmailNotification(req.body, function(err, data){
-    if(err)  return res.status(500).json(err);
-    return res.status(200).json(data);
+    if(err) {
+      return res.status(500).json(err);
+    } else {
+      return res.status(200).json(data);
+    }
   });
 };
