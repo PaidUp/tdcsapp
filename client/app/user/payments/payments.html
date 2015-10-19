@@ -2,21 +2,23 @@
 <div class="container payments-container">
   <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
-      <h4 class="text-CS pull-left">Payment Methods</h4>
+      <h4 class="text-CS pull-left">Bank Account</h4>
       <br>
       <br>
-      <!--strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
+      <strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
       <table class="table table-payment-methods">
         <thead>
+          <td class="col1"><strong>{{'primary' | uppercase}}</strong></td>
           <td><strong>{{'details' | uppercase}}</strong></td>
         </thead>
         <tbody>
           <tr ng-show="(!loadingCards && !loadingBanks) && bankAccounts.length === 0">
-            <td>
+            <td colspan="2">
               You don't have a bank account yet.
             </td>
           </tr>
           <tr ng-repeat="account in bankAccounts">
+            <td class="col1"></td>
             <td>
               <strong>{{account.bankName}}</strong> <br>
               {{account.accountNumber}}
@@ -35,23 +37,23 @@
             </td>
           </tr>
         </tbody>
-      </table -->
+      </table>
 
       <h4 class="text-CS">Credit / Debit card</h4>
       <strong class="pull-right"> + <a ui-sref="user-card-create" href="" id="hrefAddNewCard">ADD NEW CARD</a></strong>
       <table class="table table-payment-methods">
         <thead>
-          <td><strong>{{'primary' | uppercase}}</strong></td>
+          <td class="col1"><strong>{{'primary' | uppercase}}</strong></td>
           <td><strong>{{'details' | uppercase}}</strong></td>
         </thead>
         <tbody>
           <tr ng-show="(!loadingCards && !loadingBanks) && cards.length === 0">
-            <td>
+            <td colspan="2">
               You don't have a credit / debit card yet.
             </td>
           </tr>
           <tr ng-repeat="card in cards">
-            <td>
+            <td class="col1">
               <div class="radio center-block">
                 <label>
                   <input type="radio"
@@ -71,7 +73,7 @@
             <td>
               <!-- <img ng-src="{{card.logo}}" alt="Card Logo" class="pull-left"> -->
               <strong>{{card.name}}</strong><br>
-              xxxxxxxxxxxx{{card.last4}} 
+              xxxxxxxxxxxx{{card.last4}}
               <br>
             </td>
           </tr>

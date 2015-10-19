@@ -23,14 +23,15 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
-    //Comment for bank is disabled.
-    /*PaymentService.listBankAccounts().then(function (response) {
+
+    //Bank accounts
+    PaymentService.listBankAccounts().then(function (response) {
       $scope.bankAccounts = angular.copy(response.bankAccounts);
       $scope.loadingBanks = false;
     }).catch(function (err) {
       $scope.loadingBanks = false;
       $scope.sendAlertErrorMsg(err.data.message);
-    });*/
+    });
 
     PaymentService.listCards().then(function (response) {
       $scope.defaultSource = response.defaultSource;

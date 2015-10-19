@@ -15,6 +15,7 @@ angular.module('convenienceApp')
 
     ApplicationConfigService.getConfig().then(function (config) {
       //balanced.init('/v1/marketplaces/'+config.marketplace);
+      Stripe.setPublishableKey(config.stripeApiPublic);
     });
 
     $scope.maskABA = function () {
