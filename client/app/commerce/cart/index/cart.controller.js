@@ -44,8 +44,8 @@ angular.module('convenienceApp')
       CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
         CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay, CartService.getCartDiscount()).then(function (val) {
           if(val.error){
-            var user = AuthService.getCurrentUser();
             $scope.isScheduleError = true;
+            var user = AuthService.getCurrentUser();
             NotificationEmailService.sendNotificationEmail('Get schedule error', {
               productId:ele.productId,
               price:CartService.getCartGrandTotal(),

@@ -14,17 +14,16 @@ angular.module('convenienceApp')
     };
 
     this.overrideByAlias = function(alias, alert){
-      var aliasExist = false;
+      var remove = false;
+      var pos = 0;
       $rootScope.alerts.forEach(function(ele, idx, arr){
         console.log('ele', ele);
         if(ele.alias && ele.alias == alias){
-          aliasExist = true;
-          arr[idx] = alert;
+          remove = true;
+          pos = idx;
         }
       });
-      if(!aliasExist){
-        messages.push(alert);
-      }
-      $rootScope.$broadcast('event:alerts');
+      $rootScope.alerts.splice(pos,1);
+      this.addAlert(alert);
     }
   });
