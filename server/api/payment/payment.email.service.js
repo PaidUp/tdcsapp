@@ -35,12 +35,12 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          return cb(err);
+          return cb(error);
         } else {
           return cb(null, info);
         }
       });
-      return cb(err, null);
+      //return cb(err, null);
     });
   });
 };
