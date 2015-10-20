@@ -6,8 +6,8 @@ var assert = require('chai').assert;
 var notificationsService = require("./notifications.service");
 
 var fakeParams = {
-    subject:'subject',
-    jsonMessage:{'jsonMessage':'jsonMessage'}
+    subject:'unit test ',
+    jsonMessage:{'jsonMessage':'notifications service'}
 };
 
 describe('notifications.service', function() {

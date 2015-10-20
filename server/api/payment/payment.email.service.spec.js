@@ -5,7 +5,7 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var paymentEmailService = require("./payment.email.service");
 
-var user = [{email:'convenieceselect@gmail.com', firstName:'uni test payment.email.service'}];
+var user = [{email:'convenieceselect@gmail.com', firstName:'uni test payment email service'}];
 var orderId = '000000000';
 var email = 'convenieceselect@gmail.com';
 var paymentMethod = 'paymentMethod';

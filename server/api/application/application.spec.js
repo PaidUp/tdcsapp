@@ -8,9 +8,9 @@ var cronjobService = require("./cronjob.service");
 var logger = require('../../config/logger');
 
 var dataContact = {
-	email:'email@email.com',
-	subject:'subject',
-	content:'content'
+	email:'convenieceselect@gmail.com',
+	subject:'unit test',
+	content:'application service'
 };
 
 describe('application.service', function() {

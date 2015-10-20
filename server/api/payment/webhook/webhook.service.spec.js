@@ -6,7 +6,7 @@ var assert = require('chai').assert;
 var webhookService = require("./webhook.service");
 
 var fakeData = {
-    json:'json'
+    json:'unit test webhook service'
 };
 
 describe('webhook.service', function() {

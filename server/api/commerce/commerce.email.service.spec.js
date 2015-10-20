@@ -6,8 +6,8 @@ var assert = require('chai').assert;
 var commerceEmailService = require("./commerce.email.service");
 
 var fakeDataProvider = {
-    businessName:'the business name',
-    teamName:'the team name',
+    businessName:'unit test',
+    teamName:'commerce email service',
     ownerDOB: '12/12/1980',
     ownerSSN : '123-1233-123',
     ownerPhone : '555-5555-555',
