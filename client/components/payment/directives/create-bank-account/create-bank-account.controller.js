@@ -89,33 +89,8 @@ angular.module('convenienceApp')
     $scope.ABAValidator = function () {
       // Taken from: http://www.brainjar.com/js/validation/
       $scope.bankAccount.routingNumber = angular.copy($scope.inputRoutingNumber);
-      if (!$scope.bankAccount.routingNumber) {
-        $scope.paymentForm.aba.$setValidity('aba', false);
-        return;
-      } else {
-        $scope.bankAccount.routingNumber = $scope.bankAccount.routingNumber.replace(/ /g,'');
-        if ($scope.bankAccount.routingNumber.length !== 9) {
-          $scope.paymentForm.aba.$setValidity('aba', false);
-          return;
-        }
-      }
       var t = $scope.bankAccount.routingNumber.replace(/ /g,'');
-      var n = 0;
-      for (var i = 0; i < t.length; i += 3) {
-        n += parseInt(t.charAt(i),     10) * 3 +
-              parseInt(t.charAt(i + 1), 10) * 7 +
-              parseInt(t.charAt(i + 2), 10);
-      }
-
-      // If the resulting sum is an even multiple of ten (but not zero),
-      // the aba routing number is good.
-
-      if (n !== 0 && n % 10 === 0) {
-        $scope.paymentForm.aba.$setValidity('aba', true);
-      } else {
-        $scope.paymentForm.aba.$setValidity('aba', false);
-      }
-
+            $scope.paymentForm.aba.$setValidity('aba', Stripe.bankAccount.validateRoutingNumber(t, 'US'));
     };
 
     $scope.validateDDA = function () {
@@ -146,15 +121,56 @@ angular.module('convenienceApp')
     };
 
     $scope.confirmLoanPayment = function () {
+      console.log('confirmLoanPayment');
       $scope.submitted = true;
       $scope.verifyMatches();
       if ($scope.paymentForm.$valid) {
         $scope.loading = true;
         var payload = {
-          name: $scope.user.firstName + ' ' + $scope.user.lastName,
+          country : 'US',
+          currency : 'USD',
           account_number: $scope.bankAccount.accountNumber,
           routing_number: $scope.bankAccount.routingNumber
         };
+
+        Stripe.bankAccount.createToken(
+          payload, function(status, response){
+            if(status === 200) {
+              PaymentService.associateBankPayment({tokenId: response.id}).then(function () {
+                if ($state.current.name === 'user-bank-create') {
+                  AuthService.updateCurrentUser();
+                  $state.go('user-payments');
+                  $scope.loading = false;
+                } else if ($state.current.name === 'payment-loan-payment') {
+                  CartService.removeCurrentCart();
+                  LoanService.removeCurrentLoanApplication();
+                  AuthService.updateCurrentUser();
+                  $scope.loading = false;
+                  $state.go('thank-you');
+                }
+              }).catch(function (err) {
+                $scope.loading = false;
+                console.log('ERROR: ', err);
+                console.log('BANKID: ', response.id);
+                $scope.sendAlertErrorMsg(err.message);
+              });
+            } else {
+              $scope.loading = false;
+              $timeout(function () {
+                $scope.sendAlertErrorMsg(response.error.description);
+              }, 1000);
+            }
+
+
+
+
+
+
+
+
+
+          });
+
 
         /*balanced.bankAccount.create(payload, function (response) {
           if(response.status === 201) {

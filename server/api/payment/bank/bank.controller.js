@@ -57,6 +57,48 @@ exports.create = function (req, res) {
   });
 };
 
+exports.associate = function (req, res) {
+
+  if (!req.body || !req.body.tokenId) {
+    return res.status(400).json({
+      "code": "ValidationError",
+      "message": "token is required"
+    });
+  }
+
+  var token = req.body.tokenId;
+  var filter = {
+    _id: req.user._id
+  };
+  userService.find(filter, function (err, dataUser) {
+    if (err) {
+      return handleError(res, err);
+    }
+    //TODO validate dataUser
+    paymentService.prepareUser(dataUser[0], function (err, userPrepared) {
+      if (!userPrepared.meta.TDPaymentId) {
+        return res.status(400).json({
+          "code": "ValidationError",
+          "message": "User without TDPaymentId"
+        });
+      }
+      paymentService.associateBank(userPrepared.meta.TDPaymentId, token, function (err, dataAssociate) {
+        if (err) {
+          return handleError(res, err);
+        }
+        if (dataAssociate.error) {
+          return res.status(500).json({
+            code: '500',
+            message: dataAssociate.message
+          })
+        }
+        return res.status(200).json(dataAssociate);
+      });
+
+    });
+  });
+};
+
 exports.listBanks = function (req, res) {
   var filter = {
     _id: req.user._id
