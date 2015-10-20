@@ -448,14 +448,14 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
   });
 };
 
-exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, value, period, cb) {
-  userService.find({_id:userId}, function(err, user){
-    if (err) return cb(err);
-    if (!user[0]) return cb(false);
-    paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
-      if(err){
-        callback(err);
-      };
+exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, value, period, card, cb) {
+  //userService.find({_id:userId}, function(err, user){
+    //if (err) return cb(err);
+    //if (!user[0]) return cb(false);
+    //paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+      //if(err){
+        //callback(err);
+      //};
       var card4 = card.data[0].last4 ||'XXXX';
       var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
       emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
@@ -476,16 +476,16 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-              return cb(err);
+              return cb(error);
             } else {
-              //return cb(null, info);
+              return cb(null, info);
             }
           });
-          return cb(null, true);
+          //return cb(null, true);
         });
       });
-    });
-  });
+    //});
+  //});
 };
 
 function getNameTeamFromOrder(orderId, cb){

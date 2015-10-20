@@ -68,9 +68,17 @@ function sendEmailReminder(pendingOrders, callback){
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
       if(shouldReminder){
         logger.log('info','should send Email Reminder',schedule.id);
-        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          logger.log('info','send Email Reminder data',data);
-          logger.log('info','send Email Reminder err',err);
+        userService.find({_id:order.userId}, function(err, user){
+          if (!err && user[0]) {
+            paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+              if(!err){
+                paymentEmailService.sendEmailReminderPyamentParents(user,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, card, function (err, data){
+                  logger.log('info','send Email Reminder data',data);
+                  logger.log('info','send Email Reminder err',err);
+                });
+              };
+            });
+          }
         });
         return cbSchedule(null,true);
       }else{
