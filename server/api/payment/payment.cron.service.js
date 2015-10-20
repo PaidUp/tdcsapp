@@ -72,6 +72,8 @@ function sendEmailReminder(pendingOrders, callback){
           if (!err && user[0]) {
             paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
               if(!err){
+                //TODO
+                console.log('order',order);
                 paymentEmailService.sendEmailReminderPyamentParents(user,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, card, function (err, data){
                   logger.log('info','send Email Reminder data',data);
                   logger.log('info','send Email Reminder err',err);

@@ -3,9 +3,9 @@
 var app = require('../../app');
 var request = require('supertest');
 var assert = require('chai').assert;
-var notificationsService = require("./payment.email.service");
+var paymentEmailService = require("./payment.email.service");
 
-var user = [{email:'convenieceselect@gmail.com', firstName:'uni test'}];
+var user = [{email:'convenieceselect@gmail.com', firstName:'uni test payment.email.service'}];
 var orderId = '000000000';
 var email = 'convenieceselect@gmail.com';
 var paymentMethod = 'paymentMethod';
@@ -19,7 +19,7 @@ var card = {data:[{last4:'0000'}]};
 describe('payment.email.service', function() {
     it('sendNewOrderEmail', function (done) {
         this.timeout(15000);
-        notificationsService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, function(err, data){
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
@@ -29,7 +29,7 @@ describe('payment.email.service', function() {
 
     it('sendEmailReminderPyamentParents', function (done) {
         this.timeout(15000);
-        notificationsService.sendEmailReminderPyamentParents(user, item.name, schedules[0], amount, period, card, function(err, data){
+        paymentEmailService.sendEmailReminderPyamentParents(user, item.name, schedules[0], amount, period, card, function(err, data){
             assert(data);
             assert(data.accepted);
             done();
