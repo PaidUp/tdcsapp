@@ -62,7 +62,6 @@ function sendEmailReminder(pendingOrders, callback){
     });*/
 
     async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
-
       logger.log('info','iterate each orderSchedule', schedule.id);
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
@@ -74,7 +73,8 @@ function sendEmailReminder(pendingOrders, callback){
               if(!err){
                 //TODO
                 console.log('order',order);
-                paymentEmailService.sendEmailReminderPyamentParents(user,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, card, function (err, data){
+                var nameTeam = order.products[0].shortDescription || order.sku.replace('_',' ').replace('-',' ');
+                paymentEmailService.sendEmailReminderPyamentParents(user, nameTeam, schedule, reminderValue, reminderPeriod, card, function (err, data){
                   logger.log('info','send Email Reminder data',data);
                   logger.log('info','send Email Reminder err',err);
                 });
