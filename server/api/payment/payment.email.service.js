@@ -14,7 +14,7 @@ var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, cb) {
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, teamName, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
     var emailVars = JSON.parse(JSON.stringify(config.emailVars));
@@ -23,7 +23,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
     emailVars.last4Digits = last4Digits;
     emailVars.amount = amount;
     emailVars.organizationName = item.name
-    emailVars.product = item.sku
+    emailVars.product = teamName || item.sku;
     emailVars.schedules = schedules
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
@@ -35,12 +35,12 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
       mailOptions.attachments = [];
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          return cb(err);
+          return cb(error);
         } else {
           return cb(null, info);
         }
       });
-      return cb(err, null);
+      //return cb(err, null);
     });
   });
 };
@@ -245,7 +245,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
       emailTemplates(config.emailTemplateRoot, function (err, template) {
 
         if (err) return cb(err);
-        emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
         template('payment/final', emailVars, function (err, html, text) {
 
           if (err) return cb(err);
@@ -283,11 +283,11 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 
         // get the loan object
         commerceService.orderLoad(orderId, function (err, magentoOrder) {
-          var team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+          var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
-
+            emailVars.team = team;
             template('payment/processed', emailVars, function (err, html, text) {
 
               if (err) return cb(err);
@@ -414,7 +414,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
-            emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+            emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
 
             template('payment/final', emailVars, function (err, html, text) {
 
@@ -448,14 +448,14 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
   });
 };
 
-exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, value, period, cb) {
-  userService.find({_id:userId}, function(err, user){
-    if (err) return cb(err);
-    if (!user[0]) return cb(false);
-    paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
-      if(err){
-        callback(err);
-      };
+exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, value, period, card, cb) {
+  //userService.find({_id:userId}, function(err, user){
+    //if (err) return cb(err);
+    //if (!user[0]) return cb(false);
+    //paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+      //if(err){
+        //callback(err);
+      //};
       var card4 = card.data[0].last4 ||'XXXX';
       var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
       emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
@@ -476,16 +476,16 @@ exports.sendEmailReminderPyamentParents = function (userId, nameTeam, schedule, 
           mailOptions.attachments = [];
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-              return cb(err);
+              return cb(error);
             } else {
-              //return cb(null, info);
+              return cb(null, info);
             }
           });
-          return cb(null, true);
+          //return cb(null, true);
         });
       });
-    });
-  });
+    //});
+  //});
 };
 
 function getNameTeamFromOrder(orderId, cb){
@@ -493,7 +493,8 @@ function getNameTeamFromOrder(orderId, cb){
     if(err || !magentoOrder || !magentoOrder.products){
       cb(null, 'Convenience Select');
     }
-    cb(null, magentoOrder.products[0].productSku.replace(/_/g, ' '));
+    var teamName = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+    cb(null, teamName);
   });
 }
 
