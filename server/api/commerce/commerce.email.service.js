@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var path = require('path');
 var config = require('../../config/environment');
 var nodemailer = require('nodemailer');
@@ -12,7 +11,6 @@ exports.sendContactEmail = function(dataProvider, cb) {
   if(!isValidEmail(dataProvider.ownerEmail)){
     return cb('Email is not valid');
   };
-
   emailTemplates(config.emailTemplateRoot,function(err,template){
     if(err) return cb(err);
     var emailVars = config.emailVars;
