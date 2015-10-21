@@ -15,11 +15,12 @@ var item = {name:'00U CS',sku:'sku'};
 var schedules = [{'nextPaymentDue':new Date(), price: 1200}];
 var period = 'period';
 var card = {data:[{last4:'0000'}]};
+var description = 'description';
 
 describe('payment.email.service', function() {
     it('sendNewOrderEmail', function (done) {
         this.timeout(15000);
-        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, function(err, data){
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
