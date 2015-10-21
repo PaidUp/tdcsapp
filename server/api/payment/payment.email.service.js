@@ -14,7 +14,7 @@ var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, cb) {
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, teamName, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
     var emailVars = JSON.parse(JSON.stringify(config.emailVars));
@@ -23,7 +23,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
     emailVars.last4Digits = last4Digits;
     emailVars.amount = amount;
     emailVars.organizationName = item.name
-    emailVars.product = item.sku
+    emailVars.product = teamName || item.sku;
     emailVars.schedules = schedules
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
@@ -245,7 +245,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
       emailTemplates(config.emailTemplateRoot, function (err, template) {
 
         if (err) return cb(err);
-        emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
         template('payment/final', emailVars, function (err, html, text) {
 
           if (err) return cb(err);
@@ -283,11 +283,11 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 
         // get the loan object
         commerceService.orderLoad(orderId, function (err, magentoOrder) {
-          var team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+          var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
-
+            emailVars.team = team;
             template('payment/processed', emailVars, function (err, html, text) {
 
               if (err) return cb(err);
@@ -414,7 +414,7 @@ exports.sendFinalEmail = function  (user, amount, orderId, cb) {
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
-            emailVars.team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
+            emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
 
             template('payment/final', emailVars, function (err, html, text) {
 
@@ -493,7 +493,8 @@ function getNameTeamFromOrder(orderId, cb){
     if(err || !magentoOrder || !magentoOrder.products){
       cb(null, 'Convenience Select');
     }
-    cb(null, magentoOrder.products[0].productSku.replace(/_/g, ' '));
+    var teamName = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+    cb(null, teamName);
   });
 }
 

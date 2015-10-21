@@ -71,9 +71,7 @@ function sendEmailReminder(pendingOrders, callback){
           if (!err && user[0]) {
             paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
               if(!err){
-                //TODO
-                console.log('order',order);
-                var nameTeam = order.products[0].shortDescription || order.sku.replace('_',' ').replace('-',' ');
+                var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
                 paymentEmailService.sendEmailReminderPyamentParents(user, nameTeam, schedule, reminderValue, reminderPeriod, card, function (err, data){
                   logger.log('info','send Email Reminder data',data);
                   logger.log('info','send Email Reminder err',err);
