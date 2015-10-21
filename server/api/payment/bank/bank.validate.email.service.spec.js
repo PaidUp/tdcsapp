@@ -10,7 +10,7 @@ var email = 'convenieceselect@gmail.com';
 var accountLast4Digits = '0000';
 
 describe('bank.validate.service', function() {
-    it('sendNewOrderEmail', function (done) {
+    it('sendValidateEmail', function (done) {
         this.timeout(15000);
         bankValidateService.sendValidateEmail(userFirstName, email, accountLast4Digits, function(err, data){
             assert.equal(err, null);
