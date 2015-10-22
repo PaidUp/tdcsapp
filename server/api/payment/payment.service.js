@@ -165,9 +165,9 @@ function deleteBankAccount(customerId, bankId, cb) {
   });
 }
 
-function confirmBankVerification(verificationId, amount1, amount2, cb) {
+function confirmBankVerification(customerId, bankId, amount1, amount2, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.confirmBankVerification({verificationId:verificationId, amount1:amount1, amount2:amount2}, function(err, data){
+  tdPaymentService.confirmBankVerification({customerId:customerId, bankId:bankId, amount1:amount1, amount2:amount2}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });

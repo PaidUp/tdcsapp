@@ -112,7 +112,7 @@ exports.listBanks = function (req, res) {
       paymentService.listBanks(dataUser[0].meta.TDPaymentId, function (err, dataBanks) {
         if (err) {
         } else {
-          if(dataBanks.bankAccounts.length === 0){
+          if(dataBanks.length === 0){
             dataUser[0].payment = {};
             userService.save(dataUser[0], function(err, user){
               if(err){
@@ -130,13 +130,13 @@ exports.listBanks = function (req, res) {
 }
 
 exports.verify = function (req, res) {
-  var verificationId = req.body.verificationId;
+  var bankId = req.body.bankId;
   var deposit1 = req.body.deposit1;
   var deposit2 = req.body.deposit2;
-  if (!verificationId) {
+  if (!bankId) {
     return res.status(400).json({
       "code": "ValidationError",
-      "message": "VerificationId is required"
+      "message": "bankId is required"
     });
   }
   bankService.verifyAmounts(deposit1, function (valid) {
@@ -169,54 +169,14 @@ exports.verify = function (req, res) {
           "message": "User without TDPaymentId"
         });
       }
-      paymentService.confirmBankVerification(verificationId, deposit1, deposit2, function (err, data) {
-        if (err){
-          paymentService.loadBankVerification(verificationId, function(err, bank){
-            if(err){
-              return handleError(res, err);
-            }
-            if(bank.bankAccountVerifications[0].attemptsRemaining <= 0){
-              return res.status(400).json({
-                "code": "ValidationError",
-                "message": "You have exceeded the max number of attempts",
-                "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
-                "attempts": bank.bankAccountVerifications[0].attempts
-              });
-            }
-            else{
-              return res.status(400).json({
-                "code": "ValidationError",
-                "message": "Your bank account has not been verified",
-                "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
-                "attempts": bank.bankAccountVerifications[0].attempts
-              });
-            }
-          });
-        } else {
-          if (!data) {
-            return res.status(400).json({
-              "code": "ValidationError",
-              "message": "Your bank account has not been verified correctly",
-              "attemptsRemaining": bank.bankAccountVerifications[0].attemptsRemaining,
-              "attempts": bank.bankAccountVerifications[0].attempts
-            });
-          }
-          var filter = {
-            _id: req.user._id
-          };
-          userService.find(filter, function (err, dataUser) {
-            paymentService.setUserDefaultBank(dataUser[0], function (err, data) {
-              if (err) {
-                return handleError(res, err);
-              }
-              return res.status(200).json(data);
-            });
-          });
-        }
-      });
+      paymentService.confirmBankVerification(userPrepared.meta.TDPaymentId, bankId, deposit1, deposit2, function (err, data) {
+
+
+
     });
   });
-}
+  }
+  )};
 
 exports.pending = function (req, res) {
   var filter = {

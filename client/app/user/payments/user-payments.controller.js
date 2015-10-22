@@ -26,7 +26,9 @@ angular.module('convenienceApp')
 
     //Bank accounts
     PaymentService.listBankAccounts().then(function (response) {
-      $scope.bankAccounts = angular.copy(response.bankAccounts);
+
+      $scope.bankAccounts = angular.copy(response.data);
+      console.log($scope.bankAccounts );
       $scope.loadingBanks = false;
     }).catch(function (err) {
       $scope.loadingBanks = false;
@@ -52,8 +54,7 @@ angular.module('convenienceApp')
 
     $scope.verifyAccount = function (account) {
       $state.go('verify-bank-account', {
-        bankId: account.id,
-        verifyId: account.links.bankAccountVerification
+        bankId: account.id
       });
     };
 
