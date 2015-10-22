@@ -3,13 +3,13 @@
 angular.module('convenienceApp')
   .controller('LoanBarCtrl', function ($state, $scope) {
     $scope.tabs = [
-     /*
+
       {
-        heading: 'Loan',
+        heading: 'Bank Account',
         state: 'payment-loan-index',
         active: $state.is('payment-loan-index')
       },
-      */
+
       {
         heading: 'Credit Card',
         state: 'payment-credit-card',

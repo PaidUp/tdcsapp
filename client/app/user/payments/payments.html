@@ -18,17 +18,34 @@
             </td>
           </tr>
           <tr ng-repeat="account in bankAccounts">
-            <td class="col1"></td>
+            <td class="col1">
+              <div ng-show="account.status === 'verified'" class="radio center-block">
+                <label>
+                  <input type="radio"
+                         name="primaryBank"
+                         ng-value="true"
+                         ng-model="account.radio"
+                         required
+                         ng-required="true"
+                         ng-click="updateCardDefault(account.id)">
+                  <div></div>
+                </label>
+              </div>
+
+            </td>
             <td>
               <strong>{{account.bankName}}</strong> <br>
               {{account.accountNumber}}
               <span class="text-CS" ng-show="account.status === 'new'">
                 <strong>{{'not verified' | uppercase}}</strong>
               </span>
+              <span class="text-CS" ng-show="account.status === 'verified'">
+                <strong>{{'verified' | uppercase}}</strong>
+              </span>
               <a class="pull-right verify-bank" href="" ng-click="verifyAccount(account)" ng-show="account.status === 'new'">
                 <strong>{{'verify now' | uppercase}}</strong>
               </a>
-              <span class="text-CS" ng-show="account.status === 'failed'" >
+              <span class="text-CS" ng-show="account.status === 'verification_failed'" >
                 <strong>{{'The account can not be validated' | uppercase}}</strong>
               </span>
               <a class="pull-right remove-bank" href="" ng-click="deleteBankAccount($index, account)" ng-show="account.status === 'failed'">

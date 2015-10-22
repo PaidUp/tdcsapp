@@ -84,13 +84,7 @@ exports.associate = function (req, res) {
       }
       paymentService.associateBank(userPrepared.meta.TDPaymentId, token, function (err, dataAssociate) {
         if (err) {
-          return handleError(res, err);
-        }
-        if (dataAssociate.error) {
-          return res.status(500).json({
-            code: '500',
-            message: dataAssociate.message
-          })
+          return res.status(500).json(err);
         }
         return res.status(200).json(dataAssociate);
       });
@@ -110,20 +104,25 @@ exports.listBanks = function (req, res) {
     if(dataUser[0].meta.TDPaymentId  !== ''){
 
       paymentService.listBanks(dataUser[0].meta.TDPaymentId, function (err, dataBanks) {
-        if (err) {
-        } else {
-          if(dataBanks.length === 0){
-            dataUser[0].payment = {};
-            userService.save(dataUser[0], function(err, user){
-              if(err){
-                return res.status(500).json(err);
-              }
+
+        paymentService.fetchCustomer(dataUser[0].meta.TDPaymentId, function(errCustomer, dataCustomer){
+          if(err || errCustomer){
+            return res.status(400).json({
+              "code": "ValidationError",
+              "message": "customer Card is not valid"
             });
           }
+          if(!dataBanks){
+            return res.status(400).json({
+              "code": "ValidationError",
+              "message": "User without banks"
+            });
+          }
+          dataBanks.defaultSource = dataCustomer.defaultSource
           return res.status(200).json(camelize(dataBanks));
-        }
+        });
       });
-    }else{
+    } else{
       return res.status(200).json({data:[]});
     };
   });
@@ -170,9 +169,14 @@ exports.verify = function (req, res) {
         });
       }
       paymentService.confirmBankVerification(userPrepared.meta.TDPaymentId, bankId, deposit1, deposit2, function (err, data) {
-
-
-
+        if(err){
+         return res.status(500).json({
+           "code": "ValidationError",
+           "message": err.error.message
+         });
+       } else {
+         return res.status(200).json(data);
+       }
     });
   });
   }

@@ -56,6 +56,8 @@ angular.module('convenienceApp')
           deposit1: $scope.deposit1,
           deposit2: $scope.deposit2
         }).then(function (res) {
+          console.log(res);
+
           $state.go('athletes');
           AuthService.updateCurrentUser();
           FlashService.addAlert({
@@ -64,12 +66,8 @@ angular.module('convenienceApp')
             timeout: 10000
           });
         }).catch(function (err) {
-    			if(err.data.attemptsRemaining === 0){
-    				$rootScope.attemptsRemaining = err.data.attemptsRemaining;
-    				$state.go('user-payments');
-    			}
+          console.log('err' , err);
           $scope.sendAlertErrorMsg(err.data.message);
-          $rootScope.attemptsRemaining = err.data.attemptsRemaining;
         });
       }
     };

@@ -135,6 +135,9 @@ angular.module('convenienceApp')
 
         Stripe.bankAccount.createToken(
           payload, function(status, response){
+            console.log('response',response);
+
+
             if(status === 200) {
               PaymentService.associateBankPayment({tokenId: response.id}).then(function () {
                 if ($state.current.name === 'user-bank-create') {
@@ -152,12 +155,12 @@ angular.module('convenienceApp')
                 $scope.loading = false;
                 console.log('ERROR: ', err);
                 console.log('BANKID: ', response.id);
-                $scope.sendAlertErrorMsg(err.message);
+                $scope.sendAlertErrorMsg(err.data.error.message);
               });
             } else {
               $scope.loading = false;
               $timeout(function () {
-                $scope.sendAlertErrorMsg(response.error.description);
+                $scope.sendAlertErrorMsg(response.error.message);
               }, 1000);
             }
 
