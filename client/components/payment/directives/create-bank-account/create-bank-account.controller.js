@@ -121,7 +121,6 @@ angular.module('convenienceApp')
     };
 
     $scope.confirmLoanPayment = function () {
-      console.log('confirmLoanPayment');
       $scope.submitted = true;
       $scope.verifyMatches();
       if ($scope.paymentForm.$valid) {
@@ -130,26 +129,22 @@ angular.module('convenienceApp')
           country : 'US',
           currency : 'USD',
           account_number: $scope.bankAccount.accountNumber,
-          routing_number: $scope.bankAccount.routingNumber
+          routing_number: $scope.bankAccount.routingNumber,
+          name : $scope.name
         };
 
         Stripe.bankAccount.createToken(
           payload, function(status, response){
-            console.log('response',response);
-
-
             if(status === 200) {
-              PaymentService.associateBankPayment({tokenId: response.id}).then(function () {
+              PaymentService.associateBankPayment({tokenId: response.id}).then(function (source) {
+                console.log('source' , source);
+
                 if ($state.current.name === 'user-bank-create') {
                   AuthService.updateCurrentUser();
                   $state.go('user-payments');
                   $scope.loading = false;
-                } else if ($state.current.name === 'payment-loan-payment') {
-                  CartService.removeCurrentCart();
-                  LoanService.removeCurrentLoanApplication();
-                  AuthService.updateCurrentUser();
-                  $scope.loading = false;
-                  $state.go('thank-you');
+                } else if ($state.current.name === 'bank-account-index') {
+                  $scope.$parent.placeOrder(source);
                 }
               }).catch(function (err) {
                 $scope.loading = false;
