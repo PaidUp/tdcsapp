@@ -20,6 +20,8 @@ angular.module('convenienceApp')
     };
 
     var cartId = CartService.getCurrentCartId();
+
+    /**
     if (cartId) {
       $scope.teams = [];
       CartService.getCart(cartId).then(function (cart) {
@@ -70,4 +72,6 @@ angular.module('convenienceApp')
       $scope.noCart = true;
       $state.go('cart');
     }
+
+     **/
   });

@@ -69,9 +69,9 @@ function createBank(bankDetails, cb) {
   });
 }
 
-function associateBank(customerId, bankId, cb) {
+function associateBank(customerId, token, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, token:token}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -106,9 +106,9 @@ function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, c
   });
 }
 
-function associateBank(customerId, bankId, cb) {
+function associateBank(customerId, token, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, token:token}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -165,9 +165,9 @@ function deleteBankAccount(customerId, bankId, cb) {
   });
 }
 
-function confirmBankVerification(verificationId, amount1, amount2, cb) {
+function confirmBankVerification(customerId, bankId, amount1, amount2, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.confirmBankVerification({verificationId:verificationId, amount1:amount1, amount2:amount2}, function(err, data){
+  tdPaymentService.confirmBankVerification({customerId:customerId, bankId:bankId, amount1:amount1, amount2:amount2}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
