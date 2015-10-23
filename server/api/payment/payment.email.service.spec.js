@@ -16,9 +16,12 @@ var schedules = [{'nextPaymentDue':new Date(), price: 1200}];
 var period = 'period';
 var card = {data:[{last4:'0000'}]};
 var description = 'description';
+var account = {
+    bankAccounts:[{accountNumber:'accountNumber'}]
+};
 
 describe('payment.email.service', function() {
-    it('sendNewOrderEmail', function (done) {
+    it.skip('sendNewOrderEmail', function (done) {
         this.timeout(15000);
         paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, function(err, data){
             assert.equal(err, null);
@@ -28,9 +31,27 @@ describe('payment.email.service', function() {
         });
     });
 
-    it('sendEmailReminderPyamentParents', function (done) {
+    it.skip('sendEmailReminderPyamentParents', function (done) {
         this.timeout(15000);
         paymentEmailService.sendEmailReminderPyamentParents(user, item.name, schedules[0], amount, period, card, function(err, data){
+            assert(data);
+            assert(data.accepted);
+            done();
+        });
+    });
+
+    it.skip('sendFinalEmail', function (done) {
+        this.timeout(15000);
+        paymentEmailService.sendFinalEmail(user[0], amount, orderId, account, function(err, data){
+            assert(data);
+            assert(data.accepted);
+            done();
+        });
+    });
+
+    it('sendProcessedEmail', function (done) {
+        this.timeout(15000);
+        paymentEmailService.sendProcessedEmail(user[0], amount, orderId, account, function(err, data){
             assert(data);
             assert(data.accepted);
             done();
