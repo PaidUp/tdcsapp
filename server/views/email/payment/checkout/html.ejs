@@ -12,36 +12,33 @@
                             Order Id: <%= orderId %>
                             <br />
                             <br />
-                            <% if(paymentMethod === 'directdebit') { %>
-                            Payment method: Bank Account Debit - Loan.
-                        <br />
-                        <br />
-                            Please make sure to visit your bank in 3-4 days<br />
-                            and validate the 2 small deposits we made to your account. <br />
-                            We must have this to ensure your account is in good standing<br />
-                            and so your athlete can play ball.
-                            <% } else { %>
+
                         Your order for the <%= product%> team has been received.
 
                         <br></br>
-                        We will charge the card on file ending in <%= last4Digits %> on the following schedule:
+                        We will charge the account on file ending in <%= last4Digits %> on the following schedule:
                         <br />
                         <br />
                         <% for(var i=0; i < schedules.length; i++) {
                           var nextPaymentDue = new Date(schedules[i].nextPaymentDue);
                         %>
                         <%= nextPaymentDue.getMonth()+1 %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
-                        <% } %>
                         <br />
                         Total: $ <%= amount %>
 
                             <% } %>
+
+                            <% if(paymentMethod === 'directdebit' && accountStatus === 'UNVERIFIED') { %>
+                            <br />
+                            <br />
+                            Before we can charge you, we must first verify that you are the owner of the bank account provided.<br />
+                            In a few days check your bank statement and find two small deposits.<br />
+                            Once received, please visit convenienceselect.com and confirm your account so we can get started.<br />
+                            If you have any questions or issues, please reply to this email or contact us at 855.764.3232.<br />
+                            <% } %>
                             <br />
                             <br />
                         Reply to this email if you have any questions.
-
-
-
                         <br />
                             <br />
                         Convenience Select

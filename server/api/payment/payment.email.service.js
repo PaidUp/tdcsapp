@@ -14,7 +14,7 @@ var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 //Done
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, teamName, cb) {
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, teamName, accountStatus, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
     var emailVars = JSON.parse(JSON.stringify(config.emailVars));
@@ -25,6 +25,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
     emailVars.organizationName = item.name
     emailVars.product = teamName || item.sku;
     emailVars.schedules = schedules
+    emailVars.accountStatus = accountStatus
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
       var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
@@ -270,7 +271,7 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
   });
 };
-//Bank Done
+//Bank Done CS-639
 exports.sendProcessedEmail = function  (user, amount, orderId, account, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
@@ -396,7 +397,7 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 
   });
 };
-//Bank Done
+//Bank Done CS-639
 exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
   emailVars.userFirstName = user.firstName;

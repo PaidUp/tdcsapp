@@ -5,25 +5,47 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var paymentEmailService = require("./payment.email.service");
 
-var user = [{email:'convenieceselect@gmail.com', firstName:'uni test payment email service'}];
-var orderId = '000000000';
+var user = [{email:'convenieceselect@gmail.com', firstName:'*uni test payment email service*'}];
+var orderId = '*000000000*';
 var email = 'convenieceselect@gmail.com';
-var paymentMethod = 'paymentMethod';
-var last4Digits = '1234';
-var amount = '1200';
-var item = {name:'00U CS',sku:'sku'};
+var paymentMethod = '*paymentMethod*';
+var last4Digits = '*1234*';
+var amount = '1200000';
+var item = {name:'*00U CS*',sku:'*sku*'};
 var schedules = [{'nextPaymentDue':new Date(), price: 1200}];
-var period = 'period';
-var card = {data:[{last4:'0000'}]};
-var description = 'description';
+var period = '*period*';
+var card = {data:[{last4:'*0000*'}]};
+var description = '*description*';
 var account = {
-    bankAccounts:[{accountNumber:'accountNumber'}]
+    bankAccounts:[{accountNumber:'*accountNumber*', status:'UNVERIFIED'}]
 };
 
 describe('payment.email.service', function() {
-    it.skip('sendNewOrderEmail', function (done) {
+    it.skip('sendNewOrderEmailCard', function (done) {
         this.timeout(15000);
-        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, function(err, data){
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, account.bankAccounts[0].status, function(err, data){
+            assert.equal(err, null);
+            assert(data);
+            assert(data.accepted);
+            done();
+        });
+    });
+
+    it('sendNewOrderEmailBank UNVERIFIED', function (done) {
+        this.timeout(15000);
+        var paymentMethod = 'directdebit';
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, account.bankAccounts[0].status, function(err, data){
+            assert.equal(err, null);
+            assert(data);
+            assert(data.accepted);
+            done();
+        });
+    });
+
+    it.skip('sendNewOrderEmailBank VERIFIED', function (done) {
+        this.timeout(15000);
+        var paymentMethod = 'directdebit';
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, 'VERIFIED', function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
@@ -49,7 +71,7 @@ describe('payment.email.service', function() {
         });
     });
 
-    it('sendProcessedEmail', function (done) {
+    it.skip('sendProcessedEmail', function (done) {
         this.timeout(15000);
         paymentEmailService.sendProcessedEmail(user[0], amount, orderId, account, function(err, data){
             assert(data);

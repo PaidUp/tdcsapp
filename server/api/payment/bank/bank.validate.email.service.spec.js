@@ -5,9 +5,9 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var bankValidateService = require("./bank.validate.email.service");
 
-var userFirstName = 'uni test bank email validate';
+var userFirstName = '*uni test bank email validate*';
 var email = 'convenieceselect@gmail.com';
-var accountLast4Digits = '0000';
+var accountLast4Digits = '*0000*';
 
 describe('bank.validate.service', function() {
     it('sendValidateEmail', function (done) {
