@@ -24,10 +24,8 @@
                         %>
                         <%= nextPaymentDue.getMonth()+1 %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
                         <br />
-                        Total: $ <%= amount %>
-
                             <% } %>
-
+                            Total: $ <%= amount %>
                             <% if(paymentMethod === 'directdebit' && accountStatus === 'UNVERIFIED') { %>
                             <br />
                             <br />
