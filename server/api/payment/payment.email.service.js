@@ -97,47 +97,39 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
 
   });
 };
-//Deprecated (loan)
-exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
-  var userAccountNumber;
-  var userFirstName;
-  var userEmail;
-
+//Deprecated (loan) CS-636
+exports.sendRemindToVerifyAccount = function (orderId, user, account, date, cb) {
+  var userAccountNumber = account.bankAccounts[0].accountNumber;
+  var userEmail  = user[0].email;
+  var acountNumberLast4Digits;
+  var userFirstName = user[0].firstName;
+  var date = date || new Date();
   //var filter = {_id:applicationId};
-  loanApplicationService.findOne(applicationId, function(err, applicationData){
-    var userId = applicationData.applicantUserId;
+  //loanApplicationService.findOne(applicationId, function(err, applicationData){
+    //var userId = applicationData.applicantUserId;
     // get the user data with the userId
-    var filter = {_id: userId};
-    userService.find(filter, function (err, user) {
-      if (err) return cb(err);
-      if (!user) return cb(false);
-
-      var userEmail;
-      var schedule;
-      var bankId;
-      var acountNumberLast4Digits;
-      var userFirstName = user[0].firstName;
-      userEmail = user[0].email;
-
+    //var filter = {_id: userId};
+    //userService.find(filter, function (err, user) {
+      //if (err) return cb(err);
+      //if (!user) return cb(false);
       getNameTeamFromOrder(orderId, function(err,team){
-
-        paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
-
-          paymentService.fetchBank(bankId, function (errTemplate, account) {
-            userAccountNumber = account.bankAccounts[0].accountNumber;
-            if (errTemplate) return cb(errTemplate);
+        //paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
+          //paymentService.fetchBank(bankId, function (errTemplate, account) {
+            //if (errTemplate) return cb(errTemplate);
             emailTemplates(config.emailTemplateRoot, function (err, template) {
               var emailVars = JSON.parse(JSON.stringify(config.emailVars));
               emailVars.userFirstName = userFirstName;
               emailVars.userAccountNumber = userAccountNumber;
-
+              emailVars.month = date.getMonth() + 1;
+              emailVars.day = date.getDay() + 1;
+              emailVars.year = date.getFullYear();
               template('payment/remindToVerifyAccount', emailVars, function (err, html, text) {
                 if (err) return cb(err);
                 var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
                 mailOptions.html = html;
                 mailOptions.to = userEmail;
-                //mailOptions.bcc = config.emailContacts.developer;
-                mailOptions.subject = 'Reminder: Verify Your Bank Account – ' + team;
+                //mailOptions.bcc = config.emailContacts.developer;//
+                mailOptions.subject = 'Reminder: '+team+' - Confirm Your Bank Account';
                 mailOptions.attachments = [];
                 transporter.sendMail(mailOptions, function (error, info) {
                   if (error) {
@@ -148,13 +140,11 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
                 });
               });
             });
-          });
-        });
-
+          //});
+        //});
       });
-    });
-
-  });
+    //});
+  //});
 };
 //Deprecated (loan)
 exports.sendTomorrowChargeLoan = function (requestObject, cb) {
@@ -283,8 +273,8 @@ exports.sendProcessedEmail = function  (user, amount, orderId, account, cb) {
         emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
 
         // get the loan object
-        getNameTeamFromOrder(orderId, function (err, magentoOrder) {
-          var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        getNameTeamFromOrder(orderId, function (err, team) {
+          //var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
@@ -405,17 +395,17 @@ exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
   emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
   //paymentService.getUserDefaultBankId(user, function (err, bankId) {
       //paymentService.fetchBank(bankId, function (response, account) {
-    getNameTeamFromOrder(orderId, function (err, magentoOrder) {
+    getNameTeamFromOrder(orderId, function (err, team) {
       emailTemplates(config.emailTemplateRoot, function (err, template) {
         if (err) return cb(err);
-        emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        emailVars.team = team;//magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
         //console.log('emailVars',emailVars);
         template('payment/final', emailVars, function (err, html, text) {
           if (err) return cb(err);
           var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
           mailOptions.to = user.email;
           mailOptions.html = html;
-          mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
+          mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + team;
           mailOptions.attachments = [];
           //console.log('mailOptions',mailOptions);
           transporter.sendMail(mailOptions, function (error, info) {
@@ -475,7 +465,7 @@ exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, va
 function getNameTeamFromOrder(orderId, cb){
   commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){
-      var magentoError = {products:[{shortDescription:'Convenience Select'}]};
+      var magentoError = '*Convenience Select*';
       return cb(null, magentoError);
     }
     var teamName = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');

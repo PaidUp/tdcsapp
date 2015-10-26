@@ -21,7 +21,7 @@ var account = {
 };
 
 describe('payment.email.service', function() {
-    it.skip('sendNewOrderEmailCard', function (done) {
+    it('sendNewOrderEmailCard', function (done) {
         this.timeout(15000);
         paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, account.bankAccounts[0].status, function(err, data){
             assert.equal(err, null);
@@ -42,7 +42,7 @@ describe('payment.email.service', function() {
         });
     });
 
-    it.skip('sendNewOrderEmailBank VERIFIED', function (done) {
+    it('sendNewOrderEmailBank VERIFIED', function (done) {
         this.timeout(15000);
         var paymentMethod = 'directdebit';
         paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, 'VERIFIED', function(err, data){
@@ -53,7 +53,7 @@ describe('payment.email.service', function() {
         });
     });
 
-    it.skip('sendEmailReminderPyamentParents', function (done) {
+    it('sendEmailReminderPyamentParents', function (done) {
         this.timeout(15000);
         paymentEmailService.sendEmailReminderPyamentParents(user, item.name, schedules[0], amount, period, card, function(err, data){
             assert(data);
@@ -62,7 +62,7 @@ describe('payment.email.service', function() {
         });
     });
 
-    it.skip('sendFinalEmail', function (done) {
+    it('sendFinalEmail', function (done) {
         this.timeout(15000);
         paymentEmailService.sendFinalEmail(user[0], amount, orderId, account, function(err, data){
             assert(data);
@@ -71,9 +71,18 @@ describe('payment.email.service', function() {
         });
     });
 
-    it.skip('sendProcessedEmail', function (done) {
+    it('sendProcessedEmail', function (done) {
         this.timeout(15000);
         paymentEmailService.sendProcessedEmail(user[0], amount, orderId, account, function(err, data){
+            assert(data);
+            assert(data.accepted);
+            done();
+        });
+    });
+
+    it('sendRemindToVerifyAccount', function (done) {
+        this.timeout(15000);
+        paymentEmailService.sendRemindToVerifyAccount(orderId, user, account, "", function(err, data){
             assert(data);
             assert(data.accepted);
             done();
