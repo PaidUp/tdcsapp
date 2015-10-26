@@ -2,8 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('BankAccountCtrl', function ($rootScope, $scope, ModalFactory, UserService, AuthService, FlashService,
-                                          CartService, $state, PaymentService, ApplicationConfigService, CommerceService,
-                                          NotificationEmailService, TrackerService) {
+                                           CartService, $state, PaymentService, ApplicationConfigService, CommerceService,
+                                           NotificationEmailService, TrackerService) {
     $rootScope.$emit('bar-welcome', {
       left: {
         url: 'app/payments/templates/loan-bar.html'
@@ -39,24 +39,24 @@ angular.module('convenienceApp')
     CartService.getCart(currentCartId).then(function (value) {
       var ele = value.items[0];
 
-        CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
-          CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal() , isInFullPay, CartService.getCartDiscount()).then(function (val) {
-            if(val.error){
-              var user = AuthService.getCurrentUser;
-              $scope.isScheduleError = true;
-              NotificationEmailService.sendNotificationEmail('Get schedule error', {
-                productId:ele.productId,
-                price:ele.price,
-                isInFullPay: isInFullPay,
-                email: user.email
-              });
-            }
-            $scope.schedules.push({
-              name: ele.name,
-              periods: val.schedulePeriods
+      CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
+        CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal() , isInFullPay, CartService.getCartDiscount()).then(function (val) {
+          if(val.error){
+            var user = AuthService.getCurrentUser;
+            $scope.isScheduleError = true;
+            NotificationEmailService.sendNotificationEmail('Get schedule error', {
+              productId:ele.productId,
+              price:ele.price,
+              isInFullPay: isInFullPay,
+              email: user.email
             });
+          }
+          $scope.schedules.push({
+            name: ele.name,
+            periods: val.schedulePeriods
           });
         });
+      });
     });
 
     ApplicationConfigService.getConfig().then(function (config) {
@@ -65,8 +65,6 @@ angular.module('convenienceApp')
 
     PaymentService.listBankAccounts().then(function (response) {
       $scope.banks = angular.copy(response.data);
-
-      console.log('response.data' , response.data);
 
       $scope.banks.push({ bankName : 'Create a new bank account' , last4: '' });
       if ($scope.banks.length === 1) {
@@ -79,7 +77,6 @@ angular.module('convenienceApp')
     });
 
     $scope.changeBank = function () {
-      console.log('$scope.bankDetails.bankName', $scope.bankDetails.bankName)
       if ($scope.bankDetails.bankName === 'Create a new bank account') {
         $scope.bank = null;
         $scope.createBank = true;
@@ -205,12 +202,6 @@ angular.module('convenienceApp')
       }
     };
 
-    // $scope.changeCreditCard = function () {
-    //   if ($scope.card === 'create') {
-
-    //   }
-    // };
-
     $scope.placeOrder = function (bankResponse) {
       TrackerService.trackFormErrors('place order form' , $scope.checkoutForm);
       if (!$scope.checkoutForm.$valid) {
@@ -220,15 +211,9 @@ angular.module('convenienceApp')
       }
       $scope.submitted = true;
       $scope.placedOrder = true;
-      if ($scope.createBank) {
-        $scope.validateInput();
-      }
+
       if ($scope.checkoutForm.$valid) {
         if (bankResponse) {
-
-
-
-
 
           var addressBilling = {
             mode: 'billing',
@@ -259,7 +244,7 @@ angular.module('convenienceApp')
                 cardId: bankResponse.id,
                 userId: CartService.getUserId(),
                 payment: 'onetime',
-                paymentMethod: 'creditcard',
+                paymentMethod: 'directdebit',
                 isInFullPay: isInFullPay,
                 price: CartService.getCartGrandTotal(),
                 discount : CartService.getCartDiscount()
@@ -283,11 +268,6 @@ angular.module('convenienceApp')
               }
             });
           });
-
-
-
-
-
 
         } else {
           var addressBilling = {
@@ -320,16 +300,14 @@ angular.module('convenienceApp')
                   athleteFirstName: CartService.getAthlete().firstName,
                   athleteLastName: CartService.getAthlete().lastName,
                   payment: 'onetime',
-                  paymentMethod: 'creditcard',
+                  paymentMethod: 'directdebit',
                   isInFullPay: isInFullPay,
                   price: CartService.getCartGrandTotal(),
                   discount : CartService.getCartDiscount()
                 };
 
-                console.log('payment',payment);
-                console.log('$scope.bankDetails',$scope.bankDetails);
+                PaymentService.sendPayment(payment).then(function (data) {
 
-                PaymentService.sendPayment(payment).then(function () {
                   CartService.removeCurrentCart();
                   $scope.saveOrUpdateBillingAddress();
                   $state.go('thank-you');

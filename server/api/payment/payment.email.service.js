@@ -14,17 +14,18 @@ var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
 
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, cb) {
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, account, amount, schedules, item, cb) {
   emailTemplates(config.emailTemplateRoot, function (err, template) {
     if (err) return cb(err);
     var emailVars = JSON.parse(JSON.stringify(config.emailVars));
     emailVars.orderId = orderId;
     emailVars.paymentMethod = paymentMethod;
-    emailVars.last4Digits = last4Digits;
+    emailVars.last4Digits = account.last4;
     emailVars.amount = amount;
     emailVars.organizationName = item.name
     emailVars.product = item.sku
     emailVars.schedules = schedules
+    emailVars.accountStatus = account.status
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
       var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));

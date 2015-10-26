@@ -12,8 +12,8 @@
                             Order Id: <%= orderId %>
                             <br />
                             <br />
-                            <% if(paymentMethod === 'directdebit') { %>
-                            Payment method: Bank Account Debit - Loan.
+                            <% if(paymentMethod === 'directdebit'  && accountStatus && accountStatus=='new') { %>
+                            Payment method: Bank Account Debit
                         <br />
                         <br />
                             Please make sure to visit your bank in 3-4 days<br />
@@ -23,8 +23,14 @@
                             <% } else { %>
                         Your order for the <%= organizationName%> team has been received.
 
-                        <br></br>
+                        <br/><br/>
+
+                        <% if(paymentMethod === 'directdebit') { %>
+                        We will charge the bank account on file ending in <%= last4Digits %> on the following schedule:
+                        <% } else { %>
                         We will charge the card on file ending in <%= last4Digits %> on the following schedule:
+                        <% } %>
+
                         <br />
                         <br />
                         <% for(var i=0; i < schedules.length; i++) {

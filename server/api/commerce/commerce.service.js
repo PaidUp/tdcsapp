@@ -26,9 +26,10 @@ function getUserOrders(user, cb) {
       getOrder(user, order.incrementId, function (err, magentoOrder) {
         if (err) {
           callback(err);
+        }else{
+          orders.push(magentoOrder);
+          callback();
         }
-        orders.push(magentoOrder);
-        callback();
       });
     }, function (err) {
       if (err) { return cb(err); }
@@ -55,7 +56,7 @@ function getOrder(user, orderId, cb) {
             return cb(null, magentoOrder);
           }
           else {
-            paymentService.fetchBank(bankId, function (err, bank) {
+            paymentService.fetchBank(user.meta.TDPaymentId,bankId, function (err, bank) {
               if (err) {
                 return cb(err);
               }
