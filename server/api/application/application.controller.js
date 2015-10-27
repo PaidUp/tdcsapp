@@ -47,3 +47,9 @@ exports.cronCompleteOrders = function(req, res) {
     res.status(200).json(data);
   });
 }
+
+exports.cronReminderVerifyBank = function(req, res) {
+    cronjobService.runReminderVerifyBank(function(err, data){
+      res.status(200).json(data);
+    });
+}

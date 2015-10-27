@@ -62,6 +62,18 @@ var jobsCompleteOrders =
     }
   ];
 
+var jobsReminderVerifyBank =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      logger.log('info','paymentCronService.reminderVerifyBank');
+      paymentCronService.sendEmailReminderVerifyBank(function (err, data) {
+        if (err) return callback(err);
+        callback(null, true);
+      });
+    }
+  ];
+
 function canStart() {
   if (fs.existsSync(config.cronjob.pidFile)) {
     return false;
@@ -168,6 +180,21 @@ exports.runCompleteOrders = function(cb) {
         return cb(null,results);
       });
   } else {
+    return cb(null,{name:name+'.pid is created'});
+  }
+}
+
+exports.runReminderVerifyBank = function(cb) {
+  var name = 'retryReminderVerifyBank'+new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running cronRetryReminderVerifyBank...');
+    startGiveName(name);
+    async.series(
+      jobsReminderVerifyBank,
+      function (err, results) {
+        return cb(null,results);
+      });
+  }else{
     return cb(null,{name:name+'.pid is created'});
   }
 }
