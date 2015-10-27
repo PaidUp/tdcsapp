@@ -13,7 +13,7 @@ angular.module('convenienceApp')
         url: ''
       }
     });
-    $scope.loadingBanks = false;
+    $scope.loadingBanks = true;
     $scope.loadingCards = true;
 
     $scope.sendAlertErrorMsg = function (msg) {
@@ -92,6 +92,8 @@ angular.module('convenienceApp')
     };
 
     $scope.updateCardDefault = function(cardId){
+      $scope.loadingBanks = true;
+      $scope.loadingCards = true;
       PaymentService.updateCustomer({cardId:cardId}).then(function(res){
         $scope.defaultSource = res.defaultSource;
         loadBanks();
