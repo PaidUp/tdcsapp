@@ -182,7 +182,7 @@
                     ng-required="banks.length > 1"
                     ng-options="bankObj as bankObj.bankName +': '+ bankObj.last4 for bankObj in banks"
                     ng-change="changeBank()">
-              <option value="" disabled>Select a credit card</option>
+              <option value="" disabled>Select a bank account</option>
             </select>
             <div class="text-CS text-center" ng-show="checkoutForm.selectBank.$error.required && submitted">
               <small class="text-CS">Bank is required</small>
@@ -199,7 +199,7 @@
     </div>
   </div>
 
-  <div class="width-100 bg-Block">
+  <div class="width-100 bg-Block" ng-if="!createBank">
     <div class="container">
       <div class="row">
         <div class="col-sm-4 col-sm-offset-4">

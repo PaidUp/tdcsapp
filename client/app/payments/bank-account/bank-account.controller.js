@@ -253,7 +253,7 @@ angular.module('convenienceApp')
                 CartService.removeCurrentCart();
                 CartService.createCart();
                 $scope.saveOrUpdateBillingAddress();
-                $state.go('thank-you');
+                $state.go('thank-you',{status:bankResponse.status});
               }).catch(function (err) {
                 if (err.data) {
                   $scope.sendAlertErrorMsg(err.data.message);
@@ -305,12 +305,11 @@ angular.module('convenienceApp')
                   price: CartService.getCartGrandTotal(),
                   discount : CartService.getCartDiscount()
                 };
-
-                PaymentService.sendPayment(payment).then(function (data) {
+                PaymentService.sendPayment(payment).then(function () {
 
                   CartService.removeCurrentCart();
                   $scope.saveOrUpdateBillingAddress();
-                  $state.go('thank-you');
+                  $state.go('thank-you', {'status' : $scope.bankDetails.status});
                   TrackerService.create('Place Order');
                 }).catch(function (err) {
                   TrackerService.create('Place Order Error', err.message);

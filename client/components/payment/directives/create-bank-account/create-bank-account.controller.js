@@ -120,6 +120,12 @@ angular.module('convenienceApp')
       }
     };
 
+    if ($state.current.name === 'bank-account-index') {
+      $scope.submitButtonName = 'Place Order';
+    }else {
+      $scope.submitButtonName = 'Confirm';
+    }
+
     $scope.confirmLoanPayment = function () {
       $scope.submitted = true;
       $scope.verifyMatches();
@@ -137,8 +143,6 @@ angular.module('convenienceApp')
           payload, function(status, response){
             if(status === 200) {
               PaymentService.associateBankPayment({tokenId: response.id}).then(function (source) {
-                console.log('source' , source);
-
                 if ($state.current.name === 'user-bank-create') {
                   AuthService.updateCurrentUser();
                   $state.go('user-payments');
@@ -158,15 +162,6 @@ angular.module('convenienceApp')
                 $scope.sendAlertErrorMsg(response.error.message);
               }, 1000);
             }
-
-
-
-
-
-
-
-
-
           });
 
 
