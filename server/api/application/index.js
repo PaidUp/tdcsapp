@@ -11,6 +11,7 @@ router.get('/cron', controller.cron);
 router.get('/cron/reminder/payments', controller.cronReminderPayments);
 router.get('/cron/retry/payments', controller.cronRetrayPayments);
 router.get('/cron/order/complete', controller.cronCompleteOrders);
+router.get('/cron/reminder/verify/bank', controller.cronReminderVerifyBank);
 
 //router.use('/report', require('./report/index'));
 

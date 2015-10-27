@@ -31,7 +31,7 @@ exports.sendNotification = function (subject, jsonMessage, cb) {
         mailOptions.attachments = [];
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
-            return cb(err);
+            return cb(error);
           } else {
             return cb(null, info);
           }
@@ -43,6 +43,4 @@ exports.sendNotification = function (subject, jsonMessage, cb) {
   }catch(e){
     return cb(e, null);
   }
-
-
 };
