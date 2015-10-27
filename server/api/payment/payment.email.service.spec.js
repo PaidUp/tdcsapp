@@ -17,13 +17,13 @@ var period = '*period*';
 var card = {data:[{last4:'*0000*'}]};
 var description = '*description*';
 var account = {
-    bankAccounts:[{accountNumber:'*accountNumber*', status:'new'}]
+    bankAccounts:[{last4:'*accountNumber*', status:'new'}]
 };
 
 describe('payment.email.service', function() {
     it('sendNewOrderEmailCard', function (done) {
-        this.timeout(15000);
-        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, account.bankAccounts[0].status, function(err, data){
+        this.timeout(15000);//orderId, email, paymentMethod, account, amount, schedules, item, teamName
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, account.bankAccounts[0], amount, schedules, item, description, function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
@@ -34,7 +34,7 @@ describe('payment.email.service', function() {
     it('sendNewOrderEmailBank UNVERIFIED', function (done) {
         this.timeout(15000);
         var paymentMethod = 'directdebit';
-        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, account.bankAccounts[0].status, function(err, data){
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, account.bankAccounts[0], amount, schedules, item, description, function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
@@ -45,7 +45,8 @@ describe('payment.email.service', function() {
     it('sendNewOrderEmailBank VERIFIED', function (done) {
         this.timeout(15000);
         var paymentMethod = 'directdebit';
-        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, last4Digits, amount, schedules, item, description, 'VERIFIED', function(err, data){
+        account.bankAccounts[0].status = 'VERIFIED';
+        paymentEmailService.sendNewOrderEmail(orderId, email, paymentMethod, account.bankAccounts[0], amount, schedules, item, description, function(err, data){
             assert.equal(err, null);
             assert(data);
             assert(data.accepted);
