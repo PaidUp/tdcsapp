@@ -268,12 +268,14 @@ function prepareBank(userId, bankId, cb) {
   });
 }
 
-function fetchBank(bankId, cb){
+function fetchBank(customerId, bankId, cb){
   if(!bankId){
     return cb(null, null);
   }else{
     tdPaymentService.init(config.connections.payment);
-    tdPaymentService.fetchBank(bankId, function(err, bank){
+    tdPaymentService.fetchBank(customerId, bankId, function(err, bank){
+      console.log('err' , err);
+      console.log('bank' , bank);
         if(err) return cb(err);
         return cb(null, bank);
     });

@@ -17,7 +17,7 @@ var period = '*period*';
 var card = {data:[{last4:'*0000*'}]};
 var description = '*description*';
 var account = {
-    bankAccounts:[{accountNumber:'*accountNumber*', status:'UNVERIFIED'}]
+    bankAccounts:[{accountNumber:'*accountNumber*', status:'new'}]
 };
 
 describe('payment.email.service', function() {
