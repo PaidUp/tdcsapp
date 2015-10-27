@@ -13,18 +13,19 @@ var commerceService = require('../commerce/commerce.service');
 var userService = require('../user/user.service');
 
 var transporter = nodemailer.createTransport(config.emailService);
-
-exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits, amount, schedules, item, teamName, cb) {
-  emailTemplates(config.emailTemplateRoot, function (err, template) {
+//Done
+exports.sendNewOrderEmail = function (orderId, email, paymentMethod, account, amount, schedules, item, teamName, cb) {
+  emailTemplates(config.emailTemplateRoot, function (err, template) {//TODO account.status, account.last4
     if (err) return cb(err);
     var emailVars = JSON.parse(JSON.stringify(config.emailVars));
     emailVars.orderId = orderId;
     emailVars.paymentMethod = paymentMethod;
-    emailVars.last4Digits = last4Digits;
+    emailVars.last4Digits = account.last4;
     emailVars.amount = amount;
     emailVars.organizationName = item.name
     emailVars.product = teamName || item.sku;
     emailVars.schedules = schedules
+    emailVars.accountStatus = account.status
     template('payment/checkout', emailVars, function (err, html, text) {
       if (err) return cb(err);
       var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
@@ -44,7 +45,7 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, last4Digits
     });
   });
 };
-
+//Deprecated (loan)
 exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
   var filter = {_id:applicationId};
   loanApplicationService.findOne(applicationId, function(err, applicationData){
@@ -96,47 +97,39 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
 
   });
 };
-
-exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
-  var userAccountNumber;
-  var userFirstName;
-  var userEmail;
-
+//Deprecated (loan) CS-636
+exports.sendRemindToVerifyAccount = function (orderId, user, account, date, cb) {
+  var userAccountNumber = account.bankAccounts[0].accountNumber;
+  var userEmail  = user[0].email;
+  var acountNumberLast4Digits;
+  var userFirstName = user[0].firstName;
+  var date = date || new Date();
   //var filter = {_id:applicationId};
-  loanApplicationService.findOne(applicationId, function(err, applicationData){
-    var userId = applicationData.applicantUserId;
+  //loanApplicationService.findOne(applicationId, function(err, applicationData){
+    //var userId = applicationData.applicantUserId;
     // get the user data with the userId
-    var filter = {_id: userId};
-    userService.find(filter, function (err, user) {
-      if (err) return cb(err);
-      if (!user) return cb(false);
-
-      var userEmail;
-      var schedule;
-      var bankId;
-      var acountNumberLast4Digits;
-      var userFirstName = user[0].firstName;
-      userEmail = user[0].email;
-
+    //var filter = {_id: userId};
+    //userService.find(filter, function (err, user) {
+      //if (err) return cb(err);
+      //if (!user) return cb(false);
       getNameTeamFromOrder(orderId, function(err,team){
-
-        paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
-
-          paymentService.fetchBank(bankId, function (errTemplate, account) {
-            userAccountNumber = account.bankAccounts[0].accountNumber;
-            if (errTemplate) return cb(errTemplate);
+        //paymentService.getUserDefaultBankId(user[0], function (err, bankId) {
+          //paymentService.fetchBank(bankId, function (errTemplate, account) {
+            //if (errTemplate) return cb(errTemplate);
             emailTemplates(config.emailTemplateRoot, function (err, template) {
               var emailVars = JSON.parse(JSON.stringify(config.emailVars));
               emailVars.userFirstName = userFirstName;
               emailVars.userAccountNumber = userAccountNumber;
-
+              emailVars.month = date.getMonth() + 1;
+              emailVars.day = date.getDay() + 1;
+              emailVars.year = date.getFullYear();
               template('payment/remindToVerifyAccount', emailVars, function (err, html, text) {
                 if (err) return cb(err);
                 var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
                 mailOptions.html = html;
                 mailOptions.to = userEmail;
-                //mailOptions.bcc = config.emailContacts.developer;
-                mailOptions.subject = 'Reminder: Verify Your Bank Account – ' + team;
+                //mailOptions.bcc = config.emailContacts.developer;//
+                mailOptions.subject = 'Reminder: '+team+' - Confirm Your Bank Account';
                 mailOptions.attachments = [];
                 transporter.sendMail(mailOptions, function (error, info) {
                   if (error) {
@@ -147,15 +140,13 @@ exports.sendRemindToVerifyAccount = function (applicationId, orderId, cb) {
                 });
               });
             });
-          });
-        });
-
+          //});
+        //});
       });
-    });
-
-  });
+    //});
+  //});
 };
-
+//Deprecated (loan)
 exports.sendTomorrowChargeLoan = function (requestObject, cb) {
 
   //  var requestObject = {
@@ -230,7 +221,7 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
     });
   });
 };
-
+//TODO
 exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
@@ -270,20 +261,20 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
 
   });
 };
-
-exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
+//Bank Done CS-639
+exports.sendProcessedEmail = function  (user, amount, orderId, account, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);
 
-  paymentService.getUserDefaultBankId(user, function (err, bankId) {
-      paymentService.fetchBank(bankId, function (response, account) {
+  //paymentService.getUserDefaultBankId(user, function (err, bankId) {
+      //paymentService.fetchBank(bankId, function (response, account) {
         emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
 
         // get the loan object
-        commerceService.orderLoad(orderId, function (err, magentoOrder) {
-          var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        getNameTeamFromOrder(orderId, function (err, team) {
+          //var team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
           emailTemplates(config.emailTemplateRoot, function (err, template) {
 
             if (err) return cb(err);
@@ -314,10 +305,10 @@ exports.sendProcessedEmail = function  (user, amount, orderId, cb) {
 
         });
 
-      });
-  });
+      //});
+  //});
 };
-
+//TODO
 exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard, orderId, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
 
@@ -356,7 +347,7 @@ exports.sendProcessedEmailCreditCard = function  (user, amount, numberCreditCard
     });
   });
 };
-
+//TODO
 exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, amount, daysToTry, cb) {
 
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
@@ -396,58 +387,41 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 
   });
 };
-
-exports.sendFinalEmail = function  (user, amount, orderId, cb) {
+//Bank Done CS-639
+exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
-
   emailVars.userFirstName = user.firstName;
-  emailVars.amount = parseFloat(amount).toFixed(2);;
-
-  paymentService.getUserDefaultBankId(user, function (err, bankId) {
-
-      paymentService.fetchBank(bankId, function (response, account) {
-        emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
-
-        // get the loan object
-        commerceService.orderLoad(orderId, function (err, magentoOrder) {
-
-          emailTemplates(config.emailTemplateRoot, function (err, template) {
-
-            if (err) return cb(err);
-            emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
-
-            template('payment/final', emailVars, function (err, html, text) {
-
-              if (err) return cb(err);
-
-              var mailOptions = config.emailOptions;
-              mailOptions.to = user.email;
-              //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
-
-              mailOptions.html = html;
-              mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + emailVars.team;
-
-              mailOptions.attachments = [];
-
-              transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                  return cb(error);
-                } else {
-                  return cb(null, true);
-                }
-
-              });
-
-            });
-
+  emailVars.amount = parseFloat(amount).toFixed(2);
+  emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
+  //paymentService.getUserDefaultBankId(user, function (err, bankId) {
+      //paymentService.fetchBank(bankId, function (response, account) {
+    getNameTeamFromOrder(orderId, function (err, team) {
+      emailTemplates(config.emailTemplateRoot, function (err, template) {
+        if (err) return cb(err);
+        emailVars.team = team;//magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
+        //console.log('emailVars',emailVars);
+        template('payment/final', emailVars, function (err, html, text) {
+          if (err) return cb(err);
+          var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
+          mailOptions.to = user.email;
+          mailOptions.html = html;
+          mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + team;
+          mailOptions.attachments = [];
+          //console.log('mailOptions',mailOptions);
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              return cb(error);
+            } else {
+              return cb(null, info);
+            }
           });
-
         });
-
-      })
-  });
+      });
+    });
+      //})
+  //});
 };
-
+//Done
 exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, value, period, card, cb) {
   //userService.find({_id:userId}, function(err, user){
     //if (err) return cb(err);
@@ -487,14 +461,15 @@ exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, va
     //});
   //});
 };
-
+//Done
 function getNameTeamFromOrder(orderId, cb){
   commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){
-      cb(null, 'Convenience Select');
+      var magentoError = '*Convenience Select*';
+      return cb(null, magentoError);
     }
     var teamName = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
-    cb(null, teamName);
+    return cb(null, teamName);
   });
 }
 

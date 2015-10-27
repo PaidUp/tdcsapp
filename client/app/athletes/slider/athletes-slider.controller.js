@@ -14,6 +14,13 @@ angular.module('convenienceApp')
         url: 'app/athletes/create/create-athlete.html'
       }
     });
+    $scope.sendAlertErrorMsg = function (msg) {
+      FlashService.addAlert({
+        type: 'danger',
+        msg: msg,
+        timeout: 10000
+      });
+    };
 
     if ($stateParams.athleteId) {
       // UserService.listRelations().then(function (data) {
@@ -122,8 +129,6 @@ angular.module('convenienceApp')
     $scope.loading = true;
     $scope.orders = [];
     CommerceService.getOrders().then(function (orders) {
-
-
       if (orders === 0) {
         $scope.loading = false;
       }else{
@@ -134,15 +139,13 @@ angular.module('convenienceApp')
               order.isOpen = false;
               order.team = team;
                 order.nextPaymentDate = getNextPaymentDate(order.schedulePeriods);
-
-
             });
           }
         });
       }
     }).catch(function (err) {
       $scope.loading = false;
-      $scope.sendAlertErrorMsg(err.data.message);
+      //$scope.sendAlertErrorMsg(err.data.message);
     }).finally(function(){
       $scope.loading = false;
     });

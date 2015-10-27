@@ -59,7 +59,7 @@
                       <div ng-show="order.bank">
                         <span class="bank-acount">
                           <strong>Bank Account:</strong>
-                          {{order.bank.bankAccounts[0].accountNumber | uppercase}}
+                          {{order.bank.last4 | uppercase}}
                         </span>
                         <br>
                       </div>

@@ -3,15 +3,22 @@
 angular.module('convenienceApp')
   .controller('LoanBarCtrl', function ($state, $scope) {
     $scope.tabs = [
-     /*
+/**
       {
-        heading: 'Loan',
+        heading: 'Bank Account',
         state: 'payment-loan-index',
         active: $state.is('payment-loan-index')
       },
-      */
+**/
+
       {
-        heading: 'Credit Card',
+        heading: 'Bank Account',
+        state: 'bank-account-index',
+        active: $state.is('bank-account-index')
+      },
+
+      {
+        heading: 'Payment Method',
         state: 'payment-credit-card',
         active: $state.is('payment-credit-card')
       }

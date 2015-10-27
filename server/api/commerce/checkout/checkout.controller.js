@@ -125,17 +125,11 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
               action = 'fetchCard';
             };
             paymentService[action](orderData.customerId, orderData.cardId, function(err, account){
-              var accountNumber;
-              if (orderData.paymentMethod==='directdebit') {
-                accountNumber = '';
-              }else{
-                accountNumber = account.last4;
-              }
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
               userService.save(child[0], function(err, userAthlete) {
                 if(err) logger.log('error',err);
                 var descriptionTeamEmail = merchantProducts[0].shortDescription || merchantProducts[0].description;
-                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, accountNumber, amount, schedule.schedulePeriods, shoppingCart.items[0], descriptionTeamEmail, function (err, data) {
+                paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, account, amount, schedule.schedulePeriods, shoppingCart.items[0], descriptionTeamEmail, function (err, data) {
                   mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
                   if(err) logger.log('error',err);
                 });

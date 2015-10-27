@@ -43,5 +43,13 @@ angular.module('convenienceApp')
         data:{
           roles:['user']
         }
+      }).state('bank-account-index', {
+        url: '/payment/bank/apply',
+        templateUrl: 'app/payments/bank-account/bank-account.html',
+        controller: 'BankAccountCtrl',
+        auth: true,
+        data:{
+          roles:['user']
+        }
       });
   });

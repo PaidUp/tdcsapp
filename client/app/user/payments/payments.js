@@ -12,7 +12,7 @@ angular.module('convenienceApp')
           roles:['user', 'coach']
         }
       }).state('verify-bank-account', {
-        url: '/user/payments/bank/:bankId/verify/:verifyId',
+        url: '/user/payments/bank/:bankId',
         templateUrl: 'app/user/payments/verify-bank-account/verify-bank-account.html',
         controller: 'VerifyBankAccountCtrl',
         auth: true,
