@@ -573,3 +573,68 @@ function ValidateBankAccount(applicationId, cb){
   });
 }
 
+exports.sendEmailReminderVerifyBank = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    sendEmailReminderVerifyBank
+  ], function(err, result){
+    cb(null, true);
+  });
+};
+
+function sendEmailReminderVerifyBank(pendingOrders, callback){
+  logger.log('info','paymentCronService.sendEmailReminderVerifyBank');
+  var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
+  var reminderValue = config.notifications.reminderEmailPayment.value || 72;
+  //console.log('times', reminderPeriod, reminderValue, pendingOrders);//pendingOrders[].paymentMethod pendingOrders[].cardId pendingOrders[]userId
+  if(pendingOrders.length === 0){
+    return callback(null, true);
+  }
+  return callback(null, false);
+
+  /*async.eachSeries(pendingOrders, function(order, cb) {
+    logger.log('info','iterate each order', order.incrementId);
+    async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
+      logger.log('info','iterate each orderSchedule', schedule.id);
+      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
+      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
+      if(shouldReminder){
+        logger.log('info','should send Email Reminder',schedule.id);
+        userService.find({_id:order.userId}, function(err, user){
+          if (!err && user[0]) {
+            paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+              if(!err){
+                var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
+                paymentEmailService.sendEmailReminderPyamentParents(user, nameTeam, schedule, reminderValue, reminderPeriod, card, function (err, data){
+                  logger.log('info','send Email Reminder data',data);
+                  logger.log('info','send Email Reminder err',err);
+                });
+              };
+            });
+          }
+        });
+        return cbSchedule(null,true);
+      }else{
+      return cbSchedule(null,true);
+      }
+
+    }, function(err){
+        // if any of the file processing produced an error, err would equal that error
+      if( err ) {
+      } else {
+        logger.log('info','All order.schedule have been processed successfully');
+        return cb(null, true);
+      }
+    });
+
+  }, function(err){
+      // if any of the file processing produced an error, err would equal that error
+      if( err ) {
+      } else {
+        logger.log('info','All orders have been processed successfully');
+        return callback(null, true);
+      }
+  });*/
+
+}
+

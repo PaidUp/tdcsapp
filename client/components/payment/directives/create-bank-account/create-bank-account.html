@@ -2,15 +2,19 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
-
         <br>
-
         <img src="/assets/images/check-example.png" style="max-width:370px" class="center-block" id="check-img">
 
         <form name="paymentForm" ng-submit="confirmLoanPayment()" novalidate>
 
           <div class="row">
-
+            <div class="col-sm-12">
+              Full Name
+              <input type="text" name="name" ng-model="name" class="form-control" placeholder="Name of the bank account holder" required ng-required="true"  >
+              <div class="text-CS text-center" ng-show="paymentForm.name.$error.required && submitted">
+                <small class="text-CS">Name is required</small>
+              </div>
+            </div>
             <div class="col-sm-6">
               Rounting number (ABA)
               <input type="text" name="aba" ng-model="inputRoutingNumber" class="form-control" placeholder="" required ng-required="true" ng-change="ABAValidator()" ng-blur="maskABA()" ng-focus="unmaskABA()">
@@ -49,16 +53,26 @@
               </div>
             </div>
 
+            <div class="col-sm-6 col-sm-offset-3" ng-if="submitButtonName=='Place Order'">
+              <br>
+              <strong>
+                By clicking on the "Place Order" button, I agree to Convenience Select's:<br>
+                <ul>
+                  <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
+                  <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                  <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
+                  <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
+                </ul>
+              </strong>
+              <br>
+            </div>
             <div class="clearfix"><br></div>
-
             <div class="col-sm-6 col-sm-offset-3">
-              <button class="btn btnSignUp btn-block btn-lg" type="submit" id="payment-btn">Confirm</button>
+              <button class="btn btnSignUp btn-block btn-lg" type="submit" id="payment-btn">{{submitButtonName}}</button>
               <br>
               <br>
             </div>
-
           </div>
-
         </form>
 
       </div>

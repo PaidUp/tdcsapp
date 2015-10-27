@@ -13,7 +13,7 @@ angular.module('convenienceApp')
         url: ''
       }
     });
-    $scope.loadingBanks = false;
+    $scope.loadingBanks = true;
     $scope.loadingCards = true;
 
     $scope.sendAlertErrorMsg = function (msg) {
@@ -23,36 +23,56 @@ angular.module('convenienceApp')
         timeout: 10000
       });
     };
-    //Comment for bank is disabled.
-    /*PaymentService.listBankAccounts().then(function (response) {
-      $scope.bankAccounts = angular.copy(response.bankAccounts);
-      $scope.loadingBanks = false;
-    }).catch(function (err) {
-      $scope.loadingBanks = false;
-      $scope.sendAlertErrorMsg(err.data.message);
-    });*/
 
-    PaymentService.listCards().then(function (response) {
-      $scope.defaultSource = response.defaultSource;
-      $scope.loadingCards = false;
-      $scope.cards = angular.copy(response.data);
-      var i;
-      for (i=0; i<$scope.cards.length; i++) {
-        if ($scope.cards[i].id === response.defaultSource) {
-          $scope.cards[i].radio = true;
-        } else {
-          $scope.cards[i].radio = false;
+    //Bank accounts
+    function loadBanks(){
+      PaymentService.listBankAccounts().then(function (response) {
+        if(response.defaultSource){
+          $scope.defaultSource = response.defaultSource;
         }
-      }
-    }).catch(function (err) {
-      $scope.loadingCards = false;
-      $scope.sendAlertErrorMsg(err.data.message);
-    });
+        $scope.bankAccounts = angular.copy(response.data);
+        $scope.loadingBanks = false;
+        for (var i=0; i<$scope.bankAccounts.length; i++) {
+          if ($scope.bankAccounts[i].id === response.defaultSource) {
+            $scope.bankAccounts[i].radio = true;
+          } else {
+            $scope.bankAccounts[i].radio = false;
+          }
+        }
+      }).catch(function (err) {
+        $scope.loadingBanks = false;
+        $scope.sendAlertErrorMsg(err.data.message);
+      });
+    }
+
+    loadBanks();
+
+    function loadCards(){
+      PaymentService.listCards().then(function (response) {
+        if(response.defaultSource){
+          $scope.defaultSource = response.defaultSource;
+        }
+        $scope.loadingCards = false;
+        $scope.cards = angular.copy(response.data);
+        var i;
+        for (i=0; i<$scope.cards.length; i++) {
+          if ($scope.cards[i].id === response.defaultSource) {
+            $scope.cards[i].radio = true;
+          } else {
+            $scope.cards[i].radio = false;
+          }
+        }
+      }).catch(function (err) {
+        $scope.loadingCards = false;
+        $scope.sendAlertErrorMsg(err.message);
+      });
+    }
+
+    loadCards();
 
     $scope.verifyAccount = function (account) {
       $state.go('verify-bank-account', {
-        bankId: account.id,
-        verifyId: account.links.bankAccountVerification
+        bankId: account.id
       });
     };
 
@@ -72,8 +92,12 @@ angular.module('convenienceApp')
     };
 
     $scope.updateCardDefault = function(cardId){
+      $scope.loadingBanks = true;
+      $scope.loadingCards = true;
       PaymentService.updateCustomer({cardId:cardId}).then(function(res){
         $scope.defaultSource = res.defaultSource;
+        loadBanks();
+        loadCards();
         TrackerService.create('Update card default' , {});
       }).catch(function(err){
         TrackerService.create('Update card default', err.data.message);

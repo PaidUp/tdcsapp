@@ -13,8 +13,8 @@ angular.module('convenienceApp')
       return Payment.save(payment).$promise;
     };
 
-    this.createBankPayment = function (payment) {
-      return BankPayment.save({ action: 'create' }, payment).$promise;
+    this.associateBankPayment = function (data) {
+      return BankPayment.save({ action: 'associate' }, data).$promise;
     };
 
     this.listBankAccounts =  function () {

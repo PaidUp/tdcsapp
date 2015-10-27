@@ -43,6 +43,4 @@ exports.sendNotification = function (subject, jsonMessage, cb) {
   }catch(e){
     return cb(e, null);
   }
-
-
 };
