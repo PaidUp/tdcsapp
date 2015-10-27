@@ -26,6 +26,7 @@ angular.module('convenienceApp')
     //get schedule
 
     $scope.sendAlertErrorMsg = function (msg) {
+      $scope.placedOrder = false;
       FlashService.addAlert({
         type: 'danger',
         msg: msg,
@@ -88,14 +89,7 @@ angular.module('convenienceApp')
 
     $scope.states = UserService.getStates();
     $scope.user = AuthService.getCurrentUser();
-
-    $scope.sendAlertErrorMsg = function (msg) {
-      FlashService.addAlert({
-        type: 'danger',
-        msg: msg,
-        timeout: 10000
-      });
-    };
+    
 
     AuthService.isLoggedInAsync(function (loggedIn) {
       UserService.listAddresses($scope.user._id).then(function (data) {
