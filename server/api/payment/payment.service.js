@@ -274,8 +274,6 @@ function fetchBank(customerId, bankId, cb){
   }else{
     tdPaymentService.init(config.connections.payment);
     tdPaymentService.fetchBank(customerId, bankId, function(err, bank){
-      console.log('err' , err);
-      console.log('bank' , bank);
         if(err) return cb(err);
         return cb(null, bank);
     });

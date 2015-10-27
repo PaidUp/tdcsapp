@@ -42,31 +42,18 @@ function getOrder(user, orderId, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderLoad(orderId, function (err, magentoOrder) {
     if (err) return cb(err);
-    if (magentoOrder.paymentMethod === 'directdebit') {
-      loanService.findOne({orderId: orderId}, function (err, loan) {
+
+    if (magentoOrder.cardId.indexOf('ba_') === 0) {
+
+      paymentService.fetchBank(user.meta.TDPaymentId,magentoOrder.cardId, function (err, bank) {
         if (err) {
-          return cb(err, magentoOrder);
+          return cb(err);
         }
-        magentoOrder.loan = loan;
-        paymentService.getUserDefaultBankId(user, function (err, bankId) {
-          if (err) {
-            // not-available-payment
-            // not-bank-verified
-            magentoOrder.bankError = err;
-            return cb(null, magentoOrder);
-          }
-          else {
-            paymentService.fetchBank(user.meta.TDPaymentId,bankId, function (err, bank) {
-              if (err) {
-                return cb(err);
-              }
-              magentoOrder.bank = bank;
-              return cb(null, magentoOrder);
-            });
-          }
-        });
+        magentoOrder.bank = bank;
+        return cb(null, magentoOrder);
       });
-    } else if (magentoOrder.paymentMethod === 'creditcard') {
+
+    } else if (magentoOrder.cardId.indexOf('card_') === 0) {
       paymentService.fetchCard(user.meta.TDPaymentId ,magentoOrder.cardId, function (err, card) {
         if (err) {
           return cb(err);

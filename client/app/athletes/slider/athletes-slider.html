@@ -53,7 +53,7 @@
                 <tbody>
                 <tr>
                   <td>
-                      <span class="pull-right" ng-show="order.card">
+                      <span class="pull-right">
                         <strong ng-class="{'text-green-CS': (order.status === 'processing' || order.status === 'complete'), 'text-red-CS': (order.status === 'canceled' || order.status === 'holded')}">
                           {{order.status | uppercase}}
                         </strong>
@@ -74,7 +74,7 @@
                     <div ng-show="order.bank">
                         <span class="bank-acount">
                           <strong>Bank Account:</strong>
-                          {{order.bank.bankAccounts[0].accountNumber | uppercase}}
+                          {{order.bank.last4}}
                         </span>
                       <br>
                     </div>
