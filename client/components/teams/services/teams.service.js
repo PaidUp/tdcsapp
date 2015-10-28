@@ -28,12 +28,15 @@ angular.module('convenienceApp')
 
       var deferred = $q.defer();
       Teams.query({categoryId:'teams'},function (teamsResponse) {
-        teamsResponse.forEach(function (teamItem) {
+        teamsResponse.forEach(function (teamItem, idx, arr) {
           TeamService.getTeam(teamItem.productId).then(function (team) {
-            if(team) {
+            if(team && team.attributes.status == 1) {
               teams.push(team);
             }
-            deferred.resolve(teams);
+            if(arr.length - 1 == idx){
+              deferred.resolve(teams);
+            }
+
           }).catch(function (err) {
 
           });
@@ -47,11 +50,13 @@ angular.module('convenienceApp')
 
       var deferred = $q.defer();
       TeamsGrouped.query({productId:productId},function (teamsResponse) {
-        teamsResponse.forEach(function (teamItem) {
+        teamsResponse.forEach(function (teamItem, idx, arr) {
           TeamService.getTeam(teamItem.productId).then(function (team) {
             if(team) {
-              teams.push(team);
-              if(teams.length === teamsResponse.length){
+              if(team.attributes.status == 1){
+                teams.push(team);
+              }
+              if(arr.length-1 == idx){
                 deferred.resolve(teams);
               }
             }
@@ -66,9 +71,7 @@ angular.module('convenienceApp')
     this.getTeam = function (teamId) {
       var deferred = $q.defer();
       TeamApi.get({productId: teamId}).$promise.then(function (team) {
-        if(team.status == "1") {
-          deferred.resolve(new Team(team));
-        }
+        deferred.resolve(new Team(team));
       });
       return deferred.promise;
     };
