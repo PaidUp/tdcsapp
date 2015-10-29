@@ -150,6 +150,7 @@ angular.module('convenienceApp')
                 } else if ($state.current.name === 'bank-account-index') {
                   $scope.$parent.placeOrder(source);
                 }
+                $rootScope.$emit('verify-bank-account', {});
               }).catch(function (err) {
                 $scope.loading = false;
                 console.log('ERROR: ', err);
