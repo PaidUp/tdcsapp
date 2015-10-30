@@ -21,6 +21,23 @@ angular.module('convenienceApp')
       return BankPayment.get({ action: 'list' }).$promise;
     };
 
+    this.hasBankAccountsWihtoutVerify =  function (cb) {
+      var result = false;
+      this.listBankAccounts().then(function(bankAccounts){
+        if(bankAccounts && bankAccounts.data){
+          bankAccounts.data.forEach(function(ele){
+            if(ele.status == 'new'){
+              return cb(true);
+            }
+          });
+        }
+        cb(false);
+      }).catch(function(err){
+        console.log('err' ,err);
+        cb(false);
+      });
+    };
+
     this.getBankAccount = function (bankId) {
       return BankPayment.get({ action: bankId }).$promise;
     };
