@@ -99,11 +99,11 @@ exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
 };
 //Deprecated (loan) CS-636
 exports.sendRemindToVerifyAccount = function (orderId, user, account, date, cb) {
-  var userAccountNumber = account.bankAccounts[0].accountNumber;
-  var userEmail  = user[0].email;
-  var acountNumberLast4Digits;
-  var userFirstName = user[0].firstName;
+  var userAccountNumber = account.last4;
+  var userEmail  = user.email;
+  var userFirstName = user.firstName;
   var date = date || new Date();
+  //TODO
   //var filter = {_id:applicationId};
   //loanApplicationService.findOne(applicationId, function(err, applicationData){
     //var userId = applicationData.applicantUserId;
@@ -121,7 +121,7 @@ exports.sendRemindToVerifyAccount = function (orderId, user, account, date, cb) 
               emailVars.userFirstName = userFirstName;
               emailVars.userAccountNumber = userAccountNumber;
               emailVars.month = date.getMonth() + 1;
-              emailVars.day = date.getDay() + 1;
+              emailVars.day = date.getDate();
               emailVars.year = date.getFullYear();
               template('payment/remindToVerifyAccount', emailVars, function (err, html, text) {
                 if (err) return cb(err);
@@ -229,6 +229,11 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
   paymentService.fetchCard(user.meta.TDPaymentId, order.cardId, function (response, account) {
+    //console.log('order',order);
+    //console.log('order.account',order.account);
+    //console.log('cardId',cardId);
+    ////TODO definir cuando la orden esta hecha con una tarjeta de credito, pero el
+    //// define when the order is made with a credit card. but the default account is a bank.
     emailVars.accountLast4Digits = account.last4 || '1234';
 
     // get the loan object
