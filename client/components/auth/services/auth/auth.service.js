@@ -45,7 +45,7 @@ angular.module('convenienceApp')
       },
 
       updateCurrentUser: function () {
-        $rootScope.$emit('close-alerts');
+        //$rootScope.$emit('close-alerts');
         $rootScope.currentUser = UserService.get(SessionService.getCurrentSession());
       },
       updateCurrentUserSync: function (cb) {

@@ -56,14 +56,16 @@ angular.module('convenienceApp')
           deposit1: $scope.deposit1,
           deposit2: $scope.deposit2
         }).then(function (res) {
-          console.log(res);
-
           $state.go('athletes');
           AuthService.updateCurrentUser();
-          FlashService.addAlert({
+
+          FlashService.overrideByAlias('verify-bank',{
             type: 'success',
             templateUrl: 'components/application/directives/alert/alerts/verify-bank-account-success.html',
-            timeout: 10000
+            timeout: 10000,
+            launch : function(){
+              $rootScope.$emit('verify-bank-account', {});
+            }
           });
         }).catch(function (err) {
           console.log('err' , err);
