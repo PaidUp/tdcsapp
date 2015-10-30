@@ -62,9 +62,11 @@ angular.module('convenienceApp')
           FlashService.overrideByAlias('verify-bank',{
             type: 'success',
             templateUrl: 'components/application/directives/alert/alerts/verify-bank-account-success.html',
-            timeout: 10000
+            timeout: 10000,
+            launch : function(){
+              $rootScope.$emit('verify-bank-account', {});
+            }
           });
-          $rootScope.$emit('verify-bank-account', {});
         }).catch(function (err) {
           console.log('err' , err);
           $scope.sendAlertErrorMsg(err.data.message);

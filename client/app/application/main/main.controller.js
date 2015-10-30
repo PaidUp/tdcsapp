@@ -44,7 +44,11 @@ angular.module('convenienceApp')
           angular.forEach($rootScope.alerts, function (value, index) {
             if (value.templateUrl === alert.templateUrl || alert.alias === value.alias) {
               $scope.closeAlert(index);
+              if(value.launch){
+               value.launch();
+              }
             }
+
           });
         }, alert.timeout);
       }

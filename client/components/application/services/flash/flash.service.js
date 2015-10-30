@@ -15,7 +15,6 @@ angular.module('convenienceApp')
 
     this.overrideByAlias = function(alias, alert){
       alert.alias = alias;
-      alert.overwrite = true;
       this.addAlert(alert);
     }
   });
