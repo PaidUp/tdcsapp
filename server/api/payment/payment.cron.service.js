@@ -15,6 +15,7 @@ var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 var notifications = require('../notifications/notifications.service');
 var async = require('async');
+var businessDays = require('moment-business-days');
 
 function sendEmailReminder(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminder');
@@ -576,56 +577,72 @@ function ValidateBankAccount(applicationId, cb){
 exports.sendEmailReminderVerifyBank = function(cb){
   async.waterfall([
     collectPendingOrders,
-    sendEmailReminderVerifyBank
+    sendEmailReminderVerifyBankService
   ], function(err, result){
     cb(null, true);
   });
 };
 
-function sendEmailReminderVerifyBank(pendingOrders, callback){
+function sendEmailReminderVerifyBankService(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminderVerifyBank');
-  var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
-  var reminderValue = config.notifications.reminderEmailPayment.value || 72;
-  //console.log('times', reminderPeriod, reminderValue, pendingOrders);//pendingOrders[].paymentMethod pendingOrders[].cardId pendingOrders[]userId
+  var today = moment(new Date());
   if(pendingOrders.length === 0){
     return callback(null, true);
   }
-  return callback(null, false);
-
-  /*async.eachSeries(pendingOrders, function(order, cb) {
-    logger.log('info','iterate each order', order.incrementId);
-    async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
-      logger.log('info','iterate each orderSchedule', schedule.id);
-      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
-      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
-      if(shouldReminder){
-        logger.log('info','should send Email Reminder',schedule.id);
+  async.eachSeries(pendingOrders, function(order, cb) {
+    //logger.info('iterate each order', order.incrementId);
+    //async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
+      //logger.log('info','iterate each orderSchedule', schedule.id);
+      //return cbSchedule(null,true);
+      var orderDate = new Date(order.createdAt);
+      //TODO: preconfigurate array to add N business day. exaple: [3,6,9,12,15]
+      var orderDateEnableOne = businessDays(orderDate).businessAdd(3)._d;
+      var orderDateEnableTwo = businessDays(orderDate).businessAdd(6)._d;
+      var orderDateEnableThree = businessDays(orderDate).businessAdd(9)._d;
+      var orderDateEnableFour = businessDays(orderDate).businessAdd(12)._d;
+      var orderDateEnableFive = businessDays(orderDate).businessAdd(15)._d;
+      var newShouldReminder = [orderDateEnableOne, orderDateEnableTwo, orderDateEnableThree, orderDateEnableFour, orderDateEnableFive
+      ].some(function(date){
+        return moment(date).isSame(today.format(), 'day');
+      });
+      if(newShouldReminder && order.paymentMethod === 'directdebit'){
+        //logger.log('info','should send Email Reminder',schedule.id);
         userService.find({_id:order.userId}, function(err, user){
           if (!err && user[0]) {
-            paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
-              if(!err){
-                var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
-                paymentEmailService.sendEmailReminderPyamentParents(user, nameTeam, schedule, reminderValue, reminderPeriod, card, function (err, data){
-                  logger.log('info','send Email Reminder data',data);
-                  logger.log('info','send Email Reminder err',err);
-                });
-              };
-            });
+            //paymentService.listBanks(user[0].meta.TDPaymentId, function(errList, listAccounts){
+              paymentService.fetchBank(user[0].meta.TDPaymentId, order.cardId, function(err, account){//customerId, bankId
+                //console.log('account', account);
+                if(!err && account.status === 'new'){
+                  //var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
+                  paymentEmailService.sendRemindToVerifyAccount(order.incrementId, user[0], account, orderDate, function (err, data){
+                    logger.log('info','send Email Reminder data',data);
+                    logger.log('info','send Email Reminder err',err);
+                  });
+
+                }
+                return cb(null, true);
+              });
+            //});
+          }else{
+            return cb(null, true);
           }
+
         });
-        return cbSchedule(null,true);
+        
+        //return cbSchedule(null,true);
       }else{
-      return cbSchedule(null,true);
+        return cb(null, true);
+      //return cbSchedule(null,true);
       }
 
-    }, function(err){
-        // if any of the file processing produced an error, err would equal that error
-      if( err ) {
-      } else {
-        logger.log('info','All order.schedule have been processed successfully');
-        return cb(null, true);
-      }
-    });
+    //}, function(err){
+    //    // if any of the file processing produced an error, err would equal that error
+    //  if( err ) {
+    //  } else {
+    //    logger.log('info','All order.schedule have been processed successfully');
+    //    return cb(null, true);
+    //  }
+    //});
 
   }, function(err){
       // if any of the file processing produced an error, err would equal that error
@@ -634,7 +651,7 @@ function sendEmailReminderVerifyBank(pendingOrders, callback){
         logger.log('info','All orders have been processed successfully');
         return callback(null, true);
       }
-  });*/
+  });
 
 }
 

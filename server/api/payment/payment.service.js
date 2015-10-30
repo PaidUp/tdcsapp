@@ -253,18 +253,19 @@ function prepareCard(userId, cardId, cb) {
   });
 }
 
-function prepareBank(userId, bankId, cb) {
+function prepareBank(customerId, bankId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.fetchBank(bankId, function(err, bank){
-    if(bank.bankAccounts[0].links.customer === null) {
-      associateBank(userId, bankId, function (err, data) {
-        if(err) return cb(err);
-        return cb(null, bank);
-      });
-    }
-    else {
+  tdPaymentService.fetchBank(customerId, bankId, function(err, bank){
+    if(err) return cb(err);
+    //if(bank.bankAccounts[0].links.customer === null) {
+      //associateBank(userId, bankId, function (err, data) {
+        //if(err) return cb(err);
+        //return cb(null, bank);
+      //});
+    //}
+    //else {
       return cb(null, bank);
-    }
+    //}
   });
 }
 
@@ -274,8 +275,6 @@ function fetchBank(customerId, bankId, cb){
   }else{
     tdPaymentService.init(config.connections.payment);
     tdPaymentService.fetchBank(customerId, bankId, function(err, bank){
-      console.log('err' , err);
-      console.log('bank' , bank);
         if(err) return cb(err);
         return cb(null, bank);
     });
@@ -346,7 +345,8 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
   });
 }
 
-function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) {
+function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee, metaPayment, cb) {
+  console.log('debitOrderDirectDebit',orderId, userId, providerId, amount, bankId, fee, metaPayment);
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -358,26 +358,30 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
       if(err) return cb(err);
       logger.info('2b) Associate BP customer bank account');
       // 2b) Associate BP customer credit card
+      // TODO jesse
       prepareBank(TDPaymentId, bankId, function (err, bankDetails) {
         if(err) return cb(err);
         logger.info('2c) Create BP Order');
         // 2c) Create BP Order
-        createOrder(merchantId, orderId, function(err, BPOrderId) {
-          if(err) return cb(err);
-          logger.info('2d) Report BP Order to Magento.');
-          commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
+        //createOrder(merchantId, orderId, function(err, BPOrderId) {
+          //if(err) return cb(err);
+          //logger.info('2d) Report BP Order to Magento.');
+          //commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
             if (err) return cb(err);
             logger.info('2e) Debit BP bank account, order.');
-            // 2d) Debit BP credit card
-            debitBank(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, BPOrderId, function(err, data) {
+            // 2d) Debit BP credit card //
+            debitCard(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
+            //debitBank(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, orderId, function(err, data) {
+              //console.log('err',err);
+              //console.log('data',data);
               if(err) return cb(err);
               if(data.debits[0].status == 'succeeded') {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
-                var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
+                var result = {amount: amount, orderId: orderId, BPDebitId: data.debits[0].id,
                   paymentMethod: "directdebit", account: bankDetails.bankAccounts[0].accountNumber,
                   bankName: bankDetails.bankAccounts[0].bankName, accountType: bankDetails.bankAccounts[0].accountType};
-                commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
+                commerceService.addTransactionToOrder(orderId, orderId, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
@@ -387,8 +391,8 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
                 return cb(data);
               }
             });
-          });
-        });
+          //});
+        //});
       });
     });
   });
@@ -399,6 +403,8 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
   if(paymentMethod == "creditcard") {
     var paymentId = order.cardId;
     debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, metaPayment, retryId, function (err, resultDebit) {
+      //console.log('resultDebit',resultDebit);
+      //console.log('err',err);
       // Debit failed
       if (err) {
         //logger.info('Failed, add a comment and mark order as "on hold"');
@@ -433,7 +439,7 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
     });
   }
   else if(paymentMethod == "directdebit") {
-    getUserDefaultBankId(user, function(defaultBankError, paymentId){
+    /*getUserDefaultBankId(user, function(defaultBankError, paymentId){
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
         // 3) Add a comment and mark order as "processing"
@@ -443,9 +449,10 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
           });
         });
       }
-      else {
+      else {*/
         // Debit order
-        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, paymentId, function (err, resultDebit) {
+        // //TODO jesse //orderId, userId, providerId, amount, bankId, fee, metaPayment,
+        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, order.cardId, fee, metaPayment, function (err, resultDebit) {
           // Debit failed
           if (err) {
             logger.info('Failed, add a comment and mark order as "on hold"');
@@ -466,8 +473,8 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
             });
           }
         });
-      }
-    });
+      //}
+    //});
   }
 }
 
@@ -475,18 +482,18 @@ function getUserDefaultBankId(user, cb) {
   // Check bank accounts
   listBanks(user.meta.TDPaymentId, function(err, data){
     if(err) return cb(err);
-    if(data.bankAccounts.length == 0) {
+    if(data.length == 0) {
       // error
       return cb({name: 'not-available-payment'}, null);
     }
     var bank;
-    for (var i = 0; i < data.bankAccounts.length; i++) {
-      bank = data.bankAccounts[i];
-      if(bank.state == 'succeeded') {
+    for (var i = 0; i < data.length; i++) {
+      bank = data[i];
+      if(bank.state == 'verified') {
         return cb(null, bank.id);
       }
     }
-    return cb({name: 'not-bank-verified'}, bank.id);
+    return cb({name: 'not-bank-verified'}, null);
   });
 }
 
