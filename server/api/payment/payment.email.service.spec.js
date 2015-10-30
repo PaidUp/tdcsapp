@@ -83,7 +83,7 @@ describe('payment.email.service', function() {
 
     it('sendRemindToVerifyAccount', function (done) {
         this.timeout(15000);
-        paymentEmailService.sendRemindToVerifyAccount(orderId, user, account, "", function(err, data){
+        paymentEmailService.sendRemindToVerifyAccount(orderId, user[0], account.bankAccounts[0], "", function(err, data){
             assert(data);
             assert(data.accepted);
             done();
