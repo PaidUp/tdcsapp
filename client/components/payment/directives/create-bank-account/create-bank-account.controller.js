@@ -150,7 +150,6 @@ angular.module('convenienceApp')
                 } else if ($state.current.name === 'bank-account-index') {
                   $scope.$parent.placeOrder(source);
                 }
-                $rootScope.$emit('verify-bank-account', {});
               }).catch(function (err) {
                 $scope.loading = false;
                 console.log('ERROR: ', err);
@@ -165,34 +164,6 @@ angular.module('convenienceApp')
             }
           });
 
-
-        /*balanced.bankAccount.create(payload, function (response) {
-          if(response.status === 201) {
-            PaymentService.createBankPayment({bankId: response.data.id}).then(function () {
-              if ($state.current.name === 'user-bank-create') {
-                AuthService.updateCurrentUser();
-                $state.go('user-payments');
-                $scope.loading = false;
-              } else if ($state.current.name === 'payment-loan-payment') {
-                CartService.removeCurrentCart();
-                LoanService.removeCurrentLoanApplication();
-                AuthService.updateCurrentUser();
-                $scope.loading = false;
-                $state.go('thank-you');
-              }
-            }).catch(function (err) {
-              $scope.loading = false;
-              console.log('ERROR: ', err);
-              console.log('BANKID: ', response.data.id);
-              $scope.sendAlertErrorMsg(err.data.message);
-            });
-          } else {
-            $scope.loading = false;
-            $timeout(function () {
-              $scope.sendAlertErrorMsg(response.error.description);
-            }, 1000);
-          }
-        });*/
       }
     };
   });
