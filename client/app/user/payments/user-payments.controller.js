@@ -2,7 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('UserPaymentsCtrl', function ($rootScope, $scope, $state, PaymentService, FlashService, AuthService,
-                                            TrackerService) {
+                                            TrackerService, ImageCardService) {
     TrackerService.pageTrack();
 
     $rootScope.$emit('bar-welcome', {
@@ -13,6 +13,9 @@ angular.module('convenienceApp')
         url: ''
       }
     });
+
+    $scope.cardImages = ImageCardService.cards;
+
     $scope.loadingBanks = true;
     $scope.loadingCards = true;
 
