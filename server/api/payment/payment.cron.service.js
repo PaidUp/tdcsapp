@@ -590,7 +590,7 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
     return callback(null, true);
   }
   async.eachSeries(pendingOrders, function(order, cb) {
-    //logger.info('iterate each order', order.incrementId);
+    logger.info('iterate each order', order.incrementId);
     //async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
       //logger.log('info','iterate each orderSchedule', schedule.id);
       //return cbSchedule(null,true);
@@ -606,12 +606,12 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
         return moment(date).isSame(today.format(), 'day');
       });
       if(newShouldReminder && order.paymentMethod === 'directdebit'){
-        //logger.log('info','should send Email Reminder',schedule.id);
+        logger.log('info','should validate pyment method',order.paymentMethod);
         userService.find({_id:order.userId}, function(err, user){
           if (!err && user[0]) {
             //paymentService.listBanks(user[0].meta.TDPaymentId, function(errList, listAccounts){
               paymentService.fetchBank(user[0].meta.TDPaymentId, order.cardId, function(err, account){//customerId, bankId
-                //console.log('account', account);
+                logger.log('info','should validate status account',account.status);
                 if(!err && account.status === 'new'){
                   //var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
                   paymentEmailService.sendRemindToVerifyAccount(order.incrementId, user[0], account, orderDate, function (err, data){
