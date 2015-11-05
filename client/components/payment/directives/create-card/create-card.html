@@ -47,7 +47,7 @@
     </div>
     <div class="col-sm-4">
       <div class="row">
-        <div class="col-sm-6" 
+        <div class="col-sm-6"
              ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
           <div class="form-group">
             <input type="text"
@@ -62,7 +62,7 @@
                     ng-pattern="/^\d{1,2}$/">
           </div>
         </div>
-        <div class="col-sm-6" 
+        <div class="col-sm-6"
              ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
           <div class="form-group">
             <input type="text"
@@ -138,6 +138,7 @@
     </div>
   </div>
 
+  <div ng-if="submitButtonName == 'Create card'">
   <div class="width-100 bg-Block">
     <div class="container">
       <div class="row">
@@ -160,13 +161,16 @@
       </div>
     </div>
   </div>
+  </div>
+
   <div class="row">
     <div class="col-sm-4 col-sm-offset-4">
-      <button type="submit" class="btn btnSignUp btn-block btn-lg">Create card</button>
+      <button type="submit" class="btn btnSignUp btn-block btn-lg">{{submitButtonName}}</button>
       <br/>
       <br/>
     </div>
   </div>
+
 </form>
 
 <div class="container empty-car text-CS" ng-show="loading">

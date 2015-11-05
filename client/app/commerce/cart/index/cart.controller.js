@@ -97,22 +97,16 @@ angular.module('convenienceApp')
       $scope.hasCart = false;
     }
 
-    // $scope.shipping = 0;
-    // $scope.tax = 0;
 
     $scope.checkouOrder = function () {
       TrackerService.create('Checkou Order');
-      // $state.go('checkout');
-      $state.go('payment-credit-card');
+      $state.go('payment-account-index');
     };
 
     $scope.removeCart = function () {
       TrackerService.create('Remove cart');
       CartService.removeCurrentCart();
       $state.go('athletes');
-      // CartService.createCart().then(function () {
-      //   $state.go('athletes');
-      // });
     };
 
     $scope.codeDiscounts = '';

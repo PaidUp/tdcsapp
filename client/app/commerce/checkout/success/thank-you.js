@@ -11,7 +11,7 @@ angular.module('convenienceApp')
           status : 'old'
         },
         controller: function ($scope, $rootScope, $state, $stateParams) {
-          if ($state.previous.name === 'bank-account-index' && $stateParams.status == 'new') {
+          if ($state.previous.name === 'payment-account-index' && $stateParams.status == 'new') {
             $scope.displayInfo = true;
           } else {
             $scope.displayInfo = false;

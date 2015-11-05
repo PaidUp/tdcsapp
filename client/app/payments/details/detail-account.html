@@ -2,9 +2,6 @@
   <div class="container">
     <div class="row">
 
-      <br>
-      <br>
-
       <div class="col-sm-4 text-center clearfix">
         <h3 class="text-CS">Checkout</h3>
       </div>
@@ -167,12 +164,12 @@
     <div class="row">
 
       <div class="col-sm-4 text-right clearfix">
-        <h4 class="text-CS">Bank Account</h4>
+        <h4 class="text-CS">Payment Mehtod <span ng-show="createBank || createCard">Details</span></h4>
       </div>
 
     </div>
 
-    <div ng-show="accounts.length > 2">
+    <div ng-show="accounts.length >= 2">
       <div class="row">
         <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectBank.$invalid && submitted }">
           <div class="form-group">
@@ -181,7 +178,7 @@
                     ng-model="accountDetails"
                     ng-required="accounts.length > 1"
                     ng-options="accountObj as accountObj.accountName +' '+ accountObj.last4 for accountObj in accounts"
-                    ng-change="changeBank()">
+                    ng-change="changeAccount()">
               <option value="" disabled>Select a account</option>
             </select>
             <div class="text-CS text-center" ng-show="checkoutForm.selectAccount.$error.required && submitted">
@@ -192,43 +189,42 @@
       </div>
     </div>
 
-    <div ng-if="banks.length === 1 || createBank">
-
+    <div ng-if="createBank">
       <create-bank-account user="user"></create-bank-account>
-
     </div>
-  </div>
 
-  <div class="width-100 bg-Block" ng-if="!createBank">
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-4 col-sm-offset-4">
+    <div ng-if="createCard">
+      <create-card need-zipcode="true"></create-card>
+    </div>
 
-          <div class="row">
-            <div class="col-sm-12"><strong>
-              By clicking on the "Place Order" button, I agree to Convenience Select's:<br>
-              <ul>
-                <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
-                <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
-                <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
-                <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
-              </ul>
-            </strong></div>
-            <div ng-if="!createBank" class="col-sm-12">
-              <button type="submit" class="btn btnSignUp btn-block btn-lg" ng-disabled="placedOrder">Place Order</button>
+    <div class="width-100 bg-Block" ng-if="!createBank">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-4 col-sm-offset-4">
+
+            <div class="row">
+              <div class="col-sm-12"><strong>
+                By clicking on the "Place Order" button, I agree to Convenience Select's:<br>
+                <ul>
+                  <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
+                  <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                  <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
+                  <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
+                </ul>
+              </strong></div>
+              <div ng-if="!createBank && !createCard" class="col-sm-12">
+                <button type="submit" class="btn btnSignUp btn-block btn-lg" ng-disabled="placedOrder">Place Order</button>
+              </div>
             </div>
+            <br>
           </div>
-        <br>
+
         </div>
-        <!--div class="col-sm-12">
-          <br>
-          <small><strong>Important information about procedures for opening a new account:</strong><br>
-            <small>To help the goverment fight the funding of terrorism and money laundering activities, Federal law requires all financial institutions to obtain, verify and record information that identifies each person who opens an account. <br>
-              What this means for you: When you open an account, obtain a loan from Convenience Select in this case, we will ask you for your name, address, date of birth an other information that allow us to identify you. We may also ask to see your drivers license or other identifying documents.</small></small>
-        </div-->
       </div>
     </div>
+
   </div>
+
 
   <div class="container empty-car text-CS" ng-show="placedOrder">
     <loading></loading>

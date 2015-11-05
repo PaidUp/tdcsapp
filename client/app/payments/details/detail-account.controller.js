@@ -6,7 +6,7 @@ angular.module('convenienceApp')
                                            NotificationEmailService, TrackerService, $q) {
     $rootScope.$emit('bar-welcome', {
       left: {
-        url: 'app/payments/templates/loan-bar.html'
+        url: ''//'app/payments/templates/loan-bar.html'
       },
       right: {
         url: ''
@@ -42,7 +42,8 @@ angular.module('convenienceApp')
     var currentCartId = CartService.getCurrentCartId();
 
     function init(){
-      console.log('init');
+
+      $scope.placedOrder = true;
       setKey();
       getCart();
       fillFormUserDetails();
@@ -51,6 +52,7 @@ angular.module('convenienceApp')
         loadCreditCardAccounts(lst).then(function(lst2){
           $scope.accounts.push({ accountName: 'Create a new credit card' });
           $scope.accounts.push({ accountName : 'Create a new bank account' , last4: '' });
+          $scope.placedOrder = false;
         }, function(err2){
           $scope.sendAlertErrorMsg(err.data.message);
         });
@@ -105,7 +107,7 @@ angular.module('convenienceApp')
           }).catch(function (err) {
             reject(err.data.message);
           });
-        }, 10000);
+        }, 1000);
       });
     };
 
@@ -130,7 +132,7 @@ angular.module('convenienceApp')
             reject(err.data.message)
           });
 
-        }, 10000);
+        }, 1000);
       });
 
 
@@ -138,11 +140,11 @@ angular.module('convenienceApp')
     }
 
     $scope.changeAccount = function () {
-      if ($scope.accountDetails.bankName && $scope.accountDetails.bankName === 'Create a new bank account') {
+      if ($scope.accountDetails.accountName && $scope.accountDetails.accountName === 'Create a new bank account') {
         $scope.account = null;
         $scope.createBank = true;
         $scope.createCard = false;
-      } else if($scope.accountDetails.cardNumber && $scope.accountDetails.cardNumber === 'Create a new credit card'){
+      } else if($scope.accountDetails.accountName && $scope.accountDetails.accountName === 'Create a new credit card'){
         $scope.account = null;
         $scope.createBank = false;
         $scope.createCard = true;
@@ -260,7 +262,12 @@ angular.module('convenienceApp')
       }
     };
 
-    $scope.placeOrder = function (bankResponse) {
+    $scope.placeOrder = function (typeAccount, accountResponse) {
+
+      console.log('typeAccount', typeAccount);
+      console.log('accountResponse', accountResponse);
+
+
       TrackerService.trackFormErrors('place order form' , $scope.checkoutForm);
       if (!$scope.checkoutForm.$valid) {
         $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
@@ -269,9 +276,13 @@ angular.module('convenienceApp')
       }
       $scope.submitted = true;
       $scope.placedOrder = true;
+      var paymentType = 'onetime';
+      var paymentMethod = typeAccount === 'bank' ? 'directdebit' : 'creditcard'
 
       if ($scope.checkoutForm.$valid) {
-        if (bankResponse) {
+        if (accountResponse) {
+
+          var status = accountResponse.status ? accountResponse.status : 'card';
 
           var addressBilling = {
             mode: 'billing',
@@ -299,19 +310,20 @@ angular.module('convenienceApp')
                   addressBilling,
                   addressShipping
                 ],
-                cardId: bankResponse.id,
+                cardId: accountResponse.id,
                 userId: CartService.getUserId(),
-                payment: 'onetime',
-                paymentMethod: 'directdebit',
+                payment: paymentType,
+                paymentMethod: paymentMethod,
                 isInFullPay: isInFullPay,
                 price: CartService.getCartGrandTotal(),
                 discount : CartService.getCartDiscount()
               };
+
               PaymentService.sendPayment(payment).then(function () {
                 CartService.removeCurrentCart();
                 CartService.createCart();
                 $scope.saveOrUpdateBillingAddress();
-                $state.go('thank-you',{status:bankResponse.status});
+                $state.go('thank-you',{status:status});
               }).catch(function (err) {
                 if (err.data) {
                   $scope.sendAlertErrorMsg(err.data.message);
@@ -328,6 +340,8 @@ angular.module('convenienceApp')
           });
 
         } else {
+          var status = $scope.accountDetails.status ? $scope.accountDetails.status : 'card';
+
           var addressBilling = {
             mode: 'billing',
             firstName: $scope.user.firstName,
@@ -353,12 +367,12 @@ angular.module('convenienceApp')
                     addressBilling,
                     addressShipping
                   ],
-                  cardId: $scope.bankDetails.id,
+                  cardId: $scope.accountDetails.id,
                   userId: CartService.getUserId(),
                   athleteFirstName: CartService.getAthlete().firstName,
                   athleteLastName: CartService.getAthlete().lastName,
-                  payment: 'onetime',
-                  paymentMethod: 'directdebit',
+                  payment: paymentType,
+                  paymentMethod: paymentMethod,
                   isInFullPay: isInFullPay,
                   price: CartService.getCartGrandTotal(),
                   discount : CartService.getCartDiscount()
@@ -367,7 +381,7 @@ angular.module('convenienceApp')
 
                   CartService.removeCurrentCart();
                   $scope.saveOrUpdateBillingAddress();
-                  $state.go('thank-you', {'status' : $scope.bankDetails.status});
+                  $state.go('thank-you', {'status' : status});
                   TrackerService.create('Place Order');
                 }).catch(function (err) {
                   TrackerService.create('Place Order Error', err.message);
