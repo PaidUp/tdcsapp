@@ -345,8 +345,7 @@ function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, sched
   });
 }
 
-function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee, metaPayment, cb) {
-  console.log('debitOrderDirectDebit',orderId, userId, providerId, amount, bankId, fee, metaPayment);
+function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee, metaPayment, scheduleId, retryId, cb) {
   // 2a) Prepare BP customer
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
@@ -372,16 +371,12 @@ function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee,
             // 2d) Debit BP credit card //
             debitCard(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
             //debitBank(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, orderId, function(err, data) {
-              //console.log('err',err);
-              //console.log('data',data);
               if(err) return cb(err);
-              if(data.debits[0].status == 'succeeded') {
+              if(data.object == 'charge') {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
-                var result = {amount: amount, orderId: orderId, BPDebitId: data.debits[0].id,
-                  paymentMethod: "directdebit", account: bankDetails.bankAccounts[0].accountNumber,
-                  bankName: bankDetails.bankAccounts[0].bankName, accountType: bankDetails.bankAccounts[0].accountType};
-                commerceService.addTransactionToOrder(orderId, orderId, result, function(err, data){
+                var result = {amount: amount, OrderId: data.id, DebitId: data.id,paymentMethod: "directdebit", account: bankDetails.last4, bankName: bankDetails.bank_name, scheduleId : scheduleId, accountType: bankDetails.object, number: bankDetails.last4, status:data.status, retryId:retryId};
+                commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                   if(err) return cb(err);
                   return cb(null, result);
                 });
@@ -438,7 +433,7 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
       }
     });
   }
-  else if(paymentMethod == "directdebit") {
+  else if(paymentMethod === "directdebit") {
     /*getUserDefaultBankId(user, function(defaultBankError, paymentId){
       if(defaultBankError) {
         logger.info('Failed, add a comment and mark order as "on hold"');
@@ -452,7 +447,7 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
       else {*/
         // Debit order
         // //TODO jesse //orderId, userId, providerId, amount, bankId, fee, metaPayment,
-        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, order.cardId, fee, metaPayment, function (err, resultDebit) {
+        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, order.cardId, fee, metaPayment, scheduleId, retryId, function (err, resultDebit) {
           // Debit failed
           if (err) {
             logger.info('Failed, add a comment and mark order as "on hold"');
@@ -469,6 +464,10 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
             // 3) Add a comment and mark order as "processing"
             commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
               if (err) return cb(err);
+              paymentEmailService.sendProcessedEmail(user, amount, order.incrementId, resultDebit, function(err, data){
+                mix.panel.track("paymentCaptureSendProcessedEmail", mix.mergeDataMixpanel(order, user._id));
+                logger.log('info', 'send processed email. ' + data );
+              });
               return cb(null, resultDebit.BPOrderId);
             });
           }
