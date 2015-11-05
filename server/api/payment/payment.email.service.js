@@ -275,7 +275,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, account, cb) {
 
   //paymentService.getUserDefaultBankId(user, function (err, bankId) {
       //paymentService.fetchBank(bankId, function (response, account) {
-        emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
+        emailVars.accountLast4Digits = account.account;
 
         // get the loan object
         getNameTeamFromOrder(orderId, function (err, team) {
