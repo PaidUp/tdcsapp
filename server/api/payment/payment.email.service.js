@@ -229,12 +229,12 @@ exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
   paymentService.fetchCard(user.meta.TDPaymentId, order.cardId, function (response, account) {
+    if(!account) account = {}
     //console.log('order',order);
-    //console.log('order.account',order.account);
     //console.log('cardId',cardId);
     ////TODO definir cuando la orden esta hecha con una tarjeta de credito, pero el
     //// define when the order is made with a credit card. but the default account is a bank.
-    emailVars.accountLast4Digits = account.last4 || '1234';
+    emailVars.accountLast4Digits = account.last4 || 'XXXX';
 
     // get the loan object
     commerceService.orderLoad(order.incrementId, function (err, magentoOrder) {
@@ -275,7 +275,7 @@ exports.sendProcessedEmail = function  (user, amount, orderId, account, cb) {
 
   //paymentService.getUserDefaultBankId(user, function (err, bankId) {
       //paymentService.fetchBank(bankId, function (response, account) {
-        emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
+        emailVars.accountLast4Digits = account.account;
 
         // get the loan object
         getNameTeamFromOrder(orderId, function (err, team) {
