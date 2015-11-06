@@ -120,7 +120,7 @@ angular.module('convenienceApp')
       }
     };
 
-    if ($state.current.name === 'bank-account-index') {
+    if ($state.current.name === 'payment-account-index') {
       $scope.submitButtonName = 'Place Order';
     }else {
       $scope.submitButtonName = 'Confirm';
@@ -147,8 +147,8 @@ angular.module('convenienceApp')
                   AuthService.updateCurrentUser();
                   $state.go('user-payments');
                   $scope.loading = false;
-                } else if ($state.current.name === 'bank-account-index') {
-                  $scope.$parent.placeOrder(source);
+                } else if ($state.current.name === 'payment-account-index') {
+                  $scope.$parent.placeOrder('bank',source);
                 }
               }).catch(function (err) {
                 $scope.loading = false;
