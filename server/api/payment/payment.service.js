@@ -371,8 +371,8 @@ function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee,
             // 2d) Debit BP credit card //
             debitCard(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
             //debitBank(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, orderId, function(err, data) {
-              if(err) return cb(err);
-              if(data.object == 'charge') {
+              //if(err) return cb(err);
+              if(data && data.object == 'charge') {
                 logger.info('2f) Create Magento transaction');
                 // 2e) Create Magento transaction
                 var result = {amount: amount, OrderId: data.id, DebitId: data.id,paymentMethod: "directdebit", account: bankDetails.last4, bankName: bankDetails.bank_name, scheduleId : scheduleId, accountType: bankDetails.object, number: bankDetails.last4, status:data.status, retryId:retryId};
@@ -382,8 +382,13 @@ function debitOrderDirectDebit(orderId, userId, providerId, amount, bankId, fee,
                 });
               }
               else {
-                // Debit failed
-                return cb(data);
+                var result = {amount: amount, OrderId: uuid.v4(), DebitId: uuid.v4(),
+                  paymentMethod: "directdebit", number: bankDetails.last4, bankName: bankDetails.bank_name,
+                  scheduleId : scheduleId, status:'failed', message:err.message, retryId:retryId};
+                commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
+                  if(err) return cb(err);
+                  return cb(data);
+                });
               }
             });
           //});
