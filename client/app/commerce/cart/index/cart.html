@@ -16,8 +16,13 @@
           <tr class="items-required" ng-repeat="team in teams">
             <td><img style="max-width: 100px" ng-src="{{team.getImage('small_image').url}}" alt=""></td>
             <td>
-              <strong>{{team.attributes.name}}</strong><br>
-              {{team.attributes.season.name}} {{team.attributes.shortDescription}} <br>
+              <strong>
+                <span ng-if="team.attributes.shortDescription">{{team.attributes.shortDescription}}</span>
+                <span ng-if="!team.attributes.shortDescription">{{team.attributes.description}}</span>
+              </strong>
+              <br>
+              <br>
+              <br>
 
               <strong class="edit-item">
                 <small>
