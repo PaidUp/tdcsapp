@@ -2,16 +2,17 @@
 
 var express = require('express');
 var controller = require('./application.controller');
-
+var config = require('../../config/environment');
 var router = express.Router();
+var auth = require('TDCore').authCoreService;
 
 router.post('/contact', controller.contact);
 router.get('/config', controller.config);
-router.get('/cron', controller.cron);
-router.get('/cron/reminder/payments', controller.cronReminderPayments);
-router.get('/cron/retry/payments', controller.cronRetrayPayments);
-router.get('/cron/order/complete', controller.cronCompleteOrders);
-router.get('/cron/reminder/verify/bank', controller.cronReminderVerifyBank);
+router.get('/cron', auth.isAuthenticatedServer(config.connections.me.token), controller.cron);
+router.get('/cron/reminder/payments', auth.isAuthenticatedServer(config.connections.me.token), controller.cronReminderPayments);
+router.get('/cron/retry/payments', auth.isAuthenticatedServer(config.connections.me.token), controller.cronRetrayPayments);
+router.get('/cron/order/complete', auth.isAuthenticatedServer(config.connections.me.token), controller.cronCompleteOrders);
+router.get('/cron/reminder/verify/bank', auth.isAuthenticatedServer(config.connections.me.token), controller.cronReminderVerifyBank);
 
 //router.use('/report', require('./report/index'));
 
