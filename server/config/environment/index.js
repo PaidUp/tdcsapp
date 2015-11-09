@@ -253,6 +253,9 @@ var all = {
     pathPidFile : path.normalize(__dirname + '/../../..') + '/var/'
   },
   connections:{
+    me:{
+      token: 'TDCSAppToken-CHANGE-ME'
+    },
     user: {
       urlPrefix: '/api/v1',
       isHttp: false,
