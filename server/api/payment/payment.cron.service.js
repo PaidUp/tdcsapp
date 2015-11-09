@@ -617,10 +617,9 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
                   paymentEmailService.sendRemindToVerifyAccount(order.incrementId, user[0], account, orderDate, function (err, data){
                     logger.log('info','send Email Reminder data',data);
                     logger.log('info','send Email Reminder err',err);
+                    return cb(null, true);
                   });
-
                 }
-                return cb(null, true);
               });
             //});
           }else{
