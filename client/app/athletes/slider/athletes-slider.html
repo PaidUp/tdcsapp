@@ -46,7 +46,7 @@
       </div>
       <div class="enrollments-acordion">
         <accordion close-others="true">
-          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt'" is-disabled="order.card" is-open="order.isOpen">
+          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt'" is-disabled="true" >
             <accordion-heading>
 
               <table class="table table-bordered">
@@ -64,7 +64,8 @@
                       </span>
                     <br>
                       <span class="athlete-team-info">
-                        {{order.products[0].productPurchaseSku | cleaner}}
+                        <span ng-if="order.products[0].shortDescription">{{order.products[0].shortDescription | cleaner}}</span>
+                        <span ng-if="!order.products[0].shortDescription">{{order.products[0].description | cleaner}}</span>
                       </span>
                     <br>
                       <span>
