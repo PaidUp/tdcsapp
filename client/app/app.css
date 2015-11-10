@@ -207,13 +207,13 @@ input[type="password"]:-ms-input-placeholder{ /* Internet Explorer 10+ */
 .inputLeftNumbers{
   position: absolute;
   top: 0;
-  left: 5px;
+  left: 6px;
   display: block;
   width: 60px;
   height: 40px;
-  line-height: 40px;
+  line-height: 35px;
   text-align: left;
-  color: #cad0d7;
+  color: #6C737C;
 }
 
 .form-group{
