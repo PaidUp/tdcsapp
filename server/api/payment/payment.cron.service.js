@@ -134,7 +134,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
               userService.find({_id : order.userId}, function(err, users){
                 paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
                   if(paymentUser && paymentUser.defaultSource){
-                    order.cardId = paymentUser.defaultSource;
+                    //order.cardId = paymentUser.defaultSource;
                   }
                   paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                     order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
