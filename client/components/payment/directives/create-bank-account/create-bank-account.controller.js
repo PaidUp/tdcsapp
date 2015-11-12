@@ -148,7 +148,7 @@ angular.module('convenienceApp')
                   $state.go('user-payments');
                   $scope.loading = false;
                 } else if ($state.current.name === 'payment-account-index') {
-                  $scope.$parent.placeOrder('bank',source);
+                  $scope.$parent.placeOrder('bank_account',source);
                 }
               }).catch(function (err) {
                 $scope.loading = false;

@@ -17,6 +17,82 @@ var notifications = require('../notifications/notifications.service');
 var async = require('async');
 var businessDays = require('moment-business-days');
 
+//refactor
+//generic funciton that retrieve orders pending and processing.
+function collectPendingOrders(callback){
+  logger.log('info','paymentCronService.collectPendingOrders');
+  paymentService.collectPendingOrders(function (err, pendingOrders){
+    if(err){
+      callback(err);
+    }
+    callback(null, pendingOrders);
+  });
+}
+//cron
+exports.collectAccounts = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    paymentSchedule
+  ], function(err, result){
+    cb(null, true);
+  });
+}
+//cron payments
+function paymentSchedule(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
+        if(err){
+          return callbackEach(err);
+        }
+        if(!orderSchedule.scheduled.schedulePeriods){
+          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+          callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
+        }
+        async.eachSeries(orderSchedule.scheduled.schedulePeriods,
+          function(schedulePeriod, callbackEach2){
+            if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+              userService.find({_id : order.userId}, function(err, users){
+                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                  if(paymentUser && paymentUser.defaultSource){
+                    order.cardId = paymentUser.defaultSource;
+                  }
+                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
+                    if(err){
+                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
+                      });
+                      return callbackEach2();//here, return ok, and send email.
+                    }
+
+                    return callbackEach2();
+                  });
+                });
+              });
+            }else{
+              callbackEach2();
+            }
+          },
+          function(err){
+            if(err){
+              return callbackEach(err);
+            }
+            callbackEach();
+          });
+        //callback(null, schedule);
+      });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+}
+
+//end refactor
+
 function sendEmailReminder(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminder');
   var reminderPeriod = config.notifications.reminderEmailPayment.period || 'hours';
@@ -103,70 +179,6 @@ function sendEmailReminder(pendingOrders, callback){
         return callback(null, true);
       }
   });
-
-}
-
-function collectPendingOrders(callback){
-  logger.log('info','paymentCronService.collectPendingOrders');
-  paymentService.collectPendingOrders(function (err, pendingOrders){
-    if(err){
-      callback(err);
-    }
-    callback(null, pendingOrders);
-  });
-}
-
-function paymentSchedule(pendingOrders, callbackSchedule){
-  async.eachSeries(pendingOrders,
-    function(order, callbackEach){
-      commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
-        if(err){
-          return callbackEach(err);
-        }
-        if(!orderSchedule.scheduled.schedulePeriods){
-          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          callbackEach();
-          //return callbackEach(new Error('order without schedulePeriods'));
-        }
-        async.eachSeries(orderSchedule.scheduled.schedulePeriods,
-          function(schedulePeriod, callbackEach2){
-            if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
-              userService.find({_id : order.userId}, function(err, users){
-                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
-                  if(paymentUser && paymentUser.defaultSource){
-                    order.cardId = paymentUser.defaultSource;
-                  }
-                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
-                    if(err){
-                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
-                      });
-                      return callbackEach2();//here, return ok, and send email.
-                    }
-
-                    return callbackEach2();
-                  });
-                });
-              });
-            }else{
-              callbackEach2();
-            }
-          },
-          function(err){
-            if(err){
-              return callbackEach(err);
-            }
-            callbackEach();
-          });
-        //callback(null, schedule);
-      });
-    },
-    function(err){
-      if(err){
-        return callbackSchedule(err);
-      }
-      return callbackSchedule();
-    })
 }
 
 exports.retryPaymentSchedule = function (callbackSchedule){
@@ -236,15 +248,6 @@ exports.retryPaymentSchedule = function (callbackSchedule){
   });
 }
 
-exports.collectCreditCard = function(cb){
-  async.waterfall([
-    collectPendingOrders,
-    paymentSchedule
-  ], function(err, result){
-    cb(null, true);
-  });
-};
-
 exports.sendEmailReminderParents = function(cb){
   async.waterfall([
     collectPendingOrders,
@@ -252,7 +255,7 @@ exports.sendEmailReminderParents = function(cb){
   ], function(err, result){
     cb(null, true);
   });
-};
+}
 
 exports.collectOneTimePayments = function (cb) {
   logger.log('info', 'into collectOneTimePayments');
@@ -352,7 +355,7 @@ exports.collectLoanPayments = function (period, cb) {
 
     });
   });
-};
+}
 
 exports.sendRemindToAddPaymentMethod = function(cb){
   var period = config.notifications.reminderNoPaymentAdded.period;
@@ -581,7 +584,7 @@ exports.sendEmailReminderVerifyBank = function(cb){
   ], function(err, result){
     cb(null, true);
   });
-};
+}
 
 function sendEmailReminderVerifyBankService(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminderVerifyBank');
