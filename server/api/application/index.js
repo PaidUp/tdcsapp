@@ -10,7 +10,7 @@ router.post('/contact', controller.contact);
 router.get('/config', controller.config);
 router.get('/cron', auth.isAuthenticatedServer(config.connections.me.token), controller.cron);
 router.get('/cron/reminder/payments', auth.isAuthenticatedServer(config.connections.me.token), controller.cronReminderPayments);
-router.get('/cron/retry/payments', auth.isAuthenticatedServer(config.connections.me.token), controller.cronRetrayPayments);
+router.get('/cron/retry/payments', auth.isAuthenticatedServer(config.connections.me.token), controller.cronRetryPayments);
 router.get('/cron/order/complete', auth.isAuthenticatedServer(config.connections.me.token), controller.cronCompleteOrders);
 router.get('/cron/reminder/verify/bank', auth.isAuthenticatedServer(config.connections.me.token), controller.cronReminderVerifyBank);
 

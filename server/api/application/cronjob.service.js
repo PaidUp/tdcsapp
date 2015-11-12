@@ -13,8 +13,8 @@ var jobs =
   [
     // Collect One Time Payments
     function(callback) {
-      logger.log('info','paymentCronService.collectCreditCard');
-      paymentCronService.collectCreditCard(function (err, data) {
+      logger.log('info','paymentCronService.collectAccounts');
+      paymentCronService.collectAccounts(function (err, data) {
         if (err) callback(err);
         callback(null, data);
       });
@@ -138,7 +138,7 @@ exports.run = function(cb) {
 exports.runReminderPayments = function(cb) {
   var name = 'retryPayment'+new moment(new Date()).format("YYYYMMDD");
   if(canStartGiveNameFile(name)) {
-    logger.log('info', Date() + ' running cronRetryPayments...');
+    logger.log('info', Date() + ' running runReminderPayments...');
     startGiveName(name);
     async.series(
       jobsReminderPayments,
