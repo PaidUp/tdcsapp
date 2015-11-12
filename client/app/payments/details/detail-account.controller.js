@@ -42,7 +42,6 @@ angular.module('convenienceApp')
     var currentCartId = CartService.getCurrentCartId();
 
     function init(){
-
       $scope.placedOrder = true;
       setKey();
       getCart();
@@ -59,10 +58,7 @@ angular.module('convenienceApp')
         }, function(err){
           $scope.sendAlertErrorMsg(err.data.message);
       });
-
-
     };
-    //init();
 
     function getCart(){
       CartService.getCart(currentCartId).then(function (value) {
@@ -127,16 +123,12 @@ angular.module('convenienceApp')
               lstAccount.push(card)
             });
             resolve(lstAccount);
-            console.log(lstAccount)
           }).catch(function (err) {
             reject(err.data.message)
           });
 
         }, 1000);
       });
-
-
-
     }
 
     $scope.changeAccount = function () {
@@ -264,9 +256,9 @@ angular.module('convenienceApp')
 
     $scope.placeOrder = function (typeAccount, accountResponse) {
 
-      console.log('typeAccount', typeAccount);
-      console.log('accountResponse', accountResponse);
-
+      if(!typeAccount){
+        typeAccount = $scope.accountDetails.object;
+      }
 
       TrackerService.trackFormErrors('place order form' , $scope.checkoutForm);
       if (!$scope.checkoutForm.$valid) {
@@ -277,7 +269,7 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       $scope.placedOrder = true;
       var paymentType = 'onetime';
-      var paymentMethod = typeAccount === 'bank' ? 'directdebit' : 'creditcard'
+      var paymentMethod = typeAccount === 'bank_account' ? 'directdebit' : 'creditcard'
 
       if ($scope.checkoutForm.$valid) {
         if (accountResponse) {
