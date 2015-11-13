@@ -11,7 +11,7 @@ var moment = require('moment');
 
 var jobs =
   [
-    // Collect One Time Payments
+    // Collect Accounts Payments
     function(callback) {
       logger.log('info','paymentCronService.collectAccounts');
       paymentCronService.collectAccounts(function (err, data) {

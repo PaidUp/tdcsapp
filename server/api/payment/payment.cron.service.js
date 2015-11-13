@@ -61,9 +61,10 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                   paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                     order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
                     if(err){
+                      console.log('email notification error (important) err', err)
                       notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
                       });
-                      return callbackEach2();//here, return ok, and send email.
+                      return callbackEach2();
                     }
 
                     return callbackEach2();
