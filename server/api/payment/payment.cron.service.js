@@ -629,26 +629,11 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
           }else{
             return cb(null, true);
           }
-
         });
-        
-        //return cbSchedule(null,true);
       }else{
         return cb(null, true);
-      //return cbSchedule(null,true);
       }
-
-    //}, function(err){
-    //    // if any of the file processing produced an error, err would equal that error
-    //  if( err ) {
-    //  } else {
-    //    logger.log('info','All order.schedule have been processed successfully');
-    //    return cb(null, true);
-    //  }
-    //});
-
   }, function(err){
-      // if any of the file processing produced an error, err would equal that error
       if( err ) {
       } else {
         logger.log('info','All orders have been processed successfully');
