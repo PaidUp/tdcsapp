@@ -623,6 +623,8 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
                     logger.log('info','send Email Reminder err',err);
                     return cb(null, true);
                   });
+                }else{
+                  return cb(null, true);
                 }
               });
             //});
