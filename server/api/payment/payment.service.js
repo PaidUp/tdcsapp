@@ -312,9 +312,10 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
           logger.info('2c) Create BP Order accountDetails');
           debitCard(accountId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
             var result = {amount: amount, OrderId: setResult(data).OrderId,  DebitId: setResult(data).OrderId,  paymentMethod: paymentMethod,  number: accountDetails.last4, brand : accountDetails.brand, scheduleId : scheduleId, status:setResult(data).status, retryId:retryId};
+            logger.info('err (important)',err);
             logger.info('data (important)',data);
             if (data) {logger.info('data status (important)',data.status)}
-            if(data && (data.status === 'succeeded' || data.status === 'verified')) {
+            if(data && (data.status === 'succeeded' || data.status === 'verified' || data.status === 'pending')) {
               logger.info('2d) Create Magento transaction');
               commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                 if(err) return cb(err);
