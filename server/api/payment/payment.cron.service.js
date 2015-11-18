@@ -597,7 +597,7 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
   async.eachSeries(pendingOrders, function(order, cb) {
     logger.info('iterate each order', order.incrementId);
       var orderDate = new Date(order.createdAt);
-      //TODO: preconfigurate array to add N business day. exaple: [3,6,9,12,15]
+      //TODO: preconfigurate array to add N business day. example: [3,6,9,12,15]
       var orderDateEnableOne = businessDays(orderDate).businessAdd(1)._d;
       var orderDateEnableTwo = businessDays(orderDate).businessAdd(2)._d;
       var orderDateEnableThree = businessDays(orderDate).businessAdd(3)._d;
