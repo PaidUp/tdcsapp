@@ -595,16 +595,13 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
   }
   async.eachSeries(pendingOrders, function(order, cb) {
     logger.info('iterate each order', order.incrementId);
-    //async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
-      //logger.log('info','iterate each orderSchedule', schedule.id);
-      //return cbSchedule(null,true);
       var orderDate = new Date(order.createdAt);
       //TODO: preconfigurate array to add N business day. exaple: [3,6,9,12,15]
-      var orderDateEnableOne = businessDays(orderDate).businessAdd(3)._d;
-      var orderDateEnableTwo = businessDays(orderDate).businessAdd(6)._d;
-      var orderDateEnableThree = businessDays(orderDate).businessAdd(9)._d;
-      var orderDateEnableFour = businessDays(orderDate).businessAdd(12)._d;
-      var orderDateEnableFive = businessDays(orderDate).businessAdd(15)._d;
+      var orderDateEnableOne = businessDays(orderDate).businessAdd(1)._d;
+      var orderDateEnableTwo = businessDays(orderDate).businessAdd(2)._d;
+      var orderDateEnableThree = businessDays(orderDate).businessAdd(3)._d;
+      var orderDateEnableFour = businessDays(orderDate).businessAdd(4)._d;
+      var orderDateEnableFive = businessDays(orderDate).businessAdd(5)._d;
       var newShouldReminder = [orderDateEnableOne, orderDateEnableTwo, orderDateEnableThree, orderDateEnableFour, orderDateEnableFive
       ].some(function(date){
         return moment(date).isSame(today.format(), 'day');
