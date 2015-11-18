@@ -61,12 +61,12 @@ function paymentSchedule(pendingOrders, callbackSchedule){
                   paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                     order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
                     if(err){
-                      console.log('email notification error (important) err', err)
-                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
+                      logger.info('email notification error (important) err' + err);
+                      err.order = order.incrementId;
+                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
                       });
                       return callbackEach2();
                     }
-
                     return callbackEach2();
                   });
                 });
@@ -212,7 +212,8 @@ exports.retryPaymentSchedule = function (callbackSchedule){
                         paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                           order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, order.meta, retrySchedule.retryId, function(err , data){
                           if(err){
-                            notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
+                            err.order = order.incrementId;
+                            notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err}, function(err, data){
                             });
                             return callbackEach2(err);//here, return ok, and send email.
                           }
