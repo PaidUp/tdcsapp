@@ -2,6 +2,7 @@
  * Created by riclara on 7/28/15.
  */
 'use strict';
+var logger = require('../../config/logger');
 
 var emailNotifications = require('../../components/util/notifications/email-notifications');
 

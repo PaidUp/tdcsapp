@@ -310,22 +310,39 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
         action(user.meta.TDPaymentId, accountId, function (err, accountDetails) {
           if(err) return cb(err);
           logger.info('2c) Create BP Order accountDetails');
-          debitCard(accountId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
+          debitCard(accountId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(errDebit, data) {
             var result = {amount: amount, OrderId: setResult(data).OrderId,  DebitId: setResult(data).OrderId,  paymentMethod: paymentMethod,  number: accountDetails.last4, brand : accountDetails.brand, scheduleId : scheduleId, status:setResult(data).status, retryId:retryId};
-            logger.info('err (important)',err);
+            logger.info('err (important)',errDebit);
             logger.info('data (important)',data);
             if (data) {logger.info('data status (important)',data.status)}
             if(data && (data.status === 'succeeded' || data.status === 'verified' || data.status === 'pending')) {
               logger.info('2d) Create Magento transaction');
               commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
                 if(err) return cb(err);
-                return cb(null, result);
+
+                if(paymentMethod === 'directdebit'){
+                  paymentEmailService.sendProcessedEmail(user, amount, orderId, result.number, function(err, data){
+                    mix.panel.track("paymentCaptureSendProcessedEmail", mix.mergeDataMixpanel(result, user._id));
+                    logger.log('info', 'send processed email. ' + data );
+                    return cb(null, result);
+                  });
+                } else {
+                  paymentEmailService.sendProcessedEmailCreditCard(user, amount, result.number, orderId, function(err, data){
+                    mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
+                    logger.log('info', 'send processed email. ' + data );
+                    return cb(null, result);
+                  });
+                }
               });
             }
             else {
               logger.info('2d) Create Magento transaction (failed)');
               commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
                 if(err) return cb(err);
+                if(errDebit){
+                  errDebit.transactionId = data.transactionId;
+                  return cb(errDebit);
+                }
                 return cb(data);
               });
             }
@@ -338,6 +355,12 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
 function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, retryId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
   debitOrder(order.incrementId, user._id, providerId, amount, order.cardId, scheduleId, fee, metaPayment, retryId, paymentMethod, function (err, resultDebit) {
+    logger.info('2) paymentService > debitOrder err' + err);
+    logger.info('3) paymentService > debitOrder resuldDebit' + resultDebit);
+
+    if(err){
+      return cb(err);
+    }
     return cb(null, true);
   });
 }
