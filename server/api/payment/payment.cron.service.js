@@ -611,12 +611,6 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
       logger.log('info','newShouldReminder',newShouldReminder);
       logger.log('info','today',today.format());
       logger.log('info','order.createdAt',order.createdAt);
-      logger.log('info','orderDate (createdAt)',orderDate);
-      logger.log('info','orderDateEnableOne',orderDateEnableOne);
-      logger.log('info','orderDateEnableTwo',orderDateEnableTwo);
-      logger.log('info','orderDateEnableThree',orderDateEnableThree);
-      logger.log('info','orderDateEnableFour',orderDateEnableFour);
-      logger.log('info','orderDateEnableFive',orderDateEnableFive);
       logger.info('--------------------------');
       if(newShouldReminder && order.paymentMethod === 'directdebit'){
         logger.log('info','should validate pyment method',order.paymentMethod);
