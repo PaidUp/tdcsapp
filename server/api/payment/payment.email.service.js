@@ -221,31 +221,20 @@ exports.sendTomorrowChargeLoan = function (requestObject, cb) {
     });
   });
 };
-//TODO
+//TODO //deprecated please to see: sendFinalEmail
 exports.sendFinalEmailCreditCard = function  (user, amount, order, cb) {
-
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
-
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);;
   paymentService.fetchCard(user.meta.TDPaymentId, order.cardId, function (response, account) {
     if(!account) account = {}
-    //console.log('order',order);
-    //console.log('cardId',cardId);
-    ////TODO definir cuando la orden esta hecha con una tarjeta de credito, pero el
-    //// define when the order is made with a credit card. but the default account is a bank.
     emailVars.accountLast4Digits = account.last4 || 'XXXX';
-
-    // get the loan object
     commerceService.orderLoad(order.incrementId, function (err, magentoOrder) {
       emailTemplates(config.emailTemplateRoot, function (err, template) {
-
         if (err) return cb(err);
         emailVars.team = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
         template('payment/final', emailVars, function (err, html, text) {
-
           if (err) return cb(err);
-
           var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
           mailOptions.to = user.email;
           //mailOptions.bcc = config.emailContacts.admin + "," + config.emailContacts.developer;
@@ -392,19 +381,16 @@ exports.sendRetryEmail = function  (userFirstName, email, accountLast4Digits, am
 
   });
 };
-//Bank Done CS-639
+//Bank and Card Done CS-639
 exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
   var emailVars = JSON.parse(JSON.stringify(config.emailVars));
   emailVars.userFirstName = user.firstName;
   emailVars.amount = parseFloat(amount).toFixed(2);
-  emailVars.accountLast4Digits = account.bankAccounts[0].accountNumber;
-  //paymentService.getUserDefaultBankId(user, function (err, bankId) {
-      //paymentService.fetchBank(bankId, function (response, account) {
+  emailVars.accountLast4Digits = account.last4;
     getNameTeamFromOrder(orderId, function (err, team) {
       emailTemplates(config.emailTemplateRoot, function (err, template) {
         if (err) return cb(err);
         emailVars.team = team;//magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');
-        //console.log('emailVars',emailVars);
         template('payment/final', emailVars, function (err, html, text) {
           if (err) return cb(err);
           var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
@@ -412,7 +398,6 @@ exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
           mailOptions.html = html;
           mailOptions.subject = 'Oh Oh – Problem With Your Payment – ' + team;
           mailOptions.attachments = [];
-          //console.log('mailOptions',mailOptions);
           transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
               return cb(error);
@@ -423,48 +408,36 @@ exports.sendFinalEmail = function  (user, amount, orderId, account, cb) {
         });
       });
     });
-      //})
-  //});
 };
 //Done
 exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, value, period, card, cb) {
-  //userService.find({_id:userId}, function(err, user){
-    //if (err) return cb(err);
-    //if (!user[0]) return cb(false);
-    //paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
-      //if(err){
-        //callback(err);
-      //};
-      var card4 = card.data[0].last4 ||'XXXX';
-      var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
-      emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
-        if (errTemplate) return cb(errTemplate);
-        var emailVars = JSON.parse(JSON.stringify(config.emailVars));
-        emailVars.userFirstName = user[0].firstName;
-        emailVars.Last4Digits = card4;
-        emailVars.amount = parseFloat(schedule.price).toFixed(2);
-        emailVars.datePaymentDue = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
-        emailVars.teamName = nameTeam;
-        template('payment/laterChargePayment', emailVars, function (err, html, text) {
-          if (err) return cb(err);
-          var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
-          mailOptions.html = html;
-          mailOptions.to = user[0].email;
-          //mailOptions.bcc = config.emailContacts.developer;
-          mailOptions.subject = 'Heads Up: '+nameTeam+' Payment Coming Up In A Couple Of Days ';
-          mailOptions.attachments = [];
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-              return cb(error);
-            } else {
-              return cb(null, info);
-            }
-          });
-          //return cb(null, true);
-        });
+  var card4 = card.data[0].last4 ||'XXXX';
+  var test = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
+  emailTemplates(config.emailTemplateRoot, function (errTemplate, template) {
+    if (errTemplate) return cb(errTemplate);
+    var emailVars = JSON.parse(JSON.stringify(config.emailVars));
+    emailVars.userFirstName = user[0].firstName;
+    emailVars.Last4Digits = card4;
+    emailVars.amount = parseFloat(schedule.price).toFixed(2);
+    emailVars.datePaymentDue = new moment(schedule.nextPaymentDue).format("dddd, MMMM Do YYYY");
+    emailVars.teamName = nameTeam;
+    template('payment/laterChargePayment', emailVars, function (err, html, text) {
+      if (err) return cb(err);
+      var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
+      mailOptions.html = html;
+      mailOptions.to = user[0].email;
+      //mailOptions.bcc = config.emailContacts.developer;
+      mailOptions.subject = 'Heads Up: '+nameTeam+' Payment Coming Up In A Couple Of Days ';
+      mailOptions.attachments = [];
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return cb(error);
+        } else {
+          return cb(null, info);
+        }
       });
-    //});
-  //});
+    });
+  });
 };
 //Done
 function getNameTeamFromOrder(orderId, cb){
