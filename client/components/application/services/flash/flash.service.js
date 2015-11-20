@@ -14,17 +14,7 @@ angular.module('convenienceApp')
     };
 
     this.overrideByAlias = function(alias, alert){
-      var aliasExist = false;
-      $rootScope.alerts.forEach(function(ele, idx, arr){
-        console.log('ele', ele);
-        if(ele.alias && ele.alias == alias){
-          aliasExist = true;
-          arr[idx] = alert;
-        }
-      });
-      if(!aliasExist){
-        messages.push(alert);
-      }
-      $rootScope.$broadcast('event:alerts');
+      alert.alias = alias;
+      this.addAlert(alert);
     }
   });

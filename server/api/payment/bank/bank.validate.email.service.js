@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var path = require('path');
-var config = require('../../config/environment');
+var config = require('../../../config/environment');
 var nodemailer = require('nodemailer');
 var emailTemplates = require('email-templates');
 

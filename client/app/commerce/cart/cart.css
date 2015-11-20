@@ -23,7 +23,7 @@
 }
 .cart-table > tbody > tr > td{
   text-align: center;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
   height: 85px;
   border-top: 0px solid transparent;
 }
@@ -35,7 +35,7 @@
   padding-left: 0px;
 }
 .cart-table > tbody > tr > td:nth-child(2){
-  vertical-align: middle;
+  /*vertical-align: middle;*/
   text-align: left;
 }
 .cart-table > tbody > tr > td img{

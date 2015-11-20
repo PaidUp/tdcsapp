@@ -69,9 +69,9 @@ function createBank(bankDetails, cb) {
   });
 }
 
-function associateBank(customerId, bankId, cb) {
+function associateBank(customerId, token, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, token:token}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -97,18 +97,16 @@ function debitCard(cardId, amount, description, appearsOnStatementAs, customerId
 
 function debitBank(bankId, amount, description, appearsOnStatementAs, orderId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.debitBank({bankId:bankId,
-    amount:amount, description:description,
-    appearsOnStatementAs:appearsOnStatementAs,
-    orderId:orderId}, function(err, data){
+  tdPaymentService.debitBank({bankId:bankId,amount:amount, description:description,
+    appearsOnStatementAs:appearsOnStatementAs,orderId:orderId}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
 }
 
-function associateBank(customerId, bankId, cb) {
+function associateBank(customerId, token, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.associateBank({customerId:customerId, bankId:bankId}, function(err, data){
+  tdPaymentService.associateBank({customerId:customerId, token:token}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -165,9 +163,9 @@ function deleteBankAccount(customerId, bankId, cb) {
   });
 }
 
-function confirmBankVerification(verificationId, amount1, amount2, cb) {
+function confirmBankVerification(customerId, bankId, amount1, amount2, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.confirmBankVerification({verificationId:verificationId, amount1:amount1, amount2:amount2}, function(err, data){
+  tdPaymentService.confirmBankVerification({customerId:customerId, bankId:bankId, amount1:amount1, amount2:amount2}, function(err, data){
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -241,39 +239,24 @@ function prepareCard(userId, cardId, cb) {
   tdPaymentService.init(config.connections.payment);
   tdPaymentService.fetchCard(userId , cardId, function(err, creditCard){
     if(err) return cb(err);
-    /*if(creditCard.cards[0].links.customer === null) {
-      associateCard(userId, cardId, function (err, data) {
-        if(err) return cb(err);
-        return cb(null, creditCard);
-      });
-    }
-    else {*/
       return cb(null, creditCard);
-    //}
   });
 }
 
 function prepareBank(userId, bankId, cb) {
   tdPaymentService.init(config.connections.payment);
-  tdPaymentService.fetchBank(bankId, function(err, bank){
-    if(bank.bankAccounts[0].links.customer === null) {
-      associateBank(userId, bankId, function (err, data) {
-        if(err) return cb(err);
-        return cb(null, bank);
-      });
-    }
-    else {
+  tdPaymentService.fetchBank(userId, bankId, function(err, bank){
+    if(err) return cb(err);
       return cb(null, bank);
-    }
   });
 }
 
-function fetchBank(bankId, cb){
+function fetchBank(customerId, bankId, cb){
   if(!bankId){
     return cb(null, null);
   }else{
     tdPaymentService.init(config.connections.payment);
-    tdPaymentService.fetchBank(bankId, function(err, bank){
+    tdPaymentService.fetchBank(customerId, bankId, function(err, bank){
         if(err) return cb(err);
         return cb(null, bank);
     });
@@ -297,96 +280,78 @@ function fetchDebit(debitId, cb){
   });
 }
 
-function debitOrderCreditCard(orderId, userId, providerId, amount, cardId, scheduleId, fee, metaPayment, retryId, cb) {
-  // 2a) Prepare BP customer
-  logger.info('2a) Prepare BP customer');
-  userService.find({_id: userId}, function (err, user) {
-    if(err) return cb(err);
-    prepareUser(user[0], function (err, userp) {
-      if(err) return cb(err);
-      logger.info('2b) Associate BP customer credit card');
-      // 2b) Associate BP customer credit card
-      prepareCard(userp.meta.TDPaymentId, cardId, function (err, cardDetails) {
-        if(err) return cb(err);
-        logger.info('2c) Create BP Order');
-          //commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
-           // logger.info('2e) Debit BP credit card, order.');
-            // 2d) Debit BP credit card
-            debitCard(cardId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs,
-              userp.meta.TDPaymentId, providerId, fee, metaPayment, function(err, data) {
-              //if(err) return cb(err);
-              if(data && data.status == 'succeeded') {
-                logger.info('2f) Create Magento transaction');
-                // 2e) Create Magento transaction
-                var result = {amount: amount, OrderId: data.id, DebitId: data.id,
-                  paymentMethod: "creditcard", number: cardDetails.last4,
-                  brand : cardDetails.brand, scheduleId : scheduleId, status:data.status, retryId:retryId};
-                commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
-                  if(err) return cb(err);
-                  return cb(null, result);
-                });
-              }
-              else {
-                var result = {amount: amount, OrderId: uuid.v4(), DebitId: uuid.v4(),
-                  paymentMethod: "creditcard", number: cardDetails.last4, brand : cardDetails.brand,
-                  scheduleId : scheduleId, status:'failed', message:err.message, retryId:retryId};
-                commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
-                  if(err) return cb(err);
-                  return cb(data);
-                });
-                //return cb(data);
-              }
-            });
-          //});
-
-      });
-    });
-  });
+function setResult (data){
+  var result = {
+    OrderId : uuid.v4(),
+    status : 'failed'
+  }
+  if(data && data.id) {
+    result.OrderId = data.id
+    result.status = data.status
+  }
+  return result
 }
 
-function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) {
-  // 2a) Prepare BP customer
+function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, fee, metaPayment, retryId, paymentMethod, cb){
   logger.info('2a) Prepare BP customer');
   userService.find({_id: userId}, function (err, user) {
     if(err) return cb(err);
-
-    var TDPaymentId = user[0].meta.TDPaymentId;
-
     prepareUser(user[0], function (err, user) {
       if(err) return cb(err);
-      logger.info('2b) Associate BP customer bank account');
-      // 2b) Associate BP customer credit card
-      prepareBank(TDPaymentId, bankId, function (err, bankDetails) {
-        if(err) return cb(err);
-        logger.info('2c) Create BP Order');
-        // 2c) Create BP Order
-        createOrder(merchantId, orderId, function(err, BPOrderId) {
+        logger.info('2b) Associate BP customer account');
+        var action = '', paymentMethod = '', OrderId =''
+        if (accountId.indexOf('ba_') === 0) {
+          action = prepareBank;
+          paymentMethod: "directdebit"
+        } else {
+          action = prepareCard;
+          paymentMethod: "creditcard"
+        };
+        action(user.meta.TDPaymentId, accountId, function (err, accountDetails) {
           if(err) return cb(err);
-          logger.info('2d) Report BP Order to Magento.');
-          commerceService.addCommentToOrder(orderId, JSON.stringify({BPOrderId: BPOrderId},null, 4), 'pending', function (err, result) {
-            if (err) return cb(err);
-            logger.info('2e) Debit BP bank account, order.');
-            // 2d) Debit BP credit card
-            debitBank(bankId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, BPOrderId, function(err, data) {
-              if(err) return cb(err);
-              if(data.debits[0].status == 'succeeded') {
-                logger.info('2f) Create Magento transaction');
-                // 2e) Create Magento transaction
-                var result = {amount: amount, BPOrderId: BPOrderId, BPDebitId: data.debits[0].id,
-                  paymentMethod: "directdebit", account: bankDetails.bankAccounts[0].accountNumber,
-                  bankName: bankDetails.bankAccounts[0].bankName, accountType: bankDetails.bankAccounts[0].accountType};
-                commerceService.addTransactionToOrder(orderId, BPOrderId, result, function(err, data){
-                  if(err) return cb(err);
-                  return cb(null, result);
-                });
-              }
-              else {
-                // Debit failed
-                return cb(data);
-              }
-            });
+          logger.info('2c) Create BP Order accountDetails');
+          debitCard(accountId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(errDebit, data) {
+            var result = {amount: amount, OrderId: setResult(data).OrderId,  DebitId: setResult(data).OrderId,  paymentMethod: paymentMethod,  number: accountDetails.last4, brand : accountDetails.brand, scheduleId : scheduleId, status:setResult(data).status, retryId:retryId};
+            logger.info('err (important)',errDebit);
+            logger.info('data (important)',data);
+            if (data) {logger.info('data status (important)',data.status)}
+            if(data && (data.status === 'succeeded' || data.status === 'verified' || data.status === 'pending')) {
+              logger.info('2d) Create Magento transaction');
+              commerceService.addTransactionToOrder(orderId, data.id, result, function(err, data){
+                if(err) return cb(err);
+
+                if(paymentMethod === 'directdebit'){
+                  paymentEmailService.sendProcessedEmail(user, amount, orderId, result.number, function(err, data){
+                    mix.panel.track("paymentCaptureSendProcessedEmail", mix.mergeDataMixpanel(result, user._id));
+                    logger.log('info', 'send processed email. ' + data );
+                    return cb(null, result);
+                  });
+                } else {
+                  paymentEmailService.sendProcessedEmailCreditCard(user, amount, result.number, orderId, function(err, data){
+                    mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
+                    logger.log('info', 'send processed email. ' + data );
+                    return cb(null, result);
+                  });
+                }
+              });
+            }
+            else {
+              logger.info('2d) Create Magento transaction (failed)');
+              commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, dataTransation){
+                if(err) return cb(err);//err transaction
+                if(errDebit){//err stripe
+                  paymentEmailService.sendFinalEmail(user, amount, orderId, accountDetails, function(error, data){
+                    logger.log('info', 'send email final email ' + data );
+                    logger.log('info', 'send email final email ' + err );
+                    errDebit.transactionId = data.transactionId;
+                    return cb(errDebit);
+                  });
+                }else{
+                  return cb(dataTransation);//err unknown
+                }
+              });
+            }
           });
-        });
       });
     });
   });
@@ -394,97 +359,34 @@ function debitOrderDirectDebit(orderId, userId, merchantId, amount, bankId, cb) 
 
 function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, retryId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
-  if(paymentMethod == "creditcard") {
-    var paymentId = order.cardId;
-    debitOrderCreditCard(order.incrementId, user._id, providerId, amount, paymentId, scheduleId, fee, metaPayment, retryId, function (err, resultDebit) {
-      // Debit failed
-      if (err) {
-        //logger.info('Failed, add a comment and mark order as "on hold"');
-        // 3) Add a comment and mark order as "processing"
-        commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
-          //commerceService.orderHold(order.incrementId, function(err, data){
-            //TODO
-            paymentEmailService.sendFinalEmailCreditCard(user, amount, order, function(error, data){
-              mix.panel.track("paymentCaptureSendFinalEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
-              logger.log('info', 'send email final email ' + data );
-            });
+  debitOrder(order.incrementId, user._id, providerId, amount, order.cardId, scheduleId, fee, metaPayment, retryId, paymentMethod, function (err, resultDebit) {
+    logger.info('2) paymentService > debitOrder err' + err);
+    logger.info('3) paymentService > debitOrder resuldDebit' + resultDebit);
 
-            return cb(err);
-          //});
-        });
-      }
-      else {
-        // Debit succeed
-        logger.info('3) Success, add a comment and mark order as "processing"');
-        // 3) Add a comment and mark order as "processing"
-        commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit, 'processing', function (err, result) {
-          if (err) return cb(err);
-          //TODO
-          paymentEmailService.sendProcessedEmailCreditCard(user, amount, resultDebit.number, order.incrementId, function(err, data){
-            mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(order, user._id));
-            logger.log('info', 'send processed email. ' + data );
-          });
+    if(err){
 
-          return cb(null, resultDebit.BPOrderId);
-        });
-      }
-    });
-  }
-  else if(paymentMethod == "directdebit") {
-    getUserDefaultBankId(user, function(defaultBankError, paymentId){
-      if(defaultBankError) {
-        logger.info('Failed, add a comment and mark order as "on hold"');
-        // 3) Add a comment and mark order as "processing"
-        commerceService.addCommentToOrder(order.incrementId, defaultBankError.name, null, function (err, result) {
-          commerceService.orderHold(order.incrementId, function(err, data){
-            return cb(defaultBankError);
-          });
-        });
-      }
-      else {
-        // Debit order
-        debitOrderDirectDebit(order.incrementId, user._id, providerId, amount, paymentId, function (err, resultDebit) {
-          // Debit failed
-          if (err) {
-            logger.info('Failed, add a comment and mark order as "on hold"');
-            // 3) Add a comment and mark order as "processing"
-            commerceService.addCommentToOrder(order.incrementId, "Capture failed: " + JSON.stringify(err,null, 4), null, function (subErr, result) {
-              commerceService.orderHold(order.incrementId, function(err, data){
-                return cb(err);
-              });
-            });
-          }
-          else {
-            // Debit succeed
-            logger.info('3) Success, add a comment and mark order as "processing"');
-            // 3) Add a comment and mark order as "processing"
-            commerceService.addCommentToOrder(order.incrementId, "Capture succeed, transaction: " + resultDebit.BPOrderId, 'processing', function (err, result) {
-              if (err) return cb(err);
-              return cb(null, resultDebit.BPOrderId);
-            });
-          }
-        });
-      }
-    });
-  }
+      return cb(err);
+    }
+    return cb(null, true);
+  });
 }
 
 function getUserDefaultBankId(user, cb) {
   // Check bank accounts
   listBanks(user.meta.TDPaymentId, function(err, data){
     if(err) return cb(err);
-    if(data.bankAccounts.length == 0) {
+    if(data.length == 0) {
       // error
       return cb({name: 'not-available-payment'}, null);
     }
     var bank;
-    for (var i = 0; i < data.bankAccounts.length; i++) {
-      bank = data.bankAccounts[i];
-      if(bank.state == 'succeeded') {
+    for (var i = 0; i < data.length; i++) {
+      bank = data[i];
+      if(bank.state == 'verified') {
         return cb(null, bank.id);
       }
     }
-    return cb({name: 'not-bank-verified'}, bank.id);
+    return cb({name: 'not-bank-verified'}, null);
   });
 }
 
@@ -589,8 +491,6 @@ exports.confirmBankVerification = confirmBankVerification;
 exports.updateOrderDescription = updateOrderDescription;
 exports.prepareUser = prepareUser;
 exports.collectPendingOrders = collectPendingOrders;
-exports.debitOrderCreditCard = debitOrderCreditCard;
-exports.debitOrderDirectDebit = debitOrderDirectDebit;
 exports.capture = capture;
 exports.getUserDefaultBankId = getUserDefaultBankId;
 exports.listBanks = listBanks;

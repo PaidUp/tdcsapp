@@ -13,9 +13,7 @@ angular.module('convenienceApp')
     var NotificationEmailService = this;
 
     NotificationEmailService.sendNotificationEmail = function(subject, jsonMessage){
-      emailResource.send({subject:subject, jsonMessage:jsonMessage},function (resp) {
-       return resp
-      });
+      emailResource.send({subject:subject, jsonMessage:jsonMessage});
     };
 
   });

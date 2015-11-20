@@ -44,8 +44,8 @@ angular.module('convenienceApp')
       CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
         CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay, CartService.getCartDiscount()).then(function (val) {
           if(val.error){
-            var user = AuthService.getCurrentUser();
             $scope.isScheduleError = true;
+            var user = AuthService.getCurrentUser();
             NotificationEmailService.sendNotificationEmail('Get schedule error', {
               productId:ele.productId,
               price:CartService.getCartGrandTotal(),
@@ -97,22 +97,16 @@ angular.module('convenienceApp')
       $scope.hasCart = false;
     }
 
-    // $scope.shipping = 0;
-    // $scope.tax = 0;
 
     $scope.checkouOrder = function () {
       TrackerService.create('Checkou Order');
-      // $state.go('checkout');
-      $state.go('payment-credit-card');
+      $state.go('payment-account-index');
     };
 
     $scope.removeCart = function () {
       TrackerService.create('Remove cart');
       CartService.removeCurrentCart();
       $state.go('athletes');
-      // CartService.createCart().then(function () {
-      //   $state.go('athletes');
-      // });
     };
 
     $scope.codeDiscounts = '';

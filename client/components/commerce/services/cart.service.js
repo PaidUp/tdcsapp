@@ -31,9 +31,10 @@ angular.module('convenienceApp')
     });
 
 
-    CartService.setCartDetails = function (team, prod) {
+    CartService.setCartDetails = function (team, prod, cb) {
       CartService.els.set('team', team);
       CartService.els.set('products', prod);
+      cb();
     };
 
     CartService.setCartGrandTotal = function (grandTotal) {

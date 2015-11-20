@@ -14,7 +14,7 @@
       </div>
       <div class="enrollments-acordion">
         <accordion close-others="true">
-          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt' " is-disabled="order.card" is-open="order.isOpen">
+          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt' " is-disabled="true">
             <accordion-heading>
 
               <table class="table table-bordered">
@@ -25,9 +25,10 @@
                     </td>
                     <td>
                       <span class="pull-right" ng-show="order.bank">
-                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': order.isOpen, 'glyphicon-chevron-right': !status.isOpen}"></i>
+                        <!--i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': order.isOpen, 'glyphicon-chevron-right': !status.isOpen}"></i-->
+                        <i class="pull-right glyphicon" ></i>
                         <strong class="text-green-CS">
-                          MONTHLY PAYMENT
+                          <!-- MONTHLY PAYMENT -->
                           <br>
                           <span ng-class="{'text-red-CS': (order.status === 'holded' || order.status === 'canceled'), 'text-green-CS': (order.status === 'processing' || order.status === 'complete')}">
                             {{order.status | uppercase | cleaner}}
@@ -49,7 +50,8 @@
                       </span>
                       <br>
                       <span class="athlete-team-info">
-                        {{order.products[0].productPurchaseSku | cleaner}}
+                        <span ng-if="order.products[0].shortDescription">{{order.products[0].shortDescription | cleaner}}</span>
+                        <span ng-if="!order.products[0].shortDescription">{{order.products[0].description | cleaner}}</span>
                       </span>
                       <br>
                       <span>
@@ -59,7 +61,7 @@
                       <div ng-show="order.bank">
                         <span class="bank-acount">
                           <strong>Bank Account:</strong>
-                          {{order.bank.bankAccounts[0].accountNumber | uppercase}}
+                          {{order.bank.last4 | uppercase}}
                         </span>
                         <br>
                       </div>
