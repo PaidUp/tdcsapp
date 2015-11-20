@@ -169,7 +169,7 @@
 
     </div>
 
-    <div ng-show="accounts.length >= 2">
+    <div ng-show="accounts.length >= limitMinList">
       <div class="row">
         <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectBank.$invalid && submitted }">
           <div class="form-group">
