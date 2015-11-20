@@ -2,16 +2,17 @@
 <div class="container payments-container">
   <div class="row">
     <div class="col-sm-8 col-sm-offset-2">
-      <h4 class="text-CS pull-left">Bank Account</h4>
-      <br>
-      <br>
-      <strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
-      <table class="table table-payment-methods">
-        <thead>
+      <div ng-if="false">
+        <h4 class="text-CS pull-left">Bank Account</h4>
+        <br>
+        <br>
+        <strong class="pull-right new-bank-account"> + <a ui-sref="user-bank-create" href="">LINK NEW ACCOUNT</a></strong>
+        <table class="table table-payment-methods">
+          <thead>
           <td class="col1"><strong>{{'primary' | uppercase}}</strong></td>
           <td><strong>{{'details' | uppercase}}</strong></td>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
           <tr ng-show="(!loadingCards && !loadingBanks) && bankAccounts.length === 0">
             <td colspan="2">
               You don't have a bank account yet.
@@ -53,8 +54,11 @@
               </a>
             </td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
+
+
 
       <h4 class="text-CS">Credit / Debit card</h4>
       <strong class="pull-right"> + <a ui-sref="user-card-create" href="" id="hrefAddNewCard">ADD NEW CARD</a></strong>

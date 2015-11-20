@@ -41,6 +41,8 @@ angular.module('convenienceApp')
 
     var currentCartId = CartService.getCurrentCartId();
 
+    $scope.limitMinList = 1;
+
     function init(){
       $scope.placedOrder = true;
       setKey();
@@ -50,7 +52,7 @@ angular.module('convenienceApp')
       loadBankAccounts($scope.accounts).then(function(lst){
         loadCreditCardAccounts(lst).then(function(lst2){
           $scope.accounts.push({ accountName: 'Create a new credit card' });
-          $scope.accounts.push({ accountName : 'Create a new bank account' , last4: '' });
+          //$scope.accounts.push({ accountName : 'Create a new bank account' , last4: '' });
           $scope.placedOrder = false;
         }, function(err2){
           $scope.sendAlertErrorMsg(err.data.message);
