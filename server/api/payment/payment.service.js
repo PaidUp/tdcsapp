@@ -337,13 +337,18 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
             }
             else {
               logger.info('2d) Create Magento transaction (failed)');
-              commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, data){
-                if(err) return cb(err);
-                if(errDebit){
-                  errDebit.transactionId = data.transactionId;
-                  return cb(errDebit);
+              commerceService.addTransactionToOrder(orderId, uuid.v4(), result, function(err, dataTransation){
+                if(err) return cb(err);//err transaction
+                if(errDebit){//err stripe
+                  paymentEmailService.sendFinalEmail(user, amount, orderId, accountDetails, function(error, data){
+                    logger.log('info', 'send email final email ' + data );
+                    logger.log('info', 'send email final email ' + err );
+                    errDebit.transactionId = data.transactionId;
+                    return cb(errDebit);
+                  });
+                }else{
+                  return cb(dataTransation);//err unknown
                 }
-                return cb(data);
               });
             }
           });
@@ -359,6 +364,7 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
     logger.info('3) paymentService > debitOrder resuldDebit' + resultDebit);
 
     if(err){
+
       return cb(err);
     }
     return cb(null, true);
