@@ -13,10 +13,10 @@
           <span class="icon-bar"></span>
         </button>
         <a ui-sref="main" class="navbar-brand"  ng-hide="isLoggedIn()">
-          <img src="assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
+          <img src="assets/images/CS-Logo.jpg" alt="Talos Logo" class="img-responsive">
         </a>
         <a ui-sref="athletes" class="navbar-brand"  ng-show="isLoggedIn()">
-          <img src="assets/images/CS-Logo.png" alt="Talos Logo" class="img-responsive">
+          <img src="assets/images/CS-Logo.jpg" alt="Talos Logo" class="img-responsive">
         </a>
       </div>
 
@@ -34,7 +34,7 @@
             <a href="" ng-click="goTo('/faq'); toggleMenu()">FAQ</a>
           </li>
           <li class="my-athletes" ng-show="isLoggedIn()  && isUser()" ng-click="toggleMenu()">
-            <a href="" ui-sref="athletes">My Athlete(s)</a>
+            <a href="" ui-sref="athletes">Athlete(s)</a>
           </li>
           <li ng-show="isLoggedIn() && isUser()" ng-click="toggleMenu()">
             <a href="" ui-sref="teams-dashboard">Teams</a>

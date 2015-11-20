@@ -174,7 +174,7 @@ function providerRequest(userId, dataProvider, cb) {
 
 function providerResponse(providerId, verifyState, cb) {
   providerService.findOne({_id:providerId,verify:verifyState},'', function (err, providerData) {
-    if (err) return cb(err);
+    if (err || !providerData) return cb(err);
     providerData.aba = providerService.decryptField(providerData.aba);
     providerData.dda = providerService.decryptField(providerData.dda);
     providerData.ownerSSN = providerService.decryptField(providerData.ownerSSN);

@@ -4,14 +4,14 @@ angular.module('convenienceApp')
   .config(function ($stateProvider) {
     $stateProvider.state('main', {
         url: '/',
-        templateUrl: 'app/application/main/main.html',
+        //templateUrl: 'app/application/main/main.html',
         test:'true',
         data:{
           roles:['guest']
         }
       }).state('main-pn', {
       url: '/pn/:team',
-      templateUrl: 'app/application/main/main.html',
+      //templateUrl: 'app/application/main/main.html',
       data:{
         roles:['guest']
       }

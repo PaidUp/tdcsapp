@@ -153,12 +153,6 @@ angular.module('convenienceApp', [
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
           var currentUser = AuthService.getCurrentUser();
-          if (currentUser.verify && currentUser.verify.status !== 'verified') {
-            FlashService.addAlert({
-              type:'warning',
-              templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
-            });
-          }
           if (currentUser.payment &&
               currentUser.payment.verify &&
               currentUser.payment.verify.status !== 'succeeded') {

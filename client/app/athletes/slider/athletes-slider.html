@@ -12,7 +12,7 @@
                   {{contactInfo.value}}
                 </div>
                 <p ng-show="!athlete.team" class="header">
-                    {{childAthlete.firstName}} doesn't have team yet
+                  Choose a team for this athlete
                 </p>
               </div>
             </div>
@@ -23,7 +23,7 @@
         <div class="col-sm-4 col-sm-offset-4 athlete-card">
           <h2 class="header">{{athlete.firstName}} {{athlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete()"></span> --></h2>
           <p ng-show="!athlete.team" class="header">
-              {{athlete.firstName}} doesn't have team yet
+            Choose a team for this athlete
           </p>
           <p ng-show="athlete.team" class="header">
             <strong>{{athlete.nameTeams}}</strong>
