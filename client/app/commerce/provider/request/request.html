@@ -3,6 +3,7 @@
     <br>
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
+        <!-- Organization -->
         <div class="row bg-Block" ng-form name="providerForm">
           <div class="col-sm-12">
             <h3 class="text-CS">Organization Display Name</h3> <div name="labelQuoteOrganizationDisplayName">This is the name of your organization that will be displayed to users on our site (e.g. Austin Tigers). This may be different than the legal name (e.g. Tigers Baseball, LLC) which you will provide below.</div>
@@ -69,6 +70,8 @@
           </div>
         </div>
         <br>
+        <!-- Organization -->
+        <!-- Data owner Organization -->
         <div class="row bg-Block" ng-form name="ownerForm">
           <div class="col-sm-12">
             <h3 class="text-CS">Identify verification</h3> <div name="labelQuoteIdentifyVerification">We require someone from your organization to verify their identity.  If your organization is a legal entity, like an LLC or Inc., choose a representative to input their info.</div>
@@ -257,6 +260,8 @@
             </div>
             </div>
         <br>
+        <!-- End Data owner Organization -->
+        <!-- Data legal organization -->
         <div class="row bg-Block" ng-form name="billingForm">
           <div class="col-sm-12">
             <h3 class="text-CS">Funds recipient</h3> <div name="divQuoteFundsRecipient">Identify verification helps to ensure users that there is a real organization behind every payment.</div>
@@ -361,6 +366,9 @@
             </div>-->
           </div>
         </div>
+        <br>
+        <!-- Data legal organization -->
+        <!-- Data bank organization -->
         <div class="row bg-Block" ng-form name="bankForm">
           <div class="col-sm-12">
             <h3 class="text-CS">Bank account</h3> Routing number are 9 digits long. Please use the one designated for paper and electronic (not wire) transfers.
@@ -370,7 +378,7 @@
           </div>
 
           <div class="col-sm-6 col-sm-pull-6">
-
+            <br>
             <div class="form-group">
               <label>Rounting number (ABA)</label>
               <input type="text" name="aba" ng-model="provider.aba" class="form-control" placeholder="" required ng-required="true" ng-change="ABAValidator()" ng-blur="maskABA()" ng-focus="unmaskABA()">
@@ -407,28 +415,60 @@
                 <small class="text-CS">Agree our Terms of Service is required</small>
               </div>
             </div-->
-
-            <div class="row">
-              <div class="col-sm-12"><strong>
-                By registering your account, you agree to our<br>
-                <ul>
-                  <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
-                  <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
-                  <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
-                  <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
-                </ul>
-              </strong></div>
-              <div class="col-sm-12">
-                <button type="submit" class="btn btnSignUp btn-block" id="btnSave">Save info</button>
-              </div>
-            </div>
-
           </div>
         </div>
         <br>
+        <!-- End Data bank organization -->
+        <!-- Referral -->
+        <div class="row bg-Block" ng-form name="referralForm">
+          <div class="col-sm-12">
+            <h3 class="text-CS">Account Setup Fees</h3> There is a $250 setup fee (one time) to onboard your organization. This price includes configuring your customized payment plans and setting up your user lists (email/phone).
+          </div>
+
+          <div class="col-sm-6 col-sm-push-6">
+          </div>
+
+          <div class="col-sm-6 col-sm-pull-6">
+            <br>
+            <div class="form-group">
+              <label>Referral Code</label>
+              <input type="text" name="referralCode" ng-model="provider.referralCode" class="form-control" placeholder="">
+            </div>
+          </div>
+        </div>
         <br>
-        <br>
+        <!-- End Referral -->
+        <!-- ToS and button -->
+        <div class="row bg-Block" ng-form name="buttonForm">
+          <div class="col-sm-12">
+          </div>
+
+          <div class="col-sm-6 col-sm-push-6">
+          </div>
+
+          <div class="col-sm-6 col-sm-pull-6">
+            <div class="form-group"><strong>
+              By registering your account, you agree to our<br>
+              <ul>
+                <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
+                <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
+                <li><a href="" ng-click="modalFactory.PhoneAuthModal()">Communication Policy</a></li>
+                <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
+              </ul>
+              </strong>
+            </div>
+            <div class="col-sm-12">
+              <button type="submit" class="btn btnSignUp btn-block" id="btnSave">Save info</button>
+            </div>
+          </div>
+        </div>
+        <!-- End ToS and button -->
       </div>
+    </div>
+    <div>
+      <br>
+      <br>
+      <br>
     </div>
   </form>
 </div>
