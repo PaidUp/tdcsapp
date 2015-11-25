@@ -36,7 +36,6 @@ angular.module('convenienceApp')
             }).catch(function(err){
                 console.log(err);
             });
-
         };
     };
 

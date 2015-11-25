@@ -321,11 +321,12 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
                 if(err) return cb(err);
 
                 if(paymentMethod === 'directdebit'){
-                  paymentEmailService.sendProcessedEmail(user, amount, orderId, result.number, function(err, data){
-                    mix.panel.track("paymentCaptureSendProcessedEmail", mix.mergeDataMixpanel(result, user._id));
-                    logger.log('info', 'send processed email. ' + data );
+                  //Don't send email with the cron. should be when stripe will notify webhook about the charge.
+                  //paymentEmailService.sendProcessedEmail(user, amount, orderId, result.number, function(err, data){
+                    //mix.panel.track("paymentCaptureSendProcessedEmail", mix.mergeDataMixpanel(result, user._id));
+                    //logger.log('info', 'send processed email. ' + data );
                     return cb(null, result);
-                  });
+                  //});
                 } else {
                   paymentEmailService.sendProcessedEmailCreditCard(user, amount, result.number, orderId, function(err, data){
                     mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
