@@ -23,8 +23,9 @@ exports.webgetpaymentcharge = function (req, res) {
 }
 
 exports.webgetpaymentchargeTemp = function (req, res) {
-  console.log('req.body temp',JSON.stringify(req.body,null,2))
-  console.log('req.query temp',JSON.stringify(req.query,null,2))
+  console.log('req temp',req)
+  console.log('req.body temp',req.body)
+  console.log('req.query temp',req.query)
   webhookService.sendEmail(req.body, '[ChargeTemp]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentchargeTemp"});
   })
