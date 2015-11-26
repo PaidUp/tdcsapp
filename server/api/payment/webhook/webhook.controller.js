@@ -4,16 +4,30 @@ var webhookService = require('./webhook.service');
 var camelize = require('camelize');
 
 exports.webpost = function (req, res) {
-  webhookService.sendEmail(req.body, function(err, data){
+  webhookService.sendEmail(req.body, '', function(err, data){
     return res.status(200).json({webhook:"POST"});
   });
 };
 
 exports.webget = function (req, res) {
-  webhookService.sendEmail(req.query, function(err, data){
+  webhookService.sendEmail(req.query, '', function(err, data){
     return res.status(200).json({webhook:"GET"});
   });
 };
+
+exports.webgetpaymentcharge = function (req, res) {
+  console.log('req.body',JSON.stringify(req.body,null,2))
+  webhookService.sendEmail(req.query, '[Charge]', function(err, data){
+    return res.status(200).json({webhook:"webgetpaymentcharge"});
+  })
+}
+
+exports.webgetpaymentchargeTemp = function (req, res) {
+  console.log('req.body temp',JSON.stringify(req.body,null,2))
+  webhookService.sendEmail(req.query, '[ChargeTemp]', function(err, data){
+    return res.status(200).json({webhook:"webgetpaymentchargeTemp"});
+  })
+}
 
 function handleError(res, err) {
   var httpErrorCode = 500;
