@@ -146,9 +146,9 @@ angular.module('convenienceApp')
 
 
     $scope.updateTeam = function(teamSelected){
-      TrackerService.create('Team Selected', {team : teamSelected.attributes.description});
+      TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
-      loadTeam(teamSelected.attributes.productId, function(team){
+      loadTeam(teamSelected.entityId, function(team){
         $scope.disablePayNow = false;
       });
     };
