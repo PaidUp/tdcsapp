@@ -16,7 +16,7 @@ exports.webget = function (req, res) {
 };
 
 exports.webgetpaymentcharge = function (req, res) {
-  console.log('req.body',JSON.stringify(req.body,null,2))
+  console.log('req.query',JSON.stringify(req.query,null,2))
   webhookService.sendEmail(req.query, '[Charge]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentcharge"});
   })
@@ -24,7 +24,8 @@ exports.webgetpaymentcharge = function (req, res) {
 
 exports.webgetpaymentchargeTemp = function (req, res) {
   console.log('req.body temp',JSON.stringify(req.body,null,2))
-  webhookService.sendEmail(req.query, '[ChargeTemp]', function(err, data){
+  console.log('req.query temp',JSON.stringify(req.query,null,2))
+  webhookService.sendEmail(req.body, '[ChargeTemp]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentchargeTemp"});
   })
 }
