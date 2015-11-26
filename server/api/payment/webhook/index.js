@@ -7,6 +7,8 @@ var controller = require('./webhook.controller');
 
 router.post('/', controller.webpost);
 router.get('/', controller.webget);
+router.get('/charge', controller.webgetpaymentcharge);
+router.post('/charge', controller.webgetpaymentchargeTemp);
 
 module.exports = router;
 
