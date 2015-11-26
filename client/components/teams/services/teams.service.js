@@ -47,33 +47,17 @@ angular.module('convenienceApp')
 
       var deferred = $q.defer();
 
-      TeamsGrouped.query({productId:productId}).$promise.then(function(teamsResponse){
-
-      }, function(err){
-
-      });
-
-
-
       TeamsGrouped.query({productId:productId},function (teamsResponse) {
-        console.log('teamsResponse',teamsResponse);
-
         teamsResponse[0].simpleProducts.forEach(function (team, idx, arr) {
-
           if(team) {
-            console.log('tema', team)
-            if(true){//(team.status == 1){
+            if(team.status == 1){
               teams.push(team);
             }
             if(arr.length-1 == idx){
               deferred.resolve(teams);
             }
           }
-
         });
-
-
-
       });
       return deferred.promise;
     };
