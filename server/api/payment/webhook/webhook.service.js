@@ -9,9 +9,7 @@ exports.sendEmail = function(data, title, cb) {
         if(err) return cb(err);
         var emailVars = config.emailVars;
         emailVars.subject = emailVars.prefix + "Stripe webhook";
-        console.log('webgetpaymentcharge sendEmail data',data)
         emailVars.content = JSON.stringify(data) || "no data";
-        console.log('webgetpaymentcharge sendEmail emailVars.content',emailVars.content)
         template('payment/webhook',emailVars,function(err, html, text){
             if(err) return cb(err);
             var mailOptions = config.emailOptionsAlerts;
