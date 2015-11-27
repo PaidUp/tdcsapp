@@ -13,12 +13,29 @@ angular.module('convenienceApp')
       return Payment.save(payment).$promise;
     };
 
-    this.createBankPayment = function (payment) {
-      return BankPayment.save({ action: 'create' }, payment).$promise;
+    this.associateBankPayment = function (data) {
+      return BankPayment.save({ action: 'associate' }, data).$promise;
     };
 
     this.listBankAccounts =  function () {
       return BankPayment.get({ action: 'list' }).$promise;
+    };
+
+    this.hasBankAccountsWihtoutVerify =  function (cb) {
+      var result = false;
+      this.listBankAccounts().then(function(bankAccounts){
+        if(bankAccounts && bankAccounts.data){
+          bankAccounts.data.forEach(function(ele){
+            if(ele.status == 'new'){
+              return cb(true);
+            }
+          });
+        }
+        cb(false);
+      }).catch(function(err){
+        console.log('err' ,err);
+        cb(false);
+      });
     };
 
     this.getBankAccount = function (bankId) {

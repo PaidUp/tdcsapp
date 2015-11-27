@@ -47,7 +47,7 @@
     </div>
     <div class="col-sm-4">
       <div class="row">
-        <div class="col-sm-6" 
+        <div class="col-sm-6"
              ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
           <div class="form-group">
             <input type="text"
@@ -62,7 +62,7 @@
                     ng-pattern="/^\d{1,2}$/">
           </div>
         </div>
-        <div class="col-sm-6" 
+        <div class="col-sm-6"
              ng-class="{ 'has-error': createCardForm.$error.expiration && submitted }">
           <div class="form-group">
             <input type="text"
@@ -138,6 +138,7 @@
     </div>
   </div>
 
+  <div>
   <div class="width-100 bg-Block">
     <div class="container">
       <div class="row">
@@ -146,7 +147,7 @@
           <div class="row">
             <div class="col-sm-12">
               <strong>
-              By clicking on the "Create card" button, I agree to Convenience Select's:<br>
+              By clicking on the "{{submitButtonName}}" button, I agree to Convenience Select's:<br>
               <ul>
                 <li><a href="/terms-of-service" target="blank" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
                 <li><a href="/privacy-policy" target="blank" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>
@@ -160,13 +161,16 @@
       </div>
     </div>
   </div>
+  </div>
+
   <div class="row">
     <div class="col-sm-4 col-sm-offset-4">
-      <button type="submit" class="btn btnSignUp btn-block btn-lg">Create card</button>
+      <button type="submit" class="btn btnSignUp btn-block btn-lg">{{submitButtonName}}</button>
       <br/>
       <br/>
     </div>
   </div>
+
 </form>
 
 <div class="container empty-car text-CS" ng-show="loading">

@@ -19,6 +19,12 @@ angular.module('convenienceApp')
       });
     };
 
+    if ($state.current.name === 'payment-account-index') {
+      $scope.submitButtonName = 'Place Order';
+    }else {
+      $scope.submitButtonName = 'Create card';
+    }
+
     $scope.validateInput = function () {
       if ($scope.card && $scope.card.cardNumber && Stripe.card.validateCardNumber($scope.card.cardNumber)) {
         $scope.createCardForm.cardNumber.$setValidity('format', true);
@@ -43,16 +49,6 @@ angular.module('convenienceApp')
         if ($scope.needZipcode) {
           zipCode = $scope.card.zipCode;
         }
-        /*
-        var payload = {
-          name: $scope.card.nameOnCard,
-          card_number: $scope.card.cardNumber,
-          expiration_month: $scope.card.expirationDate.month,≤≤
-          expiration_year: $scope.card.expirationDate.year,
-          security_code: $scope.card.securityCode,
-          postal_code: $scope.card.zipCode
-        };*/
-        //jesse
         Stripe.card.createToken({
           number: $scope.card.cardNumber,
           cvc: $scope.card.securityCode,
@@ -77,9 +73,13 @@ angular.module('convenienceApp')
               }
             } else {
               var token = response.id;
-              PaymentService.associateCard(token).then(function () {
-                $scope.loading = false;
-                $state.go('user-payments');
+              PaymentService.associateCard(token).then(function (source) {
+                if($state.current.name === 'user-card-create'){
+                  $scope.loading = false;
+                  $state.go('user-payments');
+                }else if ($state.current.name === 'payment-account-index') {
+                  $scope.$parent.placeOrder('card',source);
+                }
                 TrackerService.create('Create card success',{});
               }).catch(function (err) {
                 $scope.loading = false;
@@ -89,30 +89,7 @@ angular.module('convenienceApp')
               });
             }
           });
-        /*
-        balanced.card.create(payload, function (response) {
-          if(response.status === 201) {
-            PaymentService.associateCard(response.data.id).then(function () {
-              $scope.loading = false;
-              $state.go('user-payments');
-            }).catch(function (err) {
-              $scope.loading = false;
-              $scope.sendAlertErrorMsg(err.data.message);
-            });
-          } else {
-            $scope.loading = false;
-            $scope.placedOrder = false;
-            if (response.error && response.error.message) {
-              $scope.sendAlertErrorMsg(response.error.message);
-            } else if (Object.keys(response.error).length !== 0) {
-              for (var key in response.error) {
-                $scope.sendAlertErrorMsg(response.error[key]);
-              }
-            }else {
-              $scope.sendAlertErrorMsg('Failed to Billing you, check your information');
-            }
-          }
-        });*/
+
       }else {
         $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
         TrackerService.create('Create card error' , 'Hey, you left some fields blank. Please fill them out.');

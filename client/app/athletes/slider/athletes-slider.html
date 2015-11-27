@@ -46,14 +46,14 @@
       </div>
       <div class="enrollments-acordion">
         <accordion close-others="true">
-          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt'" is-disabled="order.card" is-open="order.isOpen">
+          <accordion-group ng-repeat="order in orders | orderBy : '-createdAt'" is-disabled="true" >
             <accordion-heading>
 
               <table class="table table-bordered">
                 <tbody>
                 <tr>
                   <td>
-                      <span class="pull-right" ng-show="order.card">
+                      <span class="pull-right">
                         <strong ng-class="{'text-green-CS': (order.status === 'processing' || order.status === 'complete'), 'text-red-CS': (order.status === 'canceled' || order.status === 'holded')}">
                           {{order.status | uppercase}}
                         </strong>
@@ -64,7 +64,8 @@
                       </span>
                     <br>
                       <span class="athlete-team-info">
-                        {{order.products[0].productPurchaseSku | cleaner}}
+                        <span ng-if="order.products[0].shortDescription">{{order.products[0].shortDescription | cleaner}}</span>
+                        <span ng-if="!order.products[0].shortDescription">{{order.products[0].description | cleaner}}</span>
                       </span>
                     <br>
                       <span>
@@ -74,7 +75,7 @@
                     <div ng-show="order.bank">
                         <span class="bank-acount">
                           <strong>Bank Account:</strong>
-                          {{order.bank.bankAccounts[0].accountNumber | uppercase}}
+                          {{order.bank.last4}}
                         </span>
                       <br>
                     </div>

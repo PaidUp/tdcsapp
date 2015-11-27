@@ -22,7 +22,6 @@ exports.current = function(req, res, next) {
 
 exports.update = function(req, res, next) {
   mix.panel.track("updateUser", req.body);
-  console.log('req.body',req.body);
   userService.update(req.body, function (err, data){
     if(err) res.status(402).json(err);
     res.status(200).json(data);

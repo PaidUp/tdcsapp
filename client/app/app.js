@@ -152,15 +152,10 @@ angular.module('convenienceApp', [
       $state.previous = fromState;
       AuthService.isLoggedInAsync(function(loggedIn) {
         if (loggedIn) {
-          var currentUser = AuthService.getCurrentUser();
-          if (currentUser.payment &&
-              currentUser.payment.verify &&
-              currentUser.payment.verify.status !== 'succeeded') {
-            FlashService.addAlert({
-              type:'warning',
-              templateUrl: 'components/application/directives/alert/alerts/verify-bank-account.html'
-            });
-          }
+
+
+
+
           if(loggedIn && AuthService.getCurrentUser().roles && $state.current.data && $state.current.data.roles){
             var authorize = AuthService.authorize({'userRoles':AuthService.getCurrentUser().roles, 'pageDataRoles':$state.current.data.roles});
             if(!authorize){

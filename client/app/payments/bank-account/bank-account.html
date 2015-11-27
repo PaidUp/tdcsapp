@@ -1,4 +1,4 @@
-<form name="checkoutForm" ng-submit="placeOrder(checkoutForm.$valid)" novalidate>
+<form name="checkoutForm" ng-submit="placeOrder(null)" novalidate>
   <div class="container">
     <div class="row">
 
@@ -167,165 +167,39 @@
     <div class="row">
 
       <div class="col-sm-4 text-right clearfix">
-        <h4 class="text-CS">Credit Card Details</h4>
+        <h4 class="text-CS">Bank Account</h4>
       </div>
 
     </div>
 
-    <div ng-show="cards.length > 1">
+    <div ng-show="banks.length > 1">
       <div class="row">
-        <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectCard.$invalid && submitted }">
+        <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectBank.$invalid && submitted }">
           <div class="form-group">
-            <select name="selectCard"
+            <select name="selectBank"
                     class="form-control"
-                    ng-model="cardDetails"
-                    ng-required="cards.length > 1"
-                    ng-options="cardObj as cardObj.brand + cardObj.cardNumber for cardObj in cards track by cardObj.cardNumber"
-                    ng-change="changeCard()">
-              <option value="" disabled >Select a credit card</option>
+                    ng-model="bankDetails"
+                    ng-required="banks.length > 1"
+                    ng-options="bankObj as bankObj.bankName +': '+ bankObj.last4 for bankObj in banks"
+                    ng-change="changeBank()">
+              <option value="" disabled>Select a bank account</option>
             </select>
-            <div class="text-CS text-center" ng-show="checkoutForm.selectCard.$error.required && submitted">
-              <small class="text-CS">Card is required</small>
+            <div class="text-CS text-center" ng-show="checkoutForm.selectBank.$error.required && submitted">
+              <small class="text-CS">Bank is required</small>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div ng-if="cards.length === 1 || createCard">
-      <div class="row">
-        <div class="col-sm-4 text-right">
-          <label>Name on Card</label>
-        </div>
-        <div class="col-sm-4"  ng-class="{ 'has-error': $parent.checkoutForm.nameOnCard.$invalid && $parent.submitted }">
-          <div class="form-group">
-            <input type="text"
-                    class="form-control"
-                    placeholder="Name on Card"
-                      name="nameOnCard"
-                    ng-model="$parent.card.nameOnCard"
-                    ng-required="$parent.cards.length === 1 || $parent.createCard">
-            <div class="text-CS text-center" ng-show="$parent.checkoutForm.nameOnCard.$error.required && $parent.submitted">
-              <small class="text-CS">Name on Card is required</small>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div ng-if="banks.length === 1 || createBank">
 
-      <div class="row">
-        <div class="col-sm-4 text-right">
-          <label>Card Number</label>
-        </div>
-        <div class="col-sm-4" ng-class="{ 'has-error': $parent.checkoutForm.cardNumber.$invalid && $parent.submitted }">
-          <div class="form-group">
-            <input type="text"
-                    class="form-control"
-                    placeholder="Card Number"
-                    name="cardNumber"
-                    ng-model="$parent.card.cardNumber"
-                    placeholder="Card Number"
-                    ng-required="$parent.cards.length === 1 || $parent.createCard"
-                    ng-change="$parent.validateInput() ">
-            <div class="text-CS text-center" ng-show="$parent.checkoutForm.cardNumber.$error.format">
-              <small class="text-CS">Invalid Card Number</small>
-            </div>
-          </div>
-        </div>
-      </div>
+      <create-bank-account user="user"></create-bank-account>
 
-      <div class="row">
-        <div class="col-sm-4 text-right">
-          <label>Expiration</label>
-        </div>
-        <div class="col-sm-4">
-
-          <div class="row">
-            <div class="col-sm-6" ng-class="{ 'has-error': $parent.checkoutForm.$error.expiration && $parent.submitted }">
-
-              <div class="form-group">
-
-                <input type="text"
-                        class="form-control"
-                        id="month"
-                        placeholder="MM"
-                        name="month"
-                        ng-model="$parent.card.expirationDate.month"
-                        required
-                        ng-required="true"
-                        ng-change="$parent.validateInput()"
-                        ng-pattern="/^\d{1,2}$/">
-              </div>
-
-            </div>
-            <div class="col-sm-6" ng-class="{ 'has-error': $parent.checkoutForm.$error.expiration && $parent.submitted }">
-
-              <div class="form-group">
-
-                <input type="text"
-                    class="form-control"
-                    id="year"
-                    placeholder="YYYY"
-                    name="year"
-                    ng-model="$parent.card.expirationDate.year"
-                    ng-required="$parent.cards.length === 1 || $parent.createCard"
-                    ng-change="$parent.validateInput()"
-                    ng-pattern="/^\d{4}$/">
-
-              </div>
-
-            </div>
-
-            <div class="text-CS col-sm-12 text-center" ng-show="($parent.checkoutForm.year.$error.required || $parent.checkoutForm.month.$error.required) && $parent.submitted">
-              <small class="text-CS">Expiration Date is required</small>
-            </div>
-            <div class="text-CS col-sm-12 text-center" ng-show="($parent.checkoutForm.$error.expiration || $parent.checkoutForm.year.$error.pattern || $parent.checkoutForm.month.$error.pattern) && $parent.submitted">
-              <small class="text-CS">Invalid Expiration Date</small>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-4 text-right">
-          <label>Security Code</label>
-        </div>
-        <div class="col-sm-4" ng-class="{ 'has-error': $parent.checkoutForm.securityCode.$invalid && $parent.submitted }">
-
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-
-                <div class="form-group">
-                  <input type="text"
-                          class="form-control"
-                          placeholder="Security Code"
-                          name="securityCode"
-                          ng-model="$parent.card.securityCode"
-                          ng-required="$parent.cards.length === 1 || $parent.createCard"
-                          ng-maxlength="4"
-                          ng-minlength="3"
-                          ng-pattern="/^\d{3,4}$/">
-                  <div class="text-CS text-center" ng-show="($parent.checkoutForm.securityCode.$error.maxlength || $parent.checkoutForm.securityCode.$error.minlength || $parent.checkoutForm.securityCode.$error.number || $parent.checkoutForm.securityCode.$error.pattern) && $parent.submitted">
-                    <small class="text-CS">Invalid Security Code</small>
-                  </div>
-                  <div class="text-CS text-center" ng-show="$parent.checkoutForm.securityCode.$error.required && $parent.submitted">
-                    <small class="text-CS">Card Security Code is required</small>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
     </div>
-
   </div>
 
-  <div class="width-100 bg-Block">
+  <div class="width-100 bg-Block" ng-if="!createBank">
     <div class="container">
       <div class="row">
         <div class="col-sm-4 col-sm-offset-4">
@@ -340,7 +214,7 @@
                 <li><a href="https://stripe.com/connect/account-terms" target="blank">Stripe Connected Account Agreement</a></li>
               </ul>
             </strong></div>
-            <div class="col-sm-12">
+            <div ng-if="!createBank" class="col-sm-12">
               <button type="submit" class="btn btnSignUp btn-block btn-lg" ng-disabled="placedOrder">Place Order</button>
             </div>
           </div>

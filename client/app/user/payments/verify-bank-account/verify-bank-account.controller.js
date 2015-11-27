@@ -21,17 +21,16 @@ angular.module('convenienceApp')
     };
 
     var bankId;
-    var verifyId;
-    if ($stateParams.bankId && $stateParams.verifyId) {
+
+    if ($stateParams.bankId) {
       bankId = $stateParams.bankId;
-      verifyId = $stateParams.verifyId;
     } else {
       $state.go('user-payments');
     }
 
-    PaymentService.getBankAccount(bankId).then(function (bank) {
-      $scope.bankAccount = bank.bankAccounts[0];
-    });
+    //PaymentService.getBankAccount(bankId).then(function (bank) {
+    //  $scope.bankAccount = bank.bankAccounts[0];
+    //});
 
     $scope.validateDeposit = function (inputForm) {
       var deposit1 = '0.' + $scope.deposit1;
@@ -48,29 +47,29 @@ angular.module('convenienceApp')
         $scope.verifyBankAccountForm.deposit2.$setValidity('deposit', true);
       }
     };
-   
+
     $scope.verifyBankAccount = function () {
       $scope.submitted = true;
       if ($scope.verifyBankAccountForm.$valid) {
         PaymentService.verifyBankAccount({
+          bankId : bankId,
           deposit1: $scope.deposit1,
-          deposit2: $scope.deposit2,
-          verificationId: verifyId
+          deposit2: $scope.deposit2
         }).then(function (res) {
           $state.go('athletes');
           AuthService.updateCurrentUser();
-          FlashService.addAlert({
+
+          FlashService.overrideByAlias('verify-bank',{
             type: 'success',
             templateUrl: 'components/application/directives/alert/alerts/verify-bank-account-success.html',
-            timeout: 10000
+            timeout: 10000,
+            launch : function(){
+              $rootScope.$emit('verify-bank-account', {});
+            }
           });
         }).catch(function (err) {
-    			if(err.data.attemptsRemaining === 0){
-    				$rootScope.attemptsRemaining = err.data.attemptsRemaining;
-    				$state.go('user-payments');
-    			}
+          console.log('err' , err);
           $scope.sendAlertErrorMsg(err.data.message);
-          $rootScope.attemptsRemaining = err.data.attemptsRemaining;
         });
       }
     };

@@ -3,7 +3,7 @@
 angular.module('convenienceApp')
   .controller('MainCtrl', function ($rootScope, $scope, $timeout, FlashService, AuthService, ContactService,
                                     ModalService, ModalFactory, $anchorScroll, $location, TrackerService, $state, $stateParams,
-                                    $localStorage) {
+                                    $localStorage, PaymentService) {
 
     $rootScope.alerts = [];
     $scope.modalFactory = ModalFactory;
@@ -11,48 +11,57 @@ angular.module('convenienceApp')
     $scope.$storage = $localStorage.$default({});
 
     $scope.setPnTeam = function(){
-      var pnTeam = $stateParams.team;
+        var pnTeam = $stateParams.team;
+        if(pnTeam){
+          $scope.$storage.pnTeam = pnTeam;
+        }
 
-      if(pnTeam){
-        $scope.$storage.pnTeam = pnTeam;
-      }
+      $rootScope.$emit('verify-email', {});
+      $rootScope.$emit('verify-bank-account', {});
     };
 
     $scope.destPath = function(value, isParent){
       AuthService.destPath(value, isParent);
     };
 
-    $scope.$on('event:alerts', function () {
+    $scope.$on('event:alerts', function (overwrite) {
       var alert = FlashService.shift();
-      if (alert.timeout) {
+
+      var exist = false;
+      angular.forEach($rootScope.alerts, function (value, idx) {
+        if(value.templateUrl === alert.templateUrl || alert.alias === value.alias){
+          exist = true;
+
+          $rootScope.alerts[idx] = alert;
+        }
+      });
+      if (!exist) {
         $rootScope.alerts.push(alert);
+      }
+
+      if (alert.timeout) {
         $timeout(function () {
           angular.forEach($rootScope.alerts, function (value, index) {
-            if (value.templateUrl === alert.templateUrl) {
+            if (value.templateUrl === alert.templateUrl || alert.alias === value.alias) {
               $scope.closeAlert(index);
+              if(value.launch){
+               value.launch();
+              }
             }
+
           });
         }, alert.timeout);
-      } else {
-        var exist = false;
-        angular.forEach($rootScope.alerts, function (value) {
-          if (value.templateUrl === alert.templateUrl) {
-            exist = true;
-          }
-        });
-        if (!exist) {
-          $rootScope.alerts.push(alert);
-        }
       }
+
     });
 
     $rootScope.$on('logout', function () {
       $rootScope.alerts = [];
     });
 
-    $rootScope.$on('close-alerts', function () {
-      $rootScope.alerts = [];
-    });
+    //$rootScope.$on('close-alerts', function () {
+    //  $rootScope.alerts = [];
+    //});
 
     $rootScope.$on('verify-email', function () {
       AuthService.isLoggedInAsync(function(loggedIn) {
@@ -65,11 +74,29 @@ angular.module('convenienceApp')
               templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
             });
           }
+          $scope.isCardVerify = true;
         }
       });
     });
 
-    $rootScope.$emit('verify-email', {});
+    $rootScope.$on('verify-bank-account', function(){
+      AuthService.isLoggedInAsync(function(loggedIn){
+        if(loggedIn){
+          PaymentService.hasBankAccountsWihtoutVerify(function(result){
+            if(result){
+              FlashService.addAlert({
+                alias : 'verify-bank',
+                type:'warning',
+                templateUrl: 'components/application/directives/alert/alerts/verify-bank-account.html'
+              });
+            }
+          });
+        }
+        $scope.isBankVerify = true;
+      })
+    });
+
+
 
     $scope.closeAlert = function(index) {
       $rootScope.alerts.splice(index, 1);

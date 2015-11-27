@@ -15,6 +15,84 @@ var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 var notifications = require('../notifications/notifications.service');
 var async = require('async');
+var businessDays = require('moment-business-days');
+
+//refactor
+//generic funciton that retrieve orders pending and processing.
+function collectPendingOrders(callback){
+  logger.log('info','paymentCronService.collectPendingOrders');
+  paymentService.collectPendingOrders(function (err, pendingOrders){
+    if(err){
+      callback(err);
+    }
+    callback(null, pendingOrders);
+  });
+}
+//cron
+exports.collectAccounts = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    paymentSchedule
+  ], function(err, result){
+    cb(null, true);
+  });
+}
+//cron payments
+function paymentSchedule(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
+        if(err){
+          return callbackEach(err);
+        }
+        if(!orderSchedule.scheduled.schedulePeriods){
+          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+          callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
+        }
+        async.eachSeries(orderSchedule.scheduled.schedulePeriods,
+          function(schedulePeriod, callbackEach2){
+            if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+              userService.find({_id : order.userId}, function(err, users){
+                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                  if(paymentUser && paymentUser.defaultSource){
+                    order.cardId = paymentUser.defaultSource;
+                  }
+                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
+                    if(err){
+                      logger.info('email notification error (important) err' + err);
+                      err.order = order.incrementId;
+                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
+                      });
+                      return callbackEach2();
+                    }
+                    return callbackEach2();
+                  });
+                });
+              });
+            }else{
+              callbackEach2();
+            }
+          },
+          function(err){
+            if(err){
+              return callbackEach(err);
+            }
+            callbackEach();
+          });
+        //callback(null, schedule);
+      });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+}
+
+//end refactor
 
 function sendEmailReminder(pendingOrders, callback){
   logger.log('info','paymentCronService.sendEmailReminder');
@@ -62,15 +140,23 @@ function sendEmailReminder(pendingOrders, callback){
     });*/
 
     async.eachSeries(order.schedulePeriods, function(schedule, cbSchedule) {
-
       logger.log('info','iterate each orderSchedule', schedule.id);
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod);
       var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format());
       if(shouldReminder){
         logger.log('info','should send Email Reminder',schedule.id);
-        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          logger.log('info','send Email Reminder data',data);
-          logger.log('info','send Email Reminder err',err);
+        userService.find({_id:order.userId}, function(err, user){
+          if (!err && user[0]) {
+            paymentService.listCards(user[0].meta.TDPaymentId, function(err, card){
+              if(!err){
+                var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
+                paymentEmailService.sendEmailReminderPyamentParents(user, nameTeam, schedule, reminderValue, reminderPeriod, card, function (err, data){
+                  logger.log('info','send Email Reminder data',data);
+                  logger.log('info','send Email Reminder err',err);
+                });
+              };
+            });
+          }
         });
         return cbSchedule(null,true);
       }else{
@@ -94,70 +180,6 @@ function sendEmailReminder(pendingOrders, callback){
         return callback(null, true);
       }
   });
-
-}
-
-function collectPendingOrders(callback){
-  logger.log('info','paymentCronService.collectPendingOrders');
-  paymentService.collectPendingOrders(function (err, pendingOrders){
-    if(err){
-      callback(err);
-    }
-    callback(null, pendingOrders);
-  });
-}
-
-function paymentSchedule(pendingOrders, callbackSchedule){
-  async.eachSeries(pendingOrders,
-    function(order, callbackEach){
-      commerceService.paymentsSchedule({orderId:order.incrementId}, function(err, orderSchedule){
-        if(err){
-          return callbackEach(err);
-        }
-        if(!orderSchedule.scheduled.schedulePeriods){
-          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          callbackEach();
-          //return callbackEach(new Error('order without schedulePeriods'));
-        }
-        async.eachSeries(orderSchedule.scheduled.schedulePeriods,
-          function(schedulePeriod, callbackEach2){
-            if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
-              userService.find({_id : order.userId}, function(err, users){
-                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
-                  if(paymentUser && paymentUser.defaultSource){
-                    order.cardId = paymentUser.defaultSource;
-                  }
-                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.scheduled.meta, null, function(err , data){
-                    if(err){
-                      notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err || 'error unknown'}}, function(err, data){
-                      });
-                      return callbackEach2();//here, return ok, and send email.
-                    }
-
-                    return callbackEach2();
-                  });
-                });
-              });
-            }else{
-              callbackEach2();
-            }
-          },
-          function(err){
-            if(err){
-              return callbackEach(err);
-            }
-            callbackEach();
-          });
-        //callback(null, schedule);
-      });
-    },
-    function(err){
-      if(err){
-        return callbackSchedule(err);
-      }
-      return callbackSchedule();
-    })
 }
 
 exports.retryPaymentSchedule = function (callbackSchedule){
@@ -190,7 +212,8 @@ exports.retryPaymentSchedule = function (callbackSchedule){
                         paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                           order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, order.meta, retrySchedule.retryId, function(err , data){
                           if(err){
-                            notifications.sendEmailNotification({subject:'invalid order', jsonMessage:{order:order.incrementId, message:err}}, function(err, data){
+                            err.order = order.incrementId;
+                            notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err}, function(err, data){
                             });
                             return callbackEach2(err);//here, return ok, and send email.
                           }
@@ -227,15 +250,6 @@ exports.retryPaymentSchedule = function (callbackSchedule){
   });
 }
 
-exports.collectCreditCard = function(cb){
-  async.waterfall([
-    collectPendingOrders,
-    paymentSchedule
-  ], function(err, result){
-    cb(null, true);
-  });
-};
-
 exports.sendEmailReminderParents = function(cb){
   async.waterfall([
     collectPendingOrders,
@@ -243,7 +257,7 @@ exports.sendEmailReminderParents = function(cb){
   ], function(err, result){
     cb(null, true);
   });
-};
+}
 
 exports.collectOneTimePayments = function (cb) {
   logger.log('info', 'into collectOneTimePayments');
@@ -343,7 +357,7 @@ exports.collectLoanPayments = function (period, cb) {
 
     });
   });
-};
+}
 
 exports.sendRemindToAddPaymentMethod = function(cb){
   var period = config.notifications.reminderNoPaymentAdded.period;
@@ -563,5 +577,74 @@ function ValidateBankAccount(applicationId, cb){
       });
     });
   });
+}
+
+exports.sendEmailReminderVerifyBank = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    sendEmailReminderVerifyBankService
+  ], function(err, result){
+    cb(null, true);
+  });
+}
+
+function sendEmailReminderVerifyBankService(pendingOrders, callback){
+  logger.log('info','paymentCronService.sendEmailReminderVerifyBank');
+  var today = moment(new Date());
+  if(pendingOrders.length === 0){
+    return callback(null, true);
+  }
+  async.eachSeries(pendingOrders, function(order, cb) {
+    logger.info('--------------------------');
+    logger.info('iterate each order', order.incrementId);
+      var orderDate = new Date(order.createdAt);
+      //TODO: preconfigurate array to add N business day. example: [3,6,9,12,15]
+      var orderDateEnableOne = businessDays(orderDate).businessAdd(1)._d;
+      var orderDateEnableTwo = businessDays(orderDate).businessAdd(2)._d;
+      var orderDateEnableThree = businessDays(orderDate).businessAdd(3)._d;
+      var orderDateEnableFour = businessDays(orderDate).businessAdd(4)._d;
+      var orderDateEnableFive = businessDays(orderDate).businessAdd(5)._d;
+      var newShouldReminder = [orderDateEnableOne, orderDateEnableTwo, orderDateEnableThree, orderDateEnableFour, orderDateEnableFive
+      ].some(function(date){
+        return moment(date).isSame(today.format(), 'day');
+      });
+      logger.log('info','newShouldReminder',newShouldReminder);
+      logger.log('info','today',today.format());
+      logger.log('info','order.createdAt',order.createdAt);
+      logger.info('--------------------------');
+      if(newShouldReminder && order.paymentMethod === 'directdebit'){
+        logger.log('info','should validate pyment method',order.paymentMethod);
+        userService.find({_id:order.userId}, function(err, user){
+          if (!err && user[0]) {
+            //paymentService.listBanks(user[0].meta.TDPaymentId, function(errList, listAccounts){
+              paymentService.fetchBank(user[0].meta.TDPaymentId, order.cardId, function(err, account){//customerId, bankId
+                logger.log('info','should validate status account',account.status);
+                if(!err && account.status === 'new'){
+                  //var nameTeam = order.products[0].shortDescription || order.products[0].description || order.sku.replace('_',' ').replace('-',' ');
+                  paymentEmailService.sendRemindToVerifyAccount(order.incrementId, user[0], account, orderDate, function (err, data){
+                    logger.log('info','send Email Reminder data',data);
+                    logger.log('info','send Email Reminder err',err);
+                    return cb(null, true);
+                  });
+                }else{
+                  return cb(null, true);
+                }
+              });
+            //});
+          }else{
+            return cb(null, true);
+          }
+        });
+      }else{
+        return cb(null, true);
+      }
+  }, function(err){
+      if( err ) {
+      } else {
+        logger.log('info','All orders have been processed successfully');
+        return callback(null, true);
+      }
+  });
+
 }
 
