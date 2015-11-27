@@ -4,7 +4,7 @@ var nodemailer = require('nodemailer');
 var emailTemplates = require('email-templates');
 var transporter = nodemailer.createTransport(config.emailService);
 
-exports.sendEmail = function(data, cb) {
+exports.sendEmail = function(data, title, cb) {
     emailTemplates(config.emailTemplateRoot,function(err,template){
         if(err) return cb(err);
         var emailVars = config.emailVars;
@@ -16,15 +16,15 @@ exports.sendEmail = function(data, cb) {
             mailOptions.to = config.emailContacts.admin;
             //mailOptions.bcc = config.emailContacts.developer;
             mailOptions.html = html;
-            mailOptions.subject = emailVars.prefix + 'Stripe webhook ' + emailVars.companyName;
+            mailOptions.subject = emailVars.prefix + title +' Stripe webhook ' + emailVars.companyName;
             mailOptions.attachments = [];
             transporter.sendMail(mailOptions, function(error, info){
-            if(error){
-                return cb(error);
-            }else{
-                return cb(null, info);
-            }
-        });
+                if(error){
+                    return cb(error);
+                }else{
+                    return cb(null, info);
+                }
+            });
         });
     });
 };
