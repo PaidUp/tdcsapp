@@ -16,16 +16,26 @@ exports.webget = function (req, res) {
 };
 
 exports.webgetpaymentcharge = function (req, res) {
-  console.log('req.query',JSON.stringify(req.query,null,2))
+  console.log('webgetpaymentcharge req.body temp',req.body)
+  console.log('webgetpaymentcharge req.query temp',req.query)
+  logger.info('-----')
+  logger.info('webgetpaymentcharge req.body',req.body)
+  logger.info('-----')
+  logger.info('webgetpaymentcharge req.query',req.query)
+  logger.info('-----')
   webhookService.sendEmail(req.query, '[Charge]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentcharge"});
   })
 }
 
 exports.webgetpaymentchargeTemp = function (req, res) {
-  console.log('req temp',req)
-  console.log('req.body temp',req.body)
-  console.log('req.query temp',req.query)
+  console.log('webgetpaymentchargeTemp req.body temp',req.body)
+  console.log('webgetpaymentchargeTemp req.query temp',req.query)
+  logger.info('-----')
+  logger.info('webgetpaymentchargeTemp req.body',req.body)
+  logger.info('-----')
+  logger.info('webgetpaymentchargeTemp req.query',req.query)
+  logger.info('-----')
   webhookService.sendEmail(req.body, '[ChargeTemp]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentchargeTemp"});
   })
