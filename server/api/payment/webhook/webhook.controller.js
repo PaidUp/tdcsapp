@@ -16,7 +16,6 @@ exports.webget = function (req, res) {
 };
 
 exports.webgetpaymentcharge = function (req, res) {
-  console.log('webgetpaymentcharge req.body',req.body)
   webhookService.sendEmail(req.body, '[Charge]', function(err, data){
     return res.status(200).json({webhook:"webgetpaymentchargeTemp"});
   })
