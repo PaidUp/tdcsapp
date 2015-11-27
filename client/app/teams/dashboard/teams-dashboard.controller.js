@@ -23,7 +23,7 @@ angular.module('convenienceApp')
     $scope.viewTeamProfile = function () {
       if ($scope.team) {
         $state.go('teams-profile',{
-          teamId: $scope.team.attributes.productId
+          teamId: $scope.team.entityId
         });
       };
     };
