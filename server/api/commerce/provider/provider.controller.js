@@ -23,9 +23,11 @@ exports.providerRequest = function (req, res) {
       commerceEmailService.sendContactEmail(provider, function(err, send){
         if(err){
           logger.info(err);
+        }else{
+          return res.status(200).json({providerId: provider._id});
         }
       });
-      return res.status(200).json({});
+      
     });
   });
 }
@@ -121,8 +123,7 @@ exports.providerResponse = function (req, res) {
                   //return handleError(res, err);
                   return res.status(402).json({});
                 }
-                //TODO save account.id - and teamId in mongodb - provider in data value.
-                commerceService.providerResponseUpdate(providerId, {verify:'done'}, function (err, providerData) {
+                commerceService.providerResponseUpdate(providerId, {verify:'done', aba:'', dda:'', ownerSSN:''}, function (err, providerData) {
                   if(err){
                     //return handleError(res, err);
                     return res.status(403).json({});
