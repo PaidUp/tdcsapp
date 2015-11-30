@@ -23,9 +23,11 @@ exports.providerRequest = function (req, res) {
       commerceEmailService.sendContactEmail(provider, function(err, send){
         if(err){
           logger.info(err);
+        }else{
+          return res.status(200).json({providerId: provider._id});
         }
       });
-      return res.status(200).json({});
+      
     });
   });
 }

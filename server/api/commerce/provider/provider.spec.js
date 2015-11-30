@@ -5,13 +5,15 @@ var request = require('supertest');
 var assert = require('chai').assert;
 var Provider = require("./provider.model");
 var providerService = require("./provider.service");
-//var moment = require('moment');
 var providerSpecModel = require('./provider.model.spec');
-//var tokenTDUser = 'TDUserToken-CHANGE-ME!';
+var faker = require('faker')
+var tokenTDUser = 'TDUserToken-CHANGE-ME!';
+
+var providerId, userId, token
 
 describe.only('User', function() {
 
-    describe.only('provider.service', function() {
+    describe('provider.service', function() {
 
         it('save', function (done) {
             var provider = new Provider(providerSpecModel.provider);
@@ -44,80 +46,73 @@ describe.only('User', function() {
                 done();
             });
         });
-    /*
-        it('create', function (done) {
-          var user = new User({
-            firstName: userSpecModel.user.firstName,
-            lastName: userSpecModel.user.lastName
-          });
-          userService.create(user, function(err, data){
-            assert.equal(err, null);
-            assert(data._id);
-            done();
-          });
-        });
-
-        it('findOne', function (done) {
-          var filter = {};
-          userService.findOne(filter,'', function(err, data){
-            assert.equal(err, null);
-            assert(data);
-            done();
-          });
-        });
-
-        it('find', function (done) {
-          var filter = {};
-          var fields = '-firstName';
-          userService.find(filter,fields, function(err, data){
-            assert.equal(err, null);
-            assert(!data[0].firstName);
-            done();
-          });
-        });
-
-        it('verifySSN' , function(done){
-          assert(userService.verifySSN(userSpecModel.user.ssn), 'SSN is not valid');
-          done();
-        });
-
-        it('encryptSSN' , function(done){
-          var encSSN = userService.encryptSSN(userSpecModel.user.ssn);
-          assert(encSSN);
-          userSpecModel.encryptValue = encSSN;
-          done();
-        });
-
-        it('decryptSSN' , function(done){
-          var SSN = userService.decryptSSN(userSpecModel.encryptValue);
-          assert.equal(userSpecModel.user.ssn, SSN);
-          done();
-        });
-    */
     });
 
-    describe.skip('provider.controller', function() {
+    describe('provider.controller', function() {
 
-        it('response', function (done) {
-            var provider = new Provider(providerSpecModel.provider);
-            providerService.save(provider, function(err, data){
-                assert.equal(err, null);
-                assert(data._id);
-                done();
-            });
-        });
-    /*
-        it('create', function (done) {
-          var user = new User({
-            firstName: userSpecModel.user.firstName,
-            lastName: userSpecModel.user.lastName
-          });
-          userService.create(user, function(err, data){
-            assert.equal(err, null);
-            assert(data._id);
+      it('/user/create', function(done) {
+        request(app)
+          .post('/api/v1/user/create')
+          .send({
+            firstName : faker.name.firstName(),
+            lastName : faker.name.lastName(),
+          })
+          .expect(200)
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            userId = res.body.userId
+            assert(res.body.userId);
             done();
           });
-        });
-    */
+      });
+
+      it('/auth/local/signup', function(done) {
+        var credentialFake = {
+          userId: userId,
+          email: faker.internet.email(),
+          password: '123456',
+          rememberMe: true
+        };
+        request(app)
+          .post('/api/v1/auth/local/signup')
+          .send(credentialFake)
+          .expect(200)
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            assert(res.body.token);
+            token = res.body.token
+            done();
+          });
+      });
+
+      it('/commerce/provider/request', function(done) {
+        this.timeout(10000);
+        request(app)
+          .post('/api/v1/commerce/provider/request')
+          .send({token:token, providerInfo:providerSpecModel.provider})
+          .expect(200)
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            assert(res.body.providerId);
+            providerId = res.body.providerId
+            done();
+          });
+      });
+
+      it('/commerce/provider/response', function(done) {
+        this.timeout(10000);
+        request(app)
+          .get('/api/v1/commerce/provider/response/' + providerId)
+          .expect(200)
+          .expect('Content-Type', 'application/json; charset=utf-8')
+          .end(function(err, res) {
+            if (err) return done(err);
+            done();
+          });
+      });
+
     });
 });
