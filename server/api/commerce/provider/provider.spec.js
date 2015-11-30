@@ -9,7 +9,7 @@ var providerService = require("./provider.service");
 var providerSpecModel = require('./provider.model.spec');
 //var tokenTDUser = 'TDUserToken-CHANGE-ME!';
 
-describe('User', function() {
+describe.only('User', function() {
 
     describe.only('provider.service', function() {
 

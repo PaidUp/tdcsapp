@@ -61,6 +61,7 @@ module.exports = {
       .setValue('input[name=aba]',model.aba)
       .setValue('input[name=dda]',model.dda)
       .setValue('input[name=ddaVerification]',model.ddaVerification)
+      .setValue('input[name=referralCode]',model.referralCode)
   },
   
   'providerSuccess' : function (browser) {
