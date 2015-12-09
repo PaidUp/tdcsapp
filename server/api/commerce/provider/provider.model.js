@@ -40,7 +40,8 @@ var ProviderSchema = new Schema({
     //End billing info
     createAt: {type: Date, default: new Date()},
     updateAt: {type: Date, default: new Date()},
-    verify: {type: String,default:'pending'}
+    verify: {type: String,default:'pending'},
+    referralCode: { type: String, default: ''} // email
 });
 
 /**

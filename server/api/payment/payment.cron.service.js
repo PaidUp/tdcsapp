@@ -595,23 +595,17 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
     return callback(null, true);
   }
   async.eachSeries(pendingOrders, function(order, cb) {
-    logger.info('--------------------------');
-    logger.info('iterate each order', order.incrementId);
       var orderDate = new Date(order.createdAt);
       //TODO: preconfigurate array to add N business day. example: [3,6,9,12,15]
-      var orderDateEnableOne = businessDays(orderDate).businessAdd(1)._d;
-      var orderDateEnableTwo = businessDays(orderDate).businessAdd(2)._d;
-      var orderDateEnableThree = businessDays(orderDate).businessAdd(3)._d;
-      var orderDateEnableFour = businessDays(orderDate).businessAdd(4)._d;
-      var orderDateEnableFive = businessDays(orderDate).businessAdd(5)._d;
+      var orderDateEnableOne = businessDays(orderDate).businessAdd(3)._d;
+      var orderDateEnableTwo = businessDays(orderDate).businessAdd(6)._d;
+      var orderDateEnableThree = businessDays(orderDate).businessAdd(9)._d;
+      var orderDateEnableFour = businessDays(orderDate).businessAdd(12)._d;
+      var orderDateEnableFive = businessDays(orderDate).businessAdd(15)._d;
       var newShouldReminder = [orderDateEnableOne, orderDateEnableTwo, orderDateEnableThree, orderDateEnableFour, orderDateEnableFive
       ].some(function(date){
         return moment(date).isSame(today.format(), 'day');
       });
-      logger.log('info','newShouldReminder',newShouldReminder);
-      logger.log('info','today',today.format());
-      logger.log('info','order.createdAt',order.createdAt);
-      logger.info('--------------------------');
       if(newShouldReminder && order.paymentMethod === 'directdebit'){
         logger.log('info','should validate pyment method',order.paymentMethod);
         userService.find({_id:order.userId}, function(err, user){
