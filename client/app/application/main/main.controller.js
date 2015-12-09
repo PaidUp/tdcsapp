@@ -16,7 +16,7 @@ angular.module('convenienceApp')
           $scope.$storage.pnTeam = pnTeam;
         }
 
-      $rootScope.$emit('verify-email', {});
+      //$rootScope.$emit('verify-email', {});
       $rootScope.$emit('verify-bank-account', {});
     };
 
