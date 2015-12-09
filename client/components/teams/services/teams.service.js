@@ -28,18 +28,15 @@ angular.module('convenienceApp')
 
       var deferred = $q.defer();
       Teams.query({categoryId:'teams'},function (teamsResponse) {
-        teamsResponse.forEach(function (teamItem, idx, arr) {
-          TeamService.getTeam(teamItem.productId).then(function (team) {
-            if(team && team.attributes.status == 1) {
+        teamsResponse.forEach(function (team, idx, arr) {
+
+            if(team && team.status == 1) {
               teams.push(team);
             }
             if(arr.length - 1 == idx){
               deferred.resolve(teams);
             }
 
-          }).catch(function (err) {
-
-          });
         });
       });
       return deferred.promise;
@@ -49,20 +46,17 @@ angular.module('convenienceApp')
       var teams = [];
 
       var deferred = $q.defer();
-      TeamsGrouped.query({productId:productId},function (teamsResponse) {
-        teamsResponse.forEach(function (teamItem, idx, arr) {
-          TeamService.getTeam(teamItem.productId).then(function (team) {
-            if(team) {
-              if(team.attributes.status == 1){
-                teams.push(team);
-              }
-              if(arr.length-1 == idx){
-                deferred.resolve(teams);
-              }
-            }
-          }).catch(function (err) {
 
-          });
+      TeamsGrouped.query({productId:productId},function (teamsResponse) {
+        teamsResponse[0].simpleProducts.forEach(function (team, idx, arr) {
+          if(team) {
+            if(team.status == 1){
+              teams.push(team);
+            }
+            if(arr.length-1 == idx){
+              deferred.resolve(teams);
+            }
+          }
         });
       });
       return deferred.promise;

@@ -35,8 +35,9 @@ var data = {
         //End billing info
         
         //Billing info
-        aba: 'uVOpJzWf/Dm5',//'110000000',
-        dda: 'uFKpJjec+Dy/Foz/',//'000123456789'
+        aba: '110000000',// 'uVOpJzWf/Dm5',//'110000000',
+        dda: '000123456789',// 'uFKpJjec+Dy/Foz/',//'000123456789'
+        referralCode: faker.lorem.words()
     }
         //encryptKey : 'PZ3oXv2v6Pq5HAPFI9NFbQ==',
         //encryptValue : ''

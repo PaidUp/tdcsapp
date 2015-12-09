@@ -113,7 +113,7 @@ angular.module('convenienceApp')
       TrackerService.create('selectTeamForAthlete');
       $state.go('teams-profile-athlete',{
         // teamId: $scope.athlete.team.product_id,
-        teamId: $scope.team.attributes.productId,
+        teamId: $scope.team.entityId,
         athleteId: $scope.athlete._id
       });
     };

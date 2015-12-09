@@ -100,7 +100,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
         $state.go(AuthService.getDest());
         AuthService.setDest();
 
-        $rootScope.$emit('verify-email', {});
+        //$rootScope.$emit('verify-email', {});
 
         $rootScope.$emit('verify-bank-account', {});
 
@@ -144,14 +144,14 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
       var success = function (data) {
         AuthService.addCredentials(data.userId, credentials, function() {
           // Account created, redirect to home
-          // $scope.modal.closeModal();
-          FlashService.addAlert({
-            alias : 'verify-email',
-            type:'warning',
-            templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
-          });
+          $scope.modal.closeModal();
+          //FlashService.addAlert({
+          //  alias : 'verify-email',
+          //  type:'warning',
+          //  templateUrl: 'components/application/directives/alert/alerts/verify-email.html'
+          //});
 
-          $scope.modal.showContent('verifyEmail');
+          //$scope.modal.showContent('verifyEmail');
 
           $state.go(AuthService.getDest());
           AuthService.setDest();

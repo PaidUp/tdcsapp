@@ -99,7 +99,8 @@ var models = function () {
     businessName: faker.company.companyName(),
     aba: '110000000',
     dda: '000123456789',
-    ddaVerification: '000123456789'
+    ddaVerification: '000123456789',
+    referralCode: 'referralCode'
   };
 };
 

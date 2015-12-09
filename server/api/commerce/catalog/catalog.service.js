@@ -7,7 +7,7 @@ tdCommerceService.init(config.connections.commerce);
 
 function catalogList (categoryId, cb) {
 	tdCommerceService.init(config.connections.commerce);
-  tdCommerceService.catalogCategory(categoryId, function(err, data) {
+  tdCommerceService.catalogCategoryV2(categoryId, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
@@ -15,7 +15,7 @@ function catalogList (categoryId, cb) {
 
 function groupedList (productId, cb) {
   tdCommerceService.init(config.connections.commerce);
-  tdCommerceService.groupedProduct(productId, function(err, data) {
+  tdCommerceService.catalogProductV2(productId, function(err, data) {
     if(err) return cb(err);
     return cb(null, data);
   });
