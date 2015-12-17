@@ -19,7 +19,9 @@ function createPaymentPlanFull(params, cb){
     {name : 'athlete_first_last' , value : params.meta.athlete_last_name}
   ]
 
-  let schedules = {schedule_data : {name : params.name, informations : []}}
+  let schedules = [];
+
+  //{schedule_data : {name : params.name, informations : []}}
 
   params.schedulePeriods.forEach(function (ele, idx, arr) {
     /*let attr = {
@@ -33,6 +35,9 @@ function createPaymentPlanFull(params, cb){
       description : ele.description,
       discountToFee : ele.discountToFee
     };*/
+    let period = {name  : params.name,
+      informations : []
+    };
 
     for(var attributeName in ele){
       let scheduleInf = {
@@ -40,8 +45,9 @@ function createPaymentPlanFull(params, cb){
         value : ele[attributeName]
       }
 
-      schedules.schedule_data.informations.push(scheduleInf);
+      period.informations.push(scheduleInf);
     }
+    schedules.push(period);
   });
 
   paymentPlan.schedules = schedules;
