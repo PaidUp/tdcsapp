@@ -92,6 +92,17 @@ function paymentSchedule(pendingOrders, callbackSchedule){
     })
 }
 
+//cronv2
+exports.collectAccountsv2 = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    // paymentSchedule
+  ], function(err, result){
+    console.log('result', result)
+    cb(null, true);
+  });
+}
+
 //end refactor
 
 function sendEmailReminder(pendingOrders, callback){

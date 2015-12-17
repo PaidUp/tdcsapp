@@ -30,6 +30,7 @@ module.exports = function(app) {
   // app.use('/api/v1/team', require('./api/teams'));
   // app.use('/api/v1/things', require('./api/thing'));
   app.use('/api/v1/application', require('./api/application'));
+  app.use('/api/v2/application', require('./api/application/v2'));
   app.use('/api/v1/loan', require('./api/loan'));
 //  app.use('/api/v1/users', require('./api/users'));
 
