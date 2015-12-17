@@ -1,10 +1,10 @@
 'use strict';
 
-var loanService = require('../../loan/loan.service')
 var config = require('../../../config/environment');
 var tdCommerceService = require('TDCore').commerceService;
 var tdUserService = require('TDCore').userService;
 var emailNotification = require('../../../components/util/notifications/email-notifications');
+var tdScheduleService = require('../schedule/schedule.service')();
 
 exports.placeOrder = function(user, cartId, addresses, orderData, cb){
   tdCommerceService.init(config.connections.commerce);
@@ -32,13 +32,21 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                   discount: orderData.discount};
                 tdCommerceService.generateScheduleV2(paramsSchedule, function(err,schedule){
                   if(err) {return cb(err);}
+
+                  if(orderData.isInFullPay){
+                    schedule.name = 'One Payment Schedule'
+                  }else{
+                    schedule.name = 'Customize Schedule'
+                  }
+
+                  schedule.orderId = dataOrderId,
                   schedule.meta = {
                     org_name : orderData.products[0].productSku,
                     sku : orderData.products[0].productPurchaseSku,
                     athlete_first_name : orderData.athleteFirstName,
                     athlete_last_name : orderData.athleteLastName
                   }
-                  tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(schedule), 'pending', function(err, comment) {
+                  tdScheduleService.createPaymentPlanFull(schedule, function(err, scheduleData) {
                     if(err) {return cb(err);}
                     tdCommerceService.orderCommentAdd(dataOrderId, JSON.stringify(orderData), 'pending', function(err, comment) {
                       if(err) {return cb(err);}
