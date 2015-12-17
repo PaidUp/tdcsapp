@@ -64,7 +64,19 @@ function createPaymentPlanFull(params, cb){
     logger.debug('tdPaymentPlanService.paymentPlanCreateFull' , data);
     cb(null, data);
   });
-}
+};
+
+function paymentPlanInfoFullByName(name, isParce, cb){
+  tdPaymentPlanService.paymentPlanInfoFullByName(name, isParce, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.getPaymentPlanFull', err);
+      return cb(err);
+    }else{
+      logger.debug('tdPaymentPlanService.getPaymentPlanFull', data);
+      return cb(null, data);
+    }
+  });
+};
 
 module.exports = function(conf){
   if(conf){
