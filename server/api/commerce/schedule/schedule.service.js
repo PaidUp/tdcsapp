@@ -86,6 +86,7 @@ module.exports = function(conf){
   tdPaymentPlanService.init(config.connections.schedule);
 
   return {
-    createPaymentPlanFull:createPaymentPlanFull
+    createPaymentPlanFull:createPaymentPlanFull,
+    paymentPlanInfoFullByName:paymentPlanInfoFullByName
   }
 }
