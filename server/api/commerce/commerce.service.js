@@ -41,9 +41,12 @@ function getUserOrders(user, cb) {
 function getOrder(user, orderId, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderLoad(orderId, function (err, magentoOrder) {
+
+    logger.debug('magento Order' , magentoOrder);
+
     if (err) return cb(err);
 
-    if (magentoOrder.cardId.indexOf('ba_') === 0) {
+    if (magentoOrder.cardId && magentoOrder.cardId.indexOf('ba_') === 0) {
 
       paymentService.fetchBank(user.meta.TDPaymentId,magentoOrder.cardId, function (err, bank) {
         if (err) {
@@ -53,7 +56,7 @@ function getOrder(user, orderId, cb) {
         return cb(null, magentoOrder);
       });
 
-    } else if (magentoOrder.cardId.indexOf('card_') === 0) {
+    } else if (magentoOrder.cardId && magentoOrder.cardId.indexOf('card_') === 0) {
       paymentService.fetchCard(user.meta.TDPaymentId ,magentoOrder.cardId, function (err, card) {
         if (err) {
           return cb(err);
@@ -97,6 +100,15 @@ function getUsertransactions(user, cb) {
       if (err) { return cb(err); }
       return cb(null, transactions);
     });
+  });
+}
+
+function transactionList(filter, cb){
+  TDCommerceService.transactionList(filter, function (err, orderTransactions) {
+    if (err) {
+      return cb(err);
+    }
+    return cb(null, orderTransactions);
   });
 }
 
@@ -231,3 +243,4 @@ exports.getSchedule = getSchedule;
 exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
 exports.getListOrdersComplete = getListOrdersComplete;
+exports.transactionList = transactionList;
