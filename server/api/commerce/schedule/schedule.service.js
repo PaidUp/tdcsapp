@@ -66,8 +66,8 @@ function createPaymentPlanFull(params, cb){
   });
 };
 
-function paymentPlanInfoFullByName(name, isParce, cb){
-  tdPaymentPlanService.paymentPlanInfoFullByName(name, isParce, function (err , data){
+function paymentPlanInfoFullByName(name, isParse, cb){
+  tdPaymentPlanService.paymentPlanInfoFullByName(name, isParse, function (err , data){
     if(err){
       logger.error('tdPaymentPlanService.getPaymentPlanFull', err);
       return cb(err);

@@ -103,6 +103,15 @@ function getUsertransactions(user, cb) {
   });
 }
 
+function transactionList(filter, cb){
+  TDCommerceService.transactionList(filter, function (err, orderTransactions) {
+    if (err) {
+      return cb(err);
+    }
+    return cb(null, orderTransactions);
+  });
+}
+
 function addCommentToOrder(orderId, comment, status, cb) {
   TDCommerceService.init(config.connections.commerce);
   TDCommerceService.orderCommentAdd(orderId, comment, status, function (err, data) {
@@ -234,3 +243,4 @@ exports.getSchedule = getSchedule;
 exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
 exports.getListOrdersComplete = getListOrdersComplete;
+exports.transactionList = transactionList;
