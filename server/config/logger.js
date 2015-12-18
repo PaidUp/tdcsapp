@@ -2,7 +2,7 @@
  * Created by riclara on 8/28/15.
  */
 
-var config = require('../config/environment');
+var config = require('./environment');
 var winston = require('winston');
 
 winston.emitErrs = true;
@@ -11,7 +11,7 @@ var logger = new winston.Logger({
   transports: [
     new winston.transports.File({
       level: 'info',
-      filename: '~/logs/TDCsApp/all-logs.log',
+      filename: config.root + '/var/logs/all-logs.log',
       handleExceptions: true,
       json: true,
       maxsize: 5242880, //5MB
