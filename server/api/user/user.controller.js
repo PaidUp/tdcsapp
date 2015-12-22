@@ -37,11 +37,12 @@ exports.find = function(req, res, next) {
 };
 
 exports.sendWelcome = function(req, res, next) {
-  userService.sendEmailWelcome(req.body, function (err, data){
+  // Disable temporarily because the user should not leave the CS page.
+  // userService.sendEmailWelcome(req.body, function (err, data){
     // mix.panel.track("sendEmailWelcome", mix.mergeDataMixpanel(req.body, req.user._id));
-    if(err) res.status(402).json(err);
+    // if(err) res.status(402).json(err);
     res.status(200).json({data:'sendWelcome'});
-  });
+  // });
 };
 
 exports.sendResetPassword = function(req, res, next) {
