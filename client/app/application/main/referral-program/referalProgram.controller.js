@@ -8,7 +8,7 @@ angular.module('convenienceApp')
   .controller('ReferralProgramCtrl', function ($scope, ModalFactory, ModalParams) {
 
     $scope.modalFactory = ModalFactory;
-    
+
     $scope.isModal = ModalParams.isModal;
     $scope.style = $scope.isModal ? 'modal-body' : 'container';
 
