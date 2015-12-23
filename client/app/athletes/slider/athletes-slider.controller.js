@@ -160,19 +160,22 @@ angular.module('convenienceApp')
       var schedule;
       var hasPending;
       var isDelinquent = false;
-      for (var i=0; i < scheduleArray.length; i++) {
-        schedule = scheduleArray[i];
-        if (schedule.state === 'failed') {
-          isDelinquent = true;
-          break;
-        }
-        if (schedule.state === 'pending') {
-          hasPending = true;
-          date = $scope.prettify(schedule.paymentDay);
-          paymentNumber = $scope.getGetOrdinal(i + 1);
-          break;
+      if(scheduleArray){
+        for (var i=0; i < scheduleArray.length; i++) {
+          schedule = scheduleArray[i];
+          if (schedule.state === 'failed') {
+            isDelinquent = true;
+            break;
+          }
+          if (schedule.state === 'pending') {
+            hasPending = true;
+            date = $scope.prettify(schedule.paymentDay);
+            paymentNumber = $scope.getGetOrdinal(i + 1);
+            break;
+          }
         }
       }
+
       if (hasPending) {
         return paymentNumber + ' payment ' + date;
       } else if (isDelinquent) {

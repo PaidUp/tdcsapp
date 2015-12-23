@@ -14,6 +14,7 @@ var contractEmail = require('../../loan/loan.contract.email.service');
 var loanApplicationService = require('../../loan/application/loanApplication.service');
 var userLoanService = require('../../loan/application/user/user.service');
 var mix = require('../../../config/mixpanel');
+var emailNotification = require('../../../components/util/notifications/email-notifications');
 
 exports.place = function(req, res) {
   mix.panel.track("placeCheckoutStart", mix.mergeDataMixpanel(req.body, req.user._id));
@@ -91,23 +92,29 @@ exports.place = function(req, res) {
     });
   }
   else if (req.body.payment == "onetime") {
+    logger.debug('onetime');
     placeOrder(req.user, req.body.cartId, req.body.addresses, orderData, function(err, magentoOrderId){
-      if (err) return handleError(res, err);
-      return res.status(200).json(magentoOrderId);
+      if (err) {
+        handlePlaceOrderError(req.user);
+      }//return handleError(res, err);
+      res.status(200).json(true);
     });
   }
 }
 
 function placeOrder(user, cartId, addresses, orderData, cb) {
   cartService.cartView(cartId.cartId, function (err, shoppingCart) {
-    if (err) return cb(err);
+    logger.debug('shoppingCart', shoppingCart);
+    if (err) return handlePlaceOrderError(user);;
     cartService.prepareMerchantProducts(shoppingCart, function (err, merchantProducts) {
-      if (err) return cb(err);
+      logger.debug('merchantProducts', merchantProducts);
+      if (err) return handlePlaceOrderError(user);;
       orderData.products = merchantProducts;
       checkoutService.placeOrder(user, cartId, addresses, orderData, function (err, magentoOrderId, schedule) {
-        if (err) return cb(err);
+        if (err) return handlePlaceOrderError(user);;
         paymentService.prepareUser(user, function (err, user) {
-          if(err) logger.log('error',err);
+          if(err) handlePlaceOrderError(user);
+            logger.log('error',err);
           var team = {
             seasonEnd: merchantProducts[0].seasonEnd,
             name: shoppingCart.items[0].name,
@@ -127,13 +134,16 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
             paymentService[action](orderData.customerId, orderData.cardId, function(err, account){
               var amount = parseFloat(shoppingCart.grandTotal).toFixed(2);
               userService.save(child[0], function(err, userAthlete) {
-                if(err) logger.log('error',err);
+                if(err) handlePlaceOrderError(user);
+                  logger.log('error',err);
                 var descriptionTeamEmail = merchantProducts[0].shortDescription || merchantProducts[0].description;
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, account, amount, schedule.schedulePeriods, shoppingCart.items[0], descriptionTeamEmail, function (err, data) {
+                  logger.debug('sendNewOrderEmail: ' +JSON.stringify(data));
+
                   mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
-                  if(err) logger.log('error',err);
+                  if(err) logger.error('error',err);
                 });
-                return cb(null, magentoOrderId);
+                logger.debug('Order created '+magentoOrderId);
               });
             });
           });
@@ -141,7 +151,15 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
       });
     });
   });
+   cb(null, true);
 }
+
+function handlePlaceOrderError(user){
+  logger.debug('first name' , JSON.stringify(user));
+  logger.debug('handlePlaceOrderError: '+user.email)
+  emailNotification.sendPlaceOrderErrorNotification(user.firstName, user.email);
+
+};
 
 function handleError(res, err) {
   var httpErrorCode = 500;
