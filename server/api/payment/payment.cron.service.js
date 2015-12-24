@@ -16,6 +16,7 @@ var commerceService = require('../commerce/commerce.service');
 var notifications = require('../notifications/notifications.service');
 var async = require('async');
 var businessDays = require('moment-business-days');
+var scheduleService = require('../commerce/schedule/schedule.service')()
 
 //refactor
 //generic funciton that retrieve orders pending and processing.
@@ -83,6 +84,87 @@ function paymentSchedule(pendingOrders, callbackSchedule){
           });
         //callback(null, schedule);
       });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+}
+
+//cronv2
+exports.collectAccountsv2 = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    paymentSchedulev2
+  ], function(err, result){
+    cb(null, true);
+  });
+}
+
+function paymentSchedulev2(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function(err, orderSchedule){
+        if(err){
+          return callbackEach(err);
+        }
+        if(!orderSchedule || !orderSchedule.schedulePeriods){
+          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+          return callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
+        }
+        commerceService.transactionList(order.incrementId, function(err, transactionList){
+          if(err){
+            return callbackEach(err);
+          }
+          orderSchedule.schedulePeriods.forEach(function(element, index, array){
+            element.transactions = [];
+            if(transactionList.length > 0){
+              transactionList.forEach(function(elemTransaction, ind, arrayTransation){
+                if(elemTransaction.details.rawDetailsInfo.scheduleId === element.id ){
+                  element.transactions.push(elemTransaction);
+                }
+              });
+            }
+          });
+          async.eachSeries(orderSchedule.schedulePeriods,
+            function(schedulePeriod, callbackEach2){
+              if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+                userService.find({_id : order.userId}, function(err, users){
+                  paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                    if(paymentUser && paymentUser.defaultSource){
+                      order.cardId = paymentUser.defaultSource;
+                    }
+                    paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                      order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function(err , data){
+                      if(err){
+                        logger.info('email notification error (important) err' + err);
+                        err.order = order.incrementId;
+                        notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
+                        });
+                        return callbackEach2();
+                      }
+                      return callbackEach2();
+                    });
+                  });
+                });
+              }else{
+                callbackEach2();
+              }
+            },
+            function(err){
+              if(err){
+                return callbackEach(err);
+              }
+              callbackEach();
+            });
+          //callback(null, schedule);
+        });
+
+      });
+
     },
     function(err){
       if(err){

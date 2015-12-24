@@ -9,6 +9,18 @@ var logger = require('../../config/logger');
 var path = require('path');
 var moment = require('moment');
 
+var jobsv2 =
+  [
+    // Collect Accounts Payments v2
+    function(callback) {
+      logger.log('info','paymentCronService.collectAccountsv2');
+      paymentCronService.collectAccountsv2(function (err, data) {
+        if (err) callback(err);
+        callback(null, 'data');
+      });
+    }
+  ];
+
 var jobs =
   [
     // Collect Accounts Payments
@@ -196,5 +208,21 @@ exports.runReminderVerifyBank = function(cb) {
       });
   }else{
     return cb(null,{name:name+'.pid is created'});
+  }
+}
+
+exports.runv2 = function(cb) {
+  var name = 'cronv2'// +new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running cron v2...');
+    startGiveName(name);
+    async.series(
+      jobsv2,
+      function (err, results) {
+        endName(name);
+        return cb(null,results);
+      });
+  }else{
+    return cb({name:'cronv2.pid is created'});
   }
 }
