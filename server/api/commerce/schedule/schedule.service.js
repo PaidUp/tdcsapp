@@ -3,7 +3,7 @@
 var tdPaymentPlanService = require('TDCore').paymentPlanService;
 var config = require('../../../config/environment/index');
 var logger = require('../../../config/logger');
-
+//Done
 function createPaymentPlanFull(params, cb){
 
 
@@ -65,7 +65,7 @@ function createPaymentPlanFull(params, cb){
     cb(null, data);
   });
 };
-
+//Done
 function paymentPlanInfoFullByName(name, isParse, cb){
   tdPaymentPlanService.paymentPlanInfoFullByName(name, isParse, function (err , data){
     if(err){
@@ -75,6 +75,67 @@ function paymentPlanInfoFullByName(name, isParse, cb){
       logger.debug('tdPaymentPlanService.getPaymentPlanFull', data);
       return cb(null, data);
     }
+  });
+};
+//Done
+function paymentPlanList(filter, cb){
+  tdPaymentPlanService.paymentPlanList(filter, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanList', err);
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+};
+//Done
+function paymentPlanDelete(paymentplanid, cb){
+  tdPaymentPlanService.paymentPlanDelete(paymentplanid, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanDelete', err);
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+};
+//Done
+function paymentPlanInfoFull(paymentplanid, cb){
+  tdPaymentPlanService.paymentPlanInfoFull(paymentplanid, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanInfoFull', err);
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+};
+//Done
+function paymentPlanInfo(paymentplanid, cb){
+  tdPaymentPlanService.paymentPlanInfo(paymentplanid, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanInfo', err);
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+};
+//Done
+function paymentPlanUpdate(params, cb){
+  //TODO validate mandatory fields
+  tdPaymentPlanService.paymentPlanUpdate(params, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanUpdate', err);
+      return cb(err);
+    }
+    return cb(null, data);
+  });
+};
+//Done
+function paymentPlanCreate(params, cb){
+  tdPaymentPlanService.paymentPlanCreate(params, function (err , data){
+    if(err){
+      logger.error('tdPaymentPlanService.paymentPlanCreate', err);
+      return cb(err);
+    }
+    return cb(null, data);
   });
 };
 
@@ -87,6 +148,12 @@ module.exports = function(conf){
 
   return {
     createPaymentPlanFull:createPaymentPlanFull,
-    paymentPlanInfoFullByName:paymentPlanInfoFullByName
+    paymentPlanInfoFullByName:paymentPlanInfoFullByName,
+    paymentPlanList: paymentPlanList,
+    paymentPlanDelete: paymentPlanDelete,
+    paymentPlanInfoFull: paymentPlanInfoFull,
+    paymentPlanInfo: paymentPlanInfo,
+    paymentPlanUpdate: paymentPlanUpdate,
+    paymentPlanCreate: paymentPlanCreate
   }
 }

@@ -13,7 +13,7 @@ var moment = require('moment');
 var modelSpec = require('./cronjob.model.spec');
 var prepareTest = require('../../components/util/prepare.test');
 
-describe.only('Cronjob workflow OK', function (){
+describe('Cronjob workflow OK', function (){
   this.timeout(15000);
 
   before(function(done) {
