@@ -11,7 +11,7 @@ var tokenTDUser = 'TDUserToken-CHANGE-ME!';
 
 var providerId, userId, token
 
-describe.only('User', function() {
+describe('User', function() {
 
     describe('provider.service', function() {
 
