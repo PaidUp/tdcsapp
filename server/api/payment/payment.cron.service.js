@@ -48,7 +48,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
         }
         if(!orderSchedule.scheduled.schedulePeriods){
           logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          callbackEach();
+          return callbackEach();
           //return callbackEach(new Error('order without schedulePeriods'));
         }
         async.eachSeries(orderSchedule.scheduled.schedulePeriods,

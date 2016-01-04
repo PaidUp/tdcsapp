@@ -311,9 +311,26 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
           if(err) return cb(err);
           logger.info('2c) Create BP Order accountDetails');
           debitCard(accountId, amount, "Magento: "+orderId, config.balanced.appearsOnStatementAs, user.meta.TDPaymentId, providerId, fee, metaPayment, function(errDebit, data) {
-            var result = {amount: amount, OrderId: setResult(data).OrderId,  DebitId: setResult(data).OrderId,  paymentMethod: paymentMethod,  number: accountDetails.last4, brand : accountDetails.brand, scheduleId : scheduleId, status:setResult(data).status, retryId:retryId};
-            logger.info('err (important)',errDebit);
-            logger.info('data (important)',data);
+            if(err){
+              logger.error('err (important)',JSON.stringify(errDebit));
+            }
+            if(data){
+              logger.info('data (important)',JSON.stringify(data));
+            }
+
+            try{
+              var result = {amount: amount, OrderId: setResult(data).OrderId,  DebitId: setResult(data).OrderId,  paymentMethod: paymentMethod,  number: accountDetails.last4, brand : accountDetails.brand, scheduleId : scheduleId, status:setResult(data).status, retryId:retryId};
+            }catch(err){
+              commerceService.addTransactionToOrder(orderId, uuid.v4(), {err : err}, function(errTransaction, dataTransation){
+                if(errTransaction){
+                  logger.error(JSON.stringify(errTransaction))
+                }else{
+                  logger.info(JSON.stringify(dataTransation));
+                }
+
+              });
+              return cb(err);
+            }
             if (data) {logger.info('data status (important)',data.status)}
             if(data && (data.status === 'succeeded' || data.status === 'verified' || data.status === 'pending')) {
               logger.info('2d) Create Magento transaction');
@@ -330,7 +347,7 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
                 } else {
                   paymentEmailService.sendProcessedEmailCreditCard(user, amount, result.number, orderId, function(err, data){
                     mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
-                    logger.log('info', 'send processed email. ' + data );
+                    logger.info('send processed email. ' , JSON.stringify(data));
                     return cb(null, result);
                   });
                 }
