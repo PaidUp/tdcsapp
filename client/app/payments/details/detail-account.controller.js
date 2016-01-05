@@ -28,6 +28,12 @@ angular.module('convenienceApp')
     $scope.createBank = false;
     $scope.createCard = false;
 
+    $scope.submitted = false;
+
+    $scope.submittedFunc = function(){
+      $scope.submitted = true;
+    };
+
     $scope.sendAlertErrorMsg = function (msg) {
       $scope.placedOrder = false;
       FlashService.addAlert({
@@ -258,7 +264,10 @@ angular.module('convenienceApp')
 
     $scope.placeOrder = function (typeAccount, accountResponse) {
 
-      if(!typeAccount){
+      $scope.submitted = true;
+      $scope.placedOrder = true;
+
+      if(!typeAccount && $scope.accountDetails){
         typeAccount = $scope.accountDetails.object;
       }
 
@@ -266,10 +275,8 @@ angular.module('convenienceApp')
       if (!$scope.checkoutForm.$valid) {
         $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
         $scope.placedOrder = false;
-
       }
-      $scope.submitted = true;
-      $scope.placedOrder = true;
+
       var paymentType = 'onetime';
       var paymentMethod = typeAccount === 'bank_account' ? 'directdebit' : 'creditcard'
 
