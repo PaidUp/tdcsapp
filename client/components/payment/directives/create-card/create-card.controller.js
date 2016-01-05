@@ -43,6 +43,19 @@ angular.module('convenienceApp')
     $scope.createCard = function () {
       TrackerService.trackFormErrors('Create card form',$scope.createCardForm);
       $scope.submitted = true
+
+      if ($state.current.name === 'payment-account-index'){
+        if (!$scope.$parent.checkoutForm.$valid) {
+          $scope.sendAlertErrorMsg('Hey, you left some fields blank. Please fill them out.');
+          $scope.placedOrder = false;
+          $scope.loading = false;
+          $scope.$parent.submittedFunc();
+
+          return false;
+        }
+      }
+
+
       if ($scope.createCardForm.$valid) {
         $scope.loading = true;
         var zipCode;
