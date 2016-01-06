@@ -119,18 +119,20 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
           if(err){
             return callbackEach(err);
           }
-          orderSchedule.schedulePeriods.forEach(function(element, index, array){
-            element.transactions = [];
-            if(transactionList.length > 0){
-              transactionList.forEach(function(elemTransaction, ind, arrayTransation){
-                if(elemTransaction.details.rawDetailsInfo.scheduleId === element.id ){
-                  element.transactions.push(elemTransaction);
-                }
-              });
-            }
-          });
+
           async.eachSeries(orderSchedule.schedulePeriods,
             function(schedulePeriod, callbackEach2){
+
+              schedulePeriod.transactions = [];
+              if(transactionList.length > 0){
+
+                for(var i=0 ;  i< transactionList.length; i++){
+                  if(transactionList[i].details.rawDetailsInfo.scheduleId === schedulePeriod.id ){
+                    schedulePeriod.transactions.push(transactionList[i]);
+                  }
+                }
+              }
+
               if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
                 userService.find({_id : order.userId}, function(err, users){
                   paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
