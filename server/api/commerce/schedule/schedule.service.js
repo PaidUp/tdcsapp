@@ -54,7 +54,7 @@ function createPaymentPlanFull(params, cb){
 
   paymentPlan.metadatas = metadatas;
 
-  logger.debug('payment plan' , JSON.stringify(paymentPlan));
+  logger.debug('scheduleService payment plan' , JSON.stringify(paymentPlan));
 
   tdPaymentPlanService.paymentPlanCreateFull(paymentPlan, function(err, data){
     if(err){
