@@ -108,21 +108,21 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
     function(order, callbackEach){
       scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function(err, orderSchedule){
         if(err){
-          logger.log('info', '1.err) order.incrementId: ' + err);
+          logger.log('info', '1.err) order.incrementId: %s', err);
           return callbackEach(err);
         }
-        logger.log('info', '1) order.incrementId: ' + order.incrementId);
+        logger.log('info', '1) order.incrementId: %s', order.incrementId);
         if(!orderSchedule || !orderSchedule.schedulePeriods){
-          logger.log('warn', '1.2) order without schedulePeriods: ' + order.incrementId );
+          logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId );
           return callbackEach();
           //return callbackEach(new Error('order without schedulePeriods'));
         }
         commerceService.transactionList(order.incrementId, function(err, transactionList){
           if(err){
-            logger.log('err', '2.err) paymentSchedulev2 transactionList: ' + err);
+            logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err);
             return callbackEach(err);
           }
-          logger.log('info', '2) paymentSchedulev2 transactionList: ' + transactionList);
+          logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList);
           async.eachSeries(orderSchedule.schedulePeriods,
             function(schedulePeriod, callbackEach2){
               logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
