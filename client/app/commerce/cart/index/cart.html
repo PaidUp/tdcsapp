@@ -1,4 +1,4 @@
-<div class="container" ng-show="teams">
+<div class="container" ng-show="teams" ng-init="init()">
   <h4>Here's your order</h4>
   <div class="row">
     <div class="col-md-8 table- responsive" >
@@ -158,6 +158,6 @@
   </div>
 </div>
 
-<div class="container empty-car text-CS" ng-show="teams.length === 0 && !hasCart">
+<div class="container empty-car text-CS" ng-show="loading">
   <loading></loading>
 </div>

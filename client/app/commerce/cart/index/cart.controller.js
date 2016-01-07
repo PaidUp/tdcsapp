@@ -44,25 +44,28 @@ angular.module('convenienceApp')
       });
     };
 
-    CartController.loadSchedule = function(){
+    CartController.loadSchedule = function(cb){
       var ele = CartController.cart.items[0];
       CartService.hasProductBySKU('PMINFULL', function(isInFullPay){
         CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal(), isInFullPay, CartService.getCartDiscount()).then(function (val) {
           if(val.error){
             $scope.isScheduleError = true;
             var user = AuthService.getCurrentUser();
-            NotificationEmailService.sendNotificationEmail('Get schedule error', {
+            let bodyMessage = {
               productId:ele.productId,
               price:CartService.getCartGrandTotal(),
               isInFullPay: isInFullPay,
               name: user.firstName + ' ' + user.lastName,
               email: user.email
-            });
+            }
+            NotificationEmailService.sendNotificationEmail('Get schedule error', bodyMessage);
+            cb(bodyMessage);
           }else{
             $scope.schedules.push({
               name: ele.name,
               periods: val.schedulePeriods
             });
+            cb(null , true);
           }
         });
       });
@@ -70,41 +73,60 @@ angular.module('convenienceApp')
 
     $scope.modalFactory = ModalFactory;
 
-    if (cartId) {
-      $scope.teams = [];
-      CartService.getCart(cartId).then(function (cart) {
-        var feeItem;
-        CartController.cart = cart;
-        angular.forEach(cart.items, function (cartItem, index) {
-          TeamService.getTeam(cartItem.productId).then(function (team) {
-            team.attributes.qty = cartItem.qty;
-            team.attributes.price = cartItem.price;
-            team.attributes.rowTotal = cartItem.rowTotal;
-            if(team.attributes.productId === '9'){
-              feeItem = team;
-            }else{
-              $scope.teams.push(team);
-            }
-            if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
-              $scope.teams.push(feeItem);
-            }
+    function getCart(){
+      if (cartId) {
+        $scope.teams = [];
+        CartService.getCart(cartId).then(function (cart) {
+          var feeItem;
+          CartController.cart = cart;
+          angular.forEach(cart.items, function (cartItem, index) {
+
+            TeamService.getTeam(cartItem.productId).then(function (team) {
+              team.attributes.qty = cartItem.qty;
+              team.attributes.price = cartItem.price;
+              team.attributes.rowTotal = cartItem.rowTotal;
+              if(team.attributes.productId === '9'){
+                feeItem = team;
+              }else{
+                $scope.teams.push(team);
+              }
+              if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
+                $scope.teams.push(feeItem);
+              }
+            }).catch(function(err){
+              handlerErrorGetTotals(err);
+            }).finally(function(){
+
+              $scope.schedules = [];
+              $scope.totalPrice   = 0;
+
+              getTotals(false, function(err, data){
+                if(err){
+                  return handlerErrorGetTotals(err);
+                }
+                CartController.loadSchedule(function(err, data){
+                  if(err){
+                    return handlerErrorGetTotals(err);
+                  }
+                  $scope.loading = false;
+                });
+
+              });
+            });
           });
+
+
+        }).catch(function(err){
+          handlerErrorGetTotals(err);
+        }).finally(function(){
+
         });
-
-        $scope.schedules = [];
-        $scope.totalPrice   = 0;
-
-        getTotals(false, function(err, data){
-          if(err){
-            return handlerErrorGetTotals(err);
-          }
-          CartController.loadSchedule();
-        });
-
-      });
-    } else {
-      $scope.hasCart = false;
+      } else {
+        $scope.hasCart = false;
+      }
     }
+
+
 
     function handlerErrorGetTotals(err){
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
@@ -156,10 +178,19 @@ angular.module('convenienceApp')
               if(err){
                 return handlerErrorGetTotals(err);
               }
-              CartController.loadSchedule();
+              CartController.loadSchedule(function(err, data){
+                if(err){
+                  return handlerErrorGetTotals(err);
+                }
+              });
             });
           }
         });
       }
+    }
+
+    $scope.init = function(){
+      $scope.loading= true;
+      getCart();
     }
   });
