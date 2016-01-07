@@ -51,7 +51,7 @@ angular.module('convenienceApp')
           if(val.error){
             $scope.isScheduleError = true;
             var user = AuthService.getCurrentUser();
-            let bodyMessage = {
+            var bodyMessage = {
               productId:ele.productId,
               price:CartService.getCartGrandTotal(),
               isInFullPay: isInFullPay,
@@ -114,8 +114,6 @@ angular.module('convenienceApp')
               });
             });
           });
-
-
         }).catch(function(err){
           handlerErrorGetTotals(err);
         }).finally(function(){
@@ -125,8 +123,6 @@ angular.module('convenienceApp')
         $scope.hasCart = false;
       }
     }
-
-
 
     function handlerErrorGetTotals(err){
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
@@ -139,7 +135,6 @@ angular.module('convenienceApp')
       return false;
 
     }
-
 
     $scope.checkouOrder = function () {
       TrackerService.create('Checkou Order');
