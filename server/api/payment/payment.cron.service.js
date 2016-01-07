@@ -108,21 +108,24 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
     function(order, callbackEach){
       scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function(err, orderSchedule){
         if(err){
+          logger.log('info', '1.err) order.incrementId: %s', err);
           return callbackEach(err);
         }
+        logger.log('info', '1) order.incrementId: %s', order.incrementId);
         if(!orderSchedule || !orderSchedule.schedulePeriods){
-          logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
+          logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId );
           return callbackEach();
           //return callbackEach(new Error('order without schedulePeriods'));
         }
         commerceService.transactionList(order.incrementId, function(err, transactionList){
           if(err){
+            logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err);
             return callbackEach(err);
           }
-
+          logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList);
           async.eachSeries(orderSchedule.schedulePeriods,
             function(schedulePeriod, callbackEach2){
-
+              logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
               schedulePeriod.transactions = [];
               if(transactionList.length > 0){
 
@@ -132,20 +135,24 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                   }
                 }
               }
-
+              logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod);
               if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+                logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue);
+                logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length);
                 userService.find({_id : order.userId}, function(err, users){
                   paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
                     if(paymentUser && paymentUser.defaultSource){
                       order.cardId = paymentUser.defaultSource;
                     }
+                    logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser);
                     paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                       order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function(err , data){
                       if(err){
-                        logger.info('email notification error (important) err' + err);
+                        logger.log('err', '8.err) paymentSchedulev2 capture: %s', err);
                         err.order = order.incrementId;
                         notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
                         });
+                        logger.log('info', '8) paymentSchedulev2 capture: %s', data);
                         return callbackEach2();
                       }
                       return callbackEach2();
