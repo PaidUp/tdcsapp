@@ -16,7 +16,7 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    var cartId = CartService.getCurrentCartId();
+    var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
       CartService.getTotals(cartId).then(function (totals) {
@@ -77,6 +77,8 @@ angular.module('convenienceApp')
       if (cartId) {
         $scope.teams = [];
         CartService.getCart(cartId).then(function (cart) {
+
+
           var feeItem;
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
@@ -185,6 +187,12 @@ angular.module('convenienceApp')
     }
 
     $scope.init = function(){
+      cartId = CartService.getCurrentCartId();
+      while (!cartId) {
+        cartId = CartService.getCurrentCartId();
+        console.log('search cart');
+      }
+      console.log('cartId' , cartId);
       $scope.loading= true;
       getCart();
     }
