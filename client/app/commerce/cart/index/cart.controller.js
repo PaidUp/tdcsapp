@@ -77,13 +77,16 @@ angular.module('convenienceApp')
       if (cartId) {
         $scope.teams = [];
         CartService.getCart(cartId).then(function (cart) {
-
+        console.log('cart' , cart);
 
           var feeItem;
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
-
+            console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
+
+              console.log('team' , team);
+
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
@@ -188,10 +191,6 @@ angular.module('convenienceApp')
 
     $scope.init = function(){
       cartId = CartService.getCurrentCartId();
-      while (!cartId) {
-        cartId = CartService.getCurrentCartId();
-        console.log('search cart');
-      }
       console.log('cartId' , cartId);
       $scope.loading= true;
       getCart();
