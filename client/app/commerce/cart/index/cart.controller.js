@@ -37,6 +37,9 @@ angular.module('convenienceApp')
       }).catch(function(err){
         cb(err);
       }).finally(function(){
+        if(!$scope.total || $scope.total === 0){
+          return cb("Totals can't be set");
+        }
         cb(null, true);
       });
     };
