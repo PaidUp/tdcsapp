@@ -33,9 +33,11 @@ angular.module('convenienceApp')
             }
           }
         });
-        cb(null, true);
+
       }).catch(function(err){
         cb(err);
+      }).finally(function(){
+        cb(null, true);
       });
     };
 
@@ -64,6 +66,7 @@ angular.module('convenienceApp')
     };
 
     $scope.modalFactory = ModalFactory;
+
     if (cartId) {
       $scope.teams = [];
       CartService.getCart(cartId).then(function (cart) {
@@ -89,12 +92,27 @@ angular.module('convenienceApp')
         $scope.totalPrice   = 0;
 
         getTotals(false, function(err, data){
+          if(err){
+            return handlerErrorGetTotals(err);
+          }
           CartController.loadSchedule();
         });
 
       });
     } else {
       $scope.hasCart = false;
+    }
+
+    function handlerErrorGetTotals(err){
+      TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
+      FlashService.addAlert({
+        type: "danger",
+        msg: "We wasn't created the cart, please try again.",
+        timeout: 10000
+      });
+      $state.go('athletes');
+      return false;
+
     }
 
 
@@ -132,6 +150,9 @@ angular.module('convenienceApp')
             TrackerService.create('Apply discount success',{coupon : $scope.codeDiscounts});
             $scope.schedules = [];
             getTotals($scope.codeDiscounts.indexOf('CS-') === 0, function(err,data){
+              if(err){
+                return handlerErrorGetTotals(err);
+              }
               CartController.loadSchedule();
             });
           }
