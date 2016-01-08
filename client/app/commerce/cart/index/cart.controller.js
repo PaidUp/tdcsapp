@@ -19,21 +19,11 @@ angular.module('convenienceApp')
     //var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
-
-      console.log('applyDiscountToFee',applyDiscountToFee)
-      console.log('cartId****',$scope.cartId)
-
       CartService.getTotals($scope.cartId).then(function (totals) {
-
-        console.log('totals' , totals);
-
         angular.forEach(totals, function (total) {
-
-          console.log('total' , total);
           if(!total.amount){
             return handlerErrorGetTotals('Total is null');
           }
-
           if (total.title === 'Grand Total') {
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
@@ -48,12 +38,8 @@ angular.module('convenienceApp')
         });
 
       }).catch(function(err){
-        console.log('catch gettotals err', err);
         cb(err);
       }).finally(function(){
-
-        console.log('$scope.total ', $scope.total );
-
         if(!$scope.total || $scope.total === 0){
           return cb("Totals can't be set");
         }
@@ -94,32 +80,22 @@ angular.module('convenienceApp')
       if ($scope.cartId) {
         $scope.teams = [];
         CartService.getCart($scope.cartId).then(function (cart) {
-        console.log('cart' , cart);
-
           var feeItem;
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
-            console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
-
-              console.log('team 0' , team);
-
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
-              console.log('team 1');
               if(team.attributes.productId === '9'){
                 feeItem = team;
               }else{
                 $scope.teams.push(team);
               }
-              console.log('team 2');
               if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
                 $scope.teams.push(feeItem);
               }
-              console.log('team 3');
             }).catch(function(err){
-              console.log('catch 1' , err)
               handlerErrorGetTotals(err);
             }).finally(function(){
 
@@ -151,7 +127,6 @@ angular.module('convenienceApp')
     }
 
     function handlerErrorGetTotals(err){
-      console.log('handlerErrorGetTotals' , err);
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
       FlashService.addAlert({
         type: "danger",
@@ -160,7 +135,6 @@ angular.module('convenienceApp')
       });
       $state.go('athletes');
       return false;
-
     }
 
     $scope.checkouOrder = function () {
