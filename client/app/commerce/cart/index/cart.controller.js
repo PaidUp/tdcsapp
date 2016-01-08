@@ -98,20 +98,24 @@ angular.module('convenienceApp')
             console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
 
-              console.log('team' , team);
+              console.log('team 0' , team);
 
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
+              console.log('team 1');
               if(team.attributes.productId === '9'){
                 feeItem = team;
               }else{
                 $scope.teams.push(team);
               }
+              console.log('team 2');
               if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
                 $scope.teams.push(feeItem);
               }
+              console.log('team 3');
             }).catch(function(err){
+              console.log('catch 1' , err)
               handlerErrorGetTotals(err);
             }).finally(function(){
 
