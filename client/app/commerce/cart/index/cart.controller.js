@@ -32,6 +32,9 @@ angular.module('convenienceApp')
           console.log('total' , total);
 
           if (total.title === 'Grand Total') {
+            if(!total){
+              return handlerErrorGetTotals('Total is null');
+            }
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
           } else if (total.title === 'Subtotal') {
