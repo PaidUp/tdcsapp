@@ -16,12 +16,25 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    var cartId = null;
+    //var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
-      CartService.getTotals(cartId).then(function (totals) {
+
+      console.log('applyDiscountToFee',applyDiscountToFee)
+      console.log('cartId****',$scope.cartId)
+
+      CartService.getTotals($scope.cartId).then(function (totals) {
+
+        console.log('totals' , totals);
+
         angular.forEach(totals, function (total) {
+
+          console.log('total' , total);
+
           if (total.title === 'Grand Total') {
+            if(!total){
+              return handlerErrorGetTotals('Total is null');
+            }
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
           } else if (total.title === 'Subtotal') {
@@ -35,8 +48,12 @@ angular.module('convenienceApp')
         });
 
       }).catch(function(err){
+        console.log('catch gettotals err', err);
         cb(err);
       }).finally(function(){
+
+        console.log('$scope.total ', $scope.total );
+
         if(!$scope.total || $scope.total === 0){
           return cb("Totals can't be set");
         }
@@ -74,9 +91,9 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
 
     function getCart(){
-      if (cartId) {
+      if ($scope.cartId) {
         $scope.teams = [];
-        CartService.getCart(cartId).then(function (cart) {
+        CartService.getCart($scope.cartId).then(function (cart) {
         console.log('cart' , cart);
 
           var feeItem;
@@ -85,20 +102,24 @@ angular.module('convenienceApp')
             console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
 
-              console.log('team' , team);
+              console.log('team 0' , team);
 
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
+              console.log('team 1');
               if(team.attributes.productId === '9'){
                 feeItem = team;
               }else{
                 $scope.teams.push(team);
               }
+              console.log('team 2');
               if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
                 $scope.teams.push(feeItem);
               }
+              console.log('team 3');
             }).catch(function(err){
+              console.log('catch 1' , err)
               handlerErrorGetTotals(err);
             }).finally(function(){
 
@@ -163,7 +184,7 @@ angular.module('convenienceApp')
           timeout: 10000
         });
       }else{
-        CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
+        CartService.applyDiscount($scope.codeDiscounts, $scope.cartId, function(err, data){
           if(err){
             TrackerService.create('Apply discount error' , {errorMessage : 'Coupon in not valid'});
             FlashService.addAlert({
@@ -190,8 +211,7 @@ angular.module('convenienceApp')
     }
 
     $scope.init = function(){
-      cartId = CartService.getCurrentCartId();
-      console.log('cartId' , cartId);
+      $scope.cartId = CartService.getCurrentCartId();
       $scope.loading= true;
       getCart();
     }
