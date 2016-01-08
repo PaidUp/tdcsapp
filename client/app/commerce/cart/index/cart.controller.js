@@ -16,13 +16,14 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    var cartId = null;
+    //var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
 
       console.log('applyDiscountToFee',applyDiscountToFee)
+      console.log('cartId****',$scope.cartId)
 
-      CartService.getTotals(cartId).then(function (totals) {
+      CartService.getTotals($scope.cartId).then(function (totals) {
 
         console.log('totals' , totals);
 
@@ -87,9 +88,9 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
 
     function getCart(){
-      if (cartId) {
+      if ($scope.cartId) {
         $scope.teams = [];
-        CartService.getCart(cartId).then(function (cart) {
+        CartService.getCart($scope.cartId).then(function (cart) {
         console.log('cart' , cart);
 
           var feeItem;
@@ -180,7 +181,7 @@ angular.module('convenienceApp')
           timeout: 10000
         });
       }else{
-        CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
+        CartService.applyDiscount($scope.codeDiscounts, $scope.cartId, function(err, data){
           if(err){
             TrackerService.create('Apply discount error' , {errorMessage : 'Coupon in not valid'});
             FlashService.addAlert({
@@ -207,8 +208,7 @@ angular.module('convenienceApp')
     }
 
     $scope.init = function(){
-      cartId = CartService.getCurrentCartId();
-      console.log('cartId' , cartId);
+      $scope.cartId = CartService.getCurrentCartId();
       $scope.loading= true;
       getCart();
     }
