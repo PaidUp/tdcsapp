@@ -16,7 +16,7 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    var cartId = CartService.getCurrentCartId();
+    var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
       CartService.getTotals(cartId).then(function (totals) {
@@ -51,7 +51,7 @@ angular.module('convenienceApp')
           if(val.error){
             $scope.isScheduleError = true;
             var user = AuthService.getCurrentUser();
-            let bodyMessage = {
+            var bodyMessage = {
               productId:ele.productId,
               price:CartService.getCartGrandTotal(),
               isInFullPay: isInFullPay,
@@ -77,11 +77,16 @@ angular.module('convenienceApp')
       if (cartId) {
         $scope.teams = [];
         CartService.getCart(cartId).then(function (cart) {
+        console.log('cart' , cart);
+
           var feeItem;
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
-
+            console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
+
+              console.log('team' , team);
+
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
@@ -114,8 +119,6 @@ angular.module('convenienceApp')
               });
             });
           });
-
-
         }).catch(function(err){
           handlerErrorGetTotals(err);
         }).finally(function(){
@@ -125,8 +128,6 @@ angular.module('convenienceApp')
         $scope.hasCart = false;
       }
     }
-
-
 
     function handlerErrorGetTotals(err){
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
@@ -139,7 +140,6 @@ angular.module('convenienceApp')
       return false;
 
     }
-
 
     $scope.checkouOrder = function () {
       TrackerService.create('Checkou Order');
@@ -190,6 +190,8 @@ angular.module('convenienceApp')
     }
 
     $scope.init = function(){
+      cartId = CartService.getCurrentCartId();
+      console.log('cartId' , cartId);
       $scope.loading= true;
       getCart();
     }
