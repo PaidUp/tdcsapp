@@ -16,11 +16,14 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    var cartId = null;
+    //var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
-      CartService.getTotals(cartId).then(function (totals) {
+      CartService.getTotals($scope.cartId).then(function (totals) {
         angular.forEach(totals, function (total) {
+          if(!total.amount){
+            return handlerErrorGetTotals('Total is null');
+          }
           if (total.title === 'Grand Total') {
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
@@ -74,19 +77,13 @@ angular.module('convenienceApp')
     $scope.modalFactory = ModalFactory;
 
     function getCart(){
-      if (cartId) {
+      if ($scope.cartId) {
         $scope.teams = [];
-        CartService.getCart(cartId).then(function (cart) {
-        console.log('cart' , cart);
-
+        CartService.getCart($scope.cartId).then(function (cart) {
           var feeItem;
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
-            console.log('cart item' , cartItem);
             TeamService.getTeam(cartItem.productId).then(function (team) {
-
-              console.log('team' , team);
-
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
@@ -138,7 +135,6 @@ angular.module('convenienceApp')
       });
       $state.go('athletes');
       return false;
-
     }
 
     $scope.checkouOrder = function () {
@@ -163,7 +159,7 @@ angular.module('convenienceApp')
           timeout: 10000
         });
       }else{
-        CartService.applyDiscount($scope.codeDiscounts, cartId, function(err, data){
+        CartService.applyDiscount($scope.codeDiscounts, $scope.cartId, function(err, data){
           if(err){
             TrackerService.create('Apply discount error' , {errorMessage : 'Coupon in not valid'});
             FlashService.addAlert({
@@ -190,8 +186,7 @@ angular.module('convenienceApp')
     }
 
     $scope.init = function(){
-      cartId = CartService.getCurrentCartId();
-      console.log('cartId' , cartId);
+      $scope.cartId = CartService.getCurrentCartId();
       $scope.loading= true;
       getCart();
     }
