@@ -30,7 +30,7 @@ angular.module('convenienceApp')
         angular.forEach(totals, function (total) {
 
           console.log('total' , total);
-          if(!total){
+          if(!total.amount){
             return handlerErrorGetTotals('Total is null');
           }
 
