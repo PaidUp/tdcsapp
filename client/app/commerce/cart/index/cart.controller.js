@@ -19,8 +19,17 @@ angular.module('convenienceApp')
     var cartId = null;
 
     var getTotals = function (applyDiscountToFee, cb){
+
+      console.log('applyDiscountToFee',applyDiscountToFee)
+
       CartService.getTotals(cartId).then(function (totals) {
+
+        console.log('totals' , totals);
+
         angular.forEach(totals, function (total) {
+
+          console.log('total' , total);
+
           if (total.title === 'Grand Total') {
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
@@ -35,8 +44,12 @@ angular.module('convenienceApp')
         });
 
       }).catch(function(err){
+        console.log('catch gettotals err', err);
         cb(err);
       }).finally(function(){
+
+        console.log('$scope.total ', $scope.total );
+
         if(!$scope.total || $scope.total === 0){
           return cb("Totals can't be set");
         }
