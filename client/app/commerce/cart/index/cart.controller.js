@@ -30,11 +30,11 @@ angular.module('convenienceApp')
         angular.forEach(totals, function (total) {
 
           console.log('total' , total);
+          if(!total){
+            return handlerErrorGetTotals('Total is null');
+          }
 
           if (total.title === 'Grand Total') {
-            if(!total){
-              return handlerErrorGetTotals('Total is null');
-            }
             $scope.total = total;
             CartService.setCartGrandTotal(total.amount);
           } else if (total.title === 'Subtotal') {
@@ -151,6 +151,7 @@ angular.module('convenienceApp')
     }
 
     function handlerErrorGetTotals(err){
+      console.log('handlerErrorGetTotals' , err);
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
       FlashService.addAlert({
         type: "danger",
