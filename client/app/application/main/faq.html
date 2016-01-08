@@ -1,6 +1,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-3">
+      <h4><a href="" ng-click="selectGroup('people')" >People</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('overview')" >Overview of Convenience Select</a></h4>
+      <hr>
+
       <h4><a href="" ng-click="selectGroup('pricing')" >Pricing FAQs</a></h4>
       <hr>
       <h4><a href="" ng-click="selectGroup('payment')" >Payment Collection FAQs</a></h4>
@@ -8,39 +14,155 @@
     </div>
     <div class="col-md-9">
       <div class="row">
+        <div class="col-md-12" ng-show="faqGroup.people">
+          <accordion close-others="true">
+            <accordion-group heading="Who are you?">
+              <p>
+                We are a team of people focused on helping to make youth sports better.
+                Our CEO, a parent of three boys very involved in youth sports, personally experienced a
+                lot of the administrative pain associated with youth sports and set out in 2014 to solve
+                some of the challenges.  Now, we have a team of people working tirelessly to build a great
+                platform and offer best-in-class service and support to youth sports organizations.
+              </p>
+            </accordion-group>
+            <accordion-group heading="Where are you located?">
+              <p>
+                We are located in Austin, TX, but have a local presence in Southern California as well.
+                We also have clients all over the U.S. from Florida to Texas to California.
+                Please give us a shout if you are in the area as we would love to meet you!
+              </p>
+            </accordion-group>
+          </accordion>
+        </div>
+
+
+
+        <div class="col-md-12" ng-show="faqGroup.overview">
+          <accordion close-others="true">
+            <accordion-group heading="What does Convenience Select do for me?">
+              <p>
+                Convenience Select brings a thoughtful approach to payments.
+                We like to think that we are trailblazers in the payments industry, but recognize there are
+                plenty of ways to process payments available in the market today.  However, we believe the
+                challenge that exists in youth sports is not strictly related to processing, it’s the consistency
+                associated with following up after a payment is missed or when a custom payment needs to be
+                structured for a parent.  We handle all of this for an organization so they can focus on recruiting
+                and retaining the best athletes and coaches.  We are a complete DIFM solution!
+              </p>
+            </accordion-group>
+            <accordion-group heading="What do you mean by DIFM?">
+              <p>
+                Think Do-It-Yourself (“DIY”) and then imagine how great the exact opposite would be.
+                That’s us!  We are leading the Do-It-For-Me (“DIFM”) revolution within youth sports administration
+                because we believe that is what coaches, club directors and team owners are looking for.
+              </p>
+            </accordion-group>
+            <accordion-group heading="What separates Convenience Select from PayPal or other payment processors?">
+              <p>
+                We certainly have the platform to support payment processing and reporting back to the organization.
+                However, the big difference between us and PayPal is the fact that we manage the entire payments
+                process for you.  Think of us as an extension of your team where we handle everything related to
+                payments (or receivables for you business types:-).  All the processing, all the reconciliation
+                and reporting, all the follow-up with parents, everything.
+              </p>
+            </accordion-group>
+            <accordion-group heading="When is the right time to transition to Convenience Select?">
+              <p>
+                We need to have everything set up for you prior to your first parent meeting or tryouts.
+                This is really important so we can be ready to go once your parents are ready to start coming
+                in to  <a href="https://convenienceselect.com">convenienceselect.com.</a> In addition, we want to be
+                prepared to work quickly once your tryouts are complete and you are obtaining financial
+                commitments from parents.
+              </p>
+            </accordion-group>
+            <accordion-group heading="What is in it for the parents?">
+              <p>
+                We are parents ourselves and really wanted a convenient solution to manage payments.  We find that
+                51% of all organizations are still taking cash and check and we provide a solution that
+                takes everything online.  Parents can make a payment via eCheck, debit or credit card
+                (no cash is accepted).  We also encourage parents to communicate with us especially when they have
+                a question about payments or when they need a custom payment structured for themselves.
+                Parents also have a payment solution they can take with them to other youth sports clubs
+                they are participating with.  Imagine how convenient it will be for parents once all youth sports
+                clubs are using Convenience Select!
+              </p>
+            </accordion-group>
+            <accordion-group heading="">
+              <p>
+
+              </p>
+            </accordion-group>
+            <accordion-group heading="">
+              <p>
+
+              </p>
+            </accordion-group>
+
+          </accordion>
+
+        </div>
+
+
+
+
+        <div class="col-md-12" ng-show="faqGroup.overview">
+          <accordion close-others="true">
+            <accordion-group heading="How does Convenience Select pricing really work?">
+
+            </accordion-group>
+
+          </accordion>
+
+        </div>
+
+
+
+
+        <div class="col-md-12" ng-show="faqGroup.overview">
+          <accordion close-others="true">
+            <accordion-group heading="How does Convenience Select pricing really work?">
+
+            </accordion-group>
+
+          </accordion>
+
+        </div>
+
+
+
         <div class="col-md-12" ng-show="faqGroup.pricing">
-        <accordion close-others="true">
-          <accordion-group heading="How does Convenience Select pricing really work?">
-            <p>
-              Convenience Select has a card processing fee, eCheck fee and the Convenience Select service fee.
-              The card processing fee is currently 2.9% + $0.30 per transaction and is included as a part of
-              every card transaction processed.  The eCheck (ACH - bank debits) fee is currently $0.25 per transactions.
-              Convenience Select does not up charge on either the card processing fees and eCheck fees and pass
-              our exact rate on to our customers.  As Convenience Select negotiates better rates, we will continue
-              to pass those savings on to our clients.  The Convenience Select service fee is an additional
-              percentage that is added to the total price of any payments flowing through our platform.
-              The Convenience Select fee is 5% of any payments that flow through our platform but please
-              contact sales at (512) 900-3643 for more information.
-            </p>
-          </accordion-group>
-          <accordion-group heading="Are you charging me or the users?">
-            <p>
-              This is really up to you since Convenience Select supports both.  The card, eCheck and Convenience
-              Select fees can be bundled with the price you want to collect (passed on to the user), absorbed by
-              you or any combination.  For example, you may absorb the Convenience Select fee but pass the card
-              processing fees on to users.  That's the type of flexibility we offer and can support what works
-              best for your situation.
-            </p>
-          </accordion-group>
-          <accordion-group heading="How do I get charged for the Convenience Select fees?">
-            <p>
-              The Convenience Select fees are only paid on money that flows through our system.  Therefore,
-              our interests are completely aligned.  If we don't process a payment, we do not get paid.
-              It is in everyone's best interest for Convenience Select to politely communicate with users to
-              get them to pay.
-            </p>
-          </accordion-group>
-        </accordion>
+          <accordion close-others="true">
+            <accordion-group heading="How does Convenience Select pricing really work?">
+              <p>
+                Convenience Select has a card processing fee, eCheck fee and the Convenience Select service fee.
+                The card processing fee is currently 2.9% + $0.30 per transaction and is included as a part of
+                every card transaction processed.  The eCheck (ACH - bank debits) fee is currently $0.25 per transactions.
+                Convenience Select does not up charge on either the card processing fees and eCheck fees and pass
+                our exact rate on to our customers.  As Convenience Select negotiates better rates, we will continue
+                to pass those savings on to our clients.  The Convenience Select service fee is an additional
+                percentage that is added to the total price of any payments flowing through our platform.
+                The Convenience Select fee is 5% of any payments that flow through our platform but please
+                contact sales at (512) 900-3643 for more information.
+              </p>
+            </accordion-group>
+            <accordion-group heading="Are you charging me or the users?">
+              <p>
+                This is really up to you since Convenience Select supports both.  The card, eCheck and Convenience
+                Select fees can be bundled with the price you want to collect (passed on to the user), absorbed by
+                you or any combination.  For example, you may absorb the Convenience Select fee but pass the card
+                processing fees on to users.  That's the type of flexibility we offer and can support what works
+                best for your situation.
+              </p>
+            </accordion-group>
+            <accordion-group heading="How do I get charged for the Convenience Select fees?">
+              <p>
+                The Convenience Select fees are only paid on money that flows through our system.  Therefore,
+                our interests are completely aligned.  If we don't process a payment, we do not get paid.
+                It is in everyone's best interest for Convenience Select to politely communicate with users to
+                get them to pay.
+              </p>
+            </accordion-group>
+          </accordion>
         </div>
         <div class="col-md-12" ng-show="faqGroup.payment">
           <accordion close-others="true">
