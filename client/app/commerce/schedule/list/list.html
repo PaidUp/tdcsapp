@@ -1,0 +1,63 @@
+<div class="container">
+  <form name="providerForm" ng-submit="registerProvider()" novalidate>
+    <br>
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <!-- Organization -->
+        <div class="row bg-Block" ng-form name="providerForm">
+          <div class="col-sm-12">
+            <h3 class="text-CS">List</h3> <div name="listLabel">list payment plan.</div>
+          </div>
+          <div class="col-sm-6 col-sm-push-6">
+          </div>
+
+          <div class="col-sm-6 col-sm-pull-6">
+          <br>
+            <div class="form-group">
+              <label>List</label>
+            </div>
+            	<ul>
+            		<li ng-repeat="ppList in paymentPlanLists">
+                  		<div>
+                  			<label>payment plan list</label>
+                  			<p>orderId (name): {{ppList.name}} - ID: {{ppList.entityId}} - destination: {{ppList.destination}} - parentId: {{ppList.parentId}} - parentType: {{ppList.parentType}}</p>
+                  			<ul>
+                  				<li ng-repeat="schedules in ppList.schedules">
+									<div>
+										<label>schedules</label>
+										<p>name: {{schedules.name}} - entityId: {{schedules.entityId}}</p>
+										<ul>
+											<li ng-repeat="informations in schedules.informations">
+												<label>informations</label>
+												<p>name: {{informations.name}} - entityId: {{informations.entityId}} - scheduleId: {{informations.scheduleId}} - value: {{informations.value}}</p>
+											</li>
+										</ul>
+									</div>
+                  				</li>
+                  			</ul>
+                  			<ul>
+                  				<li ng-repeat="metadatas in ppList.metadatas">
+                  					<label>metadatas</label>
+                  					<p>name: {{metadatas.name}} - entityId: {{metadatas.entityId}} - paymentplanId: {{metadatas.paymentplanId}} - value: {{metadatas.value}}</p>
+                  				</li>
+                  			</ul>
+                  		</div>
+                  		
+                	</li>
+                	<hr>
+            	</ul>
+				
+          </div>
+        </div>
+        <br>
+        <!-- Organization -->
+
+      </div>
+    </div>
+    <div>
+      <br>
+      <br>
+      <br>
+    </div>
+  </form>
+</div>
