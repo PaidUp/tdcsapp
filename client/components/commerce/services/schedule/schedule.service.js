@@ -6,11 +6,11 @@ angular.module('convenienceApp')
     var Schedule = $resource('/api/v1/commerce/schedule/:action', {}, {});
 
     this.scheduleList = function(scheduleFilter){
-      return Schedule.save({action: 'list'},{scheduleFilter}).$promise;
-    }
+      return Schedule.save({action: 'list'},scheduleFilter).$promise;
+    };
 
     this.scheduleInfoFull = function(paymentPlanId){
         return ScheduleInfo.get({action: 'full',id: paymentPlanId}).$promise;
-    }
+    };
 
   });

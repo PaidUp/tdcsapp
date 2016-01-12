@@ -5,12 +5,12 @@ angular.module('convenienceApp')
   function init (){
   	console.log('init')
   	scheduleService.scheduleList({}).then(function(data){
-  		//console.log('data', data)
-  		$scope.paymentPlanLists = []
+  		console.log('data.paymentList.length', data.paymentList.length)
+  		$scope.paymentPlanLists = [];
       
       data.paymentList.forEach(function(paymentPlan){
-      	detailInfoFull(paymentPlan.entityId)	
-      })
+      	detailInfoFull(paymentPlan.entityId);
+      });
       
     }).catch(function(err){
       console.log('err', err);
@@ -19,10 +19,11 @@ angular.module('convenienceApp')
 
   function detailInfoFull (id){
   	scheduleService.scheduleInfoFull(id).then(function(dataDetail){
-  		$scope.paymentPlanLists.push(dataDetail.paymentList)
-  		console.log('dataDetail', dataDetail)
+  		$scope.paymentPlanLists.push(dataDetail.paymentList);
+  		console.log('dataDetail', dataDetail);
   	}).catch(function(err){
       console.log('err', err);
     });
   }
+  
   });
