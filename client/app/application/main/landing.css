@@ -383,6 +383,35 @@
   font-size: 25px;
 }
 
+.divAboutUs{
+  min-height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-color: #f9f9f9;
+  text-align: justify;
+}
+
+.divAboutUs .title{
+  margin-top: 20px;
+  font-size: 25px;
+  color: #ff805d;
+  text-align: center;
+}
+
+.divAboutUs .item{
+  min-height: 170px;
+  color: #494c4e;
+  text-align: center;
+}
+
+.divAboutUs .item h2{
+  font-size: 25px;
+}
+
+.aboutUsGray {
+  color: #999999
+}
+
 .btnComingSoon{
   color: #FF805D;
   background-color: #FFFFFF;
