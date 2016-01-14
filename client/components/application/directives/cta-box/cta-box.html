@@ -4,7 +4,7 @@
   <a href="https://twitter.com/@selectconcierge" target="_blank" class="twitterBlack"></a>
 </div>
 <div class="clearfix"></div>
-We love to hear from you. Whether you have a question about our service, your payments, you found an issue or just want to say hello, send us an email and we will promptly reply to you.  Or if you would prefer to talk to us, call sales at (512) 900-3643 or support at (855) 764-3232.
+Interested in signing up, but need more information?  We’ll have our CEO call you!
 <br>
 <br>
 <form name="contactUsForm" ng-submit="contactUs(contactUsForm, contactInfo)" id="contactUsForm" novalidate>
@@ -17,6 +17,17 @@ We love to hear from you. Whether you have a question about our service, your pa
       <small class="text-CS">What's your email address?</small>
     </div>
   </div>
+
+
+  <div class="form-group">
+    <input type="search" name="phone" class="form-control" placeholder="Phone" ng-model="contactInfo.phone" required ng-required="true">
+    <div class="text-CS text-center" ng-show="contactUsForm.phone.$error.required && submitted">
+      <small class="text-CS">What's your phone number?</small>
+    </div>
+  </div>
+
+
+
   <div class="form-group">
     <input name="subject"
             class="form-control"
