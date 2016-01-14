@@ -15,7 +15,9 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       if (form.$valid) {
 
-        contactInfo.content = 'Phone: '+contactInfo.phone +'|     '+contactInfo.content;
+        contactInfo.subject = 'CTA BOX'
+
+        contactInfo.content = 'Name: '+contactInfo.name+ ' | Phone: '+contactInfo.phone;
 
         ContactService.contactUs(contactInfo);
         $scope.contactInfo = {};

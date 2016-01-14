@@ -153,6 +153,16 @@
     padding-top: 40px !important;
   }
 
+  .ctoBox{
+    padding-bottom: 16px;
+  }
+
+}
+
+.ctoBox{
+  border-radius: 4px;
+  padding-top: 16px;
+  background: rgba(255, 255, 255, 0.75);
 }
 
 
