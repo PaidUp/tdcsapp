@@ -27,5 +27,9 @@ angular.module('convenienceApp')
       url: '/referral-program-terms-and-conditions',
       templateUrl: 'app/application/main/referral-program/referral-program-rules.html',
       controller : 'ReferralProgramCtrl'
+    }).state('about-us', {
+      url: '/about-us',
+      templateUrl: 'app/application/main/about-us.html',
+      controller : 'aboutUsCtrl'
     });
   });

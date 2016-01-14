@@ -215,32 +215,18 @@
 
 .solutionsForTeams .item1{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
-}
-
-.solutionsForTeams .item1:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
 }
+
 .solutionsForTeams .item2{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
-}
-
-.solutionsForTeams .item2:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
-}
-
-.solutionsForTeams .item3:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
 }
@@ -381,6 +367,35 @@
 
 .bannerComingSoon .item h2{
   font-size: 25px;
+}
+
+.divAboutUs{
+  min-height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-color: #f9f9f9;
+  text-align: justify;
+}
+
+.divAboutUs .title{
+  margin-top: 20px;
+  font-size: 25px;
+  color: #ff805d;
+  text-align: center;
+}
+
+.divAboutUs .item{
+  min-height: 170px;
+  color: #494c4e;
+  text-align: center;
+}
+
+.divAboutUs .item h2{
+  font-size: 25px;
+}
+
+.aboutUsGray {
+  color: #999999
 }
 
 .btnComingSoon{
@@ -600,6 +615,23 @@
   font-size:18px;
   padding:8px;
   margin-left: 25%;
+}
+
+.logos-client {
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+.logos-client img {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+@media screen and (max-width: 480px) {
+  .logos-client img {
+    margin: 0 80px;
+  }
 }
 
 /* cyrillic-ext */
