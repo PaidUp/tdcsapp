@@ -2,88 +2,66 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 desc">
-        <div class="titleBannerHome">Stop chasing payments and get your time back!</strong><br></div>
-        You can <strong>do-it-yourself</strong> but you don't have to.<br>
-        We <strong>do-it-for-you.</strong>
-        <br>
-        <br>
+        <div class="titleBannerHome">We help coaches stop chasing payments.</strong><br></div>
+        Leading the <strong>do-it-for-you</strong> revolution!<br><br><br>
       </div>
-      <div class="home-button center-block clearfix">
-        <a href="" class="btn btnSignUp btn-block btn-lg" ng-show="isLoggedIn()" ui-sref="athletes">Get Started</a>
-        <button name="CSGetStarted" type="button" class="btn btnSignUp btn-block btn-lg" ng-click="modal.showContent('signup'); modal.openModal(); destPath('athletes', true);" ng-show="!isLoggedIn()">Get Started Free!</button>
-        <br>
-        <br>
-        <br>
+
+      <div class="col-sm-12 desc">
+        Interested in signing up, but need more information?  We’ll have our CEO call you!
       </div>
-    </div>
+
+      <div class="col-sm-12 ctoBox">
+        <cta-box subject="{{subject}}"></cta-box>
+      </div>
+
+
+      </div>
+    <br>
+
+
   </div>
 </div>
 <div class="" id="solutionsForTeams">
   <div class="container">
 
     <div class="row solutionsForTeams text-center">
-      <h2><strong class="text-CS">Solutions For Teams</strong></h2>
+      <h2><strong class="text-CS">Three Pillars of Convenience Select</strong></h2>
       <br>
-      <div class="col-sm-6 col-md-4 item item1 " ng-mouseover="showSolution(0,false)" ng-mouseleave="showSolution(0, true)">
-        <div class="desc" ng-show="solution[0]">
-          <img src="/assets/images/landing/ic_solutions_01.png" >
-          <br>
-          <br>
-          TIRED OF GETTING PAID IN CASH, CHECKS OR CARDS IN-PERSON?
-        </div>
-        <div class="solutionDescTop" ng-show="!solution[0]">
-          Are you chasing down parents to pay their registration fees before and during the season?
-          Are parents bringing you cash or checks during a game to pay for registration dues?
+      <div class="col-sm-6 col-md-4 item item1">
+        <div class="desc">
+          <div class="h3" align="center">Platform</div>
+          <img class="pillarImg" src="/assets/images/landing/ic_solutions_01.png" >
 
-        </div>
-        <div class="solutionDescBottom" ng-show="!solution[0]">
-          <div align="center" class="title">PAYMENT PROCESSING</div>
-          Convenience Select processes your payments and contact parents directly, so you don't have to.
-          No more chasing parents who owe you money.
-          Let Convenience Select do all the leg work. We accept all credit cards and bank accounts.<sup>*</sup>.
-          <br>
-          <br>
-
-          <div class="footerDesc">
-            * 2.9% + 30 processing fees applies to every payments collected
+          <div class="solutionDescBottom">
+            Convenience Select brings an industry leading, state-of-the-art registration and payments platform at a price
+            that everyone can afford.  Our platform allows us to offer a club our registration system and a flexible payments
+            platform that can handle registration and tuition payments, private coaching fees, and any other fee you can
+            throw at us.
           </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-4 item item2" ng-mouseover="showSolution(1, false)" ng-mouseleave="showSolution(1, true)">
-        <div class="desc" ng-show="solution[1]">
-          <img src="/assets/images/landing/ic_solutions_02.png" >
-          <br>
-          <br>
-          SPENDING TOO MUCH TIME RECONCILING YOUR PAYMENTS?
-        </div>
+      <div class="col-sm-6 col-md-4 item item2">
+        <div class="desc">
+          <div class="h3" align="center">Reporting</div>
+          <img class="pillarImg" src="/assets/images/landing/ic_solutions_02.png" >
 
-        <div class="solutionDescTop" ng-show="!solution[1]">
-          So you are taking payments online but does your card processor make you have to
-          guess which parent has a funky email (who is fireball6@aol.com)?
-        </div>
-        <div class="solutionDescBottom" ng-show="!solution[1]">
-          <div align="center" class="title">ITEMIZED REPORTING</div>
-          Convenience Select will send you a monthly itemized report with your roster
-          per team and the payments we have collected.  Know immediately the status of each payment.
+          <div class="solutionDescBottom">
+            The second pillar of Convenience Select is our reporting, designed to provide the club detailed information
+            about where we are in the payments process with each and every family.  Think of us as an extension of your
+
+            team handling everything related to payments and keeping you in the loop at every point in the process.
+          </div>
         </div>
       </div>
-      <div class="col-sm-6 col-md-4 item item3" ng-mouseover="showSolution(2, false)" ng-mouseleave="showSolution(2, true)">
-        <div class="desc" ng-show="solution[2]">
-          <img src="/assets/images/landing/ic_solutions_03.png" >
-          <br>
-          <br>
-          TROUBLE GETTING PAID ON TIME?
-        </div>
-
-        <div class="solutionDescTop" ng-show="!solution[2]">
-          Is it tough to collect a deposit in the pre-season,
-          monthly payments throughout the season, or any other schedule you can think of?
-        </div>
-        <div class="solutionDescBottom" ng-show="!solution[2]">
-          <div align="center" class="title">PAYMENT SCHEDULING</div>
-          Convenience Select can setup the schedule for you while you sit back and let us charge parents
-          every month rather than parents having to remember to pay you.  Receive one lump sum payment
-          into your bank account every month or receive the money as we collect it, it’s up to you.
+      <div class="col-sm-6 col-md-4 item item3">
+        <div class="desc">
+          <div class="h3" align="center">Support</div>
+          <img class="pillarImg" src="/assets/images/landing/ic_solutions_03.png" >
+          <div class="solutionDescBottom">
+            We find that 3 of every 10 families will have a need to reach out to us with a question or concern about
+            payments or perhaps with a request to schedule a custom payment.  We love working with parents as we are
+            parents ourselves and work tirelessly to support those parents via phone, email and chat on a 1:1 basis.
+          </div>
         </div>
       </div>
     </div>
@@ -94,24 +72,25 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12 title">
-        <h2>Are you wondering what the payment collection experience is?<br>
-          With Convenience Select, it's easy.</h2>
+        <h2>Wondering what the process looks like?<br>
+          Well, here’s the Convenience Select playbook.</h2>
       </div>
       <div class="col-sm-3 item">
         <img src="/assets/images/landing/ic_paymentcollection_step_01.png" class="center-block"><br>
-        Convenience Select calls you to quickly setup the payment schedule, teams and emails.
+        Once you’ve signed up, we call you to setup your teams and payment schedules.
       </div>
       <div class="col-sm-3 item">
         <img src="/assets/images/landing/ic_paymentcollection_step_02.png" class="center-block"><br>
-        Send parents to our site when it's time for them to pay.
+        Send parents to our site after your tryouts and parent meetings.
       </div>
       <div class="col-sm-3 item">
         <img src="/assets/images/landing/ic_paymentcollection_step_03.png" class="center-block"><br>
-        We collect the money and contact any parents that have not yet paid.
+        We handle all aspects of payments for you, including follow-up on missed payments and support calls.
       </div>
       <div class="col-sm-3 item">
         <img src="/assets/images/landing/ic_paymentcollection_step_04.png" class="center-block"><br>
-        You get a deposit for the dues collected into your bank account along with a detailed report.
+        We deposit your money immediately into the bank account you provided during sign-up and provide your reporting
+        package monthly!
       </div>
     </div>
   </div>
@@ -138,33 +117,19 @@
 </div>
 <div class="bannerComingSoon" id="bannerComingSoon">
   <div class="container">
-    <div class="title"><strong>COMING SOON</strong></div>
+    <div class="title"><strong>A few clients that trust us:</strong></div>
     <br>
-    <div class="row">
-      <div class="col-md-4 item">
-        <div>
-          <img src="/assets/images/landing/ic_coming_soon_1.png" >
-        </div>
-        <h2>TRAVEL LOGISTICS</h2>
-        Stop worrying about the administrative part of travel. Let us find you one or multiple hotel options
-        for the team and parents.  We will coordinate team dinners that accommodate everyone.
-      </div>
-      <div class="col-md-4 item">
-        <div>
-          <img src="/assets/images/landing/ic_coming_soon_2.png" >
-        </div>
-        <h2>EASY COMMUNICATION</h2>
-        Write a single message and distribute it to everyone via Facebook, Twitter, email and even SMS. Stop wasting time
-        posting the same content to multiple sites and be more efficient.
-      </div>
-      <div class="col-md-4 item">
-        <div>
-          <img src="/assets/images/landing/ic_coming_soon_3.png" >
-        </div>
-        <h2>VALUED OFFERINGS</h2>
-        Make your organization standout with our valued partners. Whether it's live video streaming games, college
-        recruiting services or many more, we bring best-in-class services to you and parents.
-      </div>
+    <!--
+      HERE
+     -->
+    <div class="logos-client">
+          <img src="/assets/images/landing/clients/Cobras.png" >
+          <img src="/assets/images/landing/clients/Boom.png" >
+          <img src="/assets/images/landing/clients/TitanAthletics.png" >
+          <img src="/assets/images/landing/clients/DFWHYPE.png" >
+          <img src="/assets/images/landing/clients/Banditos.png" >
+          <img src="/assets/images/landing/clients/SACAllStars.png" >
+          <img src="/assets/images/landing/clients/Bombers.png" >
     </div>
   </div>
 
@@ -261,30 +226,60 @@
   <div class="bottom"><sup>1</sup> Available for 1 season only per organization - Try before you buy</div>
 </div>
 
-<div class="bannerTestimonial" id="bannerTestimonial" ng-show="false">
-  <div class="content">
-    <div id="carousel-testimonial" class="carousel slide" data-ride="carousel">
+<div class="bannerTestimonial" ng-show="true">
+  <div class="container">
+    <div class="title"><strong>From our customers</strong></div>
+
+    <div class="row">
+    <!--<div id="carousel-testimonial" class="carousel slide" data-ride="carousel">-->
       <!-- Wrapper for slides -->
-      <carousel class="carousel-inner testimonial">
+      <!--<carousel class="carousel-inner testimonial">-->
         <!--item-one-->
-        <slide class="item active">
-          <div class="unit" >
-            <div><img src="/assets/images/yeoman.png" class="img-circle center-block"><br></div>
-            <div class="name">John Smith</div>
-            <div class="teamName">TEAM NAME</div>
-            <h3>An amazing learning experience</h3>
+        <div class="item">
+          <div class="text-center" >
+            <img src="/assets/images/landing/clients/scott.png">
+            <img src="/assets/images/landing/clients/BoomTestimonial.png"><br>
+            <h3>Scott Leon</h3>
+            <h5>Owner, Positive Baseball Development - Austin, TX</h5>
+            <i>"Convenience Select has helped our baseball organization tremendously.  They have taken the responsibility of collecting payments off of our plate.  Now we can concentrate more of our time and efforts on the field.  Peace of mind.  Thank you Convenience Select!"</i>
           </div>
-        </slide>
+        </div>
+        <br>
+        <br>
+        <br>
         <!--item-two-->
-        <slide class="item">
-          <div class="unit" >
-            <div><img src="/assets/images/yeoman.png" class="center-block"><br></div>
-            <div class="name">John Smith</div>
-            <div class="teamName">TEAM NAME</div>
-            <h3>An amazing learning experience</h3>
+        <div class="item">
+          <div class="text-center" >
+            <div>
+              <img src="/assets/images/landing/clients/elizabeth.png">
+              <img src="/assets/images/landing/clients/CobrasTestimonial.png">
+              <br>
+            </div>
+            <h3>Elizabeth D.</h3>
+            <h5>Parent - Killeen, TX</h5>
+            <i>"I think y’all are doing a fabulous job!  I absolutely love your customer service and will certainly promote this payment method."</i>
           </div>
-          </slide>
-        </carousel>
+        </div>
+        <br>
+        <br>
+        <br>
+        <!--<item-three>-->
+        <div class="item">
+          <div class="text-center" >
+            <div>
+              <img src="/assets/images/landing/clients/lisa.png">
+              <img src="/assets/images/landing/clients/CobrasTestimonial.png">
+              <br>
+            </div>
+            <h3>Lisa M.</h3>
+            <h5>Parent - San Antonio, TX</h5>
+            <i>"I appreciate the personal attention and prompt responses to my questions."</i>
+          </div>
+        </div>
+        <br>
+        <br>
+        <!--</carousel>-->
+      <!--</div>-->
       </div>
     </div>
     <!--carousel end-->

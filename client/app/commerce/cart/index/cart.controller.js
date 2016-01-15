@@ -130,7 +130,7 @@ angular.module('convenienceApp')
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
       FlashService.addAlert({
         type: "danger",
-        msg: "We wasn't created the cart, please try again.",
+        msg: "We had a problem and have notified our team.  We will contact you shortly once it’s resolved.",
         timeout: 10000
       });
       $state.go('athletes');

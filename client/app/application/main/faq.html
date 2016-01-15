@@ -1,83 +1,198 @@
-<div class="container">
+<div class="container" ng-init="init()">
   <div class="row">
     <div class="col-md-3">
-      <h4><a href="" ng-click="selectGroup('pricing')" >Pricing FAQs</a></h4>
+      <h4><a href="" ng-click="selectGroup('people')" >People</a></h4>
       <hr>
-      <h4><a href="" ng-click="selectGroup('payment')" >Payment Collection FAQs</a></h4>
+
+      <h4><a href="" ng-click="selectGroup('overview')" >Overview of Convenience Select</a></h4>
       <hr>
+
+      <h4><a href="" ng-click="selectGroup('pricing')" >Pricing</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('onboarding')" >Sign-Up & Onboarding</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('payment')" >Payment Collection FAQ's</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('support')" >Support FAQ's</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('referral')" >Referral Program</a></h4>
+      <hr>
+
+      <h4><a href="" ng-click="selectGroup('objection')" >Common Objections</a></h4>
+      <hr>
+
     </div>
+
+
     <div class="col-md-9">
       <div class="row">
-        <div class="col-md-12" ng-show="faqGroup.pricing">
-        <accordion close-others="true">
-          <accordion-group heading="How does Convenience Select pricing really work?">
-            <p>
-              Convenience Select has a card processing fee, eCheck fee and the Convenience Select service fee.
-              The card processing fee is currently 2.9% + $0.30 per transaction and is included as a part of
-              every card transaction processed.  The eCheck (ACH - bank debits) fee is currently $0.25 per transactions.
-              Convenience Select does not up charge on either the card processing fees and eCheck fees and pass
-              our exact rate on to our customers.  As Convenience Select negotiates better rates, we will continue
-              to pass those savings on to our clients.  The Convenience Select service fee is an additional
-              percentage that is added to the total price of any payments flowing through our platform.
-              The Convenience Select fee is 5% of any payments that flow through our platform but please
-              contact sales at (512) 900-3643 for more information.
-            </p>
-          </accordion-group>
-          <accordion-group heading="Are you charging me or the users?">
-            <p>
-              This is really up to you since Convenience Select supports both.  The card, eCheck and Convenience
-              Select fees can be bundled with the price you want to collect (passed on to the user), absorbed by
-              you or any combination.  For example, you may absorb the Convenience Select fee but pass the card
-              processing fees on to users.  That's the type of flexibility we offer and can support what works
-              best for your situation.
-            </p>
-          </accordion-group>
-          <accordion-group heading="How do I get charged for the Convenience Select fees?">
-            <p>
-              The Convenience Select fees are only paid on money that flows through our system.  Therefore,
-              our interests are completely aligned.  If we don't process a payment, we do not get paid.
-              It is in everyone's best interest for Convenience Select to politely communicate with users to
-              get them to pay.
-            </p>
-          </accordion-group>
-        </accordion>
+
+        <div class="col-md-12" ng-show="faqGroup.people">
+          <accordion close-others="true">
+            <accordion-group heading="Who are you?">
+              <p>
+                We are a team of people focused on helping to make youth sports better.
+                Our CEO, a parent of three boys very involved in youth sports, personally experienced a
+                lot of the administrative pain associated with youth sports and set out in 2014 to solve
+                some of the challenges.  Now, we have a team of people working tirelessly to build a great
+                platform and offer best-in-class service and support to youth sports organizations.
+              </p>
+            </accordion-group>
+            <accordion-group heading="Where are you located?">
+              <p>
+                We are located in Austin, TX, but have a local presence in Southern California as well.
+                We also have clients all over the U.S. from Florida to Texas to California.
+                Please give us a shout if you are in the area as we would love to meet you!
+              </p>
+            </accordion-group>
+          </accordion>
         </div>
+
+        <div class="col-md-12" ng-show="faqGroup.overview">
+          <accordion close-others="true">
+            <accordion-group heading="What does Convenience Select do for me?">
+              <p>
+                Convenience Select brings a thoughtful approach to payments.
+                We like to think that we are trailblazers in the payments industry, but recognize there are
+                plenty of ways to process payments available in the market today.  However, we believe the
+                challenge that exists in youth sports is not strictly related to processing, it’s the consistency
+                associated with following up after a payment is missed or when a custom payment needs to be
+                structured for a parent.  We handle all of this for an organization so they can focus on recruiting
+                and retaining the best athletes and coaches.  We are a complete DIFM solution!
+              </p>
+            </accordion-group>
+            <accordion-group heading="What do you mean by DIFM?">
+              <p>
+                Think Do-It-Yourself (“DIY”) and then imagine how great the exact opposite would be.
+                That’s us!  We are leading the Do-It-For-Me (“DIFM”) revolution within youth sports administration
+                because we believe that is what coaches, club directors and team owners are looking for.
+              </p>
+            </accordion-group>
+            <accordion-group heading="What separates Convenience Select from PayPal or other payment processors?">
+              <p>
+                We certainly have the platform to support payment processing and reporting back to the organization.
+                However, the big difference between us and PayPal is the fact that we manage the entire payments
+                process for you.  Think of us as an extension of your team where we handle everything related to
+                payments (or receivables for you business types:-).  All the processing, all the reconciliation
+                and reporting, all the follow-up with parents, everything.
+              </p>
+            </accordion-group>
+            <accordion-group heading="When is the right time to transition to Convenience Select?">
+              <p>
+                We need to have everything set up for you prior to your first parent meeting or tryouts.
+                This is really important so we can be ready to go once your parents are ready to start coming
+                in to  <a href="https://convenienceselect.com">convenienceselect.com.</a> In addition, we want to be
+                prepared to work quickly once your tryouts are complete and you are obtaining financial
+                commitments from parents.
+              </p>
+            </accordion-group>
+            <accordion-group heading="What is in it for the parents?">
+              <p>
+                We are parents ourselves and really wanted a convenient solution to manage payments.  We find that
+                51% of all organizations are still taking cash and check and we provide a solution that
+                takes everything online.  Parents can make a payment via eCheck, debit or credit card
+                (no cash is accepted).  We also encourage parents to communicate with us especially when they have
+                a question about payments or when they need a custom payment structured for themselves.
+                Parents also have a payment solution they can take with them to other youth sports clubs
+                they are participating with.  Imagine how convenient it will be for parents once all youth sports
+                clubs are using Convenience Select!
+              </p>
+            </accordion-group>
+            <accordion-group heading="What types of payments do you collect?">
+              <p>
+                All of them!  Our clients typically use us to manage everything from ongoing registration or
+                tuition payments to camps, clinics, tournament fees, private coaching lessons and anything else you
+                can think of.  We can also support those pesky fees that are paid directly to coaches outside of
+                the club and can set up individual accounts to distribute funds to sub-accounts of the main organization.
+              </p>
+            </accordion-group>
+          </accordion>
+        </div>
+
+        <div class="col-md-12" ng-show="faqGroup.pricing">
+          <accordion close-others="true">
+            <accordion-group heading="How does Convenience Select pricing really work?">
+              <p>
+                Our pricing is designed to be simple.  We incur a card processing fee which is passed on to your
+                organization with no markup.  As we negotiate cheaper rates with our processor we will pass those
+                savings along to you.  Over and above the credit card processing fee, Convenience Select charges
+                a flat fee to manage the entire payments process for an organization.  The card processing fee is
+                currently 2.9% + $0.30 per transaction and is included as a part of every card transaction processed.
+                The Convenience Select fee starts at 5% on payments that flow through our platform, but is typically
+                tiered to allow for cheaper rates as more volume flows through our platform.
+                Please contact sales at (512) 900-3643 for more information on how tiered pricing can reduce your costs.
+              </p>
+            </accordion-group>
+            <accordion-group heading="Are you charging me or the parents?">
+              <p>
+                This is really up to the organization since Convenience Select supports both the organization and the
+                parents.  The card processing and Convenience Select fees can be bundled so it is nice and simple.
+                For example, you may absorb the Convenience Select fee but pass the card processing fees on to parents.
+                That’s the type of flexibility we offer and can support what works best for your situation.
+              </p>
+            </accordion-group>
+            <accordion-group heading="How do I get charged for the Convenience Select fees?">
+              <p>
+                The Convenience Select fees are only paid on money that flows through our system.  Therefore,
+                our interests are completely aligned.  If we don’t process a payment, we do not get paid.  It is in everyone’s
+                best interest for Convenience Select to manage the process friendly and professionally so we can keep our rate
+                of collection very high.
+              </p>
+            </accordion-group>
+          </accordion>
+        </div>
+
+        <div class="col-md-12" ng-show="faqGroup.onboarding">
+          <accordion close-others="true">
+            <accordion-group heading="How do I sign-up to have Convenience Select manage payments?">
+              <p>
+                Simple.  Go to “Sign-Up” and choose “Team.”  From there, the process takes less than five minutes as we
+                only need three key pieces of information from you.  First, we need to know the legal name of your
+                organization.  In addition, we need the EIN (or tax identification number) and the account you
+                want us to deposit funds into.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="What’s the onboarding process look like?">
+              <p>
+                Once you have the initial signup complete, we will reach out to you within 24-hours to set up your
+                organization on our platform.  This process usually only takes about thirty minutes to complete and we
+                will need to know what teams you have (ex. 7U Red) and the costs associated with those teams.
+                We will also setup custom payment options your parents can choose as they come into our platform.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="How long does it take to set everything up?">
+              <p>
+                It’s quick.  Typical setup time is a couple of days, but if you are in a crunch prior to the beginning
+                of your season we can have you set up more quickly.  However, it’s really important that the right
+                pricing has been communicated to parents based on how the organization chooses to bundle fees, which is   why we like to have everything set prior to your first parent meeting or tryout.
+              </p>
+            </accordion-group>
+
+          </accordion>
+
+        </div>
+
         <div class="col-md-12" ng-show="faqGroup.payment">
           <accordion close-others="true">
             <accordion-group  heading="What comes with the payment collection service from Convenience Select?">
-              Convenience Select is your payments concierge.  We want to do the boring stuff for you so you can
-              stay focused on growing your business.  With the payment collection service, we will setup your
-              organization, your payment collection amounts and schedule on our site.  You then direct all users to
-              <a href="https://www.convenienceselect.com">www.convenienceselect.com</a> where they will sign up for an account and enter their debit/credit card information
-              and let Convenience Select process the payments.
+              <p>
+                Convenience Select is your payments concierge.  We want to do the time consuming stuff for you so you
+                can stay focused on recruiting and retaining the best athletes and coaches.  With the payments management
+                service, we will setup your organization, your payment amounts and payment schedule on our site.  You
+                then direct all users to <a href="https://www.convenienceselect.com">www.convenienceselect.com</a> to register and provide us payment information,
+                which will allow Convenience Select to process the payments.
+              </p>
             </accordion-group>
             <accordion-group heading="Are there any other fees for payment collections?">
               <p>
-                Convenience Select gets charged 2.9% + $0.30 per credit card that's processed.
-                We don't make any money on these fees and pass them along to the organization.
-              </p>
-              <p>
-                Here's an example:
-                <br><br>
-                $1000 - Your Original Payment Amount<br>
-                $50 - Convenience Select Payment Collection Fee (5% x $1000 = $1050)<br>
-                $30.75 - Card Processing Fee ($1050 x 2.9% + $0.30)<br>
-              </p>
-              <p>
-                Option 1: You pay the Convenience Select fee (5%) and user pays the card fees (2.9% + $0.30)<br>
-                $1030.75 - Charged to Users<br>
-                $950 - Deposited to your bank account<br>
-              </p>
-              <p>
-                Option 2: Users pay the Convenience Select fee (5%) AND card fees (2.9% + $0.30)<br>
-                $1080.75 - Charged to Users<br>
-                $1000 - Deposited to your bank account<br>
-              </p>
-              <p>
-                These are just two of the most common payment options we see but we have many other possible payment
-                alternatives, so please contact sales at (512) 900-3643 for more information.  The numbers above are
-                just approximations and the actual payout to your bank account will be discussed with you during the
-                sales call.
+                We do charge a one-time setup fee of $550 to get your organization set up on our platform.
+                There are no other fees other than those outlined in our Pricing FAQ’s.  Nice and simple and very transparent!
               </p>
             </accordion-group>
             <accordion-group heading="When do I get my money?">
@@ -85,52 +200,187 @@
                 Credit card payments that are successfully processed can be paid out within 2 business days.
                 You have the option of getting paid on every card we process immediately (resulting in several
                 deposits into your bank account) or on a monthly basis (one lump sum deposit into your bank account).
-                How you wish to get paid is your choice when we setup your organization.
+                How you wish to get paid is your choice when we set up and onboard your organization.
               </p>
             </accordion-group>
             <accordion-group heading="Who does Convenience Select use for card processing?">
               <p>
-                Convenience Select partners Stripe, the best credit card processing company around.  The best way for
-                Convenience Select to keep its prices low is to let Stripe handle the regulatory requirements of taking
-                payments.  As a result, Stripe requires that we setup an account for you with Stripe and that only takes
-                a few minutes to do so through our site.  You can always call Convenience Select to help you through it.
+                Convenience Select partners with Stripe (PCI Service Provider Level 1, the most stringent level of
+                certification available).  The best way for Convenience Select to keep its prices low is to let
+                Stripe handle the regulatory requirements of taking payments.  As a result, Stripe requires that
+                we setup a managed account for you with Stripe and that only takes a few minutes to do so through
+                our site.  We handle all of this for you so you don’t have to worry about it.
               </p>
             </accordion-group>
 
-            <accordion-group heading="What happens when you can't process a card?">
+            <accordion-group heading="What happens when you can’t process a card?">
               <p>
-                Sometimes we cannot process a card.  This can happen because their card expired or change in address or
+                Sometimes we cannot process a card.  This can happen because a card expired, an address changed or
                 sometimes due to insufficient funds.  Despite the reason, when a payment cannot be collected,
                 Convenience Select contacts the parent to work with them to resolve the issue and process the payment.
-                If after 3 attempts to process the payment, we still cannot do so, someone from our team will communicate
-                with you what has happened and determine the best course of action.
+                If after several attempts to process the payment, we still cannot do so, someone from our team will
+                communicate with you what has happened and determine the best course of action.
               </p>
             </accordion-group>
             <accordion-group heading="Why does Convenience Select need my EIN or SSN?">
               <p>
-                Part of our responsibilities involves verifying your identity and confirming the legitimacy of
-                your business. Collecting this information enables us to automate parts of the registration
-                process so that we can start running charges immediately.
-              </p>
-              <p>
-                We do not use this information for any other purpose, and we take your privacy and the security of
-                your data very seriously.
+                Part of our responsibilities involve verifying your identity and confirming the legal entity associated
+                with your business. Collecting this information enables us to automate parts of the registration process
+                so that we can start processing payments immediately.  We do not use this information for any other purposes,
+                and we take your privacy and the security of your data very seriously.
               </p>
               <p>
                 We want to make sure that parents feel confident that their money is being sent to the right team.
                 Convenience Select must verify that your name or the name of your business matches the SSN or EIN.
-                For this reason, you should always send us your full, legal name.
+                For this reason, you should always provide us your full, legal name.
               </p>
               <p>
                 If you do not have a US tax ID (SSN or EIN), then we may need to verify you using a government-issued
                 photo ID; please scan and send that to us via email.  This is required to help avoid criminal activity
-                and money laundering.  It's important that anybody sending large quantities of money knows who they
-                are paying and checks the payees against certain government watchlists (entities on this watchlist
-                include terrorists, drug dealers, potentially corrupt government officials, etc).  If you're not one
-                of these entities, then you have nothing to worry about.
+                and money laundering.  It’s important that anybody sending large quantities of money knows who they
+                are paying and checks the payees against certain government watchlists (entities on this watchlist include
+                terrorists, drug dealers, potentially corrupt government officials, etc).  If you’re not one of these
+                entities, then you have nothing to worry about.
               </p>
             </accordion-group>
           </accordion>
+        </div>
+
+        <div class="col-md-12" ng-show="faqGroup.support">
+          <accordion close-others="true">
+            <accordion-group heading="How do parents get support?">
+              <p>
+                We offer a number of different ways for parents to contact us because we want them to have a great
+                experience with your organization and with us.  Parents can call us at (855) 764-3232, chat with us via
+                <a href="convenienceselect.com">convenienceselect.com</a>, or email us at <a href="mailto:ourteam@convenienceselect.com" target="_top">ourteam@convenienceselect.com</a>.
+                We are always super responsive because we are parents too and understand parents deserve a quick response
+                to a request or to an issue.
+              </p>
+            </accordion-group>
+            <accordion-group heading="What type of support do parents typically need?">
+              <p>
+                Generally, parents are reaching out to us with a question about the payment associated with their athlete
+                or because they need a custom payment structured for them, which we are happy to accommodate.
+                We actually love it when parents contact us because we pride ourselves on helping them.
+              </p>
+            </accordion-group>
+          </accordion>
+        </div>
+
+        <div class="col-md-12" ng-show="faqGroup.referral">
+          <accordion close-others="true">
+            <accordion-group heading="Do you have a referral program?">
+              <p>
+                Absolutely!  We love referrals from the organizations we work with or the parents we support.
+                Generally speaking, we have two options to choose from.  First, we have a simple referral program paid
+                for youth sports organizations who come on board with us.  These payments are generally made as soon as
+                the organization starts processing payments with us.  In addition, we offer a potentially more lucrative
+                option for coaches, club directors and team owners that might want to join our sales team on a contract basis.
+                For more information, please reach out to us at (512) 900-3643.
+              </p>
+            </accordion-group>
+          </accordion>
+        </div>
+
+        <div class="col-md-12" ng-show="faqGroup.objection">
+          <accordion close-others="true">
+            <accordion-group heading="I will lose the personal touch with the parents participating with my organization.">
+              <p>
+                Not necessarily.  Often times, coaches appreciate the fact that they don’t have to deal with
+                the anxiety of managing payments.  We pride ourselves on being friendly and professional and will
+                go out of our way to accommodate a parent in need of a custom solution.  Further, parents appreciate
+                the fact that they always have someone to reach out to with a question (or if they need a
+                custom payment structured).
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="We have parents that have to pay in cash.">
+              <p>
+                Did you know that according to the FDIC, only 7.7% of all households in the U.S. do not have a bank account?
+                We do offer the ability to pay with eCheck, debit or credit card and it is rare that we run into a
+                situation where cash is the only way a parent can make a payment.  Prepaid debit cards are another
+                easy way for a parent to make a payment through our platform.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="I can’t raise prices to parents.">
+              <p>
+                We are parents ourselves and we are definitely sensitive to the fact that youth sports are expensive
+                these days.  We often find that there is a way to incorporate our solution while not passing too much on
+                to the parents.  In addition, parents appreciate the fact that the organization is making an investment
+                to improve the experience of the athlete and the family.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="I’m already using a registration system.">
+              <p>
+                Great!  Think of us as the next step in the evolution of your youth sports organization.
+                We are not proposing that you change the system you are currently using, in fact, we want you to keep
+                using it!  We suggest you use your current system to manage registration and communication (though we do
+                offer our registration system for free) and use Convenience Select as your DIFM payments solution.
+                Parents do ultimately interact with two systems, but appreciate the fact that they always have someone
+                they can reach out to with a payments related question or request.  We also provide you a Convenience
+                Select button for your existing site so parents can easily find us.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="I still have to manage the bad debt.">
+              <p>
+                Ultimately, we are not guaranteeing payment collection, but we do have a very high rate of success.
+                This is because we are consistent and because we have built a very flexible platform.  If a parent needs
+                a custom payment structured we can easily accommodate them.  These two things really help us maintain
+                a very high rate of collections.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="You aren’t doing anything different than I’m doing.">
+              <p>
+                While that may be true on some level, we tend to focus on results as much as we do the process.
+                We find that 51% of clubs are still taking cash or check as their primary form of payment.
+                In addition, 64% are using a volunteer to manage payments (or they are self-managing payments).
+                When one or both of these factors are present, we find that the industry average of 10-12% in uncollected
+                funds holds consistent.  We can often achieve much better results than the industry average,
+                which helps to reduce uncollected funds significantly.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="I am too small to need your services.">
+              <p>
+                We typically work with organizations that have 50 athletes or more.  We are proud to share that we
+                work with smaller organizations than that, but they are typically growing rapidly and need a professional
+                payments solution sooner rather than later.
+              </p>
+            </accordion-group>
+
+
+            <accordion-group heading="We don’t have a problem with receivables.">
+              <p>
+                Great!  That means you are doing things the right way.  However, we find that 51% of clubs are still taking
+                cash or check as their primary form of payments.  In addition, 64% are using a volunteer to manage
+                payments (or they are self-managing payments).  When one or both of these factors are present, we find
+                that the industry average of 10-12% in uncollected funds holds consistent.  We can often achieve much
+                better results than the industry average, which helps to reduce uncollected funds significantly.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="We need a solution with a presence in our community.">
+              <p>
+                We get it.  We live in small communities as well and appreciate the importance of community.
+                That’s why we take a very friendly, professional approach to what we do.  In addition, we have a
+                local presence in both Texas and California with a rapidly expanding presence in other states as well.
+              </p>
+            </accordion-group>
+
+            <accordion-group heading="We are looking for an “all-in-one” solution.">
+              <p>
+                Many times in the software development world an “all-in-one” solution requires a power user, someone
+                that spends their entire day working in that system.  We recognize this is not often the case in youth
+                sports given the predominance of volunteers managing key functions for an organization.  Our thought is
+                that smaller, more nimble systems are better for the environment we work in.
+              </p>
+            </accordion-group>
+          </accordion>
+
         </div>
 
       </div>
