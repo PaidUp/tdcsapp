@@ -1,21 +1,19 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('FaqCtrl', function ($scope) {
+  .controller('FaqCtrl', function ($scope, $stateParams, $state) {
 
-    $scope.faqGroup = {
-      pricing : false,
-      payment : false,
-      selectfund : false
-    };
+    $scope.faqGroup = {};
 
     $scope.selectGroup = function(group){
-      for (var key in $scope.faqGroup) {
-        $scope.faqGroup[key] = false;
-      }
-      $scope.faqGroup[group] = true;
+      $state.go('faq-g',{
+        group: group
+      });
     };
 
-
-
+    $scope.init = function(){
+      if($stateParams.group){
+        $scope.faqGroup[$stateParams.group] = true;
+      }
+    }
   });

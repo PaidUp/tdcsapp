@@ -19,6 +19,10 @@ angular.module('convenienceApp')
       url: '/faq',
       templateUrl: 'app/application/main/faq.html',
       controller : 'FaqCtrl'
+    }).state('faq-g', {
+      url: '/faq/:group',
+      templateUrl: 'app/application/main/faq.html',
+      controller : 'FaqCtrl'
     }).state('maintenance', {
       url: '/maintenance',
       templateUrl: 'app/application/main/maintenance.html',
