@@ -81,7 +81,8 @@
   }
 
   .solutionDescBottom {
-    padding-top: 10px !important;
+    padding-top: 70px !important;
+    font-size: 16px !important;
   }
 
   .solutionsForTeams .desc {
@@ -157,12 +158,40 @@
     padding-bottom: 16px;
   }
 
+  .salesPhone{
+    padding-right: 0px !important;
+    display: inherit !important;
+  }
+
+  .supportPhone{
+    padding-right: 0px !important;
+    display: inherit !important;
+  }
+
+}
+
+.salesPhone{
+  padding-top: 5px;
+  padding-right: 30px;
+  display: inline-block;
+}
+
+.supportPhone{
+  padding-right: 30px;
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 .ctoBox{
   border-radius: 4px;
   padding-top: 16px;
   background: rgba(255, 255, 255, 0.75);
+}
+
+.pillarImg{
+  height: 100px;
+  width: 100px;
 }
 
 
@@ -258,12 +287,12 @@
   font-weight: 300;
   color: #FFFFFF;
   text-align: justify;
-  padding-top: 20px;
+  padding-top: 100px;
   line-height: normal;
 }
 
 .solutionsForTeams .desc{
-  padding-top: 100px;
+  padding-top: 40px;
   color: #FFFFFF;
   font-size: 30px;
   font-weight:  500;
