@@ -606,16 +606,24 @@
 }
 
 .bannerTestimonial{
-  min-height: 400px;
-  color: #FFFFFF;
-  background-color: #FFFFFF;
-  border-color: #FF734D;
+  /*min-height: 400px;*/
+
+  border-color: #484C4F;
   border-bottom-color: #C65C43;
   background-position:center;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-image: url(/assets/images/landing/im_bg_teams.jpg);
+  background-color: #484C4F;
+  color: #F8F8F8;
+}
+
+.bannerTestimonial .title{
+  padding: 25px 0px 10px 0px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 25px;
 }
 
 .unit{

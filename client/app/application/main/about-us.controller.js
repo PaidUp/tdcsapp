@@ -2,7 +2,6 @@
 
 angular.module('convenienceApp')
   .controller('aboutUsCtrl', function ($scope) {
-
     var descriptions = {
       allan: 'Allan is a father of three super active boys who are very involved with youth sports.  In fact, ' +
       'that’s partially how Convenience Select came to be.  Allan is very active himself and has founded a few other ' +
@@ -38,5 +37,4 @@ angular.module('convenienceApp')
         }
       }
     }
-
   });
