@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CtaBoxController', ['$scope','ContactService','ModalService', 'ModalFactory',
-    function($scope, ContactService,ModalService, ModalFactory) {
+  .controller('CtaBoxController', ['$scope','ContactService','ModalService', 'ModalFactory', 'FlashService',
+    function($scope, ContactService,ModalService, ModalFactory, FlashService) {
       $scope.modalFactory = ModalFactory;
       $scope.modal = ModalService;
 
@@ -22,8 +22,12 @@ angular.module('convenienceApp')
         ContactService.contactUs(contactInfo);
         $scope.contactInfo = {};
         $scope.submitted = false;
-        $scope.modalFactory.closeModal();
-        $scope.modalFactory.ContactUsModalConfirmation();
+
+        FlashService.addAlert({
+          type: 'success',
+          msg: 'Thanks.  Allan will contact you shortly.',
+          timeout: 10000
+        });
 
       }
     };
