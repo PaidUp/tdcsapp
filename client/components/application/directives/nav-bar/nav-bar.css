@@ -45,6 +45,19 @@ nav a {
     border: 1px solid #9DA2A8;
 }
 
+.top-header {
+    background-color: #FE805D;
+    width: 100%;
+}
+
+.top-header a {
+    color: #FFFFFF !important;
+}
+
+.top-header br{
+        display: block;
+    }
+
 @media (max-width: 768px) {
     .container #nav-no-float.collapse.pull-right {
         float: none !important;
@@ -58,4 +71,8 @@ nav a {
   .mobile-right{
     float: right;
   }
+
+    .top-header br{
+        display: none;
+    }
 }

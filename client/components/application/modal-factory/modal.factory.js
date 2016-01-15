@@ -103,7 +103,12 @@ angular.module('convenienceApp')
       ContactUs: function (subject) {
         openModal({
           templateUrl: 'app/application/contact-form/contact-us.html',
-
+          size: 'md'
+        });
+      },
+      CtaBox: function (subject) {
+        openModal({
+          templateUrl: 'app/application/contact-form/cta-box.html',
           size: 'md'
         });
       },

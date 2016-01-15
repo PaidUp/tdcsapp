@@ -19,6 +19,10 @@ angular.module('convenienceApp')
       url: '/faq',
       templateUrl: 'app/application/main/faq.html',
       controller : 'FaqCtrl'
+    }).state('faq-g', {
+      url: '/faq/:group',
+      templateUrl: 'app/application/main/faq.html',
+      controller : 'FaqCtrl'
     }).state('maintenance', {
       url: '/maintenance',
       templateUrl: 'app/application/main/maintenance.html',
@@ -27,5 +31,17 @@ angular.module('convenienceApp')
       url: '/referral-program-terms-and-conditions',
       templateUrl: 'app/application/main/referral-program/referral-program-rules.html',
       controller : 'ReferralProgramCtrl'
+    }).state('demos', {
+      url: '/demos',
+      templateUrl: 'app/application/main/demos/demos.html',
+      controller : 'DemosCtrl'
+    }).state('demos-g', {
+      url: '/demos/:name',
+      templateUrl: 'app/application/main/demos/demos.html',
+      controller : 'DemosCtrl'
+    }).state('about-us', {
+      url: '/about-us',
+      templateUrl: 'app/application/main/about-us.html',
+      controller : 'aboutUsCtrl'
     });
   });
