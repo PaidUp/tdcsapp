@@ -2,5 +2,5 @@
 
 angular.module('convenienceApp')
   .controller('aboutUsCtrl', function ($scope) {
-    console.log('aboutUsCtrl')
+    //console.log('aboutUsCtrl')
   });
