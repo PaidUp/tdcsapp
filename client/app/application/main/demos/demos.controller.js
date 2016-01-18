@@ -5,8 +5,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('DemosCtrl', function ($scope, $stateParams, $state) {
-
+  .controller('DemosCtrl', function ($scope, $stateParams, $state, TrackerService) {
+    TrackerService.pageTrack();
     $scope.videos = {};
 
 
