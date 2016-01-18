@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('FaqCtrl', function ($scope, $stateParams, $state) {
-
+  .controller('FaqCtrl', function ($scope, $stateParams, $state, TrackerService) {
+    TrackerService.pageTrack();
     $scope.faqGroup = {};
 
     $scope.selectGroup = function(group){
