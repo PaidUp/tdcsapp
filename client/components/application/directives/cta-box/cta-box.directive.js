@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('CtaBoxController', ['$scope','ContactService','ModalService', 'ModalFactory', 'FlashService',
+  .controller('CtaBoxController', ['$scope','ContactService','ModalService', 'ModalFactory', 'FlashService', 'TrackerService', 
     function($scope, ContactService,ModalService, ModalFactory, FlashService) {
       $scope.modalFactory = ModalFactory;
       $scope.modal = ModalService;
