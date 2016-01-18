@@ -2,7 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('CtaBoxController', ['$scope','ContactService','ModalService', 'ModalFactory', 'FlashService', 'TrackerService', 
-    function($scope, ContactService,ModalService, ModalFactory, FlashService) {
+    function($scope, ContactService,ModalService, ModalFactory, FlashService, TrackerService) {
       $scope.modalFactory = ModalFactory;
       $scope.modal = ModalService;
 
@@ -18,7 +18,7 @@ angular.module('convenienceApp')
         contactInfo.subject = 'CTA BOX'
 
         contactInfo.content = 'Name: '+contactInfo.name+ ' | Phone: '+contactInfo.phone;
-
+        TrackerService.pageTrack(contactInfo);
         ContactService.contactUs(contactInfo);
         $scope.contactInfo = {};
         $scope.submitted = false;
