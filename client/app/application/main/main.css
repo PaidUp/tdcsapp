@@ -124,6 +124,14 @@
   float: right;
   margin-top: 15px;
 }
+
+.socialNetworksHeader{
+  width: auto;
+  height: 24px;
+  float: right;
+  margin-top: 15px;
+}
+
 .socialNetworks a{
   display: block;
   float: left;
@@ -144,6 +152,7 @@
 .twitterBlack{
   background-image: url(/assets/images/twitterBlack.png);
 }
+
 .checkAthleteHome{
   min-height: 320px;
   width: 100%;
