@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('FaqCtrl', function ($scope, $stateParams, $state, $cookieStore, ModalFactory) {
+  .controller('FaqCtrl', function ($scope, $stateParams, $state, $cookieStore, ModalFactory, Idle, ContactService) {
 
     $scope.faqGroup = {};
     $scope.modalFactory = ModalFactory;
@@ -12,17 +12,24 @@ angular.module('convenienceApp')
       });
     };
 
-    function showModal(){
-      ModalFactory.CtaFaq();
-    }
+    var startIdle = false;
 
+    $scope.$on('IdleStart', function() {
+
+      if(!startIdle){
+
+        if(!$cookieStore.get(ContactService.ctaModalFlag)){
+          ModalFactory.CtaModal('cta-faq');
+        }
+      }
+      startIdle = true;
+    });
+    
     $scope.init = function(){
+      Idle.watch();
       if($stateParams.group){
         $scope.faqGroup[$stateParams.group] = true;
       }
     }
-
-
-    showModal();
 
   });

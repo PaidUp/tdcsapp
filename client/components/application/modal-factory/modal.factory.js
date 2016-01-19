@@ -112,9 +112,9 @@ angular.module('convenienceApp')
           size: 'md'
         });
       },
-      CtaFaq: function () {
+      CtaModal: function (ctaTemplate) {
         openModal({
-          templateUrl: 'app/application/contact-form/cta-faq.html',
+          templateUrl: 'app/application/contact-form/'+ctaTemplate+'.html',
           size: 'lg'
         });
       },
