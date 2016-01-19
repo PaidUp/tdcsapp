@@ -3,7 +3,7 @@
     <span aria-hidden="true">×</span>
     <span class="sr-only">Close</span>
   </button>
-  <h3>Still have questions?</h3>
+  <h3>{{content[page].header}}</h3>
 
 </div>
 
@@ -17,51 +17,56 @@
       </div>
 
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-8">
       <p class="h5" style="padding-top: 40px">
-        Interested in learning more, but want to speak with someone? We’ll have someone from our team contact you today.
+        {{content[page].body}}
       </p>
     </div>
   </div>
   <br>
-  <div class="row">
-    <div class="col-sm-12">
-      <form name="contactUsForm" ng-submit="contactUs(contactUsForm, contactInfo)" id="contactUsForm" novalidate>
-        <div class="row">
-          <div class="col-sm-3">
-            <div class="form-group">
-              <input type="search" name="name" class="form-control" placeholder="Name" ng-model="contactInfo.name" ng-required="false">
-              <div class="text-CS text-center" ng-show="contactUsForm.name.$error.required && submitted">
-                <small class="text-CS">What's your name?</small>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-              <input type="email" name="email" class="form-control" placeholder="Email" ng-model="contactInfo.email" ng-required="true">
-              <div class="text-CS text-center" ng-show="contactUsForm.email.$error.email && submitted">
-                <small class="text-CS">Doesn't look like a valid email.</small>
-              </div>
-              <div class="text-CS text-center" ng-show="contactUsForm.email.$error.required && submitted">
-                <small class="text-CS">What's your email address?</small>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="form-group">
-              <input type="search" name="phone" class="form-control" placeholder="Phone" ng-model="contactInfo.phone" ng-required="false">
-              <div class="text-CS text-center" ng-show="contactUsForm.phone.$error.required && submitted">
-                <small class="text-CS">What's your phone number?</small>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-3">
 
-            <button type="submit" class="btn btnSignUp btn-block">More Details Please</button>
-          </div>
-        </div>
-      </form>
 
+  <div class="modal-footer">
+    <div class="row">
+      <div class="col-sm-12">
+        <form name="contactUsForm" ng-submit="contactUs(contactUsForm, contactInfo)" id="contactUsForm" novalidate>
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <input type="search" name="name" class="form-control" placeholder="Name" ng-model="contactInfo.name" ng-required="false">
+                <div class="text-CS text-center" ng-show="contactUsForm.name.$error.required && submitted">
+                  <small class="text-CS">What's your name?</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Email" ng-model="contactInfo.email" ng-required="true">
+                <div class="text-CS text-center" ng-show="contactUsForm.email.$error.email && submitted">
+                  <small class="text-CS">Doesn't look like a valid email.</small>
+                </div>
+                <div class="text-CS text-center" ng-show="contactUsForm.email.$error.required && submitted">
+                  <small class="text-CS">What's your email address?</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <input type="search" name="phone" class="form-control" placeholder="Phone" ng-model="contactInfo.phone" ng-required="false">
+                <div class="text-CS text-center" ng-show="contactUsForm.phone.$error.required && submitted">
+                  <small class="text-CS">What's your phone number?</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3" style="padding-right: 5px">
+
+              <button type="submit" class="btn btnSignUp btn-block">{{content[page].button}}</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
     </div>
   </div>
 

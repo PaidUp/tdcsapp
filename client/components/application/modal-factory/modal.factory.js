@@ -112,10 +112,12 @@ angular.module('convenienceApp')
           size: 'md'
         });
       },
-      CtaModal: function (ctaTemplate) {
+      CtaModal: function (ctaTemplate, size) {
         openModal({
           templateUrl: 'app/application/contact-form/'+ctaTemplate+'.html',
-          size: 'lg'
+          size: function(){
+            return size ? size : 'lg'
+          }()
         });
       },
       closeModal: function () {

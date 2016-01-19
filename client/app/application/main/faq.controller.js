@@ -17,7 +17,7 @@ angular.module('convenienceApp')
     $scope.$on('IdleStart', function() {
       if(!startIdle){
         if(!$cookieStore.get(ContactService.ctaModalFlag)){
-          ModalFactory.CtaModal('cta-faq');
+          ModalFactory.CtaModal('cta-faq', 'lg');
         }
       }
       startIdle = true;
