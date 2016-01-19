@@ -4,10 +4,26 @@ angular.module('convenienceApp')
   .controller('CtaModalController', ['$scope','ContactService', 'ModalFactory', 'FlashService', '$cookieStore',
     function($scope, ContactService, ModalFactory, FlashService, $cookieStore) {
 
+      $scope.content = {
+        faq : {
+          header : 'Still have questions?',
+          body : 'Interested in learning more, but want to speak with someone? We’ll have someone from our team ' +
+          'contact you today.',
+          button : 'More Details Please',
+          subject : 'CTA - FAQ'
+        },
+        demos : {
+          header : 'Thank you for your interest in our services',
+          body : 'Would you like to speak with someone? We can contact you today.',
+          button : 'Contact Me',
+          subject : 'CTA - DEMOS'
+        }
+      }
+
       $scope.modalFactory = ModalFactory;
 
-      if($scope.subject){
-        $scope.contactInfo = {subject : $scope.subject};
+      if($scope.page){
+        $scope.contactInfo = {subject : $scope.content[$scope.page].subject};
       }else{
         $scope.contactInfo = {subject : 'CTA without subject'};
       }
@@ -16,7 +32,11 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       if (form.$valid) {
 
-        contactInfo.content = 'Name: '+contactInfo.name+ ' | Phone: '+contactInfo.phone;
+        var name = contactInfo.name || ' ';
+        var phone = contactInfo.phone || ' ';
+
+
+        contactInfo.content = 'Name: '+name+ ' | Phone: '+phone;
 
         ContactService.contactUs(contactInfo);
         $scope.contactInfo = {};
@@ -39,7 +59,7 @@ angular.module('convenienceApp')
       restrict: 'E',
       controller: 'CtaModalController',
       scope: {
-        subject: "@subject"
+        page: "@page"
       }
     };
   });
