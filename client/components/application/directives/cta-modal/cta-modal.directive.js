@@ -30,7 +30,7 @@ angular.module('convenienceApp')
           timeout: 10000
         });
 
-
+        ModalFactory.closeModal();
       }
     };
 }]).directive('ctaModal', function () {

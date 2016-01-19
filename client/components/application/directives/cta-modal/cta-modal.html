@@ -11,7 +11,11 @@
 
   <div class="row">
     <div class="col-sm-3">
-      <img src="/assets/images/landing/thePeople/allan.png">
+      <div align="center">
+        <img src="/assets/images/landing/thePeople/allan.png">
+        <h4>Allan Rayson</h4>
+      </div>
+
     </div>
     <div class="col-sm-9">
       <p class="h5" style="padding-top: 40px">
@@ -34,7 +38,7 @@
           </div>
           <div class="col-sm-3">
             <div class="form-group">
-              <input type="email" name="email" class="form-control" placeholder="Email" ng-model="contactInfo.email" ng-required="false">
+              <input type="email" name="email" class="form-control" placeholder="Email" ng-model="contactInfo.email" ng-required="true">
               <div class="text-CS text-center" ng-show="contactUsForm.email.$error.email && submitted">
                 <small class="text-CS">Doesn't look like a valid email.</small>
               </div>
@@ -53,7 +57,7 @@
           </div>
           <div class="col-sm-3">
 
-            <button type="submit" class="btn btnSignUp btn-block" ng-click="modalFactory.closeModal()">More Details Please</button>
+            <button type="submit" class="btn btnSignUp btn-block">More Details Please</button>
           </div>
         </div>
       </form>

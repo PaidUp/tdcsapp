@@ -24,7 +24,7 @@ angular.module('convenienceApp')
       }
       startIdle = true;
     });
-    
+
     $scope.init = function(){
       Idle.watch();
       if($stateParams.group){
