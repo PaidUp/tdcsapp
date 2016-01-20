@@ -140,6 +140,7 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
               }**/
 
               logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod);
+
               if(!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
                 logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue);
                 //logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length);

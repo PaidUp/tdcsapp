@@ -36,7 +36,7 @@ function createPaymentPlanFull(params, cb){
       discountToFee : ele.discountToFee
     };*/
     let period = {name  : params.name,
-      informations : []
+      informations : [{name:'isCharged' , value : false}]
     };
 
     for(var attributeName in ele){
