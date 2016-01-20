@@ -178,11 +178,22 @@
     padding-left: 30px !important;
     padding-top: 20px !important;
     padding-bottom: 20px !important;
-
+    min-height: 450px !important;
   }
 
   .unit h3{
-    font-size: 16px !important;
+    font-size: 15px !important;
+    font-weight: 300 !important;
+  }
+
+  .unit .name{
+    font-size: 20px !important;
+    font-weight: 100 !important;
+  }
+
+  .unit .teamName{
+    font-size: 14px !important;
+    font-weight: 300 !important;
   }
 
 
