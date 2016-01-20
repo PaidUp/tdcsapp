@@ -395,6 +395,7 @@ alert a{
   text-decoration: underline;
 }
 .space{
+  padding-top: 3px;
   min-height: 500px;
 }
 .breadcrumb{
