@@ -6,15 +6,16 @@ angular.module('convenienceApp')
 
       $scope.content = {
         faq : {
-          header : 'Still have questions?',
-          body : 'Interested in learning more, but want to speak with someone? We’ll have someone from our team ' +
-          'contact you today.',
+          header : "I hope you found our FAQ's helpful!",
+          body : 'Do you want a case study from a real life volleyball club director and happy ' +
+          'client of Convenience Select?  &nbsp;&nbsp;&nbsp;Enter you details below.',
           button : 'More Details Please',
           subject : 'CTA - FAQ'
         },
         demos : {
-          header : 'Thank you for your interest in our services',
-          body : 'Would you like to speak with someone? We can contact you today.',
+          header : 'I hope you found our video demos helpful!',
+          body : "Hello, my name is Allan Rayson, CEO of Convenience Select, and I am excited that you have taken an " +
+          "interest in the three pillars of Convenience Select.  &nbsp;&nbsp;&nbsp;Let me know if you would like to talk.",
           button : 'Contact Me',
           subject : 'CTA - DEMOS'
         }
