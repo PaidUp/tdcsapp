@@ -168,6 +168,40 @@
     display: inherit !important;
   }
 
+  .socialHeader{
+    display: inherit !important;
+    padding-top: 15px !important;
+    padding-right: 0px !important;
+  }
+
+  .unit{
+    padding-left: 30px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    min-height: 450px !important;
+  }
+
+  .unit h3{
+    font-size: 15px !important;
+    font-weight: 300 !important;
+  }
+
+  .unit img{
+    width: 100px ;
+    height: 100px ;
+  }
+
+  .unit .name{
+    font-size: 20px !important;
+    font-weight: 100 !important;
+  }
+
+  .unit .teamName{
+    font-size: 14px !important;
+    font-weight: 300 !important;
+  }
+
+
 }
 
 .salesPhone{
@@ -177,11 +211,34 @@
 }
 
 .supportPhone{
-  padding-right: 30px;
+  padding-right: 0px;
   display: inline-block;
   padding-bottom: 5px;
   padding-top: 5px;
 }
+
+.socialHeader{
+  float: right;
+  padding-right: 30px;
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 3px;
+}
+
+.socialHeader img{
+  width: 24px;
+  height: 24px;
+  color: black;
+}
+
+.socialHeader a{
+  padding-right: 10px;
+}
+
+.socialHeader a:hover{
+  text-decoration: none;
+}
+
 
 .ctoBox{
   border-radius: 4px;
@@ -629,7 +686,6 @@
 .unit{
   text-align:center;
   color:#fff;
-  padding:5% 10% 5% 0;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position:center;
@@ -637,7 +693,11 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  width:100%;
+  width:90%;
+  padding-left: 120px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: 450px;
 }
 
 .unit .name{
