@@ -1,27 +1,34 @@
-<div class="modal-header">
+
+
+<div class="modal-body">
   <button type="button" class="close" ng-click="modalFactory.closeModal()">
     <span aria-hidden="true">×</span>
     <span class="sr-only">Close</span>
   </button>
-  <h3>{{content[page].header}}</h3>
 
-</div>
 
-<div class="modal-body">
 
   <div class="row">
     <div class="col-sm-3">
       <div align="center">
         <img src="/assets/images/landing/thePeople/allan.png">
         <h4>Allan Rayson</h4>
+        <span class="aboutUsGray">CEO & Co-Founder</span>
+        <div><a href="mailto:allan@convenienceselect.com">allan@convenienceselect.com</a></div>
+        <div><a href="tel:(512) 900-3643">(512) 900-3643 (Sales)</a></div>
       </div>
 
     </div>
-    <div class="col-sm-1"></div>
-    <div class="col-sm-8">
-      <p class="h5" style="padding-top: 40px">
-        {{content[page].body}}
-      </p>
+
+    <div class="col-sm-9" style="padding-left: 30px">
+      <h2>{{content[page].header}}</h2>
+      <div class=""  style="padding-top: 40px; font-size: 20px">
+        <div ng-bind-html="content[page].body">
+
+        </div>
+
+
+      </div>
     </div>
   </div>
   <br>
