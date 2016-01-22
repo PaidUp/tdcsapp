@@ -158,7 +158,7 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                         notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
                         });
                         logger.log('info', '8) paymentSchedulev2 capture: %s', data);
-                        return callbackEach2();
+                        //return callbackEach2();
                       }
 
                         let param = {
