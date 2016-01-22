@@ -117,15 +117,18 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
           return callbackEach();
           //return callbackEach(new Error('order without schedulePeriods'));
         }
+          /**
         commerceService.transactionList(order.incrementId, function(err, transactionList){
           if(err){
             logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err);
             return callbackEach(err);
           }
           logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList);
+           **/
           async.eachSeries(orderSchedule.schedulePeriods,
             function(schedulePeriod, callbackEach2){
               logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
+              /**
               schedulePeriod.transactions = [];
               if(transactionList.length > 0){
 
@@ -134,11 +137,13 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                     schedulePeriod.transactions.push(transactionList[i]);
                   }
                 }
-              }
+              }**/
+
               logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod);
-              if(schedulePeriod.transactions.length === 0 && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+
+              if(!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
                 logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue);
-                logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length);
+                //logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length);
                 userService.find({_id : order.userId}, function(err, users){
                   paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
                     if(paymentUser && paymentUser.defaultSource){
@@ -153,9 +158,31 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                         notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
                         });
                         logger.log('info', '8) paymentSchedulev2 capture: %s', data);
-                        return callbackEach2();
+                        //return callbackEach2();
                       }
-                      return callbackEach2();
+
+                        let param = {
+                          scheduleId:schedulePeriod.entityId,
+                          informationData:
+                            [{
+                              name : 'isCharged',
+                              value : true,
+                            }]
+                        }
+
+                        scheduleService.scheduleInformationUpdate(param , function(err2 , data2){
+                          if(err2){
+                            logger.log('info', '9) paymentSchedulev2 capture err: %s', err2);
+                            param.orderId = order.incrementId;
+                            notifications.sendEmailNotification({subject:'Cant update charged order', jsonMessage:param }, function(err, data){
+                            });
+                            return callbackEach2();
+                          }
+                          logger.log('info', '9) paymentSchedulev2 scheduleInformationUpdate capture: %s', data2);
+                          return callbackEach2();
+                        });
+
+                        //return callbackEach2();
                     });
                   });
                 });
@@ -170,7 +197,7 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
               callbackEach();
             });
           //callback(null, schedule);
-        });
+        //});
 
       });
 
