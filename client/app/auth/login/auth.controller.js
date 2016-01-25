@@ -104,7 +104,11 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
         $rootScope.$emit('verify-bank-account', {});
 
-        TrackerService.create('login success');
+        console.log('user' , AuthService.getCurrentUser());
+
+        TrackerService.create('login success',{
+          roleType : AuthService.getCurrentUser().roles[0]
+        });
       };
       var error = function(err) {
         TrackerService.trackFormErrors('login error' , err.message);
@@ -128,7 +132,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
   $scope.disabelSubmit = false;
 
   $scope.register = function(form) {
-    TrackerService.trackFormErrors('register form', form);
+
     $scope.submitted = true;
     if(form.$valid) {
       $scope.disabelSubmit = true;
@@ -156,17 +160,18 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
           $state.go(AuthService.getDest());
           AuthService.setDest();
         }, error);
-        TrackerService.create('register success',{
+        TrackerService.create('signup success',{
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
-          email: $scope.user.email
+          email: $scope.user.email,
+          roleType : $scope.showRole ? 'user' : 'coach'
         });
       };
 
       var error = function (err) {
         $scope.error = err.message;
         $scope.disabelSubmit = false;
-        TrackerService.create('register error' , {
+        TrackerService.create('signup error' , {
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
           email: $scope.user.email,
@@ -174,6 +179,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
         });
       };
       AuthService.createUser(user, success, error);
+    }else{
+      TrackerService.trackFormErrors('signup form', form);
     }
   };
 
@@ -218,7 +225,6 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
   // FORTGOT function
   $scope.forgot = function (form) {
-    TrackerService.trackFormErrors('forgot form' , form);
     $scope.submitted = true;
     if (form.$valid) {
       AuthService.forgotPassword($scope.user.email, function (data) {
@@ -233,6 +239,8 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
           $scope.message = false;
         }
       });
+    }else{
+      TrackerService.trackFormErrors('forgot form' , form);
     }
   };
   // END FORTGOT function
