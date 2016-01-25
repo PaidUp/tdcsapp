@@ -21,7 +21,11 @@ angular.module('convenienceApp')
         }
       }
 
-      $scope.modalFactory = ModalFactory;
+
+      $scope.closeModal = function(){
+        ModalFactory.closeModal();
+        ContactService.ctaModalCloseFlag = true;
+      }
 
       if($scope.page){
         $scope.contactInfo = {subject : $scope.content[$scope.page].subject};

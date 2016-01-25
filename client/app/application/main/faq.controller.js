@@ -16,7 +16,7 @@ angular.module('convenienceApp')
 
     $scope.$on('IdleStart', function() {
       if(!startIdle){
-        if(!$cookieStore.get(ContactService.ctaModalFlag)){
+        if(!ContactService.ctaModalCloseFlag && !$cookieStore.get(ContactService.ctaModalFlag)){
           ModalFactory.CtaModal('cta-faq', 'lg');
         }
       }
