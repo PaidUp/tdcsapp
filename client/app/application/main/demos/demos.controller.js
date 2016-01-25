@@ -31,7 +31,7 @@ angular.module('convenienceApp')
     $scope.init = function(){
       //Idle.watch();
       if(!startIdle){
-        if(!$cookieStore.get(ContactService.ctaModalFlag)){
+        if(!ContactService.ctaModalCloseFlag && !$cookieStore.get(ContactService.ctaModalFlag)){
           ModalFactory.CtaModal('cta-demos' , 'lg');
         }
       }
