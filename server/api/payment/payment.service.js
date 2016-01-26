@@ -11,7 +11,7 @@ var async = require('async');
 var camelize = require('camelize');
 var paymentEmailService = require('./payment.email.service');
 var tdPaymentService = require('TDCore').paymentService;
-var mix = require('../../config/mixpanel');
+//var mix = require('../../config/mixpanel');
 var uuid = require('node-uuid');
 
 
@@ -346,7 +346,7 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
                   //});
                 } else {
                   paymentEmailService.sendProcessedEmailCreditCard(user, amount, result.number, orderId, function(err, data){
-                    mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
+                    //mix.panel.track("paymentCaptureSendProcessedEmailCreditCard", mix.mergeDataMixpanel(result, user._id));
                     logger.info('send processed email. ' , JSON.stringify(data));
                     return cb(null, result);
                   });

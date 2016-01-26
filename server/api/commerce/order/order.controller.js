@@ -7,7 +7,7 @@ var logger = require('../../../config/logger');
 var userLoanService = require('../../loan/application/user/user.service');
 var commerceService = require('../commerce.service');
 var async = require('async');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 
 exports.listOrders = function (req, res) {
   var user = req.user;
@@ -28,7 +28,7 @@ exports.listOrders = function (req, res) {
       });
     }, function (err) {
       if (err) { return handleError(res, err); }
-      mix.panel.track("orderList", mix.mergeDataMixpanel(orders, req.user._id));
+      //mix.panel.track("orderList", mix.mergeDataMixpanel(orders, req.user._id));
       return res.status(200).json(orders);
     });
   });
