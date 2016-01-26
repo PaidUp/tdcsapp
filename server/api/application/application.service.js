@@ -19,6 +19,7 @@ function configView(cb) {
 	var data = {};
 	data.marketplace = config.balanced.marketplace;
     data.stripeApiPublic = config.stripe.apiPublic;
+    data.mixpanelApiKey = config.mixpanel.apiKey;
 	return cb(null,data);
 }
 
