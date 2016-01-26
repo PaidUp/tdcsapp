@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .controller('ProviderRequestCtrl', function ($scope, $rootScope, providerService, UserService, $state, AuthService) {
+  .controller('ProviderRequestCtrl', function ($scope, $rootScope, providerService, UserService, $state, TrackerService, AuthService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -26,14 +26,19 @@ angular.module('convenienceApp')
     $scope.registerProvider = function(){
         $scope.submitted = true;
         //&& $scope.billingForm.$valid removed because the EIN is optional
+      TrackerService.trackFormErrors('providerForm' , $scope.providerForm, {});
+      TrackerService.trackFormErrors('ownerForm' , $scope.ownerForm, {});
+      TrackerService.trackFormErrors('bankForm' , $scope.bankForm, {});
         if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber.replace(/ /g,'');
             $scope.provider.aba = $scope.bankAccount.routingNumber.replace(/ /g,'');
             $scope.provider.ownerSSN = $scope.bankAccount.securitySocial.replace(/-/g,'');
             providerService.providerRequest($scope.provider).then(function(data){
+              TrackerService.create('Organization register' , {})
                 $state.go('provider-success');
             }).catch(function(err){
+              TrackerService.create('Organization register error' , err)
                 console.log(err);
             });
         };
