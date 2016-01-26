@@ -4,7 +4,7 @@ var tdAuthService = require('TDCore').authService;
 var config = require('../../config/environment');
 var compose = require('composable-middleware');
 var tdUserService = require('TDCore').userService;
-var mix = require('../../config/mixpanel');
+//var mix = require('../../config/mixpanel');
 /**
  * Attaches the user object to the request if authenticated
  * Otherwise returns 403
@@ -22,7 +22,7 @@ function isAuthenticated() {
         if(data && data._id){
           req.user =  data;
           //this line register the user in mixpanel, for tracking your steps in the CS
-          mix.panel.people.set(req.user._id,req.user);
+          //mix.panel.people.set(req.user._id,req.user);
           return next();
         }else{
           return res.sendStatus(401);

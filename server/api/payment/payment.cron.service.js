@@ -11,7 +11,7 @@ var moment = require('moment');
 var logger = require('../../config/logger');
 var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
-var mix = require('../../config/mixpanel');
+//var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 var notifications = require('../notifications/notifications.service');
 var async = require('async');
@@ -511,7 +511,7 @@ exports.sendRemindToAddPaymentMethod = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToAddPaymentMethod(loan.applicationId,loan.orderId,function(err, data){
-                    mix.panel.track("paymentCronServiceSendRemindAddPaymentMethod", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                    //mix.panel.track("paymentCronServiceSendRemindAddPaymentMethod", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to add payment method. ');
                     //Sent email.
                     mainCallback();
@@ -574,7 +574,7 @@ exports.sendRemindToVerifyAccount = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToVerifyAccount(loan.applicationId, loan.orderId,function(err, data){
-                    mix.panel.track("paymentCronServiceSendRemindToVerifyAccount", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                    //mix.panel.track("paymentCronServiceSendRemindToVerifyAccount", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to verify account. ' + data );
                     //Sent email.
                     mainCallback();
@@ -641,7 +641,7 @@ exports.sendTomorrowChargeLoan = function(cb){
                   loan.notifications.push(objNotification);
                   loanService.save(loan, function(err, newLoan){
                     paymentEmailService.sendTomorrowChargeLoan({loan:loan,schedule:schedule, days:value,orderId:loan.orderId},function(err, data){
-                      mix.panel.track("paymentCronServiceSendTomorrowChargeLoan", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                      //mix.panel.track("paymentCronServiceSendTomorrowChargeLoan", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                       logger.log('info', 'send email reminder tomorrow charge loan ' );
                       mainCallback();
                     });

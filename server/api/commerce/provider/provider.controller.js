@@ -6,7 +6,7 @@ var catalogService = require('../catalog/catalog.service');
 var paymentService = require('../../payment/payment.service');
 var commerceEmailService = require('../commerce.email.service');
 var config = require('../../../config/environment');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 var userService = require('../../user/user.service');
 
 exports.providerRequest = function (req, res) {
