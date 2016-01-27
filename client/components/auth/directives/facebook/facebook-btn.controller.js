@@ -5,7 +5,7 @@ angular.module('convenienceApp')
     $scope.modal = ModalService;
     $scope.facebookLogin = function() {
       var success = function(user) {
-        var roleType = AuthService.getIsParent() ? 'user' : 'couch'
+        var roleType = AuthService.getIsParent() ? 'Payer' : 'Payee'
         TrackerService.create('Login Facebook', {roleType : roleType});
         $scope.modal.closeModal();
         $state.go(AuthService.getDest());
