@@ -107,7 +107,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
         console.log('user' , AuthService.getCurrentUser());
 
         TrackerService.create('login success',{
-          roleType : AuthService.getCurrentUser().roles[0]
+          roleType : AuthService.getCurrentUser().roles[0] == 'user' ? 'Payer' : 'Payee'
         });
       };
       var error = function(err) {
@@ -164,7 +164,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
           firstName: $scope.user.firstName,
           lastName: $scope.user.lastName,
           email: $scope.user.email,
-          roleType : $scope.showRole ? 'user' : 'coach'
+          roleType : $scope.showRole ? 'Payer' : 'Payee'
         });
       };
 
