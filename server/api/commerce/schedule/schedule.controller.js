@@ -3,7 +3,7 @@
 var logger = require('../../../config/logger');
 var commerceService = require('../commerce.service');
 var config = require('../../../config/environment');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 let paymentPlan = require('./schedule.service')();
 
 exports.getSchedule = function (req, res) {

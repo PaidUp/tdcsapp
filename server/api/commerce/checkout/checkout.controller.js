@@ -13,7 +13,7 @@ var logger = require('../../../config/logger');
 var contractEmail = require('../../loan/loan.contract.email.service');
 var loanApplicationService = require('../../loan/application/loanApplication.service');
 var userLoanService = require('../../loan/application/user/user.service');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 
 exports.place = function(req, res) {
   logger.log('info', '1) checkoutController - place start: %s', req.body)
@@ -75,7 +75,7 @@ exports.place = function(req, res) {
                 var filterUserLoan = {_id:dataApploan.meta[0].userId};
                 userLoanService.findOne(filterUserLoan, function (err, dataUserLoan){
                   contractEmail.sendContractEmail(dataUserLoan, dataLoan, function (err, dataEmail) {
-                    mix.panel.track("placeCheckoutSendContractEmail", mix.mergeDataMixpanel(req.body, req.user._id));
+                    //mix.panel.track("placeCheckoutSendContractEmail", mix.mergeDataMixpanel(req.body, req.user._id));
                     if(err){
                       logger.info(err, err);
                     }
@@ -144,7 +144,7 @@ function placeOrder(user, cartId, addresses, orderData, cb) {
                 logger.log('info', '5.7) checkoutController - paymentServicefetchCard - account: %s', account)
                 var descriptionTeamEmail = merchantProducts[0].shortDescription || merchantProducts[0].description;
                 paymentEmailService.sendNewOrderEmail(magentoOrderId, user.email, orderData.paymentMethod, account, amount, schedule.schedulePeriods, shoppingCart.items[0], descriptionTeamEmail, function (err, data) {
-                  mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
+                  //mix.panel.track("placeCheckoutSendNewOrderEmail", mix.mergeDataMixpanel(orderData, user._id));
                   if(err) logger.log('error',err);
                 });
                 return cb(null, magentoOrderId);

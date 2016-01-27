@@ -12,7 +12,7 @@ angular.module('convenienceApp')
       this.save = function (user, successFn, errorFn) {
         var success = successFn || angular.noop;
         var error = errorFn || angular.noop;
-        User.save({action: 'create'}, user, success, error);
+        return User.save({action: 'create'}, user, success, error);
       };
 
       this.get = function (token, callback) {
