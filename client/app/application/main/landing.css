@@ -208,6 +208,16 @@
 
 }
 
+.btn{
+  padding: 9px 15px;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ECEEEF;
+}
+
 .salesPhone{
   padding-top: 5px;
   padding-right: 30px;

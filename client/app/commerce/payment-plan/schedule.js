@@ -4,9 +4,9 @@ angular.module('convenienceApp')
   .config(function ($stateProvider) {
     $stateProvider
       .state('schedule-list', {
-        url: '/commerce/paymentplan/list',
-        templateUrl: 'app/commerce/schedule/list/list.html',
-        controller: 'ScheduleListCtrl',
+        url: '/commerce/paymentplan/schedule',
+        templateUrl: 'app/commerce/payment-plan/schedule/search.html',
+        controller: 'ScheduleCtrl',
         auth: true,
         data:{
           roles:['user', 'admin']

@@ -20,7 +20,8 @@ exports.getSchedule = function (req, res) {
 }
 
 exports.paymentPlanList = function (req, res) {
-  let filter = req.body.scheduleFilter
+  let filter = req.body
+
   paymentPlan.paymentPlanList(filter, function(err, paymentList) {
     if (err) {
       return handleError(res, err)
@@ -29,10 +30,10 @@ exports.paymentPlanList = function (req, res) {
   });
 }
 
-exports.paymentPlanInfoFull = function (req, res) {
+exports.paymentPlanInfoFullByOrderId = function (req, res) {
   console.log('req.params', req.params)
-  let filter = req.params.paymentplanid
-  paymentPlan.paymentPlanInfoFull(filter, function(err, paymentList) {
+  let filter = req.params.orderId
+  paymentPlan.paymentPlanInfoFullByName(filter, true, function(err, paymentList) {
     if (err) {
       return handleError(res, err)
     }
