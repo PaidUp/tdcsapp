@@ -3,10 +3,11 @@
 }
 
 .teams .thumbnail {
-    padding: 6px 6px 0 6px;
-    border: none;
-    margin: 0 0 10px 0;
+  padding: 6px 6px 0 6px;
+  border: none;
+  margin: 0 0 10px 0;
   background-color: #f9f9f9;
+  height: 250px;
 }
 
 .teams .col-xs-12 {
