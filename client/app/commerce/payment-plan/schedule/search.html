@@ -1,11 +1,14 @@
 <div class="container">
 
-  <h4>
+  <h4 ng-show="!createPeriodSelected">
     Search schedule by Order Id
+  </h4>
+  <h4 ng-show="createPeriodSelected">
+    Add new period
   </h4>
   <hr>
   <div class="row">
-    <div class="col-md-4">
+    <div ng-show="!createPeriodSelected" class="col-md-4">
       <div class="input-group" ng-form="searchForm">
         <input type="text" name="orderId" class="form-control" placeholder="Order Id Number" ng-model="orderId"
                required>
@@ -17,6 +20,73 @@
       <div class="text-CS text-center" ng-show="searchForm.orderId.$error.required && submitted">
         <small class="text-CS">This field is required</small>
       </div>
+    </div>
+
+    <div ng-show="createPeriodSelected" class="col-md-6">
+      <div class="form-horizontal" >
+
+        <div class="col-md-12">
+
+
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Next Payment</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="datetime-local" name="nextPaymentDue"
+                     ng-model="scheduleNew.nextPaymentDue" required>
+            </div>
+          </div>
+          <!-- nextPayment -->
+
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Price</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="number" step="any" name="price"
+                     ng-model="scheduleNew.price" required>
+            </div>
+          </div>
+          <!-- price -->
+
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Fee</label>
+            <div class="col-sm-9">
+              <input class="form-control" type="number" step="any" name="fee"
+                     ng-model="scheduleNew.fee" required>
+            </div>
+          </div>
+          <!-- fee -->
+
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Description:</label>
+            <div class="col-sm-9">
+       <textarea class="form-control" step="any" name="description"
+                 ng-model="scheduleNew.description" required></textarea>
+            </div>
+          </div>
+          <!-- description -->
+
+          <div>
+            <div class="btn-group btn-group-justified" role="group" >
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success" ng-click="createPeriod(paymentPlan.paymentPlanId, scheduleNew)">Create</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" ng-click="prepareCreate(false)">Cancel</button>
+              </div>
+            </div>
+          </div> <hr>
+        </div>
+
+
+
+
+
+      </div>
+    </div>
+
+    <div ng-show="paymentPlan.schedulePeriods && !createPeriodSelected" class="col-md-8">
+
+      <button class="btn btn-success fa fa-plus" ng-click="prepareCreate(true)" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add period</button>
+
 
 
     </div>
@@ -25,213 +95,139 @@
 
   <hr>
 
-  <div class="form-horizontal" ng-repeat="schedule in paymentPlan.schedulePeriods">
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Id</label>
-      <div class="col-sm-10">
-        <p class="form-control-static">{{schedule.id}}</p>
-      </div>
-    </div>
-    <!-- id -->
+  <div class="row">
+    <div class="col-md-6" ng-repeat="schedule in paymentPlan.schedulePeriods">
+      <div class="form-horizontal" >
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Entity Id</label>
-      <div class="col-sm-10">
-        <p class="form-control-static">{{schedule.entityId}}</p>
-      </div>
-    </div>
-    <!-- entityId -->
+          <div class="col-md-12">
 
-    <div class="form-group">
-      <label class="col-sm-2 control-label">Is Charged</label>
-      <div class="col-sm-10">
-        <p class="form-control-static">{{schedule.isCharged}}</p>
-      </div>
-    </div>
-    <!-- isCharged -->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Id</label>
+              <div class="col-sm-9">
+                <p class="form-control-static">{{schedule.id}}</p>
+              </div>
+            </div>
+            <!-- id -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Next Payment</label>
-      <div class="col-sm-10">
-        <p class="form-control-static">{{schedule.nextPayment | date : "MM/dd/yyyy 'at' h:mma"}}</p>
-      </div>
-    </div>
-    <!-- nextPayment -->
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Entity Id</label>
+              <div class="col-sm-9">
+                <p class="form-control-static">{{schedule.entityId}}</p>
+              </div>
+            </div>
+            <!-- entityId -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Next Payment Due</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="datetime-local" name="nextPaymentDue"
-               ng-model="schedule.nextPaymentDue" required>
-      </div>
-    </div>
-    <!-- nextPaymentDue -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Next Payment</label>
+              <div class="col-sm-9">
+                <p class="form-control-static">{{schedule.nextPayment | date : "MM/dd/yyyy 'at' h:mma"}}</p>
+              </div>
+            </div>
+            <!-- nextPayment -->
 
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Next Payment Due</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="datetime-local" name="nextPaymentDue"
+                       ng-model="schedule.nextPaymentDue" required>
+              </div>
+            </div>
+            <!-- nextPaymentDue -->
 
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Is Charged</label>
+              <div class="col-sm-9">
+                <p class="form-control-static">
+                  <span>Yes</span>
+                  <input type="radio" name="isCharged{{schedule.id}}"
+                         ng-model="schedule.isCharged" ng-value="true" required>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span>No</span>
+                  <input type="radio" name="isCharged{{schedule.id}}"
+                         ng-model="schedule.isCharged" ng-value="false" required>
+                </p>
+              </div>
+            </div>
+            <!-- isCharged -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Price</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="number" step="any" name="price"
-               ng-model="schedule.price" required>
-      </div>
-    </div>
-    <!-- price -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Price</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="number" step="any" name="price"
+                       ng-model="schedule.price" required>
+              </div>
+            </div>
+            <!-- price -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Percent</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="number" step="any" name="percent"
-               ng-model="schedule.percent" required>
-      </div>
-    </div>
-    <!-- percent -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Percent</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="number" step="any" name="percent"
+                       ng-model="schedule.percent" required>
+              </div>
+            </div>
+            <!-- percent -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Fee</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="number" step="any" name="fee"
-               ng-model="schedule.fee" required>
-      </div>
-    </div>
-    <!-- fee -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Fee</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="number" step="any" name="fee"
+                       ng-model="schedule.fee" required>
+              </div>
+            </div>
+            <!-- fee -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Fee Percent</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="number" step="any" name="feePercent"
-               ng-model="schedule.feePercent" required>
-      </div>
-    </div>
-    <!-- feePercent -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Fee Percent</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="number" step="any" name="feePercent"
+                       ng-model="schedule.feePercent" required>
+              </div>
+            </div>
+            <!-- feePercent -->
 
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Discount To Fee:</label>
+              <div class="col-sm-9">
+                <input class="form-control" type="number" step="any" name="discountToFee"
+                       ng-model="schedule.discountToFee" required>
+              </div>
+            </div>
+            <!-- discountToFee -->
 
-    <div class="form-group">
-      <label  class="col-sm-2 control-label">Fee Percent</label>
-      <div class="col-sm-10">
-        <input class="form-control" type="number" step="any" name="feePercent"
-               ng-model="schedule.feePercent" required>
-      </div>
-    </div>
-    <!-- feePercent -->
+            <div class="form-group">
+              <label  class="col-sm-3 control-label">Description:</label>
+              <div class="col-sm-9">
+       <textarea class="form-control" step="any" name="description"
+                 ng-model="schedule.description" required></textarea>
+              </div>
+            </div>
+            <!-- description -->
 
-
-
-
-
-
-  </div>
-
-  <form class="" ng-repeat="schedule in paymentPlan.schedulePeriods">
-
-    <div class="row" >
-
-     
-
-      <div class="col-md-2">
-        <strong>Discount To Fee:</strong>
-      </div>
-      <div class="col-md-10">
-        <input class="form-control" type="number" step="any" name="discountToFee"
-               ng-model="schedule.discountToFee" required>
-      </div>
-      <!-- discountToFee -->
-
-      <div class="col-md-2">
-        <strong>Description:</strong>
-      </div>
-      <div class="col-md-10">
-        <textarea class="form-control" step="any" name="description"
-               ng-model="schedule.description" required></textarea>
-      </div>
-      <!-- description -->
-
-
-
-    </div>
-    <hr>
-  </form>
-
-  <!--
-
-  entityId 80
-isCharged 1
-id 56a0142a098e9a3068785bb5
-nextPayment 2015-09-09T19:20:00-05:00
-nextPaymentDue 2016-01-20T17:16:38-06:00
-price 85.00
-percent 18.8884
-fee 4.05
-feePercent 5
-description Player Registration
-discountToFee 0
-
-  -->
-
-  <!--
-
-  <form name="providerForm" ng-submit="registerProvider()" novalidate>
-    <br>
-    <div class="row">
-      <div class="col-sm-8 col-sm-offset-2">
-
-  <div class="row bg-Block" ng-form name="providerForm">
-    <div class="col-sm-12">
-      <h3 class="text-CS">List</h3> <div name="listLabel">list payment plan.</div>
-    </div>
-    <div class="col-sm-6 col-sm-push-6">
-    </div>
-
-    <div class="col-sm-6 col-sm-pull-6">
-      <br>
-      <div class="form-group">
-        <label>List</label>
-      </div>
-      <ul>
-        <li ng-repeat="ppList in paymentPlanLists">
-          <div>
-            <label>payment plan list</label>
-            <p>orderId (name): {{ppList.name}} - ID: {{ppList.entityId}} - destination: {{ppList.destination}} - parentId: {{ppList.parentId}} - parentType: {{ppList.parentType}}</p>
-            <ul>
-              <li ng-repeat="schedules in ppList.schedules">
-                <div>
-                  <label>schedules</label>
-                  <p>name: {{schedules.name}} - entityId: {{schedules.entityId}}</p>
-                  <ul>
-                    <li ng-repeat="informations in schedules.informations">
-                      <label>informations</label>
-                      <p>name: {{informations.name}} - entityId: {{informations.entityId}} - scheduleId: {{informations.scheduleId}} - value: {{informations.value}}</p>
-                    </li>
-                  </ul>
+            <div>
+              <div class="btn-group btn-group-justified" role="group" >
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default" ng-click="updatePeriod(schedule)">Update</button>
                 </div>
-              </li>
-            </ul>
-            <ul>
-              <li ng-repeat="metadatas in ppList.metadatas">
-                <label>metadatas</label>
-                <p>name: {{metadatas.name}} - entityId: {{metadatas.entityId}} - paymentplanId: {{metadatas.paymentplanId}} - value: {{metadatas.value}}</p>
-              </li>
-            </ul>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-danger" ng-click="deletePeriod(schedule)">Delete</button>
+                </div>
+              </div>
+            </div> <hr>
           </div>
 
-        </li>
-        <hr>
-      </ul>
 
+
+
+
+      </div>
     </div>
+
   </div>
-  <br>
-
 
 </div>
-</div>
-<div>
-  <br>
-  <br>
-  <br>
-</div>
-</form>
 
-  -->
-
+<div class="container empty-car text-CS" ng-show="submitted">
+  <loading></loading>
 </div>
+

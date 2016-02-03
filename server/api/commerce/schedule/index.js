@@ -8,6 +8,8 @@ var router = express.Router();
 
 router.post('/generate' , controller.getSchedule);
 router.post('/list' , controller.paymentPlanList);
+router.post('/information/update' , controller.scheduleInformationUpdate);
+router.post('/information/create' , controller.scheduleInformationCreate);
 router.get('/info/full/:orderId' , controller.paymentPlanInfoFullByOrderId);
 
 module.exports = router;
