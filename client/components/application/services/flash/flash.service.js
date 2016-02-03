@@ -5,8 +5,10 @@ angular.module('convenienceApp')
     var messages = [];
 
     this.addAlert = function(alert) {
-      messages.push(alert);
-      $rootScope.$broadcast('event:alerts');
+      if(alert.msg){
+        messages.push(alert);
+        $rootScope.$broadcast('event:alerts');
+      }
     };
 
     this.shift = function() {
