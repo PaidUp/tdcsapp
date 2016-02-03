@@ -29,7 +29,7 @@ angular.module('convenienceApp')
       TrackerService.trackFormErrors('providerForm' , $scope.providerForm, {});
       TrackerService.trackFormErrors('ownerForm' , $scope.ownerForm, {});
       TrackerService.trackFormErrors('bankForm' , $scope.bankForm, {});
-        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid){
+        if($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid && validateEin($scope.provider.EIN)){
             // = $scope.provider.date.month + '/' + $scope.provider.date.day + '/' + $scope.provider.date.year;
             $scope.provider.dda = $scope.bankAccount.accountNumber.replace(/ /g,'');
             $scope.provider.aba = $scope.bankAccount.routingNumber.replace(/ /g,'');
@@ -206,9 +206,9 @@ angular.module('convenienceApp')
         if(oldvalue && value && oldvalue.length === 1 && value.length === 2){
           $scope.provider.EIN = value + '-';
         }
-        $scope.billingForm.EIN.$setValidity('match', false);
+        $scope.billingForm.EIN.$setValidity('pattern', false);
       }else{
-        $scope.billingForm.EIN.$setValidity('match', true);
+        $scope.billingForm.EIN.$setValidity('pattern', true);
       }
     });
 
@@ -224,7 +224,8 @@ angular.module('convenienceApp')
 
     function validateEin(einValue) {
       var re = /^[0-9]\d?-\d{7}$/;
-      return re.test(einValue);
+      //this code is added becouse the EIN could be empty.
+      return re.test(einValue) || einValue === '' || einValue === undefined;
     }
 
   });

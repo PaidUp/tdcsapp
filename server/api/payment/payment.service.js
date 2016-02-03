@@ -385,7 +385,7 @@ function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee
 
       return cb(err);
     }
-    return cb(null, true);
+    return cb(null, resultDebit);
   });
 }
 
