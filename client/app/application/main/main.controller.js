@@ -10,17 +10,6 @@ angular.module('convenienceApp')
     $scope.modal = ModalService;
     $scope.$storage = $localStorage.$default({});
 
-    if(!navigator.cookieEnabled){
-      console.log('Convenience select uses cookies. For using our services, you should enable cookies.')
-      console.log('To find out more about cookies, including how to see what cookies have been set and how to block and delete cookies, please visit http://www.aboutcookies.org/.')
-      FlashService.addAlert({
-        type: 'info',
-        msg: 'Convenience select uses cookies. For using our services, you should enable cookies.',
-        timeout: 10000
-      });
-      //alert('you should enable cookies....')
-    }
-
     $scope.setPnTeam = function(){
         var pnTeam = $stateParams.team;
         if(pnTeam){
@@ -69,6 +58,16 @@ angular.module('convenienceApp')
     $rootScope.$on('logout', function () {
       $rootScope.alerts = [];
     });
+
+    if(!navigator.cookieEnabled){
+      console.log('Convenience select uses cookies. For using our services, you should enable cookies.')
+      console.log('To find out more about cookies, including how to see what cookies have been set and how to block and delete cookies, please visit http://www.aboutcookies.org/.')
+      FlashService.addAlert({
+        type: 'info',
+        msg: 'Convenience select uses cookies. For using our services, you should enable cookies. \n To find out more about cookies, including how to see what cookies have been set and how to block and delete cookies, please visit http://www.aboutcookies.org/.',
+        timeout: 100000
+      });
+    }
 
     //$rootScope.$on('close-alerts', function () {
     //  $rootScope.alerts = [];
