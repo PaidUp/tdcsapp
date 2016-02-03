@@ -1,14 +1,11 @@
 <div class="container">
 
-  <h4 ng-show="!createPeriodSelected">
+  <h4>
     Search schedule by Order Id
-  </h4>
-  <h4 ng-show="createPeriodSelected">
-    Add new period
   </h4>
   <hr>
   <div class="row">
-    <div ng-show="!createPeriodSelected" class="col-md-4">
+    <div class="col-md-4">
       <div class="input-group" ng-form="searchForm">
         <input type="text" name="orderId" class="form-control" placeholder="Order Id Number" ng-model="orderId"
                required>
@@ -21,210 +18,81 @@
         <small class="text-CS">This field is required</small>
       </div>
     </div>
-
-    <div ng-show="createPeriodSelected" class="col-md-6">
-      <div class="form-horizontal" >
-
-        <div class="col-md-12">
-
-
-          <div class="form-group">
-            <label  class="col-sm-3 control-label">Next Payment</label>
-            <div class="col-sm-9">
-              <input class="form-control" type="datetime-local" name="nextPaymentDue"
-                     ng-model="scheduleNew.nextPaymentDue" required>
-            </div>
-          </div>
-          <!-- nextPayment -->
-
-          <div class="form-group">
-            <label  class="col-sm-3 control-label">Price</label>
-            <div class="col-sm-9">
-              <input class="form-control" type="number" step="any" name="price"
-                     ng-model="scheduleNew.price" required>
-            </div>
-          </div>
-          <!-- price -->
-
-          <div class="form-group">
-            <label  class="col-sm-3 control-label">Fee</label>
-            <div class="col-sm-9">
-              <input class="form-control" type="number" step="any" name="fee"
-                     ng-model="scheduleNew.fee" required>
-            </div>
-          </div>
-          <!-- fee -->
-
-          <div class="form-group">
-            <label  class="col-sm-3 control-label">Description:</label>
-            <div class="col-sm-9">
-       <textarea class="form-control" step="any" name="description"
-                 ng-model="scheduleNew.description" required></textarea>
-            </div>
-          </div>
-          <!-- description -->
-
-          <div>
-            <div class="btn-group btn-group-justified" role="group" >
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-success" ng-click="createPeriod(paymentPlan.paymentPlanId, scheduleNew)">Create</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default" ng-click="prepareCreate(false)">Cancel</button>
-              </div>
-            </div>
-          </div> <hr>
-        </div>
-
-
-
-
-
-      </div>
-    </div>
-
-    <div ng-show="paymentPlan.schedulePeriods && !createPeriodSelected" class="col-md-8">
-
-      <button class="btn btn-success fa fa-plus" ng-click="prepareCreate(true)" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add period</button>
-
-
-
-    </div>
-
   </div>
 
   <hr>
 
-  <div class="row">
-    <div class="col-md-6" ng-repeat="schedule in paymentPlan.schedulePeriods">
-      <div class="form-horizontal" >
-
-          <div class="col-md-12">
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">Id</label>
-              <div class="col-sm-9">
-                <p class="form-control-static">{{schedule.id}}</p>
+  <div class="table-responsive">
+    <table class="table table-hover col-md-4">
+      <thead>
+      <th>Original Price</th>
+      <th>Charge Date</th>
+      <th>Description</th>
+      <th>Is Charged</th>
+      <th>Status</th>
+      <th>Option</th>
+      </thead>
+      <tbody>
+        <tr ng-repeat="schedule in paymentPlan.schedulePeriods">
+          <td>
+            <input class="form-control" type="number" step="any" name="price" ng-model="schedule.price" required>
+          </td>
+          <td>
+            <input class="form-control" type="datetime-local" name="nextPaymentDue" ng-model="schedule.nextPaymentDue" required>
+          </td>
+          <td>
+            <input type="text" class="form-control"  name="description" ng-model="schedule.description" required>
+          </td>
+          <td>
+            <p class="form-control-static">
+            <span>Yes</span>
+            <input type="radio" name="isCharged{{schedule.id}}"
+                   ng-model="schedule.isCharged" ng-value="true" required>
+            &nbsp;&nbsp;
+            <span>No</span>
+            <input type="radio" name="isCharged{{schedule.id}}"
+                   ng-model="schedule.isCharged" ng-value="false" required>
+          </p>
+          </td>
+          <td>{{schedule.status}}</td>
+          <td>
+            <div ng-show="!schedule.status || schedule.status != 'success' || schedule.status != 'pending'">
+              <div ng-show="schedule.status == 'deactivate'">
+                <button type="button" class="btn btn-circle btn-warning" ng-click="activatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-open"></i></button>
+              </div>
+              <div ng-show="!schedule.status || schedule.status != 'deactivate'">
+                <button type="button" class="btn btn-success btn-circle" ng-click="updatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-save"></i></button>
+                <button type="button" class="btn btn-circle btn-warning" ng-click="deactivatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-remove"></i></button>
               </div>
             </div>
-            <!-- id -->
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">Entity Id</label>
-              <div class="col-sm-9">
-                <p class="form-control-static">{{schedule.entityId}}</p>
-              </div>
-            </div>
-            <!-- entityId -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Next Payment</label>
-              <div class="col-sm-9">
-                <p class="form-control-static">{{schedule.nextPayment | date : "MM/dd/yyyy 'at' h:mma"}}</p>
-              </div>
-            </div>
-            <!-- nextPayment -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Next Payment Due</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="datetime-local" name="nextPaymentDue"
-                       ng-model="schedule.nextPaymentDue" required>
-              </div>
-            </div>
-            <!-- nextPaymentDue -->
-
-            <div class="form-group">
-              <label class="col-sm-3 control-label">Is Charged</label>
-              <div class="col-sm-9">
-                <p class="form-control-static">
-                  <span>Yes</span>
-                  <input type="radio" name="isCharged{{schedule.id}}"
-                         ng-model="schedule.isCharged" ng-value="true" required>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span>No</span>
-                  <input type="radio" name="isCharged{{schedule.id}}"
-                         ng-model="schedule.isCharged" ng-value="false" required>
-                </p>
-              </div>
-            </div>
-            <!-- isCharged -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Price</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="number" step="any" name="price"
-                       ng-model="schedule.price" required>
-              </div>
-            </div>
-            <!-- price -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Percent</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="number" step="any" name="percent"
-                       ng-model="schedule.percent" required>
-              </div>
-            </div>
-            <!-- percent -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Fee</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="number" step="any" name="fee"
-                       ng-model="schedule.fee" required>
-              </div>
-            </div>
-            <!-- fee -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Fee Percent</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="number" step="any" name="feePercent"
-                       ng-model="schedule.feePercent" required>
-              </div>
-            </div>
-            <!-- feePercent -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Discount To Fee:</label>
-              <div class="col-sm-9">
-                <input class="form-control" type="number" step="any" name="discountToFee"
-                       ng-model="schedule.discountToFee" required>
-              </div>
-            </div>
-            <!-- discountToFee -->
-
-            <div class="form-group">
-              <label  class="col-sm-3 control-label">Description:</label>
-              <div class="col-sm-9">
-       <textarea class="form-control" step="any" name="description"
-                 ng-model="schedule.description" required></textarea>
-              </div>
-            </div>
-            <!-- description -->
-
-            <div>
-              <div class="btn-group btn-group-justified" role="group" >
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-default" ng-click="updatePeriod(schedule)">Update</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-danger" ng-click="deletePeriod(schedule)">Delete</button>
-                </div>
-              </div>
-            </div> <hr>
-          </div>
 
 
-
-
-
-      </div>
-    </div>
-
+          </td>
+        </tr>
+        <tr ng-if="paymentPlan.paymentPlanId">
+          <td>
+            <input class="form-control" type="number" step="any" name="price" ng-model="scheduleNew.price" required>
+          </td>
+          <td>
+            <input class="form-control" type="datetime-local" name="nextPaymentDue" ng-model="scheduleNew.nextPaymentDue" required>
+          </td>
+          <td>
+            <input type="text" class="form-control"  name="description" ng-model="scheduleNew.description" required>
+          </td>
+          <td>
+            <span>No</span>
+            <input type="radio" name="isChargedNew"
+                   ng-model="scheduleNew.isCharged" ng-value="false" required>
+          </td>
+          <td></td>
+          <td>
+            <button type="button" class="btn btn-success btn-circle" ng-click="createPeriod(paymentPlan.paymentPlanId, scheduleNew)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-circle btn-default" ng-click="clearNewPeriod()"><i class="glyphicon glyphicon-refresh"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </div>
 
 <div class="container empty-car text-CS" ng-show="submitted">

@@ -72,6 +72,9 @@ exports.scheduleInformationUpdate = function(req , res){
       },{
         name : 'description',
         value : req.body.description,
+      },{
+        name : 'status',
+        value : req.body.status,
       }
       ]
   }
