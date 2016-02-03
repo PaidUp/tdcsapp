@@ -24,4 +24,32 @@ angular.module('convenienceApp')
       return informationCreate.save(params).$promise;
     };
 
+    this.getStatusPeriod = function(isCharged, status){
+      if(!status || !isCharged){
+        return "Pending";
+      }
+
+      var result = "";
+      switch (status) {
+        case "success":
+          result = "Paid";
+          break;
+        case "failed":
+          result = "Failed";
+          break;
+        case "pending":
+          result = "Pending (ACH)";
+          break;
+        case "deactivate":
+          result = "Removed";
+          break;
+        case "activate":
+          result = "Pending";
+          break;
+        default:
+          result = status;
+      }
+      return result;
+    }
+
   });

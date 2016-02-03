@@ -795,7 +795,7 @@ function orderCompleteV2(pendingOrders, callbackSchedule){
         async.eachSeries(orderSchedule.schedulePeriods,
           function(schedulePeriod, callbackEach2){
             //logger.log('info', '2 complete) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
-            if(schedulePeriod.status && (schedulePeriod.status.trim() === 'succeeded' || schedulePeriod.status.trim() === 'pending' )){
+            if(schedulePeriod.status && (schedulePeriod.status.trim() === 'succeeded' || schedulePeriod.status.trim() === 'pending' || schedulePeriod.status.trim() === 'deactivate' )){
               //logger.log('info', '3 complete) paymentSchedulev2 schedulePeriod.status: %s', schedulePeriod.status);
               countschedulePeriodSucceeded++
               return callbackEach2();
@@ -814,7 +814,7 @@ function orderCompleteV2(pendingOrders, callbackSchedule){
             }else{
               return callbackEach();
             }
-            
+
           });
       });
     },

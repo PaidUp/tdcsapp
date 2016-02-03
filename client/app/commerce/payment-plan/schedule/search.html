@@ -10,7 +10,7 @@
         <input type="text" name="orderId" class="form-control" placeholder="Order Id Number" ng-model="orderId"
                required>
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="search()">Go!</button>
+        <button class="btn btn-default" type="button" ng-click="search(orderId)">Go!</button>
       </span>
       </div>
 
@@ -54,9 +54,9 @@
                    ng-model="schedule.isCharged" ng-value="false" required>
           </p>
           </td>
-          <td>{{schedule.status}}</td>
+          <td>{{getStatusName(schedule.isCharged, schedule.status)}}</td>
           <td>
-            <div ng-show="!schedule.status || schedule.status != 'success' || schedule.status != 'pending'">
+            <div ng-show="order.status != 'complete' && (!schedule.status || schedule.status != 'success' || schedule.status != 'pending')">
               <div ng-show="schedule.status == 'deactivate'">
                 <button type="button" class="btn btn-circle btn-warning" ng-click="activatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-open"></i></button>
               </div>
@@ -86,7 +86,7 @@
           </td>
           <td></td>
           <td>
-            <button type="button" class="btn btn-success btn-circle" ng-click="createPeriod(paymentPlan.paymentPlanId, scheduleNew)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-success btn-circle" ng-click="createPeriod(order.orderId, paymentPlan.paymentPlanId, scheduleNew)"><i class="glyphicon glyphicon-plus"></i></button>
             <button type="button" class="btn btn-circle btn-default" ng-click="clearNewPeriod()"><i class="glyphicon glyphicon-refresh"></i></button>
           </td>
         </tr>
