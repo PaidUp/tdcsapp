@@ -85,7 +85,6 @@ angular.module('convenienceApp')
     }
 
     $scope.getStatusName = function(isCharged, status){
-      console.log('status' , status)
       return scheduleService.getStatusPeriod(isCharged, status);
     }
 
@@ -102,7 +101,6 @@ angular.module('convenienceApp')
       $scope.accounts = [];
       $scope.clearNewPeriod();
       scheduleService.scheduleInfoFull(orderId).then(function(data){
-        $scope.submitted = false;
         if(!data || !data.paymentList || !data.paymentList.schedulePeriods){
           FlashService.addAlert({
             type: "warning",
@@ -159,6 +157,9 @@ angular.module('convenienceApp')
         resp = false;
       }
       else if(!period.description){
+        resp = false;
+      }
+      else if(!period.accountId){
         resp = false;
       }
 

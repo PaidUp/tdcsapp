@@ -75,6 +75,9 @@ exports.scheduleInformationUpdate = function(req , res){
       },{
         name : 'status',
         value : req.body.status,
+      },{
+        name : 'accountId',
+        value : req.body.accountId,
       }
       ]
   }
@@ -124,6 +127,9 @@ exports.scheduleInformationCreate = function(req , res){
       },{
         name : 'description',
         value : req.body.description,
+      },{
+        name : 'accountId',
+        value : req.body.accountId,
       }
       ]
   }
