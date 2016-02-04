@@ -74,6 +74,22 @@ var jobsCompleteOrders =
     }
   ];
 
+let jobsCompleteOrdersV2 =
+  [
+    // Reminder email before Payments
+    function(callback) {
+      paymentCronService.collectAccountsCompletev2(function (err, data) {
+        if (err) {
+          callback(err);
+          logger.error('error', err);
+        } else {
+          logger.log('info', data);
+          callback(null, data);
+        }
+      })
+    }
+  ];
+
 var jobsReminderVerifyBank =
   [
     // Reminder email before Payments
@@ -187,6 +203,23 @@ exports.runCompleteOrders = function(cb) {
 
     async.series(
       jobsCompleteOrders,
+      function (err, results) {
+        endName(name);
+        return cb(null,results);
+      });
+  } else {
+    return cb(null,{name:name+'.pid is created'});
+  }
+}
+
+exports.runCompleteOrdersV2 = function(cb) {
+  var name = 'runCompleteOrdersV2' + new moment(new Date()).format("YYYYMMDD");
+  if(canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running runCompleteOrdersV2...');
+    startGiveName(name);
+
+    async.series(
+      jobsCompleteOrdersV2,
       function (err, results) {
         endName(name);
         return cb(null,results);

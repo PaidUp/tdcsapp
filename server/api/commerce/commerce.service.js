@@ -227,6 +227,17 @@ function getListOrdersComplete(cb) {
   });
 }
 
+function createShipment(orderList, cb){
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.createShipment(orderList, function (err, data) {
+    if (err){
+      logger.error(err);
+      return cb(err);
+    }
+    return cb(null,data);
+  });
+}
+
 exports.addCommentToOrder = addCommentToOrder;
 exports.addTransactionToOrder = addTransactionToOrder;
 exports.orderHold = orderHold;
@@ -244,3 +255,4 @@ exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
 exports.getListOrdersComplete = getListOrdersComplete;
 exports.transactionList = transactionList;
+exports.createShipment = createShipment

@@ -104,7 +104,7 @@ angular.module('convenienceApp').controller('AuthCtrl', function ($scope, ModalS
 
         $rootScope.$emit('verify-bank-account', {});
 
-        console.log('user' , AuthService.getCurrentUser());
+        //console.log('user' , AuthService.getCurrentUser());
 
         TrackerService.create('login success',{
           roleType : AuthService.getCurrentUser().roles[0] == 'user' ? 'Payer' : 'Payee'

@@ -103,6 +103,16 @@ exports.collectAccountsv2 = function(cb){
   });
 }
 
+//cronv2 complete
+exports.collectAccountsCompletev2 = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    orderCompleteV2
+  ], function(err, result){
+    cb(null, result);
+  });
+}
+
 function paymentSchedulev2(pendingOrders, callbackSchedule){
   async.eachSeries(pendingOrders,
     function(order, callbackEach){
@@ -152,24 +162,31 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                     logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser);
                     paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
                       order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function(err , data){
+                      let param = {
+                        scheduleId:schedulePeriod.entityId,
+                        informationData:
+                          [{
+                            name : 'isCharged',
+                            value : true,
+                          }]
+                      }
                       if(err){
                         logger.log('err', '8.err) paymentSchedulev2 capture: %s', err);
+                        param.informationData.push({
+                          name : 'status',
+                          value : 'failed',
+                        })
                         err.order = order.incrementId;
                         notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
                         });
                         logger.log('info', '8) paymentSchedulev2 capture: %s', data);
                         //return callbackEach2();
+                      }else{
+                        param.informationData.push({
+                          name : 'status',
+                          value : data.status,
+                        })
                       }
-
-                        let param = {
-                          scheduleId:schedulePeriod.entityId,
-                          informationData:
-                            [{
-                              name : 'isCharged',
-                              value : true,
-                            }]
-                        }
-
                         scheduleService.scheduleInformationUpdate(param , function(err2 , data2){
                           if(err2){
                             logger.log('info', '9) paymentSchedulev2 capture err: %s', err2);
@@ -760,3 +777,52 @@ function sendEmailReminderVerifyBankService(pendingOrders, callback){
 
 }
 
+function orderCompleteV2(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function(err, orderSchedule){
+        if(err){
+          //logger.log('info', '1.err complete) order.incrementId: %s', err);
+          return callbackEach(err);
+        }
+        //logger.log('info', '1 complete) order.incrementId: %s', order.incrementId);
+        if(!orderSchedule || !orderSchedule.schedulePeriods){
+          //logger.log('warn', '1.2 complete) order without schedulePeriods: %s', order.incrementId );
+          return callbackEach();
+        }
+        let schedulePeriodsLength = orderSchedule.schedulePeriods.length;
+        let countschedulePeriodSucceeded = 0;
+        async.eachSeries(orderSchedule.schedulePeriods,
+          function(schedulePeriod, callbackEach2){
+            //logger.log('info', '2 complete) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
+            if(schedulePeriod.status && (schedulePeriod.status.trim() === 'succeeded' || schedulePeriod.status.trim() === 'pending' )){
+              //logger.log('info', '3 complete) paymentSchedulev2 schedulePeriod.status: %s', schedulePeriod.status);
+              countschedulePeriodSucceeded++
+              return callbackEach2();
+            }else{
+              callbackEach2();
+            }
+          },
+          function(err){
+            if(err){
+              return callbackEach(err);
+            }
+            if(schedulePeriodsLength === countschedulePeriodSucceeded){
+              commerceService.createShipment({orderList:[order]}, function(err, data){
+                return callbackEach();
+              })
+            }else{
+              return callbackEach();
+            }
+            
+          });
+      });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+
+}
