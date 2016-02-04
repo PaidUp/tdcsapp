@@ -1,14 +1,23 @@
 angular.module('convenienceApp')
-  .controller('ScheduleCtrl', function ($scope, $rootScope, scheduleService, FlashService, CommerceService) {
+  .controller('ScheduleCtrl', function ($scope, $rootScope, scheduleService, FlashService, CommerceService,
+                                        PaymentService, $q) {
 
     $scope.orderId = '';
     $scope.scheduleNew = {isCharged : false};
+    $scope.accounts = [];
 
     $scope.search = function(orderId){
+      $scope.submitted = true;
+      $scope.accounts = [];
+      $scope.paymentPlan = {};
+      $scope.order = {};
+
+
       CommerceService.getOrder(orderId).then(function(order){
         $scope.order = order;
         search(orderId);
       }).catch(function(err){
+        $scope.submitted = false;
         FlashService.addAlert({
           type: "danger",
           msg: "Can't be searched the order schedule, please contact us.",
@@ -80,8 +89,17 @@ angular.module('convenienceApp')
       return scheduleService.getStatusPeriod(isCharged, status);
     }
 
+    $scope.sendAlertErrorMsg = function (msg) {
+      FlashService.addAlert({
+        type: 'danger',
+        msg: msg,
+        timeout: 10000
+      });
+    };
+
     function search(orderId) {
       $scope.submitted = true;
+      $scope.accounts = [];
       $scope.clearNewPeriod();
       scheduleService.scheduleInfoFull(orderId).then(function(data){
         $scope.submitted = false;
@@ -93,17 +111,33 @@ angular.module('convenienceApp')
           });
           $scope.paymentPlan = {};
         }else{
-          data.paymentList.schedulePeriods.forEach(function(ele , idx ,arr){
-            ele.nextPaymentDue = new Date(ele.nextPaymentDue)
-            ele.price = parseFloat(ele.price)
-            ele.percent = parseFloat(ele.percent)
-            ele.fee = parseFloat(ele.fee)
-            ele.feePercent = parseFloat(ele.feePercent)
-            ele.discountToFee = parseFloat(ele.discountToFee)
-            ele.isCharged = ele.isCharged ? ele.isCharged : false;
-          });
 
-          $scope.paymentPlan = data.paymentList;
+          loadBankAccounts($scope.accounts).then(function(lst){
+            loadCreditCardAccounts(lst).then(function(lst2){
+              //$scope.accounts.push({ accountName: 'Create a new credit card' });
+              //$scope.accounts.push({ accountName : 'Create a new bank account' , last4: '' });
+
+
+              data.paymentList.schedulePeriods.forEach(function(ele , idx ,arr){
+                ele.nextPaymentDue = new Date(ele.nextPaymentDue)
+                ele.price = parseFloat(ele.price)
+                ele.percent = parseFloat(ele.percent)
+                ele.fee = parseFloat(ele.fee)
+                ele.feePercent = parseFloat(ele.feePercent)
+                ele.discountToFee = parseFloat(ele.discountToFee)
+                ele.isCharged = ele.isCharged ? ele.isCharged : false;
+              });
+
+              $scope.paymentPlan = data.paymentList;
+
+              $scope.submitted = false;
+
+            }, function(err2){
+              $scope.sendAlertErrorMsg(err.data.message);
+            });
+          }, function(err){
+            $scope.sendAlertErrorMsg(err.data.message);
+          });
 
         }
       }).catch(function(err){
@@ -139,6 +173,46 @@ angular.module('convenienceApp')
 
       return resp;
 
+    }
+
+    function loadBankAccounts(lstAccount){
+      return $q(function(resolve, reject){
+        setTimeout(function(){
+          PaymentService.listBankAccounts().then(function (response) {
+            response.data.forEach(function(ele, idx, arr){
+              ele.accountName = ele.bankName + ' ending in ';
+              lstAccount.push(ele)
+            });
+            resolve(lstAccount);
+          }).catch(function (err) {
+            reject(err.data.message);
+          });
+        }, 1000);
+      });
+    };
+
+    function loadCreditCardAccounts(lstAccount){
+      return $q(function(resolve, reject){
+        setTimeout(function(){
+          PaymentService.listCards().then(function (response) {
+            response.data.forEach(function(card, idx, arr){
+              card.nameOnCard = card.name;
+              card.cardNumber = card.last4;
+              card.expirationDate = {};
+              card.expirationDate.month = card.expirationMonth;
+              card.expirationDate.year = card.expirationYear;
+              card.securityCode = card.cvv;
+              card.token = card.id;
+              card.accountName = card.brand + ' ending in ';
+              lstAccount.push(card)
+            });
+            resolve(lstAccount);
+          }).catch(function (err) {
+            reject(err.data.message)
+          });
+
+        }, 1000);
+      });
     }
 
 

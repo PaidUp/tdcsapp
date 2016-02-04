@@ -3,7 +3,7 @@
 angular.module('convenienceApp')
   .service('CommerceService', function ($cookieStore, $resource, $q, $rootScope) {
     var Orders = $resource('/api/v1/commerce/order/list', {}, {});
-    var Order = $resource('/api/v1/commerce/order/order/:orderId', {}, {});
+    var Order = $resource('/api/v1/commerce/order/:orderId', {}, {});
     var Transactions = $resource('/api/v1/commerce/transaction/list', {}, {});
     var Provider = $resource('/api/v1/commerce/provider/request', {}, {});
     var Schedule = $resource('/api/v1/commerce/schedule/generate', {}, {
