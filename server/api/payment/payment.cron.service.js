@@ -807,8 +807,14 @@ function orderCompleteV2(pendingOrders, callbackSchedule){
             if(err){
               return callbackEach(err);
             }
+            console.log('schedulePeriodsLength', schedulePeriodsLength)
+            console.log('countschedulePeriodSucceeded', countschedulePeriodSucceeded)
             if(schedulePeriodsLength === countschedulePeriodSucceeded){
+              console.log('entro');
               commerceService.createShipment({orderList:[order]}, function(err, data){
+                console.log('err',err);
+                console.log('data' , data);
+
                 return callbackEach();
               })
             }else{

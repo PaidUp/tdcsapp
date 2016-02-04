@@ -21,7 +21,6 @@ angular.module('convenienceApp')
       $scope.submitted = true;
       if(validatePeriod(period)){
         scheduleService.scheduleInformationUpdate(period).then(function(resp){
-          $scope.submitted = false;
           FlashService.addAlert({
             type: resp.data ? "success": "danger",
             msg: resp.data ? "Schedule period was updated success. " : "Schedule period wasn't be update. ",
@@ -55,7 +54,6 @@ angular.module('convenienceApp')
         newPeriod.paymentPlanId = paymentPlanId
         $scope.submitted = true;
         scheduleService.scheduleInformationCreate(newPeriod).then(function(resp){
-          $scope.submitted = false;
           FlashService.addAlert({
             type: resp.data ? "success": "danger",
             msg: resp.data ? "Schedule period was created success. " : "Schedule period wasn't be created. ",
@@ -102,6 +100,7 @@ angular.module('convenienceApp')
             ele.fee = parseFloat(ele.fee)
             ele.feePercent = parseFloat(ele.feePercent)
             ele.discountToFee = parseFloat(ele.discountToFee)
+            ele.isCharged = ele.isCharged ? ele.isCharged : false;
           });
 
           $scope.paymentPlan = data.paymentList;

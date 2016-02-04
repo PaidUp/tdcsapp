@@ -22,20 +22,28 @@
 
   <hr>
 
+  <div ng-show="order">
+    <strong>Order Status: </strong><span>{{order.status}}</span>
+  </div>
+
   <div class="table-responsive">
-    <table class="table table-hover col-md-4">
+    <table class="table table-hover">
       <thead>
-      <th>Original Price</th>
+      <th width="100">Original Price</th>
+      <th width="100">Total Fee</th>
       <th>Charge Date</th>
       <th>Description</th>
       <th>Is Charged</th>
       <th>Status</th>
-      <th>Option</th>
+      <th>Options</th>
       </thead>
       <tbody>
         <tr ng-repeat="schedule in paymentPlan.schedulePeriods">
           <td>
             <input class="form-control" type="number" step="any" name="price" ng-model="schedule.price" required>
+          </td>
+          <td>
+            <input class="form-control" type="number" step="any" name="fee" ng-model="schedule.fee" required>
           </td>
           <td>
             <input class="form-control" type="datetime-local" name="nextPaymentDue" ng-model="schedule.nextPaymentDue" required>
@@ -56,22 +64,25 @@
           </td>
           <td>{{getStatusName(schedule.isCharged, schedule.status)}}</td>
           <td>
-            <div ng-show="order.status != 'complete' && (!schedule.status || schedule.status != 'success' || schedule.status != 'pending')">
+            <div ng-show="order.status === 'processing' ">
               <div ng-show="schedule.status == 'deactivate'">
-                <button type="button" class="btn btn-circle btn-warning" ng-click="activatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-open"></i></button>
+                <button type="button" class="btn btn-circle btn-warning" ng-click="activatePeriod(orderId,schedule)"><i class="glyphicon glyphicon-floppy-open"></i></button>
               </div>
-              <div ng-show="!schedule.status || schedule.status != 'deactivate'">
-                <button type="button" class="btn btn-success btn-circle" ng-click="updatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-save"></i></button>
-                <button type="button" class="btn btn-circle btn-warning" ng-click="deactivatePeriod(schedule)"><i class="glyphicon glyphicon-floppy-remove"></i></button>
+              <div ng-hide="schedule.status == 'succeeded' || schedule.status == 'deactivate'">
+                <button type="button" class="btn btn-success btn-circle" ng-click="updatePeriod(orderId, schedule)"><i class="glyphicon glyphicon-floppy-save"></i></button>
+                <button type="button" class="btn btn-circle btn-warning" ng-click="deactivatePeriod(orderId, schedule)"><i class="glyphicon glyphicon-floppy-remove"></i></button>
               </div>
             </div>
 
 
           </td>
         </tr>
-        <tr ng-if="paymentPlan.paymentPlanId">
+        <tr ng-if="paymentPlan.paymentPlanId && order.status === 'processing' ">
           <td>
             <input class="form-control" type="number" step="any" name="price" ng-model="scheduleNew.price" required>
+          </td>
+          <td>
+            <input class="form-control" type="number" step="any" name="fee" ng-model="scheduleNew.fee" required>
           </td>
           <td>
             <input class="form-control" type="datetime-local" name="nextPaymentDue" ng-model="scheduleNew.nextPaymentDue" required>
@@ -86,7 +97,7 @@
           </td>
           <td></td>
           <td>
-            <button type="button" class="btn btn-success btn-circle" ng-click="createPeriod(order.orderId, paymentPlan.paymentPlanId, scheduleNew)"><i class="glyphicon glyphicon-plus"></i></button>
+            <button type="button" class="btn btn-success btn-circle" ng-click="createPeriod(orderId, paymentPlan.paymentPlanId, scheduleNew)"><i class="glyphicon glyphicon-plus"></i></button>
             <button type="button" class="btn btn-circle btn-default" ng-click="clearNewPeriod()"><i class="glyphicon glyphicon-refresh"></i></button>
           </td>
         </tr>

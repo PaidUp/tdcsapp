@@ -31,7 +31,7 @@ angular.module('convenienceApp')
 
       var result = "";
       switch (status) {
-        case "success":
+        case "succeeded":
           result = "Paid";
           break;
         case "failed":
