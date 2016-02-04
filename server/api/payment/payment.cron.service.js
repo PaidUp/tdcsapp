@@ -157,7 +157,7 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                 userService.find({_id : order.userId}, function(err, users){
                   paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
                     if(paymentUser && paymentUser.defaultSource){
-                      order.cardId = paymentUser.defaultSource;
+                      order.cardId = schedulePeriod.accountId || paymentUser.defaultSource;
                     }
                     logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser);
                     paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
