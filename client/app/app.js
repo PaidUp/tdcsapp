@@ -12,9 +12,15 @@ angular.module('convenienceApp', [
   'facebook',
   'angularNumberPicker',
   'ui.mask',
-  'ngStorage'
+  'ngStorage',
+  'ngIdle'
 ]).config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $analyticsProvider,
-                    FacebookProvider, $uiViewScrollProvider, $provide) {
+                    FacebookProvider, $uiViewScrollProvider, $provide, IdleProvider, KeepaliveProvider) {
+
+  IdleProvider.idle(5);
+  IdleProvider.timeout(5);
+  KeepaliveProvider.interval(10);
+
     $analyticsProvider.virtualPageviews(false);
     $uiViewScrollProvider.useAnchorScroll();
     $urlRouterProvider

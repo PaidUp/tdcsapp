@@ -30,6 +30,7 @@ module.exports = function(app) {
   // app.use('/api/v1/team', require('./api/teams'));
   // app.use('/api/v1/things', require('./api/thing'));
   app.use('/api/v1/application', require('./api/application'));
+  app.use('/api/v2/application', require('./api/application/v2'));
   app.use('/api/v1/loan', require('./api/loan'));
 //  app.use('/api/v1/users', require('./api/users'));
 
@@ -38,6 +39,10 @@ module.exports = function(app) {
   app.use('/api/v1/notification', require('./api/notifications'));
 
   app.use('/api/v1/logger', require('./api/logger'));
+
+  app.route('/google014f65dcaa5e2a95.html').get(function(req, res){
+    res.send('google-site-verification: google014f65dcaa5e2a95.html')
+  })
 
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|components|app|bower_components|assets)/*')

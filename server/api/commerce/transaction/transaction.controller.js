@@ -7,7 +7,7 @@ var async = require('async');
 var fs = require('fs');
 var config = require('../../../config/environment');
 var wkhtmltopdf = require('wkhtmltopdf');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 
 exports.listTransactions = function (req, res) {
   var user = req.user;
@@ -15,7 +15,7 @@ exports.listTransactions = function (req, res) {
     if (err) {
       return handleError(res, err);
     }
-    mix.panel.track("transactionList", mix.mergeDataMixpanel(transactions, req.user._id));
+    //mix.panel.track("transactionList", mix.mergeDataMixpanel(transactions, req.user._id));
     return res.status(200).json(transactions);
   });
 }

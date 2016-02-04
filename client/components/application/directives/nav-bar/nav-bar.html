@@ -1,8 +1,42 @@
 
 
 <nav class="nav-bar navbar-default" role="navigation">
+  <div class='top-header text-center'>
+
+      <div class="socialHeader">
+        <a href="http://www.facebook.com/selectconcierge" target="_blank">
+          <img src="assets/images/facebook.svg" >
+        </a>
+        <a href="https://twitter.com/@selectconcierge" target="_blank">
+          <img src="assets/images/twitter.svg" >
+        </a>
+        <a href="https://www.instagram.com/selectconcierge" target="_blank">
+          <img src="assets/images/instagram.svg" >
+        </a>
+      </div>
+
+
+      <div class="salesPhone">
+        <a href="tel:(512)900-3643">Sales (512) 900-3643</a>
+      </div>
+      <div class="supportPhone">
+        <a href="tel:(855)764-3232">Support (855) 764-3232</a>
+      </div>
+
+
+
+
+
+
+
+  </div>
+
+
+
   <div class="container">
+
     <div class="row">
+
       <div class="navbar-header">
         <button id="nav-button" class="navbar-toggle btn btn-default"
           data-target=".navbar-collapse"
@@ -21,17 +55,25 @@
       </div>
 
       <div class="collapse navbar-collapse mobile-right" id="nav-no-float">
-
         <ul class="nav navbar-nav">
           <li class="" ng-show="!isLoggedIn()">
+            <a href="http://blog.convenienceselect.com/" target="_self" ng-click="toggleMenu()">Blog</a>
+          </li>
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="" ui-sref="about-us" ng-click="toggleMenu()" >About us</a>
+          </li>
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="" ui-sref="demos" ng-click="toggleMenu()" >Demos</a>
+          </li>
+          <!--<li class="" ng-show="!isLoggedIn()">
             <a href="" ng-click="goTo('/', 'solutionsForTeams'); toggleMenu()" >
               Solutions for Teams</a>
-          </li>
-          <li class="" ng-show="!isLoggedIn()">
+          </li>-->
+          <!--li class="" ng-show="!isLoggedIn()">
             <a href="" ng-click="goTo('/','bannerOurPackages'); toggleMenu()">Our Packages</a>
-          </li>
+          </li-->
           <li class="" ng-show="!isLoggedIn()">
-            <a href="" ng-click="goTo('/faq'); toggleMenu()">FAQ</a>
+            <a href="" ui-sref="faq" ng-click="toggleMenu()">FAQ</a>
           </li>
           <li class="my-athletes" ng-show="isLoggedIn()  && isUser()" ng-click="toggleMenu()">
             <a href="" ui-sref="athletes">Athlete(s)</a>

@@ -11,11 +11,12 @@ var moment = require('moment');
 var logger = require('../../config/logger');
 var paymentEmailService = require('./payment.email.service');
 var loanApplicationService = require('../loan/application/loanApplication.service');
-var mix = require('../../config/mixpanel');
+//var mix = require('../../config/mixpanel');
 var commerceService = require('../commerce/commerce.service');
 var notifications = require('../notifications/notifications.service');
 var async = require('async');
 var businessDays = require('moment-business-days');
+var scheduleService = require('../commerce/schedule/schedule.service')()
 
 //refactor
 //generic funciton that retrieve orders pending and processing.
@@ -47,7 +48,7 @@ function paymentSchedule(pendingOrders, callbackSchedule){
         }
         if(!orderSchedule.scheduled.schedulePeriods){
           logger.log('warn', 'order without schedulePeriods: ' + order.incrementId );
-          callbackEach();
+          return callbackEach();
           //return callbackEach(new Error('order without schedulePeriods'));
         }
         async.eachSeries(orderSchedule.scheduled.schedulePeriods,
@@ -83,6 +84,123 @@ function paymentSchedule(pendingOrders, callbackSchedule){
           });
         //callback(null, schedule);
       });
+    },
+    function(err){
+      if(err){
+        return callbackSchedule(err);
+      }
+      return callbackSchedule();
+    })
+}
+
+//cronv2
+exports.collectAccountsv2 = function(cb){
+  async.waterfall([
+    collectPendingOrders,
+    paymentSchedulev2
+  ], function(err, result){
+    cb(null, true);
+  });
+}
+
+function paymentSchedulev2(pendingOrders, callbackSchedule){
+  async.eachSeries(pendingOrders,
+    function(order, callbackEach){
+      scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function(err, orderSchedule){
+        if(err){
+          logger.log('info', '1.err) order.incrementId: %s', err);
+          return callbackEach(err);
+        }
+        logger.log('info', '1) order.incrementId: %s', order.incrementId);
+        if(!orderSchedule || !orderSchedule.schedulePeriods){
+          logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId );
+          return callbackEach();
+          //return callbackEach(new Error('order without schedulePeriods'));
+        }
+          /**
+        commerceService.transactionList(order.incrementId, function(err, transactionList){
+          if(err){
+            logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err);
+            return callbackEach(err);
+          }
+          logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList);
+           **/
+          async.eachSeries(orderSchedule.schedulePeriods,
+            function(schedulePeriod, callbackEach2){
+              logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
+              /**
+              schedulePeriod.transactions = [];
+              if(transactionList.length > 0){
+
+                for(var i=0 ;  i< transactionList.length; i++){
+                  if(transactionList[i].details.rawDetailsInfo.scheduleId === schedulePeriod.id ){
+                    schedulePeriod.transactions.push(transactionList[i]);
+                  }
+                }
+              }**/
+
+              logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod);
+
+              if(!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())){
+                logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue);
+                //logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length);
+                userService.find({_id : order.userId}, function(err, users){
+                  paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
+                    if(paymentUser && paymentUser.defaultSource){
+                      order.cardId = paymentUser.defaultSource;
+                    }
+                    logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser);
+                    paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+                      order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function(err , data){
+                      if(err){
+                        logger.log('err', '8.err) paymentSchedulev2 capture: %s', err);
+                        err.order = order.incrementId;
+                        notifications.sendEmailNotification({subject:'invalid order', jsonMessage:err }, function(err, data){
+                        });
+                        logger.log('info', '8) paymentSchedulev2 capture: %s', data);
+                        //return callbackEach2();
+                      }
+
+                        let param = {
+                          scheduleId:schedulePeriod.entityId,
+                          informationData:
+                            [{
+                              name : 'isCharged',
+                              value : true,
+                            }]
+                        }
+
+                        scheduleService.scheduleInformationUpdate(param , function(err2 , data2){
+                          if(err2){
+                            logger.log('info', '9) paymentSchedulev2 capture err: %s', err2);
+                            param.orderId = order.incrementId;
+                            notifications.sendEmailNotification({subject:'Cant update charged order', jsonMessage:param }, function(err, data){
+                            });
+                            return callbackEach2();
+                          }
+                          logger.log('info', '9) paymentSchedulev2 scheduleInformationUpdate capture: %s', data2);
+                          return callbackEach2();
+                        });
+
+                        //return callbackEach2();
+                    });
+                  });
+                });
+              }else{
+                callbackEach2();
+              }
+            },
+            function(err){
+              if(err){
+                return callbackEach(err);
+              }
+              callbackEach();
+            });
+          //callback(null, schedule);
+        //});
+
+      });
+
     },
     function(err){
       if(err){
@@ -393,7 +511,7 @@ exports.sendRemindToAddPaymentMethod = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToAddPaymentMethod(loan.applicationId,loan.orderId,function(err, data){
-                    mix.panel.track("paymentCronServiceSendRemindAddPaymentMethod", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                    //mix.panel.track("paymentCronServiceSendRemindAddPaymentMethod", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to add payment method. ');
                     //Sent email.
                     mainCallback();
@@ -456,7 +574,7 @@ exports.sendRemindToVerifyAccount = function(cb){
               loan.notifications.push(objNotification);
               loanService.save(loan, function(err, newLoan){
                   paymentEmailService.sendRemindToVerifyAccount(loan.applicationId, loan.orderId,function(err, data){
-                    mix.panel.track("paymentCronServiceSendRemindToVerifyAccount", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                    //mix.panel.track("paymentCronServiceSendRemindToVerifyAccount", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                     logger.log('info', 'send email remind to verify account. ' + data );
                     //Sent email.
                     mainCallback();
@@ -523,7 +641,7 @@ exports.sendTomorrowChargeLoan = function(cb){
                   loan.notifications.push(objNotification);
                   loanService.save(loan, function(err, newLoan){
                     paymentEmailService.sendTomorrowChargeLoan({loan:loan,schedule:schedule, days:value,orderId:loan.orderId},function(err, data){
-                      mix.panel.track("paymentCronServiceSendTomorrowChargeLoan", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
+                      //mix.panel.track("paymentCronServiceSendTomorrowChargeLoan", mix.mergeDataMixpanel(loan,loan.applicationId.applicantUserId));
                       logger.log('info', 'send email reminder tomorrow charge loan ' );
                       mainCallback();
                     });

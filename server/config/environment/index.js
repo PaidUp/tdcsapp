@@ -189,7 +189,7 @@ var all = {
     apiPublic: "pk_test_J5gfockQi2DP28GszFZvTnwS"
   },
   mixpanel:{
-    apiKey: "d04804c3577e2ddecee3b634247a3b92"
+    apiKey: "254e7cd14a29f087143735b673e51d65"
   },
   encryptKey:'PZ3oXv2v6Pq5HAPFI9NFbQ==',
   loan:{
@@ -290,7 +290,14 @@ var all = {
       host: 'localhost',
       port: 9010,
       token: 'TDUserLoanToken-CHANGE-ME!'
-    }
+    },
+    schedule: {
+      urlPrefix: '/api/v2',
+      isHttp: false,
+      host: 'localhost',
+      port: 9006,
+      token: 'tdschedule-secret'
+    },
   },
   logger : {
     token : 'f5ea6cdf-b8c0-44ca-962f-1328873c5974'

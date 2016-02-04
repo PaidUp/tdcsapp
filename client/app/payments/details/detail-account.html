@@ -41,7 +41,7 @@
       </div>
       <div class="col-sm-4">
         <div class="form-group clearfix" ng-class="{ 'has-error': checkoutForm.address1.$invalid && submitted }">
-          <input type="text" class="form-control" name="address1" placeholder="Address 1" ng-model="billing.address.address1" required ng-required="true">
+          <input type="text" class="form-control" name="address1" placeholder="Address 1" ng-model="billing.address.address1" ng-required="true">
           <div class="text-CS text-center" ng-show="checkoutForm.address1.$error.required && submitted">
             <small class="text-CS">Address1 is required</small>
           </div>
@@ -159,14 +159,10 @@
       </div>
     </div>
 
-
-
     <div class="row">
-
       <div class="col-sm-4 text-right clearfix">
-        <h4 class="text-CS">Payment Method<span ng-show="createBank || createCard">Details</span></h4>
+        <h4 class="text-CS">Payment Method <span ng-show="createBank || createCard">Details</span></h4>
       </div>
-
     </div>
 
     <div ng-show="accounts.length >= limitMinList">

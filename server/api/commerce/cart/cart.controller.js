@@ -4,7 +4,7 @@ var _ = require('lodash');
 var cartService = require('./cart.service');
 var config = require('../../../config/environment');
 var logger = require('../../../config/logger');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 
 // Creates a new cart in the DB.
 exports.create = function(req, res) {
@@ -25,7 +25,7 @@ exports.add = function (req, res) {
   }
   cartService.cartAdd(req.body, function (err, cartAdd) {
     if(err) return handleError(res, err);
-    mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
+    //mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
     res.status(200).json(cartAdd);
   });
 }
@@ -39,7 +39,7 @@ exports.remove = function (req, res) {
   }
   cartService.cartRemove(req.body, function (err, cartRemove) {
     if(err) return handleError(res, err);
-    mix.panel.track("removeCart", mix.mergeDataMixpanel(req.body, req.user._id));
+    //mix.panel.track("removeCart", mix.mergeDataMixpanel(req.body, req.user._id));
     res.status(200).json(cartRemove);
   });
 }
@@ -60,7 +60,7 @@ exports.list = function (req, res) {
 exports.address = function (req, res) {
   cartService.cartAddress(req.body, function (err, cartAddress) {
     if(err) return handleError(res, err);
-    mix.panel.track("addressCart", mix.mergeDataMixpanel(req.body, req.user._id));
+    //mix.panel.track("addressCart", mix.mergeDataMixpanel(req.body, req.user._id));
     res.status(200).json(cartAddress);
   });
 }
@@ -112,7 +112,7 @@ exports.couponAdd = function (req, res) {
   }
   cartService.cartCouponAdd(req.body, function (err, isAddCoupon) {
     if(err) return handleError(res, err);
-    mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
+    //mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
     res.status(200).json(isAddCoupon);
   });
 }

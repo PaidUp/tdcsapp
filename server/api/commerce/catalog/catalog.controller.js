@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var catalogService = require('./catalog.service');
 var config = require('../../../config/environment');
-var mix = require('../../../config/mixpanel');
+//var mix = require('../../../config/mixpanel');
 
 exports.list = function(req, res) {
   if(!req.params && !req.params.categoryId) {
@@ -31,7 +31,7 @@ exports.catalogInfo = function(req, res) {
     });
   }
   catalogService.catalogProduct(req.params.productId, function(err, dataService){
-    mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
+    //mix.panel.track("listCatalog", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
     res.status(200).json(dataService);
   });
@@ -45,7 +45,7 @@ exports.groupedProducts = function(req, res) {
     });
   }
   catalogService.groupedList(req.params.productId, function(err, dataService){
-    mix.panel.track("groupedList", mix.mergeDataMixpanel(dataService, req.user._id));
+    //mix.panel.track("groupedList", mix.mergeDataMixpanel(dataService, req.user._id));
     if(err) return handleError(res, err);
     res.status(200).json(dataService);
   });

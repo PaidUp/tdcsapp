@@ -1,7 +1,7 @@
 'use strict';
 
 var loanService = require('./loan.service');
-var mix = require('../../config/mixpanel');
+//var mix = require('../../config/mixpanel');
 exports.simulate = function (req, res) {
 	loanService.simulate(req.body, function (err, dataSimulate) {
 		if (err) return res.status(409).json(err);
@@ -19,7 +19,7 @@ exports.create = function (req, res) {
 exports.getloan = function (req, res) {
   loanService.findOne(req.body, function (err, data) {
     if (err) return res.status(409).json(err);
-    mix.panel.track("getLoan", mix.mergeDataMixpanel(req.body, req.user._id));
+    //mix.panel.track("getLoan", mix.mergeDataMixpanel(req.body, req.user._id));
     res.status(200).json(data);
   });
 };

@@ -81,7 +81,8 @@
   }
 
   .solutionDescBottom {
-    padding-top: 10px !important;
+    padding-top: 70px !important;
+    font-size: 16px !important;
   }
 
   .solutionsForTeams .desc {
@@ -153,6 +154,105 @@
     padding-top: 40px !important;
   }
 
+  .ctoBox{
+    padding-bottom: 16px;
+  }
+
+  .salesPhone{
+    padding-right: 0px !important;
+    display: inherit !important;
+  }
+
+  .supportPhone{
+    padding-right: 0px !important;
+    display: inherit !important;
+  }
+
+  .socialHeader{
+    display: inherit !important;
+    padding-top: 15px !important;
+    padding-right: 0px !important;
+  }
+
+  .unit{
+    padding-left: 30px !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    min-height: 450px !important;
+  }
+
+  .unit h3{
+    font-size: 15px !important;
+    font-weight: 300 !important;
+  }
+
+  .unit img{
+    width: 100px ;
+    height: 100px ;
+  }
+
+  .unit .name{
+    font-size: 20px !important;
+    font-weight: 100 !important;
+  }
+
+  .unit .teamName{
+    font-size: 14px !important;
+    font-weight: 300 !important;
+  }
+
+  .space{
+    padding-top: 20px !important;
+  }
+
+
+}
+
+.salesPhone{
+  padding-top: 5px;
+  padding-right: 30px;
+  display: inline-block;
+}
+
+.supportPhone{
+  padding-right: 0px;
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.socialHeader{
+  float: right;
+  padding-right: 30px;
+  display: inline-block;
+  padding-bottom: 5px;
+  padding-top: 3px;
+}
+
+.socialHeader img{
+  width: 24px;
+  height: 24px;
+  color: black;
+}
+
+.socialHeader a{
+  padding-right: 10px;
+}
+
+.socialHeader a:hover{
+  text-decoration: none;
+}
+
+
+.ctoBox{
+  border-radius: 4px;
+  padding-top: 16px;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.pillarImg{
+  height: 100px;
+  width: 100px;
 }
 
 
@@ -215,32 +315,18 @@
 
 .solutionsForTeams .item1{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
-}
-
-.solutionsForTeams .item1:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
 }
+
 .solutionsForTeams .item2{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
-}
-
-.solutionsForTeams .item2:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
-  background-position: -5px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
-}
-
-.solutionsForTeams .item3:hover{
   background-position: -405px -5px;
   background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
 }
@@ -262,12 +348,12 @@
   font-weight: 300;
   color: #FFFFFF;
   text-align: justify;
-  padding-top: 20px;
+  padding-top: 100px;
   line-height: normal;
 }
 
 .solutionsForTeams .desc{
-  padding-top: 100px;
+  padding-top: 40px;
   color: #FFFFFF;
   font-size: 30px;
   font-weight:  500;
@@ -381,6 +467,35 @@
 
 .bannerComingSoon .item h2{
   font-size: 25px;
+}
+
+.divAboutUs{
+  min-height: 200px;
+  width: 100%;
+  background-size: cover;
+  background-color: #f9f9f9;
+  text-align: justify;
+}
+
+.divAboutUs .title{
+  margin-top: 20px;
+  font-size: 25px;
+  color: #ff805d;
+  text-align: center;
+}
+
+.divAboutUs .item{
+  min-height: 170px;
+  color: #494c4e;
+  text-align: center;
+}
+
+.divAboutUs .item h2{
+  font-size: 25px;
+}
+
+.aboutUsGray {
+  color: #999999
 }
 
 .btnComingSoon{
@@ -552,22 +667,29 @@
 }
 
 .bannerTestimonial{
-  min-height: 400px;
-  color: #FFFFFF;
-  background-color: #FFFFFF;
-  border-color: #FF734D;
+  /*min-height: 400px;*/
+
+  border-color: #484C4F;
   border-bottom-color: #C65C43;
   background-position:center;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-image: url(/assets/images/landing/im_bg_teams.jpg);
+  background-color: #484C4F;
+  color: #F8F8F8;
+}
+
+.bannerTestimonial .title{
+  padding: 25px 0px 10px 0px;
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 25px;
 }
 
 .unit{
   text-align:center;
   color:#fff;
-  padding:5% 10% 5% 0;
   background-color: transparent;
   background-repeat: no-repeat;
   background-position:center;
@@ -575,7 +697,11 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  width:100%;
+  width:90%;
+  padding-left: 120px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: 450px;
 }
 
 .unit .name{
@@ -600,6 +726,23 @@
   font-size:18px;
   padding:8px;
   margin-left: 25%;
+}
+
+.logos-client {
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+.logos-client img {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+@media screen and (max-width: 480px) {
+  .logos-client img {
+    margin: 0 80px;
+  }
 }
 
 /* cyrillic-ext */

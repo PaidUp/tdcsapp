@@ -65,6 +65,20 @@ angular.module('convenienceApp')
           size: 'lg'
         });
       },
+      ReferralProgramModal: function () {
+        openModal({
+          templateUrl: 'app/application/main/referral-program/referral-program-rules.html',
+          controller : 'ReferralProgramCtrl',
+          size: 'lg',
+          resolve : {
+            ModalParams : function () {
+              return {
+                isModal : true
+              };
+            }
+          }
+        });
+      },
       CreateAthleteModal: function () {
         openModal({
           templateUrl: 'app/athletes/create/create-athlete-modal.html',
@@ -89,12 +103,30 @@ angular.module('convenienceApp')
       ContactUs: function (subject) {
         openModal({
           templateUrl: 'app/application/contact-form/contact-us.html',
-
           size: 'md'
+        });
+      },
+      CtaBox: function (subject) {
+        openModal({
+          templateUrl: 'app/application/contact-form/cta-box.html',
+          size: 'md'
+        });
+      },
+      CtaModal: function (ctaTemplate, size) {
+        openModal({
+          templateUrl: 'app/application/contact-form/'+ctaTemplate+'.html',
+          size: function(){
+            return size ? size : 'lg'
+          }()
         });
       },
       closeModal: function () {
         $rootScope.modal.dismiss('cancel');
       }
     };
+  });
+
+angular.module('convenienceApp')
+  .factory('ModalParams', function () {
+    return {};
   });
