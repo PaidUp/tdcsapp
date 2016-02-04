@@ -377,6 +377,7 @@ function debitOrder(orderId, userId, providerId, amount, accountId, scheduleId, 
 
 function capture(order, user, providerId, amount, paymentMethod, scheduleId, fee, metaPayment, retryId, cb) {
   logger.info('1) paymentService > Processing ' + order.incrementId);
+  //NOTE: take attention with the change order variables.
   debitOrder(order.incrementId, user._id, providerId, amount, order.cardId, scheduleId, fee, metaPayment, retryId, paymentMethod, function (err, resultDebit) {
     logger.info('2) paymentService > debitOrder err' + err);
     logger.info('3) paymentService > debitOrder resuldDebit' + resultDebit);

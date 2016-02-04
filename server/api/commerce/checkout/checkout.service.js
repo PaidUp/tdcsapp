@@ -51,7 +51,7 @@ exports.placeOrder = function(user, cartId, addresses, orderData, cb){
                   }else{
                     schedule.name = 'Customize Schedule'
                   }
-
+                  schedule.accountId = orderData.cardId
                   schedule.orderId = dataOrderId,
                   schedule.meta = {
                     org_name : orderData.products[0].productSku,

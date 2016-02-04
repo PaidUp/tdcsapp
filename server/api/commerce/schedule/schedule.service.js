@@ -35,8 +35,9 @@ function createPaymentPlanFull(params, cb){
       description : ele.description,
       discountToFee : ele.discountToFee
     };*/
+    //NOTE: variable period is used for add this array data in all periods.
     let period = {name  : params.name,
-      informations : [{name:'isCharged' , value : false}]
+      informations : [{name:'isCharged' , value : false}, {name:'accountId', value:params.accountId}]
     };
 
     for(var attributeName in ele){
