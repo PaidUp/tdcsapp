@@ -139,6 +139,9 @@ angular.module('convenienceApp')
 
         }
       }).catch(function(err){
+        $scope.accounts = [];
+        $scope.paymentPlan = {};
+        $scope.order = {};
         FlashService.addAlert({
           type: "danger",
           msg: "Can't be searched the order schedule, please contact us.",

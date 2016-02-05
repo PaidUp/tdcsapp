@@ -23,18 +23,18 @@
   <hr>
 
   <div ng-show="order">
-    <strong>Order Status: </strong><span>{{order.status}}</span>
+    <strong>Order Status: &nbsp;&nbsp; </strong><span>{{order.status | uppercase}}</span>
   </div>
 
   <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover" ng-if="paymentPlan.schedulePeriods">
       <thead>
       <th width="100">Original Price</th>
       <th width="100">Total Fee</th>
       <th>Charge Date</th>
       <th>Description</th>
       <th>Account</th>
-      <th>Is Charged</th>
+      <th>Charged</th>
       <th>Status</th>
       <th>Options</th>
       </thead>
@@ -67,7 +67,7 @@
             <span>Yes</span>
             <input type="radio" name="isCharged{{schedule.id}}"
                    ng-model="schedule.isCharged" ng-value="true" required>
-            &nbsp;&nbsp;
+            <br>
             <span>No</span>
             <input type="radio" name="isCharged{{schedule.id}}"
                    ng-model="schedule.isCharged" ng-value="false" required>
@@ -88,7 +88,7 @@
 
           </td>
         </tr>
-        <tr ng-if="paymentPlan.paymentPlanId && order.status === 'processing' ">
+        <tr ng-if="order.status === 'processing'">
           <td>
             <input class="form-control" type="number" step="any" name="price" ng-model="scheduleNew.price" required>
           </td>
