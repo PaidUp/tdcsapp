@@ -149,6 +149,15 @@ function scheduleInformationUpdate(params , cb){
   })
 };
 
+function scheduleInformationCreate(params , cb){
+  tdPaymentPlanService.scheduleInformationCreate(params, function(err , data){
+    if(err){
+      return cb(err);
+    }
+    cb(null, data);
+  })
+};
+
 module.exports = function(conf){
   if(conf){
     logger.debug('set new configuration' , conf);
@@ -165,6 +174,7 @@ module.exports = function(conf){
     paymentPlanInfo: paymentPlanInfo,
     paymentPlanUpdate: paymentPlanUpdate,
     paymentPlanCreate: paymentPlanCreate,
-    scheduleInformationUpdate: scheduleInformationUpdate
+    scheduleInformationUpdate: scheduleInformationUpdate,
+    scheduleInformationCreate: scheduleInformationCreate
   }
 }

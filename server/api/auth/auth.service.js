@@ -21,6 +21,7 @@ function isAuthenticated() {
           next(err);
         if(data && data._id){
           req.user =  data;
+          console.log('***DATA' , data);
           //this line register the user in mixpanel, for tracking your steps in the CS
           //mix.panel.people.set(req.user._id,req.user);
           return next();
