@@ -318,6 +318,18 @@ angular.module('convenienceApp')
         }
       },
 
+      validateRole: function(role) {
+
+        if(!role){
+          return false;
+        }
+
+        if($rootScope.currentUser && $rootScope.currentUser.roles){
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf(role) != -1;
+        }
+        return false;
+      },
+
       /**
        * Get auth token
        */
