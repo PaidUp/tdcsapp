@@ -27,7 +27,7 @@
   </div>
 
   <div class="table-responsive">
-    <table class="table table-hover" ng-if="paymentPlan.paymentPlanId">
+    <table class="table table-hover" ng-if="paymentPlan.schedulePeriods">
       <thead>
       <th width="100">Original Price</th>
       <th width="100">Total Fee</th>
@@ -88,7 +88,7 @@
 
           </td>
         </tr>
-        <tr>
+        <tr ng-if="order.status === 'processing'">
           <td>
             <input class="form-control" type="number" step="any" name="price" ng-model="scheduleNew.price" required>
           </td>
