@@ -301,7 +301,9 @@ angular.module('convenienceApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('admin') != -1;
+        if($rootScope.currentUser && $rootScope.currentUser.roles) {
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('admin') != -1;
+        }
       },
 
       isCoach: function() {
