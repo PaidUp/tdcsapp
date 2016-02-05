@@ -104,9 +104,10 @@ angular.module('convenienceApp')
         if(!data || !data.paymentList || !data.paymentList.schedulePeriods){
           FlashService.addAlert({
             type: "warning",
-            msg: "Order not found.",
+            msg: "Can't be load this order.",
             timeout: 10000
           });
+          $scope.submitted = false;
           $scope.paymentPlan = {};
         }else{
 
