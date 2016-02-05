@@ -1,5 +1,5 @@
 .teams .thumbnail img {
-    width: 100%;
+    max-height: 110px;
 }
 
 .teams .thumbnail {
