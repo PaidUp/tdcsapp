@@ -49,6 +49,20 @@ exports.getOrder = function(req , res){
 
 }
 
+exports.getOrderBasic = function(req , res){
+  if (!req.params.orderId) {
+    return handleError(res, {name : 'ValidationError' , message : 'orderId is required' });
+  }
+
+  commerceService.getOrderBasic(req.params.orderId, function(err1, data){
+    if (err1) {
+      return handleError(res, err1);
+    }
+    return res.status(200).json(data);
+  });
+
+}
+
 function handleError(res, err) {
   var httpErrorCode = 500;
   var errors = [];

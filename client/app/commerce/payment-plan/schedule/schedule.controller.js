@@ -13,9 +13,10 @@ angular.module('convenienceApp')
       $scope.order = {};
 
 
-      CommerceService.getOrder(orderId).then(function(order){
+      CommerceService.getOrderBasic(orderId).then(function(order){
+
         $scope.order = order;
-        search(orderId);
+        search(order);
       }).catch(function(err){
         $scope.submitted = false;
         FlashService.addAlert({
@@ -96,11 +97,11 @@ angular.module('convenienceApp')
       });
     };
 
-    function search(orderId) {
+    function search(order) {
       $scope.submitted = true;
       $scope.accounts = [];
       $scope.clearNewPeriod();
-      scheduleService.scheduleInfoFull(orderId).then(function(data){
+      scheduleService.scheduleInfoFull(order.incrementId).then(function(data){
         if(!data || !data.paymentList || !data.paymentList.schedulePeriods){
           FlashService.addAlert({
             type: "warning",
@@ -111,8 +112,8 @@ angular.module('convenienceApp')
           $scope.paymentPlan = {};
         }else{
 
-          loadBankAccounts($scope.accounts).then(function(lst){
-            loadCreditCardAccounts(lst).then(function(lst2){
+          loadBankAccounts(order.userId, $scope.accounts).then(function(lst){
+            loadCreditCardAccounts(order.userId, lst).then(function(lst2){
               //$scope.accounts.push({ accountName: 'Create a new credit card' });
               //$scope.accounts.push({ accountName : 'Create a new bank account' , last4: '' });
 
@@ -180,10 +181,10 @@ angular.module('convenienceApp')
 
     }
 
-    function loadBankAccounts(lstAccount){
+    function loadBankAccounts(userId, lstAccount){
       return $q(function(resolve, reject){
         setTimeout(function(){
-          PaymentService.listBankAccounts().then(function (response) {
+          PaymentService.listBankAccounts(userId).then(function (response) {
             response.data.forEach(function(ele, idx, arr){
               ele.accountName = ele.bankName + ' ending in ';
               lstAccount.push(ele)
@@ -196,10 +197,10 @@ angular.module('convenienceApp')
       });
     };
 
-    function loadCreditCardAccounts(lstAccount){
+    function loadCreditCardAccounts(userId, lstAccount){
       return $q(function(resolve, reject){
         setTimeout(function(){
-          PaymentService.listCards().then(function (response) {
+          PaymentService.listCards(userId).then(function (response) {
             response.data.forEach(function(card, idx, arr){
               card.nameOnCard = card.name;
               card.cardNumber = card.last4;

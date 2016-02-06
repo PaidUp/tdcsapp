@@ -94,8 +94,9 @@ exports.associate = function (req, res) {
 };
 
 exports.listBanks = function (req, res) {
+  let userId = req.params.userId || req.user._id
   var filter = {
-    _id: req.user._id
+    _id: userId
   };
   userService.find(filter, function (err, dataUser) {
     if (err) {
