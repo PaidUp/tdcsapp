@@ -71,6 +71,18 @@ function getOrder(user, orderId, cb) {
   });
 }
 
+function getOrderBasic(orderId, cb) {
+  TDCommerceService.init(config.connections.commerce);
+  TDCommerceService.orderLoad(orderId, function (err, magentoOrder) {
+
+    logger.debug('magento Order' , magentoOrder);
+
+    if (err) return cb(err);
+
+    return cb(null, magentoOrder);
+  });
+}
+
 function getUsertransactions(user, cb) {
   var transactions = [];
   TDCommerceService.init(config.connections.commerce);
@@ -255,4 +267,5 @@ exports.paymentsSchedule = paymentsSchedule;
 exports.getListRetryPayment = getListRetryPayment;
 exports.getListOrdersComplete = getListOrdersComplete;
 exports.transactionList = transactionList;
-exports.createShipment = createShipment
+exports.createShipment = createShipment;
+exports.getOrderBasic = getOrderBasic

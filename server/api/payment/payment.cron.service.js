@@ -157,7 +157,7 @@ function paymentSchedulev2(pendingOrders, callbackSchedule){
                 userService.find({_id : order.userId}, function(err, users){
                   paymentService.fetchCustomer(users[0].meta.TDPaymentId, function(err, paymentUser){
                     if(paymentUser && paymentUser.defaultSource){
-                      order.cardId = paymentUser.defaultSource;
+                      order.cardId = schedulePeriod.accountId || paymentUser.defaultSource;
                     }
                     logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser);
                     paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
@@ -795,7 +795,7 @@ function orderCompleteV2(pendingOrders, callbackSchedule){
         async.eachSeries(orderSchedule.schedulePeriods,
           function(schedulePeriod, callbackEach2){
             //logger.log('info', '2 complete) paymentSchedulev2 schedulePeriod: %s', schedulePeriod);
-            if(schedulePeriod.status && (schedulePeriod.status.trim() === 'succeeded' || schedulePeriod.status.trim() === 'pending' )){
+            if(schedulePeriod.status && (schedulePeriod.status.trim() === 'succeeded' || schedulePeriod.status.trim() === 'pending' || schedulePeriod.status.trim() === 'deactivate' )){
               //logger.log('info', '3 complete) paymentSchedulev2 schedulePeriod.status: %s', schedulePeriod.status);
               countschedulePeriodSucceeded++
               return callbackEach2();
@@ -807,14 +807,20 @@ function orderCompleteV2(pendingOrders, callbackSchedule){
             if(err){
               return callbackEach(err);
             }
+            console.log('schedulePeriodsLength', schedulePeriodsLength)
+            console.log('countschedulePeriodSucceeded', countschedulePeriodSucceeded)
             if(schedulePeriodsLength === countschedulePeriodSucceeded){
+              console.log('entro');
               commerceService.createShipment({orderList:[order]}, function(err, data){
+                console.log('err',err);
+                console.log('data' , data);
+
                 return callbackEach();
               })
             }else{
               return callbackEach();
             }
-            
+
           });
       });
     },

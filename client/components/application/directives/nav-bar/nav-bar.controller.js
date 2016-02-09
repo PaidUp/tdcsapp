@@ -15,6 +15,10 @@ angular.module('convenienceApp')
       return AuthService.isUser();
     };
 
+    $scope.isAdmin = function(){
+      return AuthService.isAdmin();
+    };
+
     $scope.getCart = function () {
       if ( $scope.isLoggedIn() ) {
         var cartId = CartService.getCurrentCartId();

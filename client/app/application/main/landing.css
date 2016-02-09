@@ -49,6 +49,7 @@
   .titleBannerHome{
     font-size: 42px !important;
   }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -206,6 +207,23 @@
   }
 
 
+
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ECEEEF;
 }
 
 .salesPhone{

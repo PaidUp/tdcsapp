@@ -57,7 +57,10 @@
       <div class="collapse navbar-collapse mobile-right" id="nav-no-float">
         <ul class="nav navbar-nav">
           <li class="" ng-show="!isLoggedIn()">
-            <a href="http://blog.convenienceselect.com/" target="_self" ng-click="toggleMenu()">Blog</a>
+            <a href="http://info.convenienceselect.com/case-study-cobras-volleyball-club" target="_self" ng-click="toggleMenu()">Case Study</a>
+          </li>
+          <li class="" ng-show="!isLoggedIn()">
+            <a href="http://info.convenienceselect.com/blog" target="_self" ng-click="toggleMenu()">Blog</a>
           </li>
           <li class="" ng-show="!isLoggedIn()">
             <a href="" ui-sref="about-us" ng-click="toggleMenu()" >About us</a>
@@ -103,6 +106,12 @@
                 <a href="" ui-sref="user-account" ng-click="toggleMenu()" id="profile">
                   <span class="glyphicon glyphicon-user"></span>
                   Profile
+                </a>
+              </li>
+              <li ng-if="isAdmin()">
+                <a href="" ui-sref="schedule-admin" ng-click="toggleMenu()" id="schedule-admin">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                  Schedule Admin
                 </a>
               </li>
               <!-- <li>

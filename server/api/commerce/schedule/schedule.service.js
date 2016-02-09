@@ -35,8 +35,9 @@ function createPaymentPlanFull(params, cb){
       description : ele.description,
       discountToFee : ele.discountToFee
     };*/
+    //NOTE: variable period is used for add this array data in all periods.
     let period = {name  : params.name,
-      informations : [{name:'isCharged' , value : false}]
+      informations : [{name:'isCharged' , value : false}, {name:'accountId', value:params.accountId}]
     };
 
     for(var attributeName in ele){
@@ -148,6 +149,15 @@ function scheduleInformationUpdate(params , cb){
   })
 };
 
+function scheduleInformationCreate(params , cb){
+  tdPaymentPlanService.scheduleInformationCreate(params, function(err , data){
+    if(err){
+      return cb(err);
+    }
+    cb(null, data);
+  })
+};
+
 module.exports = function(conf){
   if(conf){
     logger.debug('set new configuration' , conf);
@@ -164,6 +174,7 @@ module.exports = function(conf){
     paymentPlanInfo: paymentPlanInfo,
     paymentPlanUpdate: paymentPlanUpdate,
     paymentPlanCreate: paymentPlanCreate,
-    scheduleInformationUpdate: scheduleInformationUpdate
+    scheduleInformationUpdate: scheduleInformationUpdate,
+    scheduleInformationCreate: scheduleInformationCreate
   }
 }
