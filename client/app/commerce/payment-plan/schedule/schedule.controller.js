@@ -1,5 +1,5 @@
 angular.module('convenienceApp')
-  .controller('ScheduleCtrl', function ($scope, $rootScope, scheduleService, FlashService, CommerceService,
+  .controller('ScheduleCtrl', function ($scope, $rootScope, ScheduleService, FlashService, CommerceService,
                                         PaymentService, $q) {
 
     $scope.orderId = '';
@@ -13,7 +13,7 @@ angular.module('convenienceApp')
       $scope.order = {};
 
 
-      CommerceService.getOrderBasic(orderId).then(function(order){
+      CommerceService.getOrder(orderId).then(function(order){
 
         $scope.order = order;
         search(order);

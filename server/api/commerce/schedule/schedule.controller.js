@@ -41,6 +41,9 @@ exports.paymentPlanInfoFullByOrderId = function (req, res) {
 }
 
 exports.scheduleInformationUpdate = function(req , res){
+
+  return handleError(res, {name : 'ValidationError' , message : 'Method is deactivte'})
+
   if(!req.body.entityId){
     return handleError(res, {name : 'ValidationError' , message : 'entityId is required'})
   }
@@ -92,7 +95,9 @@ exports.scheduleInformationUpdate = function(req , res){
 }
 
 exports.scheduleInformationCreate = function(req , res){
-  console.log('req.body',req.body);
+
+  return handleError(res, {name : 'ValidationError' , message : 'Method is deactivte'})
+
   if(!req.body.paymentPlanId){
     return handleError(res, {name : 'ValidationError' , message : 'paymentPlanId is required'})
   }
