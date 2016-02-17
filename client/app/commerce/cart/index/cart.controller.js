@@ -123,6 +123,7 @@ angular.module('convenienceApp')
         });
       } else {
         $scope.hasCart = false;
+        $scope.loading= false;
       }
     }
 
