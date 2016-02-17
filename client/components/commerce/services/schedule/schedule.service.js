@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('convenienceApp')
-  .service('scheduleService', function ($cookieStore, $q, $resource, $rootScope) {
+  .service('ScheduleService', function ($cookieStore, $q, $resource, $rootScope) {
     var ScheduleInfo = $resource('/api/v1/commerce/schedule/info/:action/:orderId', {}, {});
     var Schedule = $resource('/api/v1/commerce/schedule/:action', {}, {});
 

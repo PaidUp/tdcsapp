@@ -32,9 +32,7 @@
             <td>{{team.attributes.qty}}</td>
             <td>{{team.attributes.rowTotal | currency}}</td>
           </tr>
-
           <tr ng-repeat="requiredItem in item.attributes.requiredItems">
-            <td><img src="http://placehold.it/85x85" alt=""></td>
             <td>{{requiredItem.itemName}}</td>
             <td class="hidden-xs">{{requiredItem.price | currency}}</td>
             <td>{{requiredItem.quantity}}</td>
