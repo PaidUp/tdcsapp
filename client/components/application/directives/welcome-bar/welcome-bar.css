@@ -104,7 +104,7 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 .btn.bar-btn {
     background-color: #f9f9f9;
     border-color: #f9f9f9;
-    color: #CD6C49;
+    color: #00425F;
     font-size: 11px;
     padding: 0;
     height: 38px;
@@ -113,5 +113,5 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 
 .bar-btn .fa-plus {
-    color: #CD6C49;
+    color: #00425F;
 }
