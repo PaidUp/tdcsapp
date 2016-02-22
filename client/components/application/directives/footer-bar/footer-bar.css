@@ -9,10 +9,10 @@
   padding: 30px;
   color: inherit;
   margin-bottom: 0;
-  background-color: #6C737C;
+  background-color: #fff;
   height: 100%;
   width: 100%;
-  color: #a1acb5;
+  color: #145b7d;
   line-height: 56px;
   font-size: 12px;
 }
@@ -24,7 +24,7 @@
   margin-right: 10px;
 }
 .footer-nav a{
-  color: #a1acb5;
+  color: #145b7d;
 }
 
 .footer-bar ul{

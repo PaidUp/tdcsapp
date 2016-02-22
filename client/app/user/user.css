@@ -9,23 +9,23 @@
   margin-bottom: 0px;
 }
 .user-tabs .nav-tabs > li > a {
-  color: #ff805d;
+  color: #006e82;
   border: 4px solid transparent;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 .user-tabs .nav-tabs > li > a:hover {
-  color: #ffffff;
+  color: #00425F;
   background-color: transparent;
   border: 4px solid transparent;
-  border-bottom-color: #ffffff;
+  border-bottom-color: #00425F;
 }
 .user-tabs .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
   cursor: default;
   background-color: transparent;
   border: 4px solid transparent;
-  border-bottom-color: #ff805d;
+  border-bottom-color: #006e82;
 }
 .payments-container{
   padding-top: 30px;

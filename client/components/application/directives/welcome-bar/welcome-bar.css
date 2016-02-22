@@ -39,9 +39,9 @@
 }
 .radioModal>input[type="radio"]:checked+div{
     color: #fff;
-    background-color: #FF805D;
-    border-color: #FF734D;
-    border-bottom-color: #C65C43;
+    background-color: #006e82;
+    border-color: #00425F;
+    border-bottom-color: #00425F;
 }
 .radioModal div{
     position: absolute;
@@ -83,9 +83,9 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
 }
 .btnModalAcept {
     color: #fff;
-    background-color: #FF805D;
-    border-color: #FF734D;
-    border-bottom-color: #C65C43;
+    background-color: #006e82;
+    border-color: #00425F;
+    border-bottom-color: #00425F;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;

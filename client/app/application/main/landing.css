@@ -334,19 +334,22 @@
 .solutionsForTeams .item1{
   display: inline-block !important;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
+  background-color: #006e82;
+  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite1.jpg);
 }
 
 .solutionsForTeams .item2{
   display: inline-block !important;
+  background-color: #006e82;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
+  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite1.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
+  background-color: #006e82;
+  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit1.jpg);
 }
 
 .solutionDescTop{
@@ -388,7 +391,7 @@
 .bannerLandingPayment{
   min-height: 400px;
   width: 100%;
-  color: #ff805d;
+  color: #006e82;
   font-size: 18px;
   background-size: cover;
 }
@@ -409,7 +412,7 @@
   min-height: 200px;
   width: 100%;
   background-size: cover;
-  background-color: #ff805d;
+  background-color: #006e82;
   text-align: justify;
 }
 
@@ -422,17 +425,17 @@
 
 
 .btnContactUs{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .btnContactUs:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -448,17 +451,17 @@
 }
 
 .bannerContactUs .btnSignUp{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .bannerContactUs .btnSignUp:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -473,7 +476,7 @@
 .bannerComingSoon .title{
   margin-top: 20px;
   font-size: 25px;
-  color: #ff805d;
+  color: #006e82;
   text-align: center;
 }
 
@@ -498,7 +501,7 @@
 .divAboutUs .title{
   margin-top: 20px;
   font-size: 25px;
-  color: #ff805d;
+  color: #006e82;
   text-align: center;
 }
 
@@ -517,17 +520,17 @@
 }
 
 .btnComingSoon{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .btnComingSoon:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -535,8 +538,8 @@
   min-height: 700px;
   color: #FFFFFF;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   background-position: center;
   background-image: url(/assets/images/landing/im_bg_pricing.jpg);
   padding-bottom: 10px;
@@ -687,13 +690,13 @@
 .bannerTestimonial{
   /*min-height: 400px;*/
 
-  border-color: #484C4F;
-  border-bottom-color: #C65C43;
+  border-color: #00B39F;
+  border-bottom-color: #00425F;
   background-position:center;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-color: #484C4F;
+  background-color: #00B39F;
   color: #F8F8F8;
 }
 
