@@ -443,7 +443,7 @@ exports.sendEmailReminderPyamentParents = function (user, nameTeam, schedule, va
 function getNameTeamFromOrder(orderId, cb){
   commerceService.orderLoad(orderId, function (err, magentoOrder) {
     if(err || !magentoOrder || !magentoOrder.products){
-      var magentoError = '*Convenience Select*';
+      var magentoError = '*PaidUp*';
       return cb(null, magentoError);
     }
     var teamName = magentoOrder.products[0].shortDescription || magentoOrder.products[0].description || magentoOrder.products[0].productSku.replace(/_/g, ' ');

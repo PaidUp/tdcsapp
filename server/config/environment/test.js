@@ -26,8 +26,8 @@ module.exports = {
     }
   },
   emailVars: {
-    companyName : "Convenience Select (testCsApp)",
-    baseUrl : "https://develop.convenienceselect.com",
+    companyName : "GetPaidUp (testCsApp)",
+    baseUrl : "https://develop.getpaidup.com",
     prefix : '[TEST] '
   },
   stripe:{

@@ -8,14 +8,14 @@ angular.module('convenienceApp')
         faq : {
           header : "I hope you found our FAQ's helpful!",
           body : 'Do you want a case study from a real life volleyball club director and happy ' +
-          'client of Convenience Select?  &nbsp;&nbsp;&nbsp;Enter you details below.',
+          'client of PaidUp?  &nbsp;&nbsp;&nbsp;Enter you details below.',
           button : 'More Details Please',
           subject : 'CTA - FAQ'
         },
         demos : {
           header : 'I hope you found our video demos helpful!',
-          body : "Hello, my name is Allan Rayson, CEO of Convenience Select, and I am excited that you have taken an " +
-          "interest in the three pillars of Convenience Select.  &nbsp;&nbsp;&nbsp;Let me know if you would like to talk.",
+          body : "Hello, my name is Allan Rayson, CEO of PaidUp, and I am excited that you have taken an " +
+          "interest in the three pillars of PaidUp.  &nbsp;&nbsp;&nbsp;Let me know if you would like to talk.",
           button : 'Contact Me',
           subject : 'CTA - DEMOS'
         }

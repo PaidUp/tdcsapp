@@ -61,15 +61,15 @@ var all = {
 
   emailTemplateRoot:path.normalize(__dirname + '/../../../server/views/email'),
   emailOptions:{
-    from: 'Convenience Select <ourteam@convenienceselect.com>',
+    from: 'PaidUp <ourteam@getpaidup.com>',
     subject: 'Default Subject (ourteam)'
   },
   emailOptionsAlerts:{
-    from: 'Convenience Select <alerts@convenienceselect.com>',
+    from: 'PaidUp <alerts@getpaidup.com>',
     subject: 'Default Subject (alerts)'
   },
   emailVars: {
-    companyName : "Convenience Select",
+    companyName : "GetPaidUp",
     baseUrl : "http://localhost:9000",
     prefix : '[DEV] '
   },
@@ -84,7 +84,7 @@ var all = {
     contractTemplateRoot: path.normalize(__dirname + '/../../../server/views/loan'),
     convenienceSelect: {
       state: 'Texas',
-      creditor: 'Convenience Select, LLC',
+      creditor: 'PaidUp, Inc.',
       address: '2900 North Quinlan Park Rd. Suite 240-320.',
       city: 'Austin',
       zip: '78732',
@@ -97,9 +97,9 @@ var all = {
       reInitDebitTimes: 'two',
       calendarDaysAferDebit: 'ten',
       CellPhoneNumber: 6466623303,
-      unsubscribeEmailTo: 'ourteam@convenienceselect.com',
+      unsubscribeEmailTo: 'ourteam@getpaidup.com',
       customerServiceTelephoneNumber: '(855) 764-3232',
-      signedAt: 'Convenience Select, LLC'
+      signedAt: 'PaidUp, Inc.'
     },
     clientData: {
       DisputesTelephoneNumber: '(855) 764-3232',
@@ -111,7 +111,7 @@ var all = {
   // Commerce settings
   commerce: {
     magento: {
-      host: 'develop.convenienceselect.com',
+      host: 'develop.getpaidup.com',
       port: 8888,
       path: '/api/xmlrpc/',
       login: 'magento',
