@@ -14,14 +14,14 @@ module.exports = {
   },
   'fillFormRegisterCoach' : function (browser) {
     browser
-      .setValue('input[name=name]',model.firstname)
+      .setValue('input[name=inputName]',model.firstname)
       .setValue('input[name=lastName]',model.lastname)
       //.setValue('input[name=email]',model.fakeEmail)
-      .setValue('input[name=email]','email'+Math.random()+'@gmail.com')
+      .setValue('input[name=inputEmail]','email'+Math.random()+'@gmail.com')
       .setValue('input[name=password]',model.pass)
       .setValue('input[name=confirm]',model.pass)
       //.setValue('input[ng-model=user.signupRememberMe]','123456')
-      .getValue('input[name=name]',function(result){
+      .getValue('input[name=inputName]',function(result){
         this.assert.equal(result.value,model.firstname)
       })
   },
@@ -33,9 +33,6 @@ module.exports = {
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/commerce/provider/request')
       })
-      .pause(2000)
-      .waitForElementVisible('div[animate=animate]', 1000)
-      .click('div[animate=animate]')
       .pause(1000)
   },
   'logoutCoach' : function (browser){

@@ -20,15 +20,18 @@ module.exports = {
   },
 
   'fillFormNewAthlete' : function (browser) {
+    browser.expect.element('#radioGender').to.not.be.selected;
     browser
       .waitForElementVisible('body', 1000)
       .setValue('input[name=firstName]',model.firstName)
       .setValue('input[name=lastName]',model.lastName)
-      .click('input[name=radioGender]')
+      .setValue('input[name="radioGender"]', browser.Keys.TAB)
+      .setValue('input[name="radioGender"]', browser.Keys.SPACE)
       .setValue('input[name=month]',model.date.month)
       .setValue('input[name=day]',model.date.day)
       .setValue('input[name=year]',model.date.year)
       .pause(1000)
+    browser.expect.element('input#radioGender').to.be.selected;
   },
 
   'validateNewAthlete' : function (browser) {
