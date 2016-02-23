@@ -1,6 +1,7 @@
 var model = require('../../../e2e/models').signup;
 
 module.exports = {
+  '@tags': ['login', 'parent'],
   'authParentOpenModal' : function (browser) {
     browser
       .url('http://localhost:9000')

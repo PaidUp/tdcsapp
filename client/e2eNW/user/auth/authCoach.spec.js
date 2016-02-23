@@ -1,6 +1,7 @@
 var model = require('../../../e2e/models').signup;
 
 module.exports = {
+  '@tags': ['login', 'coach'],
   'authCoachOpenModal' : function (browser) {
     browser
       .url('http://localhost:9000')

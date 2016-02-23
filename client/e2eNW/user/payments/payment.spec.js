@@ -62,8 +62,8 @@ module.exports = {
   },
   'validateCardAdd' : function (browser) {//class="btn btnSignUp btn-block btn-lg"
     browser
-      .waitForElementVisible('button[type=submit]', 1000)
-      .click('button[type=submit]')
+      .waitForElementVisible('#btnCreateCard', 1000)
+      .click("#btnCreateCard")
       .pause(20000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/user/payments')
