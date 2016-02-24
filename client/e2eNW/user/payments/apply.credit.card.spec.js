@@ -1,0 +1,64 @@
+var login = require('../auth/authParent.spec');
+var model = require('../../../e2e/models').creditCardDetails;
+var account = require('../account/account.helper.spec');
+var accountUpdate = require('../account/update.account.spec');
+var athlete = require('../../athletes/add.athlete.spec');
+
+module.exports = {
+  before : function(browser) {
+    login.authParentOpenModal(browser);
+    login.fillFormRegisterParent(browser);
+    login.validateUserLogged(browser);
+    athlete.openModal(browser);
+    athlete.fillFormNewAthlete(browser);
+    athlete.validateNewAthlete(browser);
+    account.userAccount(browser);
+    accountUpdate.updateContactInfoAccount(browser);
+    accountUpdate.submitForm(browser);
+  },
+
+  after : function(browser) {
+    login.logout(browser);
+  },
+  'test' : function (browser) {
+    browser
+      .waitForElementVisible('body', 1000)
+  }/*,
+  'userCardCreate' : function (browser) {
+    browser
+      .waitForElementVisible('#hrefAddNewCard', 1000)
+      .click('#hrefAddNewCard')
+      .pause(1000)
+      .url(function(url){
+        this.assert.equal(url.value,'http://localhost:9000/user/card/create')
+      })
+      .pause(1000)
+  },
+  'fillFormCardCreate' : function (browser) {
+    browser
+      .setValue('input[name=nameOnCard]',model.card.nameOnCard)
+      .setValue('input[name=cardNumber]',model.card.cardNumber)
+      .setValue('#month',model.card.expirationDate.month)
+      .setValue('#year',model.card.expirationDate.year)
+      .setValue('input[name=securityCode]',model.card.securityCode)
+      .setValue('input[name=zipCode]',model.card.zipCode)
+      .pause(1000)
+      /*.getValue('input[name=name]',function(result){
+        this.assert.equal(result.value,model.firstname)
+      })*/
+  /*},
+  'validateCardAdd' : function (browser) {//class="btn btnSignUp btn-block btn-lg"
+    browser
+      .waitForElementVisible('#btnCreateCard', 1000)
+      .setValue('#btnCreateCard', browser.Keys.ENTER)
+      //.click("#btnCreateCard")
+      .pause(20000)
+      .url(function(url){
+        this.assert.equal(url.value,'http://localhost:9000/user/payments')
+      })
+      //TODO validate radio button exists. and value is true.
+      //.waitForElementVisible('input[name=primaryCard]', 5000)
+      //.assert.visible("input[name=primaryCard]")
+      .pause(1000)
+  }*/
+};
