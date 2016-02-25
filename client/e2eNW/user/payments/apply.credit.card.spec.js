@@ -3,6 +3,7 @@ var model = require('../../../e2e/models').creditCardDetails;
 var account = require('../account/account.helper.spec');
 var accountUpdate = require('../account/update.account.spec');
 var athlete = require('../../athletes/add.athlete.spec');
+var model = require('../../../e2e/models').athlete;
 
 module.exports = {
   before : function(browser) {
@@ -25,7 +26,8 @@ module.exports = {
   'selectAthelete' : function (browser) {//Move to account helper
     browser
       .waitForElementVisible('body', 1000)
-      //.pause(5000)
+      .click('#'+model.firstName)
+      .pause(5000)
   }/*,
   'userCardCreate' : function (browser) {
     browser
