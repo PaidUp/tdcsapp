@@ -13,16 +13,19 @@ module.exports = {
     athlete.fillFormNewAthlete(browser);
     athlete.validateNewAthlete(browser);
     account.userAccount(browser);
+    accountUpdate.updateProfileAccount(browser);
     accountUpdate.updateContactInfoAccount(browser);
     accountUpdate.submitForm(browser);
+    account.redirectAthletePage(browser);
   },
 
   after : function(browser) {
     login.logout(browser);
   },
-  'test' : function (browser) {
+  'selectAthelete' : function (browser) {//Move to account helper
     browser
       .waitForElementVisible('body', 1000)
+      //.pause(5000)
   }/*,
   'userCardCreate' : function (browser) {
     browser

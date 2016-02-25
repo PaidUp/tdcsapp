@@ -15,5 +15,23 @@ module.exports = {
         this.assert.equal(url.value,'http://localhost:9000/user/account')
       })
       .pause(1000)
+  },
+  'redirectAthletePage' : function (browser) {
+    browser
+      .pause(2000)
+      .click('#aHrefAthletes')
+      .pause(2000)
+      .url(function(url){
+        this.assert.equal(url.value,'http://localhost:9000/athletes/dashboard')
+      })
+  },
+  'redirectTeamPage' : function (browser) {
+    browser
+      .pause(2000)
+      .click('#aHrefAthletes')
+      .pause(2000)
+      .url(function(url){
+        this.assert.equal(url.value,'http://localhost:9000/teams/dashboard/')
+      })
   }
 };
