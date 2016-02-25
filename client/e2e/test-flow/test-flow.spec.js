@@ -8,7 +8,7 @@ var credentials = require('../page-objects/credentials.po.js');
 var addAthlete = require('../page-objects/add-athlete.po.js');
 var payments = require('../user/payments/payments.helper.spec.js');
 
-describe('Convenience Select test flow', function() {
+describe('PaidUp test flow', function() {
 
   beforeEach(function() {});
 

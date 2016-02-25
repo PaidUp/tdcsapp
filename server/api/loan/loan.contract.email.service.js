@@ -26,7 +26,7 @@ function sendContractEmail (loanUser, loan, cb) {
   emailVars.userId = loanUser[0]._id;
 
   commerceService.orderLoad(loan.orderId, function (err, magentoOrder) {
-    var team = 'Convenience Select';
+    var team = 'PaidUp';
     if(!err && magentoOrder){
       team = magentoOrder.products[0].productSku.replace(/_/g, ' ');
     }

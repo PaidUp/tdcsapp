@@ -59,9 +59,9 @@
   line-height: 34px;
 }
 .team-Profile .radio-inline input[type="radio"]:checked + div{
-  color: #ff805d;
+  color: #006e82;
   background-color: #e6f5fd;
-  border: 1px solid #ff805d;
+  border: 1px solid #006e82;
 }
 .btn-enroll{
   text-align: left;
@@ -72,7 +72,7 @@
   text-align: center;
 }
 .btn-enroll span{
-  color: #c6614a;
+  color: #006e82;
   font-size: 10px;
 }
 .btn-enroll span span{
