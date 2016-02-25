@@ -13,57 +13,61 @@ module.exports = {
     athlete.openModal(browser);
     athlete.fillFormNewAthlete(browser);
     athlete.validateNewAthlete(browser);
-    account.userAccount(browser);
-    accountUpdate.updateProfileAccount(browser);
-    accountUpdate.updateContactInfoAccount(browser);
-    accountUpdate.submitForm(browser);
-    account.redirectAthletePage(browser);
+    //account.userAccount(browser);
+    //accountUpdate.updateProfileAccount(browser);
+    //accountUpdate.updateContactInfoAccount(browser);
+    //accountUpdate.submitForm(browser);
+    //account.redirectAthletePage(browser);
+    //TODO add credit card
   },
 
   after : function(browser) {
     login.logout(browser);
   },
-  'selectAthelete' : function (browser) {//Move to account helper
+  'selectAthelete' : function (browser) {
     browser
       .waitForElementVisible('body', 1000)
       .click('#'+model.firstName)
-      .pause(5000)
-  }/*,
-  'userCardCreate' : function (browser) {
-    browser
-      .waitForElementVisible('#hrefAddNewCard', 1000)
-      .click('#hrefAddNewCard')
-      .pause(1000)
-      .url(function(url){
-        this.assert.equal(url.value,'http://localhost:9000/user/card/create')
-      })
-      .pause(1000)
   },
-  'fillFormCardCreate' : function (browser) {
+  'selectTeam' : function (browser) {
     browser
-      .setValue('input[name=nameOnCard]',model.card.nameOnCard)
-      .setValue('input[name=cardNumber]',model.card.cardNumber)
-      .setValue('#month',model.card.expirationDate.month)
-      .setValue('#year',model.card.expirationDate.year)
-      .setValue('input[name=securityCode]',model.card.securityCode)
-      .setValue('input[name=zipCode]',model.card.zipCode)
-      .pause(1000)
-      /*.getValue('input[name=name]',function(result){
-        this.assert.equal(result.value,model.firstname)
-      })*/
-  /*},
-  'validateCardAdd' : function (browser) {//class="btn btnSignUp btn-block btn-lg"
-    browser
-      .waitForElementVisible('#btnCreateCard', 1000)
-      .setValue('#btnCreateCard', browser.Keys.ENTER)
-      //.click("#btnCreateCard")
-      .pause(20000)
-      .url(function(url){
-        this.assert.equal(url.value,'http://localhost:9000/user/payments')
+      .waitForElementVisible('list-teams div .thumbnail', 5000)
+      .getValue('list-teams div .thumbnail:last-child', function(result){
+        console.log('result', result)
+        browser.click('list-teams div .thumbnail:last-child')
       })
-      //TODO validate radio button exists. and value is true.
-      //.waitForElementVisible('input[name=primaryCard]', 5000)
-      //.assert.visible("input[name=primaryCard]")
-      .pause(1000)
-  }*/
+      .pause(5000)
+  },
+  'selectSubTeam' : function (browser) {
+    browser
+      .waitForElementVisible('#selectTeam', 15000)
+      .setValue('#selectTeam','North Texas Banditos - 14U White')
+      .setValue('#selectTeam', browser.Keys.TAB)
+      //.click('option[value=object:282]')
+  },
+  'selectPaymentPlan' : function (browser) {
+    browser
+      .waitForElementVisible('#select0', 5000)
+      .setValue('#select0', 'Payment In Full ($866.25)')
+      .setValue('#select0', browser.Keys.TAB)
+      //.click('option[value=30]')
+      .pause(5000)
+  },
+  'submitButtonPayNow' : function (browser) {
+    browser
+      .click('button[type=submit]')
+  },
+  'submitButtonProccedToCheckout' : function (browser) {
+    browser
+      .pause(15000)
+      .click('#proceed-to-checkout')
+  },
+  'selectPaymentMethod' : function (browser) {
+
+  },
+  'selectPaymentMethod' : function (browser) {
+  //browser
+    //.pause(15000)
+    //.click('#proceed-to-checkout')
+  }
 };
