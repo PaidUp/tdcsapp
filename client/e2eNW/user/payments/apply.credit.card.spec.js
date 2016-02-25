@@ -4,6 +4,7 @@ var account = require('../account/account.helper.spec');
 var accountUpdate = require('../account/update.account.spec');
 var athlete = require('../../athletes/add.athlete.spec');
 var model = require('../../../e2e/models').athlete;
+var addPaymentMethod = require('./payment.spec');
 
 module.exports = {
   before : function(browser) {
@@ -13,12 +14,15 @@ module.exports = {
     athlete.openModal(browser);
     athlete.fillFormNewAthlete(browser);
     athlete.validateNewAthlete(browser);
-    //account.userAccount(browser);
-    //accountUpdate.updateProfileAccount(browser);
-    //accountUpdate.updateContactInfoAccount(browser);
-    //accountUpdate.submitForm(browser);
-    //account.redirectAthletePage(browser);
-    //TODO add credit card
+    account.userAccount(browser);
+    accountUpdate.updateProfileAccount(browser);
+    accountUpdate.updateContactInfoAccount(browser);
+    accountUpdate.submitForm(browser);
+    addPaymentMethod.userPayments(browser);
+    addPaymentMethod.userCardCreate(browser);
+    addPaymentMethod.fillFormCardCreate(browser);
+    addPaymentMethod.validateCardAdd(browser);
+    account.redirectAthletePage(browser);
   },
 
   after : function(browser) {
@@ -62,12 +66,15 @@ module.exports = {
       .pause(15000)
       .click('#proceed-to-checkout')
   },
-  'selectPaymentMethod' : function (browser) {
-
+  'selectPaymentMethod' : function (browser) {//TODO
+  browser
+    .pause(10000)
+    .setValue('select[name=selectAccount]', 'Visa endingin 1111')
+    .setValue('select[name=selectAccount]', browser.Keys.TAB)
   },
-  'selectPaymentMethod' : function (browser) {
-  //browser
-    //.pause(15000)
-    //.click('#proceed-to-checkout')
+  'selectPaymentMethod' : function (browser) {//TODO
+  browser
+    .click('button[type=submit]')
+    .pause(15000)
   }
 };
