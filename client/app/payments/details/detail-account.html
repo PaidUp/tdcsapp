@@ -170,6 +170,7 @@
         <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectBank.$invalid && submitted }">
           <div class="form-group">
             <select name="selectAccount"
+                    id="lstSelectAccount"
                     class="form-control"
                     ng-model="accountDetails"
                     ng-required="accounts.length > 1"

@@ -37,7 +37,6 @@ module.exports = {
     browser
       .waitForElementVisible('list-teams div .thumbnail', 5000)
       .getValue('list-teams div .thumbnail:last-child', function(result){
-        console.log('result', result)
         browser.click('list-teams div .thumbnail:last-child')
       })
       .pause(5000)
@@ -47,15 +46,13 @@ module.exports = {
       .waitForElementVisible('#selectTeam', 15000)
       .setValue('#selectTeam','North Texas Banditos - 14U White')
       .setValue('#selectTeam', browser.Keys.TAB)
-      //.click('option[value=object:282]')
   },
   'selectPaymentPlan' : function (browser) {
     browser
       .waitForElementVisible('#select0', 5000)
       .setValue('#select0', 'Payment In Full ($866.25)')
       .setValue('#select0', browser.Keys.TAB)
-      //.click('option[value=30]')
-      .pause(5000)
+      .pause(10000)
   },
   'submitButtonPayNow' : function (browser) {
     browser
@@ -64,17 +61,23 @@ module.exports = {
   'submitButtonProccedToCheckout' : function (browser) {
     browser
       .pause(15000)
+      .setValue('#proceed-to-checkout', browser.Keys.TAB)
       .click('#proceed-to-checkout')
   },
   'selectPaymentMethod' : function (browser) {//TODO
   browser
-    .pause(10000)
-    .setValue('select[name=selectAccount]', 'Visa endingin 1111')
-    .setValue('select[name=selectAccount]', browser.Keys.TAB)
-  },
-  'selectPaymentMethod' : function (browser) {//TODO
-  browser
-    .click('button[type=submit]')
     .pause(15000)
+    .setValue('input[name=phone]', browser.Keys.TAB)
+    .waitForElementVisible('#lstSelectAccount', 10000)
+    .setValue('#lstSelectAccount', 'Visa ending in 1111')
+    .setValue('#lstSelectAccount', browser.Keys.TAB)
+  },
+  'submitButton' : function (browser) {//TODO
+    browser
+      .click('button[type=submit]')
+      .pause(25000)
+  },
+  'verifyCheckout' : function (browser) {//TODO
+  browser.assert.urlEquals('http://localhost:9000/commerce/checkout/success/card')
   }
 };
