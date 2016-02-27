@@ -2,7 +2,7 @@
 
 angular.module('convenienceApp')
   .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory,
-                                    CommerceService, NotificationEmailService, AuthService, FlashService, TrackerService) {
+                                    CommerceService, NotificationEmailService, AuthService, FlashService, TrackerService, DuesService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -74,6 +74,18 @@ angular.module('convenienceApp')
       });
     };
 
+    CartController.generateDues = function(feeManagement, cb){
+      DuesService.generateDues(feeManagement , function(err, data){
+
+        if(err){
+          cb(err);
+        }else{
+          cb(null, data)
+        }
+      });
+
+    }
+
     $scope.modalFactory = ModalFactory;
 
     function getCart(){
@@ -84,6 +96,9 @@ angular.module('convenienceApp')
           CartController.cart = cart;
           angular.forEach(cart.items, function (cartItem, index) {
             TeamService.getTeam(cartItem.productId).then(function (team) {
+
+              console.log('team**' , team);
+
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
@@ -95,6 +110,12 @@ angular.module('convenienceApp')
               if (cart.items.length-1 === index && typeof(feeItem) !== 'undefined'){
                 $scope.teams.push(feeItem);
               }
+
+              CartController.generateDues(JSON.parse(team.attributes.feeManagement) , function(err , data){
+                console.log('err' , err);
+                console.log('data' , data);
+              });
+
             }).catch(function(err){
               handlerErrorGetTotals(err);
             }).finally(function(){
@@ -110,8 +131,11 @@ angular.module('convenienceApp')
                   if(err){
                     return handlerErrorGetTotals(err);
                   }
+
                   $scope.loading = false;
                 });
+
+
 
               });
             });
