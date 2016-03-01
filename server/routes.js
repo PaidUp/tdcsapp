@@ -40,8 +40,8 @@ module.exports = function(app) {
 
   app.use('/api/v1/logger', require('./api/logger'));
 
-  app.route('/google014f65dcaa5e2a95.html').get(function(req, res){
-    res.send('google-site-verification: google014f65dcaa5e2a95.html')
+  app.route('/google55233ee6abe86e62.html').get(function(req, res){
+    res.send('google-site-verification: google55233ee6abe86e62.html')
   })
 
   // All undefined asset or api routes should return a 404
