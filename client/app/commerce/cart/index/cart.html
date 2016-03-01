@@ -28,16 +28,11 @@
                 </small>
               </strong>
             </td>
-            <td class="hidden-xs">{{team.attributes.price | currency}}</td>
+            <td class="hidden-xs">{{totals.subTotal| currency}}</td>
             <td>{{team.attributes.qty}}</td>
-            <td>{{team.attributes.rowTotal | currency}}</td>
+            <td>{{totals.subTotal | currency}}</td>
           </tr>
-          <tr ng-repeat="requiredItem in item.attributes.requiredItems">
-            <td>{{requiredItem.itemName}}</td>
-            <td class="hidden-xs">{{requiredItem.price | currency}}</td>
-            <td>{{requiredItem.quantity}}</td>
-            <td>{{requiredItem.price * requiredItem.quantity | currency}}</td>
-          </tr>
+
         </tbody>
       </table>
     </div>
@@ -61,26 +56,26 @@
         <tfoot>
         <tr>
           <td colspan="2">
-            <strong>{{subtotal.title | uppercase}}</strong>
+            <strong>{{'subtotal' | uppercase}}</strong>
           </td>
           <td>
-            <span>{{subtotal.amount | currency}}</span>
+            <span>{{totals.subTotal | currency}}</span>
           </td>
         </tr>
-        <tr ng-show="discount">
+        <tr ng-show="totals.discount">
           <td colspan="2">
-            <strong>{{discount.title | uppercase}}</strong>
+            <strong>{{'discount' | uppercase}}</strong>
           </td>
           <td>
-            <span>{{discount.amount | currency}}</span>
+            <span>{{totals.discount | currency}}</span>
           </td>
         </tr>
           <tr>
             <td colspan="2">
-              <strong>{{total.title | uppercase}}</strong>
+              <strong>{{'grand total' | uppercase}}</strong>
             </td>
             <td>
-              <span>{{total.amount | currency}}</span>
+              <span>{{totals.grandTotal | currency}}</span>
             </td>
           </tr>
         </tfoot>
@@ -92,32 +87,32 @@
         <tr>
           <th colspan="3"><span class="">PAYMENT PLAN</span></th>
         </tr>
-        <tr ng-if="isScheduleError">
+        <tr ng-if="duesError">
           <th colspan="3"><span class=""><div class="alert alert-danger">There's a problem. We've been notified and will fix it. Please try again later.</div></span></th>
         </tr>
-        <tr ng-if="!isScheduleError">
+        <tr ng-if="!duesError">
           <th>Description</th>
           <th>Date payment</th>
           <th>Value</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="schedule in schedules[0].periods">
+        <tr ng-repeat="due in dues">
           <td>
-            <strong>{{schedule.description}}</strong>
+            <strong>{{due.description}}</strong>
           </td>
           <td>
-            <strong>{{schedule.nextPaymentDue  |  date:'MM-dd-yyyy'}}</strong>
+            <strong>{{schedule.dateCharge  |  date:'MM-dd-yyyy'}}</strong>
           </td>
           <td>
-            <span>{{schedule.price | currency}}</span>
+            <span>{{due.amount | currency}}</span>
           </td>
         </tr>
         </tbody>
       </table>
 
 
-      <button class="btn btnSignUp btn-block btn-lg" ng-hide="isScheduleError" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">
+      <button class="btn btnSignUp btn-block btn-lg" ng-hide="duesError" type="button" ng-click="checkouOrder()" id="proceed-to-checkout">
         Proceed to Checkout
       </button>
     </div>

@@ -2,7 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService,
-                                            ContactService, $state, $stateParams, TeamService, CartService, TrackerService) {
+                                            ContactService, $state, $stateParams, TeamService, CartService,
+                                            TrackerService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -24,6 +25,7 @@ angular.module('convenienceApp')
     $scope.renderTeams = false;
     $scope.showDropDownTeams = false;
     $scope.disablePayNow = false;
+    $scope.showDropDownPaymenPlans = false;
 
     function loadTeams(team){
       $scope.showDropDownTeams = false;
@@ -37,7 +39,6 @@ angular.module('convenienceApp')
         });
       }
     };
-
 
     function loadTeam(teamID, cb){
       TeamService.getTeam(teamID).then(function (team) {
@@ -149,13 +150,35 @@ angular.module('convenienceApp')
       TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){
-        $scope.disablePayNow = false;
+
+        try{
+          var fm = JSON.parse(team.attributes.feeManagement);
+          var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
+          CartService.setFeeManagement(fm);
+          $scope.paymentPlans = [];
+          for(var reference in pm){
+            $scope.paymentPlans.push({
+              id : reference,
+              description : pm[reference].description
+            });
+          }
+          $scope.renderPaymentPlans = true;
+          $scope.showDropDownPaymenPlans = true;
+          $scope.disablePayNow = false;
+        }catch (err){
+          $scope.errorFeeManagment = true;
+        }
+
+
       });
     };
 
-    // $scope.selectAthlete = function (athlete) {
-    //   if (athlete.firstName === 'Add New Athlete') {
-    //     console.log('Add New Athlete');
-    //   }
-    // };
+    $scope.selectPaymentplan = function(pm){
+      var fm = CartService.getFeeManagement();
+      fm.paymentPlanSelected = pm.id;
+      CartService.setFeeManagement(fm);
+      $scope.disablePayNow = false;
+    }
+
+
   });

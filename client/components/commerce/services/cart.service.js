@@ -45,12 +45,20 @@ angular.module('convenienceApp')
       CartService.els.set('discount', discount);
     };
 
+    CartService.setFeeManagement = function (feeManagement) {
+      CartService.els.set('feeManagement', feeManagement);
+    };
+
     CartService.getCartGrandTotal = function () {
       return CartService.els.get('grandTotal')
     };
 
     CartService.getCartDiscount = function () {
       return CartService.els.get('discount')
+    };
+
+    CartService.getFeeManagement = function () {
+      return CartService.els.get('feeManagement');
     };
 
     CartService.hasProductBySKU = function (sku, cb) {
@@ -119,6 +127,8 @@ angular.module('convenienceApp')
         CartService.els.remove('products');
         CartService.els.remove('grandTotal');
         CartService.els.remove('discount');
+        CartService.els.remove('paymentPlan');
+        CartService.els.remove('feeManagement');
         CartService.els = null;
       }
       storage.$reset();
