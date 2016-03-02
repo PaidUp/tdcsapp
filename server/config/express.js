@@ -20,7 +20,7 @@ var winston = require('winston');
 module.exports = function(app) {
   var env = app.get('env');
   var oneDay = 86400000;
-
+  app.use(require('prerender-node').set('prerenderToken', config.prerender.token));
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
