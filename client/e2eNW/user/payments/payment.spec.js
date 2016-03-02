@@ -1,31 +1,17 @@
 var login = require('../auth/authParent.spec');
 var model = require('../../../e2e/models').creditCardDetails;
+var account = require('../account/account.helper.spec');
 
 module.exports = {
   before : function(browser) {
     login.authParentOpenModal(browser);
     login.fillFormRegisterParent(browser);
     login.validateUserLogged(browser);
+    account.userAccount(browser);
   },
 
   after : function(browser) {
     login.logout(browser);
-  },
-
-  'userAccount' : function (browser) {
-    
-    browser
-      .waitForElementVisible('body', 1000)
-      .waitForElementVisible('a[aria-haspopup=true]', 1000)
-      .click('a[aria-haspopup=true]')
-      .pause(2000)
-      .waitForElementVisible('#profile', 1000)
-      .click('#profile')
-      .pause(1000)
-      .url(function(url){
-        this.assert.equal(url.value,'http://localhost:9000/user/account')
-      })
-      .pause(1000)
   },
   'userPayments' : function (browser) {
     browser
@@ -62,8 +48,9 @@ module.exports = {
   },
   'validateCardAdd' : function (browser) {//class="btn btnSignUp btn-block btn-lg"
     browser
-      .waitForElementVisible('button[type=submit]', 1000)
-      .click('button[type=submit]')
+      .waitForElementVisible('#btnCreateCard', 1000)
+      .setValue('#btnCreateCard', browser.Keys.ENTER)
+      //.click("#btnCreateCard")
       .pause(20000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/user/payments')

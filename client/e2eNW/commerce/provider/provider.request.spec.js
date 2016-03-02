@@ -68,7 +68,9 @@ module.exports = {
     browser
       .waitForElementVisible('body', 1000)
       .waitForElementVisible('#btnSave', 1000)
-      .click('#btnSave')
+      //.click('#btnSave')
+      .setValue('#btnSave', browser.Keys.ENTER)
+      //.setValue('input[name="radioGender"]', browser.Keys.SPACE)
       .pause(15000)
       .url(function(url){
         this.assert.equal(url.value,'http://localhost:9000/commerce/provider/success')

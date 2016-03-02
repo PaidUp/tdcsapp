@@ -1,6 +1,7 @@
 var model = require('../../../e2e/models').signup;
 
 module.exports = {
+  '@tags': ['login', 'parent'],
   'authParentOpenModal' : function (browser) {
     browser
       .url('http://localhost:9000')
@@ -11,16 +12,16 @@ module.exports = {
   },
   'fillFormRegisterParent' : function (browser) {
     browser
-      .setValue('input[name=name]',model.firstname)
+      .setValue('input[name=inputName]',model.firstname)
       .setValue('input[name=lastName]',model.lastname)
-      //.setValue('input[name=email]',model.fakeEmail)
-      .setValue('input[name=email]','email'+Math.random()+'@gmail.com')
+      .setValue('input[name=inputEmail]','email'+Math.random()+'@gmail.com')
       .setValue('input[name=password]',model.pass)
       .setValue('input[name=confirm]',model.pass)
-      //.setValue('input[ng-model=user.signupRememberMe]','123456')
-      .getValue('input[name=name]',function(result){
+      .pause(5000)
+      .getValue('input[name=inputName]',function(result){
         this.assert.equal(result.value,model.firstname)
       })
+      .pause(5000)
   },
   'validateUserLogged' : function (browser) {
     browser
@@ -31,9 +32,6 @@ module.exports = {
         this.assert.equal(url.value,'http://localhost:9000/athletes/dashboard')
       })
       .pause(2000)
-      .waitForElementVisible('div[animate=animate]', 1000)
-      .click('div[animate=animate]')
-      .pause(1000)
   },
   'logout' : function (browser){
     browser
