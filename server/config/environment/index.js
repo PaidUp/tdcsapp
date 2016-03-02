@@ -301,6 +301,9 @@ var all = {
   },
   logger : {
     token : 'f5ea6cdf-b8c0-44ca-962f-1328873c5974'
+  },
+  prerender: {
+    token : 'U3jxQ8zAatml2xL5LVd1'
   }
 };
 
