@@ -1,6 +1,7 @@
 'use strict'
 
 var tdPaymentPlanService = require('TDCore').paymentPlanService;
+var duesService = require('TDCore').duesService;
 var config = require('../../../config/environment/index');
 var logger = require('../../../config/logger');
 //Done
