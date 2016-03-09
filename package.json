@@ -44,7 +44,8 @@
     "urlencode": "1.1.0",
     "winston": "1.0.1",
     "winston-logsene": "1.0.6",
-    "wkhtmltopdf": "0.1.5"
+    "wkhtmltopdf": "0.1.5",
+    "PUSchedule-connect" : "git+ssh://github.com/PaidUp/PUSchedule-connect.git#v0.2.1"
   },
   "devDependencies": {
     "chai-as-promised": "5.1.0",

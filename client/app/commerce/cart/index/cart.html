@@ -102,10 +102,10 @@
             <strong>{{due.description}}</strong>
           </td>
           <td>
-            <strong>{{schedule.dateCharge  |  date:'MM-dd-yyyy'}}</strong>
+            <strong>{{due.dateCharge  |  date:'MM-dd-yyyy'}}</strong>
           </td>
           <td>
-            <span>{{due.amount | currency}}</span>
+            <span>{{due.owedPrice | currency}}</span>
           </td>
         </tr>
         </tbody>

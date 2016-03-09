@@ -2,7 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('CartCtrl', function ($rootScope, $scope, TeamService, CartService, $state, ModalFactory,
-                                    CommerceService, NotificationEmailService, AuthService, FlashService, TrackerService, DuesService) {
+                                    CommerceService, NotificationEmailService, AuthService, FlashService, TrackerService,
+                                    DuesService) {
     $rootScope.$emit('bar-welcome', {
       left:{
         url: ''
@@ -51,6 +52,8 @@ angular.module('convenienceApp')
       var feeManagement = CartService.getFeeManagement();
       var dues = feeManagement.paymentPlans[feeManagement.paymentPlanSelected].dues;
 
+
+
       var discount = 0;
       var subTotal = 0;
       var grandTotal = 0;
@@ -89,39 +92,52 @@ angular.module('convenienceApp')
 
 
         var dues = fm.paymentPlans[fm.paymentPlanSelected].dues;
+        $scope.dues = [];
 
 
+        var params = [];
 
         dues.forEach(function(ele, idx, arr){
           if(applyDiscount) {
             ele.applyDiscount = true;
           }
-          $scope.totals.subTotal = $scope.totals.subTotal + ele.amount;
+
+          params.push({
+            originalPrice: ele.amount,
+            stripePercent: fm.processingFees.cardFeeActual,
+            stripeFlat: fm.processingFees.cardFeeFlatActual,
+            paidUpFee: fm.collectionsFee.fee,
+            discount: ele.applyDiscount ? ele.discount : 0,
+            payProcessing: fm.paysFees.processing,
+            payCollecting: fm.paysFees.collections,
+            description : ele.description,
+            dateCharge : ele.dateCharge
+          });
+
+        });
+
+        DuesService.calculateDues(params, function(err, data){
+          if(err){
+            $scope.duesError = true;
+            TrackerService.create('Error calculating Dues' , err)
+            $scope.loading = false;
+            return handlerErrorGetTotals(err)
+          }
+          $scope.duesError = false;
+          $scope.dues = data.prices;
+
+          data.prices.forEach(function(price, idx, arr){
+            $scope.totals.subTotal = $scope.totals.subTotal + (price.owedPrice + price.discount);
+            $scope.totals.discount = $scope.totals.discount + price.discount;
+          });
+          $scope.totals.grandTotal = $scope.totals.subTotal - $scope.totals.discount;
         });
 
         CartService.setFeeManagement(fm);
 
-        DuesService.generateDues(fm , function(err, data){
-          if(err){
-            $scope.duesError = true;
-            TrackerService.create('Error generating Dues' , err)
-            return handlerErrorGetTotals(err)
-          }else{
-            $scope.duesError = false;
-            $scope.dues = data;
-
-
-
-            data.forEach(function(ele, idx, arr){
-              $scope.totals.discount = $scope.totals.discount + ele.discount;
-              $scope.totals.grandTotal = $scope.totals.grandTotal + ele.amount;
-            });
-
-          }
-        });
-
       }catch(err){
         $scope.duesError = true;
+        $scope.loading = false;
         TrackerService.create('Error parse JSON dues' , {feeManagement : feeManagement});
         return cb(err);
       }
@@ -177,7 +193,7 @@ angular.module('convenienceApp')
         timeout: 10000
       });
       $state.go('athletes');
-      $scope.loading= false;
+      $scope.loading=false;
       return false;
     }
 

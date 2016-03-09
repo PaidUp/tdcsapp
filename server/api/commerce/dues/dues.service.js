@@ -1,18 +1,31 @@
 'use strict'
 
 var duesService = require('TDCore').duesService;
+
+var PUScheduleConnect = require("PUSchedule-connect");
 var config = require('../../../config/environment/index');
 var logger = require('../../../config/logger');
 //Done
 
 
-function generateDues(params , cb){
-  duesService.generateDues(params, function(err , data){
-    if(err){
+function calculateDues(params , cb){
+  var req = {
+    baseUrl : config.connections.schedule.baseUrl,
+    token : config.connections.schedule.token,
+    prices : params
+  }
+
+
+  PUScheduleConnect.calculatePrices(req).exec({
+// An unexpected error occurred.
+    error: function (err){
       return cb(err);
-    }
-    cb(null, data);
-  })
+    },
+// OK.
+    success: function (result){
+      return cb(null, result);
+    },
+  });
 };
 
 module.exports = function(conf){
@@ -20,9 +33,8 @@ module.exports = function(conf){
     logger.debug('set new configuration' , conf);
     config = conf;
   }
-  duesService.init(config.connections.schedule);
 
   return {
-    generateDues:generateDues
+    calculateDues:calculateDues
   }
 }
