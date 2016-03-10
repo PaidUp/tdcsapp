@@ -37,6 +37,8 @@
     "passport": "0.3.0",
     "passport-local": "1.0.0",
     "prerender-node": "^2.2.0",
+    "pu-commerce-connect": "~0.0.3",
+    "pu-schedule-connect": "~2.0.0",
     "serve-favicon": "2.3.0",
     "snakeize": "0.1.0",
     "socket.io": "1.3.7",
@@ -45,8 +47,7 @@
     "urlencode": "1.1.0",
     "winston": "1.0.1",
     "winston-logsene": "1.0.6",
-    "wkhtmltopdf": "0.1.5",
-    "PUSchedule-connect" : "git+ssh://github.com/PaidUp/PUSchedule-connect.git#v0.2.1"
+    "wkhtmltopdf": "0.1.5"
   },
   "devDependencies": {
     "chai-as-promised": "5.1.0",
