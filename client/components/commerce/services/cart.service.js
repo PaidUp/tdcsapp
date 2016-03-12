@@ -185,9 +185,9 @@ angular.module('convenienceApp')
       return resp;
     };
 
-    this.applyDiscount = function(coupon, cartId, cb){
+    this.applyDiscount = function(productId, coupon, cb){
       discount.apply({coupon:coupon,
-        cartId:cartId}).$promise.then(function(result){
+        productId:productId}).$promise.then(function(result){
           cb(null, result);
         }).catch(function(err){
           console.log(err);
