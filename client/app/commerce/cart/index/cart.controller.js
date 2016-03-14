@@ -80,7 +80,7 @@ angular.module('convenienceApp')
     }
 
 
-    CartController.generateDues = function(applyDiscount, discount){
+    CartController.generateDues = function(applyDiscount, couponId, discount){
       try{
         var fm = CartService.getFeeManagement();
 
@@ -101,6 +101,7 @@ angular.module('convenienceApp')
           if(applyDiscount) {
             ele.applyDiscount = true;
             ele.discount = discount;
+            ele.couponId = couponId
           }
 
           params.push({
@@ -223,10 +224,6 @@ angular.module('convenienceApp')
         });
       }else{
         CartService.applyDiscount($scope.productId, $scope.codeDiscounts, function(err, data){
-          console.log('err',err)
-          console.log('data' ,data)
-
-
           if(err){
             TrackerService.create('Apply discount error' , {errorMessage : 'Coupon in not valid'});
             FlashService.addAlert({
@@ -236,7 +233,7 @@ angular.module('convenienceApp')
             });
           } else{
             TrackerService.create('Apply discount success',{coupon : $scope.codeDiscounts});
-            CartController.generateDues(true, data.percent);
+            CartController.generateDues(true, data._id, data.percent);
             FlashService.addAlert({
               type: 'success',
               msg: 'Your discount was applied',
