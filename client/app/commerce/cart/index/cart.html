@@ -38,7 +38,7 @@
     </div>
 
     <div class="col-md-4 table-responsive" >
-      <div id="couponArea" class="row" ng-show="!discount">
+      <div id="couponArea" class="row" ng-show="totals.discount <= 0">
         <div class="col-sm-3"><strong class="titles">Discount Code</strong> </div>
         <div class="col-sm-7"><input id="codeDiscounts" class="form-control" ng-model="codeDiscounts" type="text"> </div>
         <div class="col-sm-2"><button class="btn btnSignUp" type="button" ng-click="applyDiscount()">Apply</button> </div>

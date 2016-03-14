@@ -2,6 +2,7 @@
 var config = require('../../../config/environment');
 var TDCommerceService = require('TDCore').commerceService;
 var logger = require('../../../config/logger');
+var CommerceConnect = require('pu-commerce-connect');
 
 function cartCreate (cb) {
   TDCommerceService.init(config.connections.commerce);
@@ -124,12 +125,30 @@ exports.addFee = function (cartId, cb){
   });
 }
 
-function cartCouponAdd (cartCoupon, cb) {
-  TDCommerceService.init(config.connections.commerce);
-  TDCommerceService.cartCouponAdd(cartCoupon, function(err, data) {
-    if(err) return cb(err);
-    return cb(null, data);
+function cartCouponAdd (productId, coupon, cb) {
+  let params = {
+    baseUrl : config.connections.commerce.baseUrl,
+    token : config.connections.commerce.token,
+    code : coupon,
+    product : productId,
+    coupon : coupon,
+    productId : productId
+  }
+
+  CommerceConnect.redeemCoupon(params).exec({
+    success : function(data){
+      return cb(null, data);
+
+    },
+    notAvailable : function(msg){
+      return cb(msg);
+    },
+    error : function(err){
+      console.log("err" , err)
+      return cb(err);
+    }
   });
+
 }
 
 exports.cartCreate = cartCreate;
