@@ -43,16 +43,15 @@ angular.module('convenienceApp')
       });
     };
 
-    $scope.schedules = [];
 
-    var currentCartId = CartService.getCurrentCartId();
+    //var currentCartId = CartService.getCurrentCartId();
 
     $scope.limitMinList = 1;
 
     function init(){
       $scope.placedOrder = true;
       setKey();
-      getCart();
+      //getCart();
       fillFormUserDetails();
 
       loadBankAccounts($scope.accounts).then(function(lst){
@@ -63,11 +62,16 @@ angular.module('convenienceApp')
         }, function(err2){
           $scope.sendAlertErrorMsg(err.data.message);
         });
+
         }, function(err){
           $scope.sendAlertErrorMsg(err.data.message);
       });
-    };
 
+      $scope.dues = CartService.getDues();
+      $scope.team = CartService.getTeam();
+
+    };
+/*
     function getCart(){
       CartService.getCart(currentCartId).then(function (value) {
         var ele = value.items[0];
@@ -92,7 +96,7 @@ angular.module('convenienceApp')
         });
       });
     }
-
+*/
     function setKey(){
       ApplicationConfigService.getConfig().then(function (config) {
         Stripe.setPublishableKey(config.stripeApiPublic);
@@ -262,6 +266,7 @@ angular.module('convenienceApp')
       }
     };
 
+
     $scope.placeOrder = function (typeAccount, accountResponse) {
 
       $scope.submitted = true;
@@ -301,8 +306,10 @@ angular.module('convenienceApp')
           addressShipping.mode = 'shipping';
 
           CartService.getCart(currentCartId).then(function (value) {
-            var ele = value.items[0];
+
             CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
+
+
               var payment = {
                 cartId: CartService.getCurrentCartId(),
                 athleteFirstName: CartService.getAthlete().firstName,
@@ -319,6 +326,8 @@ angular.module('convenienceApp')
                 price: CartService.getCartGrandTotal(),
                 discount : CartService.getCartDiscount()
               };
+
+
 
               PaymentService.sendPayment(payment).then(function () {
                 CartService.removeCurrentCart();
@@ -396,7 +405,4 @@ angular.module('convenienceApp')
         $scope.placedOrder = false;
       }
     };
-
-    init();
-
   });

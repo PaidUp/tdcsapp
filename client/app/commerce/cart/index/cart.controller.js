@@ -17,72 +17,20 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-    //var cartId = null;
-
-    var getTotals = function (applyDiscountToFee, cb){
-      CartService.getTotals($scope.cartId).then(function (totals) {
-        angular.forEach(totals, function (total) {
-          if(!total.amount){
-            return handlerErrorGetTotals('Total is null');
-          }
-          if (total.title === 'Grand Total') {
-            $scope.total = total;
-            CartService.setCartGrandTotal(total.amount);
-          } else if (total.title === 'Subtotal') {
-            $scope.subtotal = total;
-          } else if (total.title.indexOf("Discount")===0) {
-            $scope.discount = total;
-            if(applyDiscountToFee){
-              CartService.setCartDiscount(total.amount * -1);
-            }
-          }
-        });
-
-      }).catch(function(err){
-        cb(err);
-      }).finally(function(){
-        if(!$scope.total || $scope.total === 0){
-          return cb("Totals can't be set");
-        }
-        cb(null, true);
-      });
-    };
-
-    CartController.calculateTotals = function(applyDiscount){
-      var feeManagement = CartService.getFeeManagement();
-      var dues = feeManagement.paymentPlans[feeManagement.paymentPlanSelected].dues;
-
-
-
-      var discount = 0;
-      var subTotal = 0;
-      var grandTotal = 0;
-
-      dues.forEach(function(ele, idx, arr){
-        if(applyDiscount){
-          ele.applyDiscount = true;
-        }
-        discount = ele.applyDiscount ? (discount + ele.discount) : discount;
-        subTotal = subTotal + ele.amount;
-
-      });
-
-      CartService.setFeeManagement(feeManagement);
-
-      grandTotal = subTotal - discount;
-
-      $scope.totals = {
-        discount : discount,
-        subTotal : subTotal,
-        grandTotal : grandTotal
-      }
-
-    }
 
 
     CartController.generateDues = function(applyDiscount, couponId, discount){
       try{
         var fm = CartService.getFeeManagement();
+        var ro = CartService.getOrderRequest();
+        if(applyDiscount){
+          ro.discount = discount;
+          ro.couponId = couponId;
+        }else{
+          ro.discount = 0;
+          ro.couponId = "";
+        }
+        CartService.setOrderReques(ro);
 
         $scope.totals = {
           discount : 0,
@@ -117,7 +65,6 @@ angular.module('convenienceApp')
           });
 
         });
-
         DuesService.calculateDues(params, function(err, data){
           if(err){
             $scope.duesError = true;
@@ -127,6 +74,7 @@ angular.module('convenienceApp')
           }
           $scope.duesError = false;
           $scope.dues = data.prices;
+          CartService.setDues(data.prices);
 
           data.prices.forEach(function(price, idx, arr){
             $scope.totals.subTotal = $scope.totals.subTotal + (price.owedPrice + price.discount);
@@ -161,6 +109,7 @@ angular.module('convenienceApp')
               team.attributes.qty = cartItem.qty;
               team.attributes.price = cartItem.price;
               team.attributes.rowTotal = cartItem.rowTotal;
+              CartService.setTeam(team)
               if(team.attributes.productId === '9'){
                 feeItem = team;
               }else{
