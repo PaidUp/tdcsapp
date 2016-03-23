@@ -64,6 +64,7 @@ angular.module('convenienceApp')
         });
         $scope.dues = CartService.getDues();
         $scope.team = CartService.getTeam();
+
         }, function(err){
           $scope.sendAlertErrorMsg(err.data.message);
       });

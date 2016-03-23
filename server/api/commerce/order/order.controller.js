@@ -48,13 +48,13 @@ exports.getOrder = function(req , res){
 
 exports.createOrder = function(req, res){
   let user = req.user;
-
   let params = req.body;
 
-  console.log('params' , params)
+  params.userId = user._id;
+  params.userName = user.firstName + ' ' + user.lastName;
+  params.paymentId = user.meta.TDPaymentId;
+  params.email = user.email;
 
-  params.userId = user._id
-  params.userName = user.firstName + ' ' + user.lastName
 
   OrderService.createOrder(params, function(err, data){
     if (err) {
