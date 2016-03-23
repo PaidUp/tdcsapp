@@ -235,19 +235,18 @@ exports.collectAccountsv3 = function (cb) {
 }
 
 function paymentSchedulev3 (cb) {
-  return cb(null, {'here': 'paymentSchedulev3'})
+  // return cb(null, {'here': 'paymentSchedulev3'})
 
-  /* CommerceConnect.redeemCoupon(params).exec({
-    success : function(data){
-      console.log("data" , data)
+  CommerceConnect.orderGet({}).exec({
+    success: function (data) {
+      console.log('data' , data)
       return cb(null, data)
-
     },
-    error : function(err){
-      console.log("err" , err)
+    error: function (err) {
+      console.log('err' , err)
       return cb(err)
     }
-   })*/
+  })
 
   async.eachSeries(pendingOrders,
     function (order, callbackEach) {
