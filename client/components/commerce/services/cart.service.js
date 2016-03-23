@@ -61,6 +61,30 @@ angular.module('convenienceApp')
       return CartService.els.get('feeManagement');
     };
 
+    CartService.setDues = function (dues) {
+      CartService.els.set('dues' , dues);
+    };
+
+    CartService.getDues = function () {
+      return CartService.els.get('dues');
+    };
+
+    CartService.setTeam = function (team) {
+      CartService.els.set('team' , team);
+    };
+
+    CartService.getTeam = function () {
+      return CartService.els.get('team');
+    };
+
+    CartService.setOrderReques = function (orderRequest) {
+      CartService.els.set('order-request' , orderRequest);
+    };
+
+    CartService.getOrderRequest = function () {
+      return CartService.els.get('order-request');
+    };
+
     CartService.hasProductBySKU = function (sku, cb) {
       var result = false;
       CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
@@ -129,6 +153,9 @@ angular.module('convenienceApp')
         CartService.els.remove('discount');
         CartService.els.remove('paymentPlan');
         CartService.els.remove('feeManagement');
+        CartService.els.remove('team');
+        CartService.els.remove('dues');
+        CartService.els.remove('order-request');
         CartService.els = null;
       }
       storage.$reset();

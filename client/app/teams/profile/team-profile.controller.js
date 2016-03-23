@@ -151,6 +151,8 @@ angular.module('convenienceApp')
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){
 
+        CartService.setOrderReques({productId : teamSelected.entityId});
+
         try{
           var fm = JSON.parse(team.attributes.feeManagement);
           var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
@@ -174,6 +176,10 @@ angular.module('convenienceApp')
     };
 
     $scope.selectPaymentplan = function(pm){
+      var ro = CartService.getOrderRequest();
+      ro.paymentPlanSelected = pm.id;
+      CartService.setOrderReques(ro);
+
       var fm = CartService.getFeeManagement();
       fm.paymentPlanSelected = pm.id;
       CartService.setFeeManagement(fm);

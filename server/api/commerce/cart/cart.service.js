@@ -135,7 +135,7 @@ function cartCouponAdd (productId, coupon, cb) {
     productId : productId
   }
 
-  CommerceConnect.redeemCoupon(params).exec({
+  CommerceConnect.couponRedeem(params).exec({
     success : function(data){
       return cb(null, data);
 

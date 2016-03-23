@@ -7,7 +7,11 @@ angular.module('convenienceApp')
     var Transactions = $resource('/api/v1/commerce/transaction/list', {}, {});
     var Provider = $resource('/api/v1/commerce/provider/request', {}, {});
     var Schedule = $resource('/api/v1/commerce/schedule/generate', {}, {
-      post: { method:'POST', isArray: false }});
+      post: { method:'POST', isArray: false }
+    });
+    var CreateOrder = $resource('/api/v1/commerce/order/create', {}, {
+      post: { method:'POST', isArray: false }
+    });
 
     this.getOrders = function () {
       return Orders.query().$promise;
@@ -24,4 +28,8 @@ angular.module('convenienceApp')
     this.getSchedule = function(productId, price, isInFullPay, discount){
       return Schedule.post({productId: productId, price : price, isInFullPay: isInFullPay, discount:discount}).$promise;
     };
+
+    this.createOrder = function(params){
+      return CreateOrder.post(params).$promise;
+    }
   });

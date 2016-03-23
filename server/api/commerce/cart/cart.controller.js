@@ -111,8 +111,6 @@ exports.couponAdd = function (req, res) {
     });
   }
 
-  console.log('req.body',req.body)
-
   cartService.cartCouponAdd(req.body.productId, req.body.coupon, function (err, resp) {
     if(err) {
       res.status(err.status).json(err.message);
