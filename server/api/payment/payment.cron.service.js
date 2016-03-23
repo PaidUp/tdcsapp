@@ -238,16 +238,19 @@ function paymentSchedulev3 (cb) {
   // return cb(null, {'here': 'paymentSchedulev3'})
   let params = {
     baseUrl: config.connections.commerce.baseUrl,
-    token: config.connections.commerce.token,
-    filter: {'paymentsPlan': { '$elemMatch': {'status': 'pending','dateCharge': {'$lte': '2016-03-23T15:28:34.618Z'}}},'status': 'pending'} // , { 'paymentsPlan.$': 1 , 'userId':1}
+    token: config.connections.commerce.token
   }
 
-  CommerceConnect.orderGet(params).exec({
+  CommerceConnect.orderGetToCharge(params).exec({
     success: function (data) {
-      console.log('data orders length' , data.body.orders.length)
-      console.log('data orders ' , data.body)
-      console.log('data orders paymentsPlan processingFees' , data.body.orders[0].paymentsPlan[0])
-      return cb(null, data.body.orders.length)
+      if (data.body.orders.length > 0) {
+        data.body.orders.map(function (order) {
+          console.log('order', order)
+        })
+        return cb(null, {cron: 'Done'})
+      } else {
+        return cb(null, {cron: 'Done'})
+      }
     },
     error: function (err) {
       console.log('err' , err)
