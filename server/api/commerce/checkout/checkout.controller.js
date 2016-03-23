@@ -2,7 +2,6 @@
 
 var _ = require('lodash');
 var checkoutService = require('./checkout.service');
-var cartService = require('../cart/cart.service')
 var paymentService = require('../../payment/payment.service');
 var paymentEmailService = require('../../payment/payment.email.service');
 var userService = require('../../user/user.service');
