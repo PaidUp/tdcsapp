@@ -235,7 +235,6 @@ exports.collectAccountsv3 = function (cb) {
 }
 
 function paymentSchedulev3 (cb) {
-  // return cb(null, {'here': 'paymentSchedulev3'})
   let params = {
     baseUrl: config.connections.commerce.baseUrl,
     token: config.connections.commerce.token
@@ -245,7 +244,8 @@ function paymentSchedulev3 (cb) {
     success: function (data) {
       if (data.body.orders.length > 0) {
         data.body.orders.map(function (order) {
-          console.log('order', order)
+          logger.log('info', '1) order._id: ', order._id)
+        // console.log('order', order)
         })
         return cb(null, {cron: 'Done'})
       } else {
