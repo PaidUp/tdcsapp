@@ -19,8 +19,8 @@ function createOrder(body, cb){
 
     let fm = JSON.parse(dataProduct.feeManagement);
 
-    console.log('PROD**' , dataProduct)
-    console.log('FM$$$' , dataProduct.feeManagement)
+    //console.log('PROD**' , dataProduct)
+    //console.log('FM$$$' , dataProduct.feeManagement)
 
     let dues = fm.paymentPlans[body.paymentPlanSelected].dues;
     let params = [];
@@ -61,7 +61,7 @@ function createOrder(body, cb){
       success: function (result){
         let prices = result.body.prices;
 
-        console.log(JSON.stringify(prices))
+        //console.log(JSON.stringify(prices))
 
         let orderReq = {
           baseUrl: config.connections.commerce.baseUrl,
@@ -82,6 +82,9 @@ function createOrder(body, cb){
             processingFees: fm.processingFees,
             collectionsFee: fm.collectionsFee,
             paysFees: fm.paysFees,
+            typeAccount: body.typeAccount,
+            account: body.account,
+            description: ele.description,
             productInfo: {
               productId: dataProduct.productId,
               productName: dataProduct.shortDescription
@@ -91,8 +94,8 @@ function createOrder(body, cb){
               userName: body.userName,
             },
             beneficiaryInfo: {
-              beneficiaryId: '',
-              beneficiaryName: ''
+              beneficiaryId: body.beneficiaryId,
+              beneficiaryName: body.beneficiaryName
 
             }
 
@@ -102,14 +105,22 @@ function createOrder(body, cb){
         });
 
 
+      CommerceConnector.orderCreate(orderReq).exec({
+// An unexpected error occurred.
+        error: function (err){
 
+          console.log('err#######' , err)
 
+          return cb(err);
+        },
+// OK.
+        success: function (res){
+          console.log('res#######' , res)
 
+          return cb(null, res);
+        },
+      });
 
-
-
-
-        return cb(null, result);
       },
     });
 

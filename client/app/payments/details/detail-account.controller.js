@@ -44,7 +44,7 @@ angular.module('convenienceApp')
     };
 
 
-    //var currentCartId = CartService.getCurrentCartId();
+    var currentCartId = CartService.getCurrentCartId();
 
     $scope.limitMinList = 1;
 
@@ -62,41 +62,13 @@ angular.module('convenienceApp')
         }, function(err2){
           $scope.sendAlertErrorMsg(err.data.message);
         });
-
+        $scope.dues = CartService.getDues();
+        $scope.team = CartService.getTeam();
         }, function(err){
           $scope.sendAlertErrorMsg(err.data.message);
       });
-
-      $scope.dues = CartService.getDues();
-      $scope.team = CartService.getTeam();
-
     };
-/*
-    function getCart(){
-      CartService.getCart(currentCartId).then(function (value) {
-        var ele = value.items[0];
 
-        CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
-          CommerceService.getSchedule(ele.productId, CartService.getCartGrandTotal() , isInFullPay, CartService.getCartDiscount()).then(function (val) {
-            if(val.error){
-              var user = AuthService.getCurrentUser;
-              $scope.isScheduleError = true;
-              NotificationEmailService.sendNotificationEmail('Get schedule error', {
-                productId:ele.productId,
-                price:ele.price,
-                isInFullPay: isInFullPay,
-                email: user.email
-              });
-            }
-            $scope.schedules.push({
-              name: ele.name,
-              periods: val.schedulePeriods
-            });
-          });
-        });
-      });
-    }
-*/
     function setKey(){
       ApplicationConfigService.getConfig().then(function (config) {
         Stripe.setPublishableKey(config.stripeApiPublic);
@@ -305,50 +277,17 @@ angular.module('convenienceApp')
           var addressShipping = angular.extend({}, addressBilling);
           addressShipping.mode = 'shipping';
 
-          CartService.getCart(currentCartId).then(function (value) {
-
-            CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
-
-
-              var payment = {
-                cartId: CartService.getCurrentCartId(),
-                athleteFirstName: CartService.getAthlete().firstName,
-                athleteLastName: CartService.getAthlete().lastName,
-                addresses: [
-                  addressBilling,
-                  addressShipping
-                ],
-                cardId: accountResponse.id,
-                userId: CartService.getUserId(),
-                payment: paymentType,
-                paymentMethod: paymentMethod,
-                isInFullPay: isInFullPay,
-                price: CartService.getCartGrandTotal(),
-                discount : CartService.getCartDiscount()
-              };
-
-
-
-              PaymentService.sendPayment(payment).then(function () {
-                CartService.removeCurrentCart();
-                CartService.createCart();
-                $scope.saveOrUpdateBillingAddress();
-                $state.go('thank-you',{status:status});
-              }).catch(function (err) {
-                if (err.data) {
-                  $scope.sendAlertErrorMsg(err.data.message);
-                  TrackerService.create('Place order send payment error' , err.data.message);
-                }
-              });
-            },function (err) {
-              $scope.placedOrder = false;
-              for (var key in response.error) {
-                $scope.sendAlertErrorMsg(response.error[key]);
-                TrackerService.create('Place order send payment error' , response.error[key]);
-              }
-            });
+          createOrder(typeAccount , accountResponse.id , function(err, data){
+            if(err){
+              $scope.sendAlertErrorMsg(err.data.message);
+              TrackerService.create('Place order send payment error' , err.data.message);
+            }else{
+              CartService.removeCurrentCart();
+              CartService.createCart();
+              $scope.saveOrUpdateBillingAddress();
+              $state.go('thank-you',{status:status});
+            }
           });
-
         } else {
           var status = $scope.accountDetails.status ? $scope.accountDetails.status : 'card';
 
@@ -367,42 +306,40 @@ angular.module('convenienceApp')
           var addressShipping = angular.extend({}, addressBilling);
           addressShipping.mode = 'shipping';
 
-          CartService.getCart(currentCartId).then(function (value) {
-            var products = value.items;
-            products.forEach(function (ele, idx, arr) {
-              CartService.hasProductBySKU('PMINFULL', function (isInFullPay) {
-                var payment = {
-                  cartId: CartService.getCurrentCartId(),
-                  addresses: [
-                    addressBilling,
-                    addressShipping
-                  ],
-                  cardId: $scope.accountDetails.id,
-                  userId: CartService.getUserId(),
-                  athleteFirstName: CartService.getAthlete().firstName,
-                  athleteLastName: CartService.getAthlete().lastName,
-                  payment: paymentType,
-                  paymentMethod: paymentMethod,
-                  isInFullPay: isInFullPay,
-                  price: CartService.getCartGrandTotal(),
-                  discount : CartService.getCartDiscount()
-                };
-                PaymentService.sendPayment(payment).then(function () {
-
-                  CartService.removeCurrentCart();
-                  $scope.saveOrUpdateBillingAddress();
-                  $state.go('thank-you', {'status' : status});
-                  TrackerService.create('Place Order');
-                }).catch(function (err) {
-                  TrackerService.create('Place Order Error', err.message);
-                  $scope.sendAlertErrorMsg(err);
-                });
-              });
-            });
+          createOrder(typeAccount , $scope.accountDetails.id , function(err, data){
+            if(err){
+              $scope.sendAlertErrorMsg(err.data.message);
+              TrackerService.create('Place order send payment error' , err.data.message);
+            }else{
+              CartService.removeCurrentCart();
+              $scope.saveOrUpdateBillingAddress();
+              $state.go('thank-you', {'status' : status});
+              TrackerService.create('Place Order Create Success');
+            }
           });
+
         }
       } else {
         $scope.placedOrder = false;
       }
     };
+
+    function createOrder(typeAccount, account, cb){
+      var params = CartService.getOrderRequest();
+
+      params.beneficiaryId = CartService.getAthlete()._id;
+      params.beneficiaryName = CartService.getAthlete().firstName + ' ' + CartService.getAthlete().lastName;
+      params.typeAccount = typeAccount;
+      params.account = account;
+
+      CommerceService.createOrder(params).then(function(res){
+        cb(null, res);
+      }).catch(function(err){
+        cb(err);
+      });
+    }
+
+
+    init();
+
   });

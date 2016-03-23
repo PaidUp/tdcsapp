@@ -14,7 +14,13 @@ describe('Test Order endpoints', function(){
       productId: '111',
       paymentPlanSelected: 'due3',
       discount: 10,
-      code: 'XXXXX'
+      couponId: 'XXXXX',
+      userId: 'xxxxuserid',
+      userName: 'fulanito prueba',
+      beneficiaryId: 'beneficiaryidxxxxx',
+      beneficiaryName: 'beneficiary name test',
+      typeAccount: 'credit',
+      account: 'xxxx xxxx xxxx xxxx'
     }
 /*
     request("http://localhost:9000")
@@ -34,11 +40,12 @@ describe('Test Order endpoints', function(){
     });
     */
 
+
     service.createOrder(params, function(err, data){
       if(err){
         done(err)
       }else{
-        console.log(data.feeManagement)
+
         done()
       }
     });

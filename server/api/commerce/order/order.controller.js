@@ -50,6 +50,9 @@ exports.createOrder = function(req, res){
   let user = req.user;
 
   let params = req.body;
+
+  console.log('params' , params)
+
   params.userId = user._id
   params.userName = user.firstName + ' ' + user.lastName
 
