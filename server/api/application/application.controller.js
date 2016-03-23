@@ -61,12 +61,14 @@ exports.cronReminderVerifyBank = function (req, res) {
 }
 
 exports.cronV2 = function (req, res) {
-  // mix.panel.track("cron v2", {})
   cronjobService.runv2(function (err, data) {
     res.status(200).json(data)
   })
 }
 
 exports.cronV3 = function (req, res) {
-  res.status(200).json({'cron': v3})
+  cronjobService.runv3(function (err, data) {
+    if (err) return res.status(500).json(err)
+    return res.status(200).json(data)
+  })
 }

@@ -122,11 +122,13 @@ function end () {
 }
 
 function endName (nameFile) {
-  try {
-    fs.unlinkSync(config.cronjob.pathPidFile + nameFile)
-  } catch (e) {
-    logger.error(e)
-  }
+  setTimeout(function () {
+    try {
+      fs.unlinkSync(config.cronjob.pathPidFile + nameFile)
+    } catch (e) {
+      logger.error(e)
+    }
+  }, 10)
 }
 
 function canStartGiveNameFile (nameFile) {
@@ -256,5 +258,17 @@ exports.runv2 = function (cb) {
 }
 
 exports.runv3 = function (cb) {
-  return cb(null, {'results': 'cronv3'})
+  let name = 'cronv3' // +new moment(new Date()).format("YYYYMMDD")
+  if (canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running cron v3...')
+    startGiveName(name)
+    logger.log('info', 'paymentCronService.collectAccountsv3')
+    paymentCronService.collectAccountsv3(function (err, data) {
+      if (err) return cb(err)
+      endName(name)
+      return cb(null, data)
+    })
+  } else {
+    return cb({name: 'cronv3.pid is created'})
+  }
 }
