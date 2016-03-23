@@ -236,11 +236,18 @@ exports.collectAccountsv3 = function (cb) {
 
 function paymentSchedulev3 (cb) {
   // return cb(null, {'here': 'paymentSchedulev3'})
+  let params = {
+    baseUrl: config.connections.commerce.baseUrl,
+    token: config.connections.commerce.token,
+    filter: {'paymentsPlan': { '$elemMatch': {'status': 'pending','dateCharge': {'$lte': '2016-03-23T15:28:34.618Z'}}},'status': 'pending'} // , { 'paymentsPlan.$': 1 , 'userId':1}
+  }
 
-  CommerceConnect.orderGet({}).exec({
+  CommerceConnect.orderGet(params).exec({
     success: function (data) {
-      console.log('data' , data)
-      return cb(null, data)
+      console.log('data orders length' , data.body.orders.length)
+      console.log('data orders ' , data.body)
+      console.log('data orders paymentsPlan processingFees' , data.body.orders[0].paymentsPlan[0])
+      return cb(null, data.body.orders.length)
     },
     error: function (err) {
       console.log('err' , err)
@@ -248,113 +255,113 @@ function paymentSchedulev3 (cb) {
     }
   })
 
-  async.eachSeries(pendingOrders,
-    function (order, callbackEach) {
-      scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function (err, orderSchedule) {
-        if (err) {
-          logger.log('info', '1.err) order.incrementId: %s', err)
-          return callbackEach(err)
-        }
-        logger.log('info', '1) order.incrementId: %s', order.incrementId)
-        if (!orderSchedule || !orderSchedule.schedulePeriods) {
-          logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId)
-          return callbackEach()
-        // return callbackEach(new Error('order without schedulePeriods'))
-        }
-        /**
-            commerceService.transactionList(order.incrementId, function(err, transactionList){
-        if(err){
-          logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err)
-          return callbackEach(err)
-        }
-        logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList)
-         **/
-        async.eachSeries(orderSchedule.schedulePeriods,
-          function (schedulePeriod, callbackEach2) {
-            logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod)
-            /**
-            schedulePeriod.transactions = []
-            if(transactionList.length > 0){
+/** async.eachSeries(pendingOrders,
+  function (order, callbackEach) {
+    scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function (err, orderSchedule) {
+      if (err) {
+        logger.log('info', '1.err) order.incrementId: %s', err)
+        return callbackEach(err)
+      }
+      logger.log('info', '1) order.incrementId: %s', order.incrementId)
+      if (!orderSchedule || !orderSchedule.schedulePeriods) {
+        logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId)
+        return callbackEach()
+      // return callbackEach(new Error('order without schedulePeriods'))
+      }
+      
+          commerceService.transactionList(order.incrementId, function(err, transactionList){
+      if(err){
+        logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err)
+        return callbackEach(err)
+      }
+      logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList)
+       **/
+/*async.eachSeries(orderSchedule.schedulePeriods,
+  function (schedulePeriod, callbackEach2) {
+    logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod)
+    /**
+    schedulePeriod.transactions = []
+    if(transactionList.length > 0){
 
-              for(var i=0 ;  i< transactionList.length; i++){
-                if(transactionList[i].details.rawDetailsInfo.scheduleId === schedulePeriod.id ){
-                  schedulePeriod.transactions.push(transactionList[i])
-                }
+      for(var i=0 ;  i< transactionList.length; i++){
+        if(transactionList[i].details.rawDetailsInfo.scheduleId === schedulePeriod.id ){
+          schedulePeriod.transactions.push(transactionList[i])
+        }
+      }
+    }here 
+
+    logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod)
+
+    if (!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())) {
+      logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue)
+      // logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length)
+      userService.find({_id: order.userId}, function (err, users) {
+        paymentService.fetchCustomer(users[0].meta.TDPaymentId, function (err, paymentUser) {
+          if (paymentUser && paymentUser.defaultSource) {
+            order.cardId = schedulePeriod.accountId || paymentUser.defaultSource
+          }
+          logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser)
+          paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
+            order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function (err , data) {
+              let param = {
+                scheduleId: schedulePeriod.entityId,
+                informationData: [{
+                  name: 'isCharged',
+                  value: true,
+                }]
               }
-            }**/
-
-            logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod)
-
-            if (!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())) {
-              logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue)
-              // logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length)
-              userService.find({_id: order.userId}, function (err, users) {
-                paymentService.fetchCustomer(users[0].meta.TDPaymentId, function (err, paymentUser) {
-                  if (paymentUser && paymentUser.defaultSource) {
-                    order.cardId = schedulePeriod.accountId || paymentUser.defaultSource
-                  }
-                  logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser)
-                  paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-                    order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function (err , data) {
-                      let param = {
-                        scheduleId: schedulePeriod.entityId,
-                        informationData: [{
-                          name: 'isCharged',
-                          value: true,
-                        }]
-                      }
-                      if (err) {
-                        logger.log('err', '8.err) paymentSchedulev2 capture: %s', err)
-                        param.informationData.push({
-                          name: 'status',
-                          value: 'failed',
-                        })
-                        err.order = order.incrementId
-                        notifications.sendEmailNotification({subject: 'invalid order', jsonMessage: err }, function (err, data) {})
-                        logger.log('info', '8) paymentSchedulev2 capture: %s', data)
-                      // return callbackEach2()
-                      } else {
-                        param.informationData.push({
-                          name: 'status',
-                          value: data.status,
-                        })
-                      }
-                      scheduleService.scheduleInformationUpdate(param , function (err2 , data2) {
-                        if (err2) {
-                          logger.log('info', '9) paymentSchedulev2 capture err: %s', err2)
-                          param.orderId = order.incrementId
-                          notifications.sendEmailNotification({subject: 'Cant update charged order', jsonMessage: param }, function (err, data) {})
-                          return callbackEach2()
-                        }
-                        logger.log('info', '9) paymentSchedulev2 scheduleInformationUpdate capture: %s', data2)
-                        return callbackEach2()
-                      })
-
-                    // return callbackEach2()
-                    })
+              if (err) {
+                logger.log('err', '8.err) paymentSchedulev2 capture: %s', err)
+                param.informationData.push({
+                  name: 'status',
+                  value: 'failed',
                 })
+                err.order = order.incrementId
+                notifications.sendEmailNotification({subject: 'invalid order', jsonMessage: err }, function (err, data) {})
+                logger.log('info', '8) paymentSchedulev2 capture: %s', data)
+              // return callbackEach2()
+              } else {
+                param.informationData.push({
+                  name: 'status',
+                  value: data.status,
+                })
+              }
+              scheduleService.scheduleInformationUpdate(param , function (err2 , data2) {
+                if (err2) {
+                  logger.log('info', '9) paymentSchedulev2 capture err: %s', err2)
+                  param.orderId = order.incrementId
+                  notifications.sendEmailNotification({subject: 'Cant update charged order', jsonMessage: param }, function (err, data) {})
+                  return callbackEach2()
+                }
+                logger.log('info', '9) paymentSchedulev2 scheduleInformationUpdate capture: %s', data2)
+                return callbackEach2()
               })
-            } else {
-              callbackEach2()
-            }
-          },
-          function (err) {
-            if (err) {
-              return callbackEach(err)
-            }
-            callbackEach()
-          })
-          // callback(null, schedule)
-          // })
+
+            // return callbackEach2()
+            })
+        })
+      })
+    } else {
+      callbackEach2()
+    }
+  },
+  function (err) {
+    if (err) {
+      return callbackEach(err)
+    }
+    callbackEach()
+  })
+  // callback(null, schedule)
+  // })
 
       })
     },
     function (err) {
       if (err) {
-        return callbackSchedule(err)
+return callbackSchedule(err)
       }
       return callbackSchedule()
-    })
+    })*/
 }
 
 // end cronv3
