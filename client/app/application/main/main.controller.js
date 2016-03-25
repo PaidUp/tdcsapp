@@ -12,8 +12,10 @@ angular.module('convenienceApp')
 
     $scope.setPnTeam = function(){
         var pnTeam = $stateParams.team;
-        if(pnTeam){
+        var paymentPlan = $stateParams.paymentPlan;
+        if(pnTeam && paymentPlan){
           $scope.$storage.pnTeam = pnTeam;
+          $scope.$storage.pnPaymentPlan = paymentPlan;
         }
 
       //$rootScope.$emit('verify-email', {});

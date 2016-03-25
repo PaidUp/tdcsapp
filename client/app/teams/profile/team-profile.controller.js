@@ -37,6 +37,14 @@ angular.module('convenienceApp')
         }).catch(function (err) {
 
         });
+      }else{
+        loadPaymentPlans(team);
+        $scope.paymentPlanSelected = $scope.paymentPlans[0];
+        CartService.setOrderReques({
+          productId: team.attributes.productId,
+          paymentPlanSelected: $scope.paymentPlans[0].id});
+        $scope.selectPaymentplan($scope.paymentPlans[0]);
+        $scope.showDropDownPaymenPlans = true;
       }
     };
 
@@ -153,27 +161,40 @@ angular.module('convenienceApp')
 
         CartService.setOrderReques({productId : teamSelected.entityId});
 
-        try{
-          var fm = JSON.parse(team.attributes.feeManagement);
-          var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
-          CartService.setFeeManagement(fm);
-          $scope.paymentPlans = [];
-          for(var reference in pm){
-            $scope.paymentPlans.push({
-              id : reference,
-              description : pm[reference].description
-            });
-          }
-          $scope.renderPaymentPlans = true;
-          $scope.showDropDownPaymenPlans = true;
-          $scope.disablePayNow = false;
-        }catch (err){
-          $scope.errorFeeManagment = true;
-        }
+        loadPaymentPlans(team);
 
 
       });
     };
+
+    function loadPaymentPlans(team){
+      try{
+        var fm = JSON.parse(team.attributes.feeManagement);
+        var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
+        CartService.setFeeManagement(fm);
+        $scope.paymentPlans = [];
+        if($scope.$storage.pnPaymentPlan){
+          $scope.paymentPlans.push({
+            id : $scope.$storage.pnPaymentPlan,
+            description : pm[$scope.$storage.pnPaymentPlan].description
+          });
+        }else{
+          for(var reference in pm){
+            if(pm[reference].visible){
+              $scope.paymentPlans.push({
+                id : reference,
+                description : pm[reference].description
+              });
+            }
+          }
+        }
+        $scope.renderPaymentPlans = true;
+        $scope.showDropDownPaymenPlans = true;
+        $scope.disablePayNow = false;
+      }catch (err){
+        $scope.errorFeeManagment = true;
+      }
+    }
 
     $scope.selectPaymentplan = function(pm){
       var ro = CartService.getOrderRequest();
