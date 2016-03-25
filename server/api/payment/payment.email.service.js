@@ -45,6 +45,38 @@ exports.sendNewOrderEmail = function (orderId, email, paymentMethod, account, am
     });
   });
 };
+
+exports.sendNewOrderEmailV2 = function (params, cb) {
+  emailTemplates(config.emailTemplateRoot, function (err, template) {//TODO account.status, account.last4
+    if (err) return cb(err);
+    var emailVars = JSON.parse(JSON.stringify(config.emailVars));
+    emailVars.orderId = params.orderId;
+    emailVars.paymentMethod = '';
+    emailVars.last4Digits = params.last4;
+    emailVars.amount = params.amount;
+    emailVars.product = params.product
+    emailVars.schedules = params.schedules
+    emailVars.accountStatus =''
+    template('payment/checkout', emailVars, function (err, html, text) {
+      if (err) return cb(err);
+      var mailOptions = JSON.parse(JSON.stringify(config.emailOptions));
+      mailOptions.html = html;
+      mailOptions.to = params.email;
+      //mailOptions.bcc = config.emailContacts.developer;
+      mailOptions.subject = emailVars.prefix + 'New Order from ' + emailVars.companyName;
+      mailOptions.attachments = [];
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          return cb(error);
+        } else {
+          return cb(null, info);
+        }
+      });
+      //return cb(err, null);
+    });
+  });
+};
+
 //Deprecated (loan)
 exports.sendRemindToAddPaymentMethod = function (applicationId, orderId, cb) {
   var filter = {_id:applicationId};

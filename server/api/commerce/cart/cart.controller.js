@@ -104,15 +104,17 @@ function handleError (res, err) {
 }
 
 exports.couponAdd = function (req, res) {
-  if(!req.body && !req.body.coupon  && !req.body.cartId) {
+  if(!req.body && !req.body.coupon  && !req.body.productId) {
     return res.status(400).json({
       "code": "ValidationError",
-      "message": "Cart Id and coupon are required"
+      "message": "Product Id and coupon are required"
     });
   }
-  cartService.cartCouponAdd(req.body, function (err, isAddCoupon) {
-    if(err) return handleError(res, err);
-    //mix.panel.track("addCart", mix.mergeDataMixpanel(req.body, req.user._id));
-    res.status(200).json(isAddCoupon);
+
+  cartService.cartCouponAdd(req.body.productId, req.body.coupon, function (err, resp) {
+    if(err) {
+      res.status(err.status).json(err.message);
+    }
+    res.status(200).json(resp.body);
   });
 }

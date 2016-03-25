@@ -45,76 +45,39 @@
                 <small class="text-CS">Team is required</small>
               </div>
               <div ng-hide="showDropDownTeams" class="alert alert-warning">Loading teams...</div>
-
-
             </div>
 
             <br>
-            <div ng-repeat="(indexCustomOp, customOption) in team.attributes.customOptions[0]" class="magento-custom-options">
-              <!-- <custom-options ng-model="optionModel"
-                              type="customOption.type"
-                              title="customOption.title"
-                              isrequired="customOption.isRequire === '1'"
-                              options="customOption.values"
-                              ng-click="changeCustomOptions(customOption, optionModel)">
-              </custom-options> -->
-
-              <!--div ng-if="customOption.isRequire === '1' && customOption.values.length === 1"-->
-                 <div ng-if="customOption.values.length === 1">
-                <label>{{customOption.title}}</label><br>
-                {{customOption.values[0].title}}
-                <br>
-                <br>
+            <br>
+            <div ng-if="renderPaymentPlans">
+              <label>Payment Plans</label>
+              <select id="selectPaymentPlan"
+                      class="form-control"
+                      ng-model="paymentPlanSelected"
+                      name="selectPaymentPlan"
+                      ng-required="true"
+                      ng-options="pm.description for pm in paymentPlans "
+                      ng-change="selectPaymentplan(paymentPlanSelected)",
+                      ng-show="showDropDownPaymenPlans"
+                      >
+              </select>
+              <div class="text-CS text-center" ng-show="teamSelectionForm.selectPaymentPlan.$error.required && submitted">
+                <small class="text-CS">Payment plan is required</small>
               </div>
-
-
-
-              <!--div ng-if="!(customOption.isRequire === '1' && customOption.values.length === 1)"-->
-                <div ng-if="customOption.values.length !== 1">
-                <div ng-if="customOption.type === 'drop_down'" class="customDropDown">
-                  <label>{{customOption.title}}</label>
-                  <select id="select{{indexCustomOp}}"
-                          class="form-control"
-                          ng-model="optionModel"
-                          name="select{{customOption.optionId}}"
-                          ng-required="true"
-                          ng-options="option as option.title for option in customOption.values track by option.valueId"
-                          ng-change="changeCustomOptions(customOption, optionModel)">
-                  </select>
-
-                  <div class="text-CS text-center" ng-show="teamSelectionForm.select{{customOption.optionId}}.$error.required && submitted">
-                    <small class="text-CS">{{customOption.title}} is required</small>
-                  </div>
-                </div>
-
-
-                <div ng-if="customOption.type === 'radio'" id="radio{{indexCustomOp}}">
-                  <label>{{customOption.title}}</label>
-                  <br>
-                  <div class="row">
-                    <div class="col-sm-2 radio-container" ng-repeat="(indexRadioOp, item) in customOption.values">
-                      <label class="radio-inline" >
-                        <input  id="radio{{indexRadioOp}}"
-                                type="radio"
-                                name="radio{{customOption.optionId}}"
-                                ng-value="item"
-                                ng-model="optionModel"
-                                ng-required="!customOption.isSelected"
-                                ng-click="changeCustomOptions(customOption, optionModel)">
-                        <div><strong>{{item.title}}</strong></div>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="text-CS text-center" ng-show="!customOption.isSelected && submitted">
-                    <small class="text-CS">{{customOption.title}} is required</small>
-                  </div>
-                </div>
-                <br>
-              </div>
+              <div ng-hide="showDropDownPaymenPlans" class="alert alert-warning">Loading Payment plans...</div>
             </div>
+
+
             <br>
             <br>
+
+            <div ng-if="errorFeeManagment" class="alert alert-danger">There's a problem. We've been notified and will fix it. Please try again later.</div>
+
             <br>
+            <br>
+
+
+
             <button type="submit" ng-show="!disablePayNow" class="btn btnSignUp btn-block btn-enroll"><strong class="">Pay Now</strong></button>
             <button type="button" ng-show="disablePayNow" class="btn btnCancel btn-block btn-enroll"><strong class="">Wait a moment...</strong></button>
           </form>

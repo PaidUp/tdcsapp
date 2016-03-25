@@ -2,7 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService,
-                                            ContactService, $state, $stateParams, TeamService, CartService, TrackerService) {
+                                            ContactService, $state, $stateParams, TeamService, CartService,
+                                            TrackerService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -24,6 +25,7 @@ angular.module('convenienceApp')
     $scope.renderTeams = false;
     $scope.showDropDownTeams = false;
     $scope.disablePayNow = false;
+    $scope.showDropDownPaymenPlans = false;
 
     function loadTeams(team){
       $scope.showDropDownTeams = false;
@@ -35,9 +37,16 @@ angular.module('convenienceApp')
         }).catch(function (err) {
 
         });
+      }else{
+        loadPaymentPlans(team);
+        $scope.paymentPlanSelected = $scope.paymentPlans[0];
+        CartService.setOrderReques({
+          productId: team.attributes.productId,
+          paymentPlanSelected: $scope.paymentPlans[0].id});
+        $scope.selectPaymentplan($scope.paymentPlans[0]);
+        $scope.showDropDownPaymenPlans = true;
       }
     };
-
 
     function loadTeam(teamID, cb){
       TeamService.getTeam(teamID).then(function (team) {
@@ -149,13 +158,54 @@ angular.module('convenienceApp')
       TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){
-        $scope.disablePayNow = false;
+
+        CartService.setOrderReques({productId : teamSelected.entityId});
+
+        loadPaymentPlans(team);
+
+
       });
     };
 
-    // $scope.selectAthlete = function (athlete) {
-    //   if (athlete.firstName === 'Add New Athlete') {
-    //     console.log('Add New Athlete');
-    //   }
-    // };
+    function loadPaymentPlans(team){
+      try{
+        var fm = JSON.parse(team.attributes.feeManagement);
+        var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
+        CartService.setFeeManagement(fm);
+        $scope.paymentPlans = [];
+        if($scope.$storage.pnPaymentPlan){
+          $scope.paymentPlans.push({
+            id : $scope.$storage.pnPaymentPlan,
+            description : pm[$scope.$storage.pnPaymentPlan].description
+          });
+        }else{
+          for(var reference in pm){
+            if(pm[reference].visible){
+              $scope.paymentPlans.push({
+                id : reference,
+                description : pm[reference].description
+              });
+            }
+          }
+        }
+        $scope.renderPaymentPlans = true;
+        $scope.showDropDownPaymenPlans = true;
+        $scope.disablePayNow = false;
+      }catch (err){
+        $scope.errorFeeManagment = true;
+      }
+    }
+
+    $scope.selectPaymentplan = function(pm){
+      var ro = CartService.getOrderRequest();
+      ro.paymentPlanSelected = pm.id;
+      CartService.setOrderReques(ro);
+
+      var fm = CartService.getFeeManagement();
+      fm.paymentPlanSelected = pm.id;
+      CartService.setFeeManagement(fm);
+      $scope.disablePayNow = false;
+    }
+
+
   });

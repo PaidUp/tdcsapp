@@ -9,5 +9,6 @@ var router = express.Router();
 router.get('/list', authService.isAuthenticated(), controller.listOrders);
 //basic: without bank account
 router.get('/:orderId', authService.isAuthenticated(), controller.getOrder);
+router.post('/create', authService.isAuthenticated(), controller.createOrder);
 
 module.exports = router;
