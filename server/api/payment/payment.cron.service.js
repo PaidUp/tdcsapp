@@ -18,6 +18,8 @@ var businessDays = require('moment-business-days')
 var scheduleService = require('../commerce/schedule/schedule.service')()
 var CommerceConnect = require('pu-commerce-connect')
 
+var Q = require('q')
+
 // refactor
 // generic funciton that retrieve orders pending and processing.
 function collectPendingOrders (callback) {
@@ -243,11 +245,16 @@ function paymentSchedulev3 (cb) {
   CommerceConnect.orderGetToCharge(params).exec({
     success: function (data) {
       if (data.body.orders.length > 0) {
-        data.body.orders.map(function (order) {
-          logger.log('info', '1) order._id: ', order._id)
-        // console.log('order', order)
+        Promise.all(data.body.orders.map(function (order) {
+          return fp(order).then(function (value) { return value })
+        })).then(function (result) {
+          console.log('result', result)
+          return cb(null, {cron: result})
+        }, function (reason) {
+          console.log('reason', reason)
+          return cb(reason)
         })
-        return cb(null, {cron: 'Done'})
+      // return cb(null, {cron: 'Done'})
       } else {
         return cb(null, {cron: 'Done'})
       }
@@ -258,46 +265,18 @@ function paymentSchedulev3 (cb) {
     }
   })
 
-/** async.eachSeries(pendingOrders,
-  function (order, callbackEach) {
-    scheduleService.paymentPlanInfoFullByName(order.incrementId, true, function (err, orderSchedule) {
-      if (err) {
-        logger.log('info', '1.err) order.incrementId: %s', err)
-        return callbackEach(err)
-      }
-      logger.log('info', '1) order.incrementId: %s', order.incrementId)
-      if (!orderSchedule || !orderSchedule.schedulePeriods) {
-        logger.log('warn', '1.2) order without schedulePeriods: %s', order.incrementId)
-        return callbackEach()
-      // return callbackEach(new Error('order without schedulePeriods'))
-      }
-      
-          commerceService.transactionList(order.incrementId, function(err, transactionList){
-      if(err){
-        logger.log('err', '2.err) paymentSchedulev2 transactionList: %s', err)
-        return callbackEach(err)
-      }
-      logger.log('info', '2) paymentSchedulev2 transactionList: %s', transactionList)
-       **/
-/*async.eachSeries(orderSchedule.schedulePeriods,
-  function (schedulePeriod, callbackEach2) {
-    logger.log('info', '3) paymentSchedulev2 schedulePeriod: %s', schedulePeriod)
-    /**
-    schedulePeriod.transactions = []
-    if(transactionList.length > 0){
+  function fp (order) {
+    var deferred = Q.defer()
+    setTimeout(function () {
+      console.log('order', order)
+      console.log('order[0]', order.paymentsPlan[0])
+      console.log('fp2', order.paymentsPlan[0].paymentId)
+      deferred.resolve(order._id)
+    }, 100)
+    return deferred.promise
+  }
 
-      for(var i=0 ;  i< transactionList.length; i++){
-        if(transactionList[i].details.rawDetailsInfo.scheduleId === schedulePeriod.id ){
-          schedulePeriod.transactions.push(transactionList[i])
-        }
-      }
-    }here 
-
-    logger.log('info', '4) paymentSchedulev2 schedulePeriod with transanctions: %s', schedulePeriod)
-
-    if (!schedulePeriod.isCharged && moment(schedulePeriod.nextPaymentDue).isBefore(moment())) {
-      logger.log('info', '5) paymentSchedulev2 schedulePeriod.nextPaymentDue: %s', schedulePeriod.nextPaymentDue)
-      // logger.log('info', '6) paymentSchedulev2 schedulePeriod.transactions.length: %s', schedulePeriod.transactions.length)
+/**
       userService.find({_id: order.userId}, function (err, users) {
         paymentService.fetchCustomer(users[0].meta.TDPaymentId, function (err, paymentUser) {
           if (paymentUser && paymentUser.defaultSource) {
