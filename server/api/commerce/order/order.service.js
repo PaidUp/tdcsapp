@@ -67,58 +67,69 @@ var OrderService = {
 
   newOrder : function newOrder(body, prices, dataProduct, cb){
 
-    let fm = JSON.parse(dataProduct.feeManagement);
+    paymentService.fetchCard(body.paymentId, body.account, function (err, card) {
+      if(err){
+        return cb(err)
+      }
 
-    let orderReq = {
-      baseUrl: config.connections.commerce.baseUrl,
-      token: config.connections.commerce.token,
-      userId: body.userId,
-      paymentsPlan: []
-    }
-    prices.forEach(function (ele, idx, arr) {
-      orderReq.paymentsPlan.push({
-        email: body.email,
-        destinationId: dataProduct.tDPaymentId,
-        dateCharge: ele.dateCharge,
-        price: ele.owedPrice,
-        discount: body.discount,
-        discountCode: body.couponId,
-        paymentId: body.paymentId,
-        wasProcessed: false,
-        status: 'pending',
-        processingFees: fm.processingFees,
-        collectionsFee: fm.collectionsFee,
-        paysFees: fm.paysFees,
-        typeAccount: body.typeAccount,
-        account: body.account,
-        description: ele.description,
-        productInfo: {
-          productId: dataProduct.productId,
-          productName: dataProduct.shortDescription
-        },
-        userInfo: {
-          userId: body.userId,
-          userName: body.userName,
-        },
-        beneficiaryInfo: {
-          beneficiaryId: body.beneficiaryId,
-          beneficiaryName: body.beneficiaryName
+      let fm = JSON.parse(dataProduct.feeManagement);
 
-        }
+      let orderReq = {
+        baseUrl: config.connections.commerce.baseUrl,
+        token: config.connections.commerce.token,
+        userId: body.userId,
+        paymentsPlan: []
+      }
+      prices.forEach(function (ele, idx, arr) {
+        orderReq.paymentsPlan.push({
+          email: body.email,
+          destinationId: dataProduct.tDPaymentId,
+          dateCharge: ele.dateCharge,
+          originalPrice: ele.originalPrice,
+          totalFee: ele.totalFee,
+          price: ele.owedPrice,
+          discount: body.discount,
+          discountCode: body.couponId,
+          paymentId: body.paymentId,
+          wasProcessed: false,
+          status: 'pending',
+          processingFees: fm.processingFees,
+          collectionsFee: fm.collectionsFee,
+          paysFees: fm.paysFees,
+          typeAccount: body.typeAccount,
+          account: body.account,
+          last4: card.last4,
+          description: ele.description,
+          productInfo: {
+            productId: dataProduct.productId,
+            productName: dataProduct.shortDescription
+          },
+          userInfo: {
+            userId: body.userId,
+            userName: body.userName,
+          },
+          beneficiaryInfo: {
+            beneficiaryId: body.beneficiaryId,
+            beneficiaryName: body.beneficiaryName
+
+          }
 
 
+        });
       });
-    });
-    CommerceConnector.orderCreate(orderReq).exec({
-      // An unexpected error occurred.
-      error: function (err) {
-        return cb(err);
-      },
-      // OK.
-      success: function (orderResult) {
-        return cb(null, orderResult);
-      },
-    });
+      CommerceConnector.orderCreate(orderReq).exec({
+        // An unexpected error occurred.
+        error: function (err) {
+          return cb(err);
+        },
+        // OK.
+        success: function (orderResult) {
+          return cb(null, card.last4, orderResult);
+        },
+      });
+    })
+
+
   },
 
   updateUser : function updateUser(beneficiaryId, dataProduct){
@@ -142,31 +153,29 @@ var OrderService = {
     });
   },
 
-  sendEmail : function sendEmail(body, dataProduct, orderResult){
+  sendEmail : function sendEmail(last4, body, dataProduct, orderResult){
     //body.email
-    paymentService.fetchCard(body.paymentId, body.account, function (err, card) {
-      let emailParams = {
-        orderId: orderResult.body._id,
-        email: body.email,
-        last4: card.last4,
-        amount: 0,
-        schedules: [],
-        product: dataProduct.name
-      }
-      orderResult.body.paymentsPlan.forEach(function (ele, idx, arr) {
-        emailParams.amount = emailParams.amount + ele.price;
-        emailParams.schedules.push({
-          nextPaymentDue: ele.dateCharge,
-          price: ele.price
-        });
-      })
-      paymentEmailService.sendNewOrderEmailV2(emailParams, function (err, data) {
-        if(err){
-          logger.error('Send New Order Email: Error', err);
-        }else{
-          logger.debug('Send New Order Email: ', data);
-        }
+    let emailParams = {
+      orderId: orderResult.body._id,
+      email: body.email,
+      last4: last4,
+      amount: 0,
+      schedules: [],
+      product: dataProduct.name
+    }
+    orderResult.body.paymentsPlan.forEach(function (ele, idx, arr) {
+      emailParams.amount = emailParams.amount + ele.price;
+      emailParams.schedules.push({
+        nextPaymentDue: ele.dateCharge,
+        price: ele.price
       });
+    })
+    paymentEmailService.sendNewOrderEmailV2(emailParams, function (err, data) {
+      if(err){
+        logger.error('Send New Order Email: Error', err);
+      }else{
+        logger.debug('Send New Order Email: ', data);
+      }
     });
   }
 }
@@ -181,14 +190,14 @@ function createOrder (body, cb){
       logger.debug('Create Order: Prices', prices);
       logger.debug('Create Order: Data Product Prices', dataProduct);
 
-      OrderService.newOrder(body, prices, dataProduct, function(errorOrderResult, orderResult){
+      OrderService.newOrder(body, prices, dataProduct, function(errorOrderResult, last4, orderResult){
         if(errorOrderResult){
           logger.error('Create Order: Error New Order', orderResult);
           return cb(errorOrderResult);
         } else{
           logger.debug('Create Order: New Order', dataProduct);
           OrderService.updateUser(body.beneficiaryId, dataProduct);
-          OrderService.sendEmail(body,dataProduct,orderResult);
+          OrderService.sendEmail(last4, body,dataProduct,orderResult);
           cb(null, orderResult);
         }
       });
