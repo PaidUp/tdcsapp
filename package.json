@@ -38,7 +38,7 @@
     "passport-local": "1.0.0",
     "pmx": "^0.6.1",
     "prerender-node": "^2.2.0",
-    "pu-commerce-connect": "^0.4.4",
+    "pu-commerce-connect": "^0.4.7",
     "pu-schedule-connect": "^2.2.3",
     "q": "^1.4.1",
     "serve-favicon": "2.3.0",

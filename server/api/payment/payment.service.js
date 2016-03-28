@@ -385,10 +385,14 @@ function capture (order, user, providerId, amount, paymentMethod, scheduleId, fe
 }
 
 function capturev3 (order, cb) {
-  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].collectionsFee.fee, {userId: order.paymentsPlan[0].beneficiaryInfo.userId, beneficiaryId: order.paymentsPlan[0].beneficiaryInfo.beneficiaryId, productId: order.paymentsPlan[0].productInfo.productId, orderId: order._id, scheduleId: order.paymentsPlan[0]._id}, function (err, data) {
-    if (err) return cb(err) // error of data
-    // console.log('data.id', data.id) - attempts
-    order.paymentsPlan[0].status = data.status
+  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].totalFee, {userId: order.paymentsPlan[0].beneficiaryInfo.userId, beneficiaryId: order.paymentsPlan[0].beneficiaryInfo.beneficiaryId, productId: order.paymentsPlan[0].productInfo.productId, orderId: order._id, scheduleId: order.paymentsPlan[0]._id}, function (debitErr, data) {
+    if (debitErr) {
+      order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: debitErr.detail})
+      order.paymentsPlan[0].status = 'failed'
+    } else {
+      order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: 'done'})
+      order.paymentsPlan[0].status = data.status
+    }
     order.paymentsPlan[0].wasProcessed = true
     let params = {
       baseUrl: config.connections.commerce.baseUrl,
@@ -399,7 +403,20 @@ function capturev3 (order, cb) {
     }
     CommerceConnect.orderUpdatePayments(params).exec({
       success: function (data) {
-        return cb(null, data)
+        data.err = debitErr
+        if (debitErr || data.status === 'failed') {
+          paymentEmailService.sendFinalEmailCreditCardv3(order, function (err, dataEmail) {
+            if (err) return cb(err)
+            // logger.error('send final email. ' , JSON.stringify(data))
+            return cb(null, data)
+          })
+        } else {
+          paymentEmailService.sendProcessedEmailCreditCardv3(order, function (err, dataEmail) {
+            if (err) return cb(err)
+            // logger.info('send processed email. ' , JSON.stringify(data))
+            return cb(null, data)
+          })
+        }
       },
       error: function (err) {
         return cb(err)

@@ -251,18 +251,18 @@ function paymentSchedulev3 (cb) {
           return capturev3(order).then(function (value) { return value })
         })).then(function (result) {
           console.log('result', result)
+          // mandar email TODO felipe (notifications)
           return cb(null, {cron: result})
         }, function (reason) {
           console.log('reason', reason)
           return cb(reason)
         })
-      // return cb(null, {cron: 'Done'})
       } else {
         return cb(null, {cron: 'Done'})
       }
     },
     error: function (err) {
-      console.log('err' , err)
+      console.log('err' , err) // TODO notification email felipe loggly (notifications)
       return cb(err)
     }
   })
@@ -288,7 +288,7 @@ function paymentSchedulev3 (cb) {
         err.scheduleId = order.paymentsPlan[0]._id
         deferred.resolve(err)
       } else {
-        deferred.resolve({orderId: order._id, scheduleId: order.paymentsPlan[0]._id})
+        deferred.resolve({orderId: order._id, scheduleId: order.paymentsPlan[0]._id,err: data.err})
       }
     })
     return deferred.promise
