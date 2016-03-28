@@ -19,6 +19,8 @@ var scheduleService = require('../commerce/schedule/schedule.service')()
 var CommerceConnect = require('pu-commerce-connect')
 
 var Q = require('q')
+// https://www.npmjs.com/package/q
+// https://gist.github.com/cpdean/8659630
 
 // refactor
 // generic funciton that retrieve orders pending and processing.
@@ -246,7 +248,7 @@ function paymentSchedulev3 (cb) {
     success: function (data) {
       if (data.body.orders.length > 0) {
         Promise.all(data.body.orders.map(function (order) {
-          return fp(order).then(function (value) { return value })
+          return capturev3(order).then(function (value) { return value })
         })).then(function (result) {
           console.log('result', result)
           return cb(null, {cron: result})
@@ -268,82 +270,29 @@ function paymentSchedulev3 (cb) {
   function fp (order) {
     var deferred = Q.defer()
     setTimeout(function () {
-      console.log('order', order)
-      console.log('order[0]', order.paymentsPlan[0])
       console.log('fp2', order.paymentsPlan[0].paymentId)
       deferred.resolve(order._id)
     }, 100)
     return deferred.promise
   }
 
-/**
-      userService.find({_id: order.userId}, function (err, users) {
-        paymentService.fetchCustomer(users[0].meta.TDPaymentId, function (err, paymentUser) {
-          if (paymentUser && paymentUser.defaultSource) {
-            order.cardId = schedulePeriod.accountId || paymentUser.defaultSource
-          }
-          logger.log('info', '7) paymentSchedulev2 paymentUser: %s', paymentUser)
-          paymentService.capture(order, users[0], order.products[0].TDPaymentId, schedulePeriod.price,
-            order.paymentMethod, schedulePeriod.id, schedulePeriod.fee, orderSchedule.meta, null, function (err , data) {
-              let param = {
-                scheduleId: schedulePeriod.entityId,
-                informationData: [{
-                  name: 'isCharged',
-                  value: true,
-                }]
-              }
-              if (err) {
-                logger.log('err', '8.err) paymentSchedulev2 capture: %s', err)
-                param.informationData.push({
-                  name: 'status',
-                  value: 'failed',
-                })
-                err.order = order.incrementId
-                notifications.sendEmailNotification({subject: 'invalid order', jsonMessage: err }, function (err, data) {})
-                logger.log('info', '8) paymentSchedulev2 capture: %s', data)
-              // return callbackEach2()
-              } else {
-                param.informationData.push({
-                  name: 'status',
-                  value: data.status,
-                })
-              }
-              scheduleService.scheduleInformationUpdate(param , function (err2 , data2) {
-                if (err2) {
-                  logger.log('info', '9) paymentSchedulev2 capture err: %s', err2)
-                  param.orderId = order.incrementId
-                  notifications.sendEmailNotification({subject: 'Cant update charged order', jsonMessage: param }, function (err, data) {})
-                  return callbackEach2()
-                }
-                logger.log('info', '9) paymentSchedulev2 scheduleInformationUpdate capture: %s', data2)
-                return callbackEach2()
-              })
-
-            // return callbackEach2()
-            })
-        })
-      })
-    } else {
-      callbackEach2()
-    }
-  },
-  function (err) {
-    if (err) {
-      return callbackEach(err)
-    }
-    callbackEach()
-  })
-  // callback(null, schedule)
-  // })
-
-      })
-    },
-    function (err) {
+  function capturev3 (order) {
+    var deferred = Q.defer()
+    paymentService.capturev3(order, function (err, data) {
+      // console.log('err', err)
+      // console.log('order._id', order._id)
+      // console.log('data', data)
       if (err) {
-return callbackSchedule(err)
+        // logger.log('error', '1.err) order: %s', err)
+        err.orderId = order._id
+        err.scheduleId = order.paymentsPlan[0]._id
+        deferred.resolve(err)
+      } else {
+        deferred.resolve({orderId: order._id, scheduleId: order.paymentsPlan[0]._id})
       }
-      return callbackSchedule()
-    })*/
+    })
+    return deferred.promise
+  }
 }
 
 // end cronv3
@@ -354,45 +303,9 @@ function sendEmailReminder (pendingOrders, callback) {
   var reminderValue = config.notifications.reminderEmailPayment.value || 72
   if (pendingOrders.length === 0) {
     return callback(null, true)
-  } /*
-  pendingOrders.map(function(order){
-    logger.log('info','iterate each order', order.incrementId)
-    order.schedulePeriods.map(function(schedule){
-      logger.log('info','iterate each orderSchedule', schedule.id)
-      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod)
-      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format())
-      if(shouldReminder){
-        logger.log('info','should send Email Reminder',schedule.id)
-        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          logger.log('info','send Email Reminder data',data)
-          logger.log('info','send Email Reminder err',err)
-          return callback(null, true)
-        })
-      }else{
-        return callback(null, true)
-      }
-    })
-  });*/
-
+  }
   async.eachSeries(pendingOrders, function (order, cb) {
     logger.log('info', 'iterate each order', order.incrementId)
-
-    /*order.schedulePeriods.map(function(schedule){
-      logger.log('info','iterate each orderSchedule', schedule.id)
-      var reminderDate = moment(new Date).add(reminderValue, reminderPeriod)
-      var shouldReminder = moment(schedule.nextPaymentDue).isBetween(reminderDate.subtract(12, 'hours').format(), reminderDate.add(12, 'hours').format())
-      if(shouldReminder){
-        logger.log('info','should send Email Reminder',schedule.id)
-        paymentEmailService.sendEmailReminderPyamentParents(order.userId,order.sku.replace('_',' ').replace('-',' '), schedule, reminderValue, reminderPeriod, function (err, data){
-          logger.log('info','send Email Reminder data',data)
-          logger.log('info','send Email Reminder err',err)
-        })
-        return cb(null,true)
-      }else{
-      return cb(null,true)
-      }
-    });*/
-
     async.eachSeries(order.schedulePeriods, function (schedule, cbSchedule) {
       logger.log('info', 'iterate each orderSchedule', schedule.id)
       var reminderDate = moment(new Date).add(reminderValue, reminderPeriod)
