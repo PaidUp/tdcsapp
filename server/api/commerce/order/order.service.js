@@ -58,7 +58,6 @@ var OrderService = {
       },
       // OK.
       success: function (prices) {
-        console.log('prices111', prices.body.prices)
         return cb(null, prices.body.prices, dataProduct);
       }
     });
@@ -68,6 +67,9 @@ var OrderService = {
   newOrder : function newOrder(body, prices, dataProduct, cb){
 
     paymentService.fetchCard(body.paymentId, body.account, function (err, card) {
+
+      console.log('card111' , card);
+
       if(err){
         return cb(err)
       }
@@ -99,6 +101,7 @@ var OrderService = {
           typeAccount: body.typeAccount,
           account: body.account,
           last4: card.last4,
+          accountBrand: card.brand,
           description: ele.description,
           productInfo: {
             productId: dataProduct.productId,
