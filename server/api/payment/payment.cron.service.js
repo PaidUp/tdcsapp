@@ -295,6 +295,22 @@ function paymentSchedulev3 (cb) {
   }
 }
 
+exports.collectAccountsCompletev3 = function (cb) {
+  let params = {
+    baseUrl: config.connections.commerce.baseUrl,
+    token: config.connections.commerce.token
+  }
+  CommerceConnect.orderToComplete(params).exec({
+    success: function (data) {
+      return cb(null, {orderCompleted: data.body.nModified})
+    },
+    error: function (err) {
+      console.log('err' , err)
+      return cb(err)
+    }
+  })
+}
+
 // end cronv3
 
 function sendEmailReminder (pendingOrders, callback) {

@@ -272,3 +272,17 @@ exports.runv3 = function (cb) {
     return cb({name: 'cronv3.pid is created'})
   }
 }
+
+exports.runCompleteOrdersV3 = function (cb) {
+  var name = 'runCompleteOrdersV3' + new moment(new Date()).format('YYYYMMDD')
+  if (canStartGiveNameFile(name)) {
+    logger.log('info', Date() + ' running runCompleteOrdersV3...')
+    startGiveName(name)
+    paymentCronService.collectAccountsCompletev3(function (err, results) {
+      endName(name)
+      return cb(null, results)
+    })
+  } else {
+    return cb(null, {name: name + '.pid is created'})
+  }
+}

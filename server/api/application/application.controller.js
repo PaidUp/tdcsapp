@@ -72,3 +72,9 @@ exports.cronV3 = function (req, res) {
     return res.status(200).json(data)
   })
 }
+
+exports.cronCompleteOrdersV3 = function (req, res) {
+  cronjobService.runCompleteOrdersV3(function (err, data) {
+    res.status(200).json(data)
+  })
+}
