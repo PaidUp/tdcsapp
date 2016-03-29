@@ -67,9 +67,6 @@ var OrderService = {
   newOrder : function newOrder(body, prices, dataProduct, cb){
 
     paymentService.fetchCard(body.paymentId, body.account, function (err, card) {
-
-      console.log('card111' , card);
-
       if(err){
         return cb(err)
       }
