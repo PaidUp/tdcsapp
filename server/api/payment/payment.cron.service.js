@@ -250,11 +250,11 @@ function paymentSchedulev3 (cb) {
         Promise.all(data.body.orders.map(function (order) {
           return capturev3(order).then(function (value) { return value })
         })).then(function (result) {
-          console.log('result', result)
+          logger.info('orderGetToCharge capturev3' , result)
           // mandar email TODO felipe (notifications)
           return cb(null, {cron: result})
         }, function (reason) {
-          console.log('reason', reason)
+          logger.error('orderGetToCharge error capturev3' , reason)
           return cb(reason)
         })
       } else {
@@ -262,7 +262,8 @@ function paymentSchedulev3 (cb) {
       }
     },
     error: function (err) {
-      console.log('err' , err) // TODO notification email felipe loggly (notifications)
+      logger.error('orderGetToCharge error ' , err)
+      // TODO notification email felipe loggly (notifications)
       return cb(err)
     }
   })
@@ -279,11 +280,8 @@ function paymentSchedulev3 (cb) {
   function capturev3 (order) {
     var deferred = Q.defer()
     paymentService.capturev3(order, function (err, data) {
-      // console.log('err', err)
-      // console.log('order._id', order._id)
-      // console.log('data', data)
       if (err) {
-        // logger.log('error', '1.err) order: %s', err)
+        logger.error('capturev3 error ' , err)
         err.orderId = order._id
         err.scheduleId = order.paymentsPlan[0]._id
         deferred.resolve(err)
