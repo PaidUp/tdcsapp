@@ -58,7 +58,6 @@ var OrderService = {
       },
       // OK.
       success: function (prices) {
-        console.log('prices111', prices.body.prices)
         return cb(null, prices.body.prices, dataProduct);
       }
     });
