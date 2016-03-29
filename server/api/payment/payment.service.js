@@ -389,6 +389,7 @@ function capturev3 (order, cb) {
     if (debitErr) {
       order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: debitErr.detail})
       order.paymentsPlan[0].status = 'failed'
+      logger.error('debitCard debitErr' , debitErr)
     } else {
       order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: 'done'})
       order.paymentsPlan[0].status = data.status
@@ -407,13 +408,13 @@ function capturev3 (order, cb) {
         if (debitErr || data.status === 'failed') {
           paymentEmailService.sendFinalEmailCreditCardv3(order, function (err, dataEmail) {
             if (err) return cb(err)
-            // logger.error('send final email. ' , JSON.stringify(data))
+            logger.error('paymentEmailService.sendFinalEmailCreditCardv3 error' , err)
             return cb(null, data)
           })
         } else {
           paymentEmailService.sendProcessedEmailCreditCardv3(order, function (err, dataEmail) {
             if (err) return cb(err)
-            // logger.info('send processed email. ' , JSON.stringify(data))
+            logger.info(' paymentEmailService.sendProcessedEmailCreditCardv3' , data.status)
             return cb(null, data)
           })
         }
