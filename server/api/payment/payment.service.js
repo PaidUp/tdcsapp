@@ -385,7 +385,26 @@ function capture (order, user, providerId, amount, paymentMethod, scheduleId, fe
 }
 
 function capturev3 (order, cb) {
-  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].totalFee, {userId: order.paymentsPlan[0].beneficiaryInfo.userId, beneficiaryId: order.paymentsPlan[0].beneficiaryInfo.beneficiaryId, productId: order.paymentsPlan[0].productInfo.productId, orderId: order._id, scheduleId: order.paymentsPlan[0]._id}, function (debitErr, data) {
+  let meta = {
+    userId: order.paymentsPlan[0].beneficiaryInfo.userId,
+    beneficiaryId: order.paymentsPlan[0].beneficiaryInfo.beneficiaryId,
+    productId: order.paymentsPlan[0].productInfo.productId,
+    orderId: order._id,
+    scheduleId: order.paymentsPlan[0]._id
+  }
+
+  let newmeta = {
+    organizationId: order.paymentsPlan[0].productInfo.organizationId,
+    organizationName: order.paymentsPlan[0].productInfo.organizationId,
+    productId: order.paymentsPlan[0].productInfo.organizationId,
+    productName: order.paymentsPlan[0].productInfo.organizationId,
+    beneficiaryMemo: order.paymentsPlan[0].beneficiaryInfo.beneficiaryName,
+    totalFee: order.paymentsPlan[0].totalFee,
+    orderId: order._id,
+    scheduleId: order.paymentsPlan[0]._id
+  }
+
+  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].totalFee, newmeta, function (debitErr, data) {
     if (debitErr) {
       order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: 'failed', message: debitErr.detail, last4: order.paymentsPlan[0].last4, accountBrand: order.paymentsPlan[0].accountBrand})
       order.paymentsPlan[0].status = 'failed'
