@@ -26,11 +26,16 @@ angular.module('convenienceApp')
     $scope.showDropDownTeams = false;
     $scope.disablePayNow = false;
     $scope.showDropDownPaymenPlans = false;
+    $scope.orderRequest = {};
 
     function loadTeams(team){
       $scope.showDropDownTeams = false;
       if(team.attributes.type === 'grouped'){
+        console.log('TEAM' , team)
         $scope.renderTeams = true;
+
+        $scope.orderRequest.organizationImage = team.getImage('image').url;
+        CartService.setOrderRequest($scope.orderRequest);
         TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
           $scope.teams = teams;
           $scope.showDropDownTeams = true;
@@ -38,11 +43,21 @@ angular.module('convenienceApp')
 
         });
       }else{
+
+        var fm = JSON.parse(team.attributes.feeManagement)
+        
         loadPaymentPlans(team);
         $scope.paymentPlanSelected = $scope.paymentPlans[0];
-        CartService.setOrderReques({
-          productId: team.attributes.productId,
-          paymentPlanSelected: $scope.paymentPlans[0].id});
+
+        $scope.orderRequest.organizationId = fm.details.organizationId;
+        $scope.orderRequest.organizationName = fm.details.organizationName;
+        $scope.orderRequest.organizationLocation = fm.details.organizationLocation;
+        $scope.orderRequest.organizationImage = team.getImage('image').url;
+        $scope.orderRequest.productId = team.attributes.productId;
+        $scope.orderRequest.productName = fm.details.name;
+        $scope.orderRequest.productImage = team.getImage('image').url;
+        $scope.orderRequest.paymentPlanSelected = $scope.paymentPlans[0].id;
+        CartService.setOrderRequest($scope.orderRequest);
         $scope.selectPaymentplan($scope.paymentPlans[0]);
         $scope.showDropDownPaymenPlans = true;
       }
@@ -158,12 +173,18 @@ angular.module('convenienceApp')
       TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){
+        var fm = JSON.parse(team.attributes.feeManagement)
 
-        CartService.setOrderReques({productId : teamSelected.entityId});
+        $scope.orderRequest.organizationId = fm.details.organizationId;
+        $scope.orderRequest.organizationName = fm.details.organizationName;
+        $scope.orderRequest.organizationLocation = fm.details.organizationLocation;
+        $scope.orderRequest.productId = team.attributes.productId;
+        $scope.orderRequest.productName = fm.details.name;
+        $scope.orderRequest.productImage = team.getImage('image').url;
+
+        CartService.setOrderRequest($scope.orderRequest);
 
         loadPaymentPlans(team);
-
-
       });
     };
 
@@ -198,8 +219,8 @@ angular.module('convenienceApp')
 
     $scope.selectPaymentplan = function(pm){
       var ro = CartService.getOrderRequest();
-      ro.paymentPlanSelected = pm.id;
-      CartService.setOrderReques(ro);
+      $scope.orderRequest.paymentPlanSelected = pm.id;
+      CartService.setOrderRequest($scope.orderRequest);
 
       var fm = CartService.getFeeManagement();
       fm.paymentPlanSelected = pm.id;
