@@ -13,7 +13,6 @@ var paymentService = require('../../payment/payment.service');
 var logger = require('../../../config/logger');
 
 
-
 var OrderService = {
 
   calculatePrices : function calculatePrices(body, cb){
@@ -67,9 +66,6 @@ var OrderService = {
   newOrder : function newOrder(body, prices, dataProduct, cb){
 
     paymentService.fetchCard(body.paymentId, body.account, function (err, card) {
-
-      console.log('card111' , card);
-
       if(err){
         return cb(err)
       }
@@ -105,7 +101,12 @@ var OrderService = {
           description: ele.description,
           productInfo: {
             productId: dataProduct.productId,
-            productName: dataProduct.shortDescription
+            productName: body.productName,
+            productImage: body.productImage,
+            organizationId: body.organizationId,
+            organizationName: body.organizationName,
+            organizationLocation: body.organizationLocation,
+            organizationImage: body.organizationImage
           },
           userInfo: {
             userId: body.userId,
@@ -116,8 +117,6 @@ var OrderService = {
             beneficiaryName: body.beneficiaryName
 
           }
-
-
         });
       });
       CommerceConnector.orderCreate(orderReq).exec({

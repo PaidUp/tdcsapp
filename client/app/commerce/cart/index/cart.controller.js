@@ -17,8 +17,6 @@ angular.module('convenienceApp')
 
     var CartController = this;
 
-
-
     CartController.generateDues = function(applyDiscount, couponId, discount){
       try{
         var fm = CartService.getFeeManagement();
@@ -30,7 +28,7 @@ angular.module('convenienceApp')
           ro.discount = 0;
           ro.couponId = "";
         }
-        CartService.setOrderReques(ro);
+        CartService.setOrderRequest(ro);
 
         $scope.totals = {
           discount : 0,
@@ -38,10 +36,8 @@ angular.module('convenienceApp')
           grandTotal : 0
         }
 
-
         var dues = fm.paymentPlans[fm.paymentPlanSelected].dues;
         $scope.dues = [];
-
 
         var params = [];
 
@@ -120,7 +116,6 @@ angular.module('convenienceApp')
               }
 
             }).catch(function(err){
-              console.log(err);
               handlerErrorGetTotals(err);
             }).finally(function(){
               CartController.generateDues(false);

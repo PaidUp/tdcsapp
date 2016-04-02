@@ -77,7 +77,7 @@ angular.module('convenienceApp')
       return CartService.els.get('team');
     };
 
-    CartService.setOrderReques = function (orderRequest) {
+    CartService.setOrderRequest = function (orderRequest) {
       CartService.els.set('order-request' , orderRequest);
     };
 
