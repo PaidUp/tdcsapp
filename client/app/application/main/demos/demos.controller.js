@@ -30,13 +30,14 @@ angular.module('convenienceApp')
 
     $scope.init = function(){
       //Idle.watch();
+      /*
       if(!startIdle){
         if(!ContactService.ctaModalCloseFlag && !$cookieStore.get(ContactService.ctaModalFlag)){
           ModalFactory.CtaModal('cta-demos' , 'lg');
         }
       }
       startIdle = true;
-
+*/
       if($stateParams.name){
         $scope.videos[$stateParams.name] = true;
       } else {
