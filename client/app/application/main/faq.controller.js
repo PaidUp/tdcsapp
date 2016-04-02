@@ -15,16 +15,17 @@ angular.module('convenienceApp')
     var startIdle = false;
 
     $scope.$on('IdleStart', function() {
+      /*
       if(!startIdle){
         if(!ContactService.ctaModalCloseFlag && !$cookieStore.get(ContactService.ctaModalFlag)){
           ModalFactory.CtaModal('cta-faq', 'lg');
         }
-      }
+      }*/
       startIdle = true;
     });
 
     $scope.init = function(){
-      Idle.watch();
+      //Idle.watch();
       if($stateParams.group){
         $scope.faqGroup[$stateParams.group] = true;
       }
