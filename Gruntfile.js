@@ -347,8 +347,9 @@ module.exports = function (grunt) {
     copy: {
       videos: {
         expand: true,
-        src: '<%= yeoman.client %>/assets/videos/*',
-        dest: '<%= yeoman.dist %>/public/assets/',
+        cwd: '<%= yeoman.client %>',
+        src: 'assets/videos/*',
+        dest: '<%= yeoman.dist %>/public',
       },
       dist: {
         files: [{
