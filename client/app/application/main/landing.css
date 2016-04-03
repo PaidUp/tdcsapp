@@ -210,6 +210,26 @@
 
 }
 
+.video-container {
+  position: relative;
+  vertical-align: middle;
+}
+video {
+  height: auto;
+  vertical-align: middle;
+  width: 100%;
+}
+.overlay-desc {
+  vertical-align: middle;
+  background: rgba(0,0,0,0);
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .btn-circle {
   width: 30px;
   height: 30px;
