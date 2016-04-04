@@ -85,6 +85,14 @@ angular.module('convenienceApp')
       return CartService.els.get('order-request');
     };
 
+    CartService.setAthlete = function (athlete) {
+      CartService.els.set('athlete' , athlete);
+    };
+
+    CartService.getAthlete = function () {
+      return CartService.els.get('athlete');
+    };
+
     CartService.hasProductBySKU = function (sku, cb) {
       var result = false;
       CartService.els.get('team').attributes.customOptions.forEach(function (ele, idx, arr) {
@@ -133,7 +141,7 @@ angular.module('convenienceApp')
         products: products
       }).$promise.then(function (cart) {
           $cookieStore.put('userId', athlete._id);
-          $cookieStore.put('athlete', athlete);
+        CartService.setAthlete(athlete);
           $rootScope.$emit('event:cart-state-changed', undefined);
           deferred.resolve(cart);
         }).catch(function (err) {
@@ -156,6 +164,7 @@ angular.module('convenienceApp')
         CartService.els.remove('team');
         CartService.els.remove('dues');
         CartService.els.remove('order-request');
+        CartService.els.remove('athlete');
         CartService.els = null;
       }
       storage.$reset();
@@ -183,10 +192,6 @@ angular.module('convenienceApp')
 
     this.getUserId = function () {
       return $cookieStore.get('userId');
-    };
-
-    this.getAthlete = function () {
-      return $cookieStore.get('athlete');
     };
 
     var subTotal = 0;

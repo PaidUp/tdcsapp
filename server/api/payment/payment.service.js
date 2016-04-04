@@ -385,21 +385,14 @@ function capture (order, user, providerId, amount, paymentMethod, scheduleId, fe
 }
 
 function capturev3 (order, cb) {
-  let meta = {
-    userId: order.paymentsPlan[0].beneficiaryInfo.userId,
-    beneficiaryId: order.paymentsPlan[0].beneficiaryInfo.beneficiaryId,
-    productId: order.paymentsPlan[0].productInfo.productId,
-    orderId: order._id,
-    scheduleId: order.paymentsPlan[0]._id
-  }
-
   let newmeta = {
     organizationId: order.paymentsPlan[0].productInfo.organizationId,
-    organizationName: order.paymentsPlan[0].productInfo.organizationId,
-    productId: order.paymentsPlan[0].productInfo.organizationId,
-    productName: order.paymentsPlan[0].productInfo.organizationId,
+    organizationName: order.paymentsPlan[0].productInfo.organizationName,
+    productId: order.paymentsPlan[0].productInfo.productId,
+    productName: order.paymentsPlan[0].productInfo.productName,
     beneficiaryMemo: order.paymentsPlan[0].beneficiaryInfo.beneficiaryName,
-    totalFee: order.paymentsPlan[0].totalFee,
+    feePaidUp: order.paymentsPlan[0].feePaidUp,
+    feeStripe: order.paymentsPlan[0].feeStripe,
     orderId: order._id,
     scheduleId: order.paymentsPlan[0]._id
   }
