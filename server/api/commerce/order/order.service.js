@@ -79,12 +79,15 @@ var OrderService = {
         paymentsPlan: []
       }
       prices.forEach(function (ele, idx, arr) {
+        console.log('$$ELE' , JSON.stringify(ele))
         orderReq.paymentsPlan.push({
           email: body.email,
           destinationId: dataProduct.tDPaymentId,
           dateCharge: ele.dateCharge,
           originalPrice: ele.originalPrice,
           totalFee: ele.totalFee,
+          feePaidUp: ele.feePaidUp,
+          feeStripe: ele.feeStripe,
           price: ele.owedPrice,
           discount: body.discount,
           discountCode: body.couponId,
