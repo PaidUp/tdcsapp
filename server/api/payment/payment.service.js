@@ -391,13 +391,14 @@ function capturev3 (order, cb) {
     productId: order.paymentsPlan[0].productInfo.productId,
     productName: order.paymentsPlan[0].productInfo.productName,
     beneficiaryMemo: order.paymentsPlan[0].beneficiaryInfo.beneficiaryName,
+    totalFee: order.paymentsPlan[0].totalFee,
     feePaidUp: order.paymentsPlan[0].feePaidUp,
     feeStripe: order.paymentsPlan[0].feeStripe,
     orderId: order._id,
     scheduleId: order.paymentsPlan[0]._id
   }
 
-  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].totalFee, newmeta, function (debitErr, data) {
+  debitCard(order.paymentsPlan[0].account, order.paymentsPlan[0].price, order.paymentsPlan[0].description, order.paymentsPlan[0]._id, order.paymentsPlan[0].paymentId, order.paymentsPlan[0].destinationId, order.paymentsPlan[0].feePaidUp, newmeta, function (debitErr, data) {
     if (debitErr) {
       order.paymentsPlan[0].attempts.push({dateAttemp: new Date(), status: 'failed', message: debitErr.detail, last4: order.paymentsPlan[0].last4, accountBrand: order.paymentsPlan[0].accountBrand})
       order.paymentsPlan[0].status = 'failed'
