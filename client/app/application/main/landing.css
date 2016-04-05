@@ -47,7 +47,7 @@
   }
 
   .titleBannerHome{
-    font-size: 42px !important;
+    font-size: 24px !important;
   }
 
 }
@@ -59,7 +59,7 @@
   }
 
   .titleBannerHome{
-    font-size: 36px !important;
+    font-size: 24px !important;
   }
 
   .bannerLanding{
@@ -76,13 +76,13 @@
     background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
     background-size: auto !important;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 200;
 
   }
 
   .solutionDescBottom {
-    padding-top: 70px !important;
+    padding-top: 20px !important;
     font-size: 16px !important;
   }
 
@@ -212,21 +212,23 @@
 
 .video-container {
   position: relative;
-  vertical-align: middle;
+  vertical-align: bottom;
 }
 video {
   height: auto;
-  vertical-align: middle;
+  vertical-align: bottom;
   width: 100%;
 }
 .overlay-desc {
-  vertical-align: middle;
+  vertical-align: bottom;
   background: rgba(0,0,0,0);
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 65%; right: 0; bottom: 0; left: 0;
   display: flex;
   align-items: center;
+  height: 20%;
   justify-content: center;
+  z-index: 1;
 }
 
 
@@ -389,7 +391,7 @@ video {
   font-weight: 300;
   color: #FFFFFF;
   text-align: justify;
-  padding-top: 100px;
+  padding-top: 40px;
   line-height: normal;
 }
 
