@@ -88,7 +88,7 @@ var OrderService = {
           discountCode: body.couponId,
           paymentId: body.paymentId,
           wasProcessed: false,
-          status: 'active',
+          status: 'pending',
           processingFees: fm.processingFees,
           collectionsFee: fm.collectionsFee,
           paysFees: fm.paysFees,
