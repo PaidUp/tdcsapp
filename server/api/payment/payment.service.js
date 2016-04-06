@@ -404,7 +404,7 @@ function capturev3 (order, cb) {
     totalFee: order.paymentsPlan[0].totalFee,
     feePaidUp: order.paymentsPlan[0].feePaidUp,
     feeStripe: order.paymentsPlan[0].feeStripe,
-    orderId: order._id,
+    orderId: order.orderId,
     scheduleId: order.paymentsPlan[0]._id
   }
 
