@@ -154,7 +154,7 @@ var OrderService = {
   sendEmail: function sendEmail (last4, body, dataProduct, orderResult) {
     // body.email
     let emailParams = {
-      orderId: orderResult.body._id,
+      orderId: orderResult.body.orderId,
       email: body.email,
       last4: last4,
       amount: 0,
