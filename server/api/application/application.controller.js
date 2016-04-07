@@ -45,12 +45,18 @@ exports.cronRetryPayments = function (req, res) {
 
 exports.cronCompleteOrders = function (req, res) {
   cronjobService.runCompleteOrders(function (err, data) {
+    if(err){
+      pmx.notify(new Error('cronCompleteOrders Error: ' + JSON.stringify(err)));
+    }
     res.status(200).json(data)
   })
 }
 
 exports.cronCompleteOrdersV2 = function (req, res) {
   cronjobService.runCompleteOrdersV2(function (err, data) {
+    if(err){
+      pmx.notify(new Error('cronCompleteOrdersV2 Error: ' + JSON.stringify(err)));
+    }
     res.status(200).json(data)
   })
 }
@@ -82,6 +88,9 @@ exports.cronV3 = function (req, res) {
 
 exports.cronCompleteOrdersV3 = function (req, res) {
   cronjobService.runCompleteOrdersV3(function (err, data) {
+    if(err){
+      pmx.notify(new Error('cronCompleteOrdersV3 Error: ' + JSON.stringify(err)));
+    }
     res.status(200).json(data)
   })
 }

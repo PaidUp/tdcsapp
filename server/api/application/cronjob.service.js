@@ -283,10 +283,14 @@ exports.runCompleteOrdersV3 = function (cb) {
     logger.log('info', Date() + ' running runCompleteOrdersV3...')
     startGiveName(name)
     paymentCronService.collectAccountsCompletev3(function (err, results) {
+      if(err){
+        pmx.notify(new Error('runCompleteOrdersV3: ' + JSON.stringify(err)));
+      }
       endName(name)
       return cb(null, results)
     })
   } else {
+    pmx.notify(new Error('runCompleteOrdersV3: pid is created: '));
     return cb(null, {name: name + '.pid is created'})
   }
 }
