@@ -286,7 +286,7 @@ function paymentSchedulev3 (cb) {
         err.scheduleId = order.paymentsPlan[0]._id
         deferred.resolve(err)
       } else {
-        deferred.resolve({orderId: order._id, scheduleId: order.paymentsPlan[0]._id,err: data.err})
+        deferred.resolve({_id: order._id, orderId: order.orderId, scheduleId: order.paymentsPlan[0]._id,err: data.err})
       }
     })
     return deferred.promise
