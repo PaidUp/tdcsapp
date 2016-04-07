@@ -8,6 +8,7 @@ var commerceService = require('../commerce/commerce.service')
 var logger = require('../../config/logger')
 var path = require('path')
 var moment = require('moment')
+var pmx = require('pmx');
 
 var jobsv2 =
 [
@@ -249,6 +250,9 @@ exports.runv2 = function (cb) {
     async.series(
       jobsv2,
       function (err, results) {
+        if(err){
+          pmx.notify(err);
+        }
         endName(name)
         return cb(null, results)
       })
@@ -279,10 +283,14 @@ exports.runCompleteOrdersV3 = function (cb) {
     logger.log('info', Date() + ' running runCompleteOrdersV3...')
     startGiveName(name)
     paymentCronService.collectAccountsCompletev3(function (err, results) {
+      if(err){
+        pmx.notify(new Error('runCompleteOrdersV3: ' + JSON.stringify(err)));
+      }
       endName(name)
       return cb(null, results)
     })
   } else {
+    pmx.notify(new Error('runCompleteOrdersV3: pid is created: '));
     return cb(null, {name: name + '.pid is created'})
   }
 }
