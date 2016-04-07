@@ -400,7 +400,7 @@ function capturev3 (order, cb) {
     organizationName: order.paymentsPlan[0].productInfo.organizationName,
     productId: order.paymentsPlan[0].productInfo.productId,
     productName: order.paymentsPlan[0].productInfo.productName,
-    beneficiaryMemo: order.paymentsPlan[0].beneficiaryInfo.beneficiaryName,
+    beneficiaryName: order.paymentsPlan[0].beneficiaryInfo.beneficiaryName,
     totalFee: order.paymentsPlan[0].totalFee,
     feePaidUp: order.paymentsPlan[0].feePaidUp,
     feeStripe: order.paymentsPlan[0].feeStripe,
