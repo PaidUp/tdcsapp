@@ -4,6 +4,7 @@ var _ = require('lodash')
 var applicationService = require('./application.service')
 var logger = require('../../config/logger')
 var cronjobService = require('./cronjob.service')
+var pmx = require('pmx');
 // var mix = require('../../config/mixpanel')
 
 exports.contact = function (req, res) {
@@ -62,13 +63,19 @@ exports.cronReminderVerifyBank = function (req, res) {
 
 exports.cronV2 = function (req, res) {
   cronjobService.runv2(function (err, data) {
+    if(err){
+      pmx.notify(new Error('cronV2 Error: ' + JSON.stringify(err)));
+    }
     res.status(200).json(data)
   })
 }
 
 exports.cronV3 = function (req, res) {
   cronjobService.runv3(function (err, data) {
-    if (err) return res.status(500).json(err)
+    if (err){
+      pmx.notify(new Error('cronV3 Error: ' + JSON.stringify(err)));
+      return res.status(500).json(err)
+    }
     return res.status(200).json(data)
   })
 }
