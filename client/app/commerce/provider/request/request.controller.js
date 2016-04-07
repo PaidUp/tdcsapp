@@ -18,11 +18,10 @@ angular.module('convenienceApp')
     $scope.submitted = false
     $scope.registerProvider = function () {
       $scope.submitted = true
-      // && $scope.billingForm.$valid removed because the EIN is optional
       TrackerService.trackFormErrors('providerForm' , $scope.providerForm, {})
       TrackerService.trackFormErrors('ownerForm' , $scope.ownerForm, {})
       TrackerService.trackFormErrors('bankForm' , $scope.bankForm, {})
-      if ($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid && validateEin($scope.provider.EIN)) {
+      if ($scope.providerForm.$valid && $scope.ownerForm.$valid && $scope.bankForm.$valid && validateEin($scope.provider.EIN) && $scope.billingForm.$valid) {
         $scope.provider.dda = $scope.bankAccount.accountNumber.replace(/ /g, '')
         $scope.provider.aba = $scope.bankAccount.routingNumber.replace(/ /g, '')
         $scope.provider.ownerSSN = $scope.bankAccount.securitySocial.replace(/-/g, '')
@@ -144,8 +143,9 @@ angular.module('convenienceApp')
     $scope.validateSSN = function () {
       $scope.bankAccount.securitySocial = angular.copy($scope.provider.ownerSSN)
       if ($scope.bankAccount.securitySocial) {
-        var pattern = /^(?=.*?[1-9])[0-9()-]+$/
-        $scope.ownerForm.ownerSSN.$setValidity('pattern', pattern.test($scope.bankAccount.securitySocial))
+        var pattern = /^(?=.*?[0-9])[0-9()-]+$/
+        var validationSSN = pattern.test($scope.bankAccount.securitySocial) && $scope.bankAccount.securitySocial.length === 11 && $scope.bankAccount.securitySocial.replace(/-/g, '').length === 9
+        $scope.ownerForm.ownerSSN.$setValidity('pattern', validationSSN)
       } else {
         $scope.ownerForm.ownerSSN.$setValidity('pattern', false)
       }
@@ -185,7 +185,6 @@ angular.module('convenienceApp')
       if (birthdate.isValid() && dateRange.contains(birthdate)) {
         $scope.providerForm.$setValidity('date', true)
         $scope.provider.ownerDOB = $scope.provider.date.year + '-' + $scope.provider.date.month + '-' + $scope.provider.date.day
-        // $scope.athlete.birthDate = $scope.provider.year + '-' + $scope.provider.month + '-' + $scope.provider.day
         return true
       } else {
         $scope.providerForm.$setValidity('date', false)
@@ -211,7 +210,6 @@ angular.module('convenienceApp')
       if (oldvalue && value && oldvalue.length === 5 && value.length === 6) {
         $scope.provider.ownerSSN = value + '-'
       }
-    // $scope.billingForm.EIN.$error.pattern = true
     })
 
     function validateEin (einValue) {
