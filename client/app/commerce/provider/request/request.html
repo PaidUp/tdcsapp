@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-8 col-sm-offset-2">
         <!-- Organization -->
-        <!-- jesse1<div class="row bg-Block" ng-form name="providerForm">
+        <div class="row bg-Block" ng-form name="providerForm">
           <div class="col-sm-12">
             <h3 class="text-CS">Organization Display Name</h3> <div name="labelQuoteOrganizationDisplayName">This is the name of your organization that will be displayed to users on our site (e.g. Austin Tigers). This may be different than the legal name (e.g. Tigers Baseball, LLC) which you will provide below.</div>
           </div>
@@ -14,7 +14,7 @@
 
           <div class="col-sm-6 col-sm-pull-6">
           <br>
-            <div class="form-group">
+            <div class="form-group" ng-class="{ 'has-error': providerForm.teamName.$invalid && submitted }">
               <label>Name</label>
               <input type="text" name="teamName" class="form-control" placeholder="Name" ng-model="provider.teamName" ng-maxlength="128" required ng-required="true">
               <div class="text-CS text-center" ng-show="providerForm.teamName.$error.required && submitted">
@@ -25,7 +25,7 @@
               </div>
             </div>
           </div>
-        </div> endjesse1-->
+        </div>
         <br>
         <!-- Organization -->
         <!-- Data owner Organization -->
