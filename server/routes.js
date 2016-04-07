@@ -6,6 +6,7 @@
 var fs = require('fs')
 var config = require('./config/environment')
 var errors = require('./components/errors')
+var pmx = require('pmx');
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -52,4 +53,8 @@ module.exports = function (app) {
     .get(function (req, res) {
       res.sendfile(app.get('appPath') + '/index.html')
     })
+
+  app.use(pmx.expressErrorHandler());
 }
+
+

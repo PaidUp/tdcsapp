@@ -17,6 +17,8 @@ var async = require('async')
 var businessDays = require('moment-business-days')
 var scheduleService = require('../commerce/schedule/schedule.service')()
 var CommerceConnect = require('pu-commerce-connect')
+var pmx = require('pmx');
+
 
 var Q = require('q')
 // https://www.npmjs.com/package/q
@@ -251,7 +253,6 @@ function paymentSchedulev3 (cb) {
           return capturev3(order).then(function (value) { return value })
         })).then(function (result) {
           logger.info('orderGetToCharge capturev3' , result)
-          // mandar email TODO felipe (notifications)
           return cb(null, {cron: result})
         }, function (reason) {
           logger.error('orderGetToCharge error capturev3' , reason)
@@ -263,7 +264,7 @@ function paymentSchedulev3 (cb) {
     },
     error: function (err) {
       logger.error('orderGetToCharge error ' , err)
-      // TODO notification email felipe loggly (notifications)
+      pmx.notify('orderGetToCharge error ' + JSON.stringify(err));
       return cb(err)
     }
   })
@@ -281,6 +282,7 @@ function paymentSchedulev3 (cb) {
     var deferred = Q.defer()
     paymentService.capturev3(order, function (err, data) {
       if (err) {
+        pmx.notify("Error capturev3: Order: "+ order.orderId+ ", ScheduleId: "+order.paymentsPlan[0]._id+", Err:"+ JSON.stringify(err));
         logger.error('capturev3 error ' , err)
         err.orderId = order._id
         err.scheduleId = order.paymentsPlan[0]._id
