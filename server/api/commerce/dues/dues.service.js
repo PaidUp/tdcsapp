@@ -2,7 +2,7 @@
 
 var duesService = require('TDCore').duesService;
 
-var PUScheduleConnect = require("pu-schedule-connect");
+var PUScheduleConnect = require("paidup-schedule-connect");
 var config = require('../../../config/environment/index');
 var logger = require('../../../config/logger');
 //Done

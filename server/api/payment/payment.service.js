@@ -11,7 +11,7 @@ var async = require('async')
 var camelize = require('camelize')
 var paymentEmailService = require('./payment.email.service')
 var tdPaymentService = require('TDCore').paymentService
-var CommerceConnect = require('pu-commerce-connect')
+var CommerceConnect = require('paidup-commerce-connect')
 var uuid = require('node-uuid')
 
 function createCustomer (user, cb) {
