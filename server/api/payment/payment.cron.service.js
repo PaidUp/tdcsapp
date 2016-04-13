@@ -16,7 +16,7 @@ var notifications = require('../notifications/notifications.service')
 var async = require('async')
 var businessDays = require('moment-business-days')
 var scheduleService = require('../commerce/schedule/schedule.service')()
-var CommerceConnect = require('pu-commerce-connect')
+var CommerceConnect = require('paidup-commerce-connect')
 var pmx = require('pmx');
 
 

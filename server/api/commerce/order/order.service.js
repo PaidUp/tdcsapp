@@ -3,8 +3,8 @@
  */
 'use strict'
 
-var CommerceConnector = require('pu-commerce-connect')
-var ScheduleConnector = require('pu-schedule-connect')
+var CommerceConnector = require('paidup-commerce-connect')
+var ScheduleConnector = require('paidup-schedule-connect')
 var config = require('../../../config/environment')
 var CatalogService = require('../catalog/catalog.service')
 var userService = require('../../user/user.service')
