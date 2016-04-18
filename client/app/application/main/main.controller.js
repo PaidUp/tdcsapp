@@ -13,8 +13,10 @@ angular.module('convenienceApp')
     $scope.setPnTeam = function(){
         var pnTeam = $stateParams.team;
         var paymentPlan = $stateParams.paymentPlan;
-        if(pnTeam && paymentPlan){
+        if(pnTeam){
           $scope.$storage.pnTeam = pnTeam;
+        }
+        if(paymentPlan){
           $scope.$storage.pnPaymentPlan = paymentPlan;
         }
 
