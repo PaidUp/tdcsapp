@@ -31,9 +31,7 @@ angular.module('convenienceApp')
     function loadTeams(team){
       $scope.showDropDownTeams = false;
       if(team.attributes.type === 'grouped'){
-        console.log('TEAM' , team)
         $scope.renderTeams = true;
-
         $scope.orderRequest.organizationImage = team.getImage('image').url;
         CartService.setOrderRequest($scope.orderRequest);
         TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
@@ -45,7 +43,7 @@ angular.module('convenienceApp')
       }else{
 
         var fm = JSON.parse(team.attributes.feeManagement)
-        
+
         loadPaymentPlans(team);
         $scope.paymentPlanSelected = $scope.paymentPlans[0];
 
