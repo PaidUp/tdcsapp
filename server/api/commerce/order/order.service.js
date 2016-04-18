@@ -12,6 +12,15 @@ var paymentEmailService = require('../../payment/payment.email.service')
 var paymentService = require('../../payment/payment.service')
 var logger = require('../../../config/logger')
 
+function evalDate(strDate){
+  let orgDate = new Date(strDate);
+  let today = new Date();
+  if(orgDate.getTime() < today.getTime()){
+    return today.toISOString().slice(0,10);
+  }
+  return strDate;
+}
+
 var OrderService = {
   calculatePrices: function calculatePrices (body, cb) {
     CatalogService.catalogProduct(body.productId, function (errProduct, dataProduct) {
@@ -74,11 +83,10 @@ var OrderService = {
         paymentsPlan: []
       }
       prices.forEach(function (ele, idx, arr) {
-        console.log('$$ELE' , JSON.stringify(ele))
         orderReq.paymentsPlan.push({
           email: body.email,
           destinationId: dataProduct.tDPaymentId,
-          dateCharge: ele.dateCharge,
+          dateCharge: evalDate(ele.dateCharge),
           originalPrice: ele.originalPrice,
           totalFee: ele.totalFee,
           feePaidUp: ele.feePaidUp,
@@ -164,7 +172,7 @@ var OrderService = {
     orderResult.body.paymentsPlan.forEach(function (ele, idx, arr) {
       emailParams.amount = emailParams.amount + ele.price
       emailParams.schedules.push({
-        nextPaymentDue: ele.dateCharge,
+        nextPaymentDue: evalDate(ele.dateCharge),
         price: ele.price
       })
     })

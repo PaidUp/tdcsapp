@@ -18,10 +18,10 @@
                         We will charge the account on file ending in <%= last4Digits %> on the following schedule:
                         <br />
                         <br />
-                        <% for(var i=0; i < schedules.length; i++) {
-                          var nextPaymentDue = new Date(schedules[i].nextPaymentDue);
+                        <%
+                          for(var i=0; i < schedules.length; i++) {
                         %>
-                        <%= nextPaymentDue.getMonth()+1 %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
+                        <%= schedules[i].nextPaymentDue.substring(0, 4)  %>-<%= schedules[i].nextPaymentDue.substring(5, 7) %>-<%= schedules[i].nextPaymentDue.substring(8,10) %>: $<%= schedules[i].price %><br>
                         <br />
                             <% } %>
                             Total: $ <%= amount %>
