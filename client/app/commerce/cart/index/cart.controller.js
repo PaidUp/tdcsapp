@@ -57,7 +57,7 @@ angular.module('convenienceApp')
             payProcessing: fm.paysFees.processing,
             payCollecting: fm.paysFees.collections,
             description : ele.description,
-            dateCharge : ele.dateCharge
+            dateCharge : evalDate(ele.dateCharge)
           });
 
         });
@@ -87,6 +87,15 @@ angular.module('convenienceApp')
         TrackerService.create('Error parse JSON dues' , {feeManagement : feeManagement});
         return cb(err);
       }
+    };
+
+    function evalDate(strDate){
+      var orgDate = new Date(strDate);
+      var today = new Date();
+      if(orgDate.getTime() < today.getTime()){
+        return today.toISOString().slice(0,10);
+      }
+      return strDate;
     }
 
     $scope.modalFactory = ModalFactory;
