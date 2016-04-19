@@ -50,8 +50,8 @@ angular.module('convenienceApp')
 
           params.push({
             originalPrice: ele.amount,
-            stripePercent: fm.processingFees.cardFeeActual,
-            stripeFlat: fm.processingFees.cardFeeFlatActual,
+            stripePercent: fm.processingFees.cardFeeDisplay,
+            stripeFlat: fm.processingFees.cardFeeFlatDisplay,
             paidUpFee: fm.collectionsFee.fee,
             discount: ele.applyDiscount ? ele.discount : 0,
             payProcessing: fm.paysFees.processing,
