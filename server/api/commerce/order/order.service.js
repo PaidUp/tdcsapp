@@ -12,14 +12,6 @@ var paymentEmailService = require('../../payment/payment.email.service')
 var paymentService = require('../../payment/payment.service')
 var logger = require('../../../config/logger')
 
-function evalDate(strDate){
-  let orgDate = new Date(strDate);
-  let today = new Date();
-  if(orgDate.getTime() < today.getTime()){
-    return today.toLocaleDateString('fr-CA');
-  }
-  return strDate;
-}
 
 var OrderService = {
   calculatePrices: function calculatePrices (body, cb) {
@@ -86,7 +78,7 @@ var OrderService = {
         orderReq.paymentsPlan.push({
           email: body.email,
           destinationId: dataProduct.tDPaymentId,
-          dateCharge: evalDate(ele.dateCharge),
+          dateCharge: ele.dateCharge,
           originalPrice: ele.originalPrice,
           totalFee: ele.totalFee,
           feePaidUp: ele.feePaidUp,
@@ -172,7 +164,7 @@ var OrderService = {
     orderResult.body.paymentsPlan.forEach(function (ele, idx, arr) {
       emailParams.amount = emailParams.amount + ele.price
       emailParams.schedules.push({
-        nextPaymentDue: evalDate(ele.dateCharge),
+        nextPaymentDue: ele.dateCharge,
         price: ele.price
       })
     })
