@@ -168,6 +168,7 @@ angular.module('convenienceApp')
 
 
     $scope.updateTeam = function(teamSelected){
+      $scope.renderPaymentPlans = false;
       TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){

@@ -57,7 +57,7 @@ angular.module('convenienceApp')
             payProcessing: fm.paysFees.processing,
             payCollecting: fm.paysFees.collections,
             description : ele.description,
-            dateCharge : evalDate(ele.dateCharge)
+            dateCharge : ele.dateCharge
           });
 
         });
@@ -88,18 +88,6 @@ angular.module('convenienceApp')
         return cb(err);
       }
     };
-
-    function evalDate(strDate){
-      var result = "";
-      var orgDate = new Date(strDate);
-      var today = new Date();
-      if(orgDate.getTime() < today.getTime()){
-        result = today.toLocaleDateString('fr-CA');
-      }else{
-        result = strDate
-      }
-      return result;
-    }
 
     $scope.modalFactory = ModalFactory;
 
@@ -149,8 +137,8 @@ angular.module('convenienceApp')
       TrackerService.create('Error get totals',{errorMessage : JSON.stringify(err)});
       FlashService.addAlert({
         type: "danger",
-        msg: "We had a problem and have notified our team.  We will contact you shortly once it’s resolved.",
-        timeout: 10000
+        msg: "Oh no, there’s a problem with your order.  Please call us at 855.764.3232 or email us at support@getpaidup.com so we can resolve it.",
+        timeout: 20000
       });
       $state.go('athletes');
       $scope.loading=false;
