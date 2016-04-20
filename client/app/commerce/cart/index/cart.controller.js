@@ -90,12 +90,15 @@ angular.module('convenienceApp')
     };
 
     function evalDate(strDate){
+      var result = "";
       var orgDate = new Date(strDate);
       var today = new Date();
       if(orgDate.getTime() < today.getTime()){
-        return today.toISOString().slice(0,10);
+        result = today.toLocaleDateString('fr-CA');
+      }else{
+        result = strDate
       }
-      return strDate;
+      return result;
     }
 
     $scope.modalFactory = ModalFactory;

@@ -16,7 +16,7 @@ function evalDate(strDate){
   let orgDate = new Date(strDate);
   let today = new Date();
   if(orgDate.getTime() < today.getTime()){
-    return today.toISOString().slice(0,10);
+    return today.toLocaleDateString('fr-CA');
   }
   return strDate;
 }
