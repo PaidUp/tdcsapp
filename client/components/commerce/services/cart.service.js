@@ -45,12 +45,52 @@ angular.module('convenienceApp')
       CartService.els.set('discount', discount);
     };
 
+    CartService.setFeeManagement = function (feeManagement) {
+      CartService.els.set('feeManagement', feeManagement);
+    };
+
     CartService.getCartGrandTotal = function () {
       return CartService.els.get('grandTotal')
     };
 
     CartService.getCartDiscount = function () {
       return CartService.els.get('discount')
+    };
+
+    CartService.getFeeManagement = function () {
+      return CartService.els.get('feeManagement');
+    };
+
+    CartService.setDues = function (dues) {
+      CartService.els.set('dues' , dues);
+    };
+
+    CartService.getDues = function () {
+      return CartService.els.get('dues');
+    };
+
+    CartService.setTeam = function (team) {
+      CartService.els.set('team' , team);
+    };
+
+    CartService.getTeam = function () {
+      return CartService.els.get('team');
+    };
+
+    CartService.setOrderRequest = function (orderRequest) {
+      CartService.els.set('order-request' , orderRequest);
+    };
+
+    CartService.getOrderRequest = function () {
+      return CartService.els.get('order-request');
+    };
+
+    CartService.setAthlete = function (athlete) {
+      CartService.els.set('athlete' , athlete);
+    };
+
+    CartService.getAthlete = function () {
+      return CartService.els.get('athlete');
     };
 
     CartService.hasProductBySKU = function (sku, cb) {
@@ -101,7 +141,7 @@ angular.module('convenienceApp')
         products: products
       }).$promise.then(function (cart) {
           $cookieStore.put('userId', athlete._id);
-          $cookieStore.put('athlete', athlete);
+        CartService.setAthlete(athlete);
           $rootScope.$emit('event:cart-state-changed', undefined);
           deferred.resolve(cart);
         }).catch(function (err) {
@@ -119,6 +159,12 @@ angular.module('convenienceApp')
         CartService.els.remove('products');
         CartService.els.remove('grandTotal');
         CartService.els.remove('discount');
+        CartService.els.remove('paymentPlan');
+        CartService.els.remove('feeManagement');
+        CartService.els.remove('team');
+        CartService.els.remove('dues');
+        CartService.els.remove('order-request');
+        CartService.els.remove('athlete');
         CartService.els = null;
       }
       storage.$reset();
@@ -148,10 +194,6 @@ angular.module('convenienceApp')
       return $cookieStore.get('userId');
     };
 
-    this.getAthlete = function () {
-      return $cookieStore.get('athlete');
-    };
-
     var subTotal = 0;
 
     this.getSubtotal = function () {
@@ -175,9 +217,9 @@ angular.module('convenienceApp')
       return resp;
     };
 
-    this.applyDiscount = function(coupon, cartId, cb){
+    this.applyDiscount = function(productId, coupon, cb){
       discount.apply({coupon:coupon,
-        cartId:cartId}).$promise.then(function(result){
+        productId:productId}).$promise.then(function(result){
           cb(null, result);
         }).catch(function(err){
           console.log(err);

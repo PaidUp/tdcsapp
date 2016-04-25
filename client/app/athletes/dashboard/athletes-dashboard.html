@@ -2,7 +2,7 @@
   <div class="col-sm-6 col-sm-offset-3">
     <div class="row text-center" ng-if="athletes.length > 0">
         <div class="col-sm-4 athlete-card" ng-repeat="athlete in athletes" >
-          <div  ng-click="selectAthlete(athlete)">
+          <div  ng-click="selectAthlete(athlete)" id="{{athlete.firstName}}">
             <img src="/assets/images/avatar.jpg" alt="" class="img-circle">
             <h2 class="header">{{athlete.firstName}} {{athlete.lastName}} <!-- <span class="glyphicon glyphicon-pencil small" ng-click="updateAthlete(athlete)"></span> --></h2>
             <p ng-show="!athlete.team" class="header">

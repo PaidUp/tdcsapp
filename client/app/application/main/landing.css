@@ -357,21 +357,21 @@ video {
   display: inline-block !important;
   background-position: -405px -5px;
   background-color: #006e82;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite1.jpg);
+  #background-image: url(/assets/images/landing/im_bg_solutions_01_sprite1.jpg);
 }
 
 .solutionsForTeams .item2{
   display: inline-block !important;
   background-color: #006e82;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite1.jpg);
+  #background-image: url(/assets/images/landing/im_bg_solutions_02_sprite1.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
   background-position: -405px -5px;
   background-color: #006e82;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit1.jpg);
+  #background-image: url(/assets/images/landing/im_bg_solutions_03_sprit1.jpg);
 }
 
 .solutionDescTop{

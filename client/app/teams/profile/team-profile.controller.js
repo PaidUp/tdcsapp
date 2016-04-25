@@ -2,7 +2,8 @@
 
 angular.module('convenienceApp')
   .controller('TeamsProfileCtrl', function ($rootScope, $scope, UserService, AuthService, FlashService,
-                                            ContactService, $state, $stateParams, TeamService, CartService, TrackerService) {
+                                            ContactService, $state, $stateParams, TeamService, CartService,
+                                            TrackerService) {
 
     $rootScope.$emit('bar-welcome', {
       left:{
@@ -24,20 +25,41 @@ angular.module('convenienceApp')
     $scope.renderTeams = false;
     $scope.showDropDownTeams = false;
     $scope.disablePayNow = false;
+    $scope.showDropDownPaymenPlans = false;
+    $scope.orderRequest = {};
 
     function loadTeams(team){
       $scope.showDropDownTeams = false;
       if(team.attributes.type === 'grouped'){
         $scope.renderTeams = true;
+        $scope.orderRequest.organizationImage = team.getImage('image').url;
+        CartService.setOrderRequest($scope.orderRequest);
         TeamService.getTeamsGrouped(team.attributes.productId).then(function (teams) {
           $scope.teams = teams;
           $scope.showDropDownTeams = true;
         }).catch(function (err) {
 
         });
+      }else{
+
+        var fm = JSON.parse(team.attributes.feeManagement)
+
+        loadPaymentPlans(team);
+        $scope.paymentPlanSelected = $scope.paymentPlans[0];
+
+        $scope.orderRequest.organizationId = fm.details.organizationId;
+        $scope.orderRequest.organizationName = fm.details.organizationName;
+        $scope.orderRequest.organizationLocation = fm.details.organizationLocation;
+        $scope.orderRequest.organizationImage = team.getImage('image').url;
+        $scope.orderRequest.productId = team.attributes.productId;
+        $scope.orderRequest.productName = fm.details.name;
+        $scope.orderRequest.productImage = team.getImage('image').url;
+        $scope.orderRequest.paymentPlanSelected = $scope.paymentPlans[0].id;
+        CartService.setOrderRequest($scope.orderRequest);
+        $scope.selectPaymentplan($scope.paymentPlans[0]);
+        $scope.showDropDownPaymenPlans = true;
       }
     };
-
 
     function loadTeam(teamID, cb){
       TeamService.getTeam(teamID).then(function (team) {
@@ -146,16 +168,64 @@ angular.module('convenienceApp')
 
 
     $scope.updateTeam = function(teamSelected){
+      $scope.renderPaymentPlans = false;
       TrackerService.create('Team Selected', {team : teamSelected.sku});
       $scope.disablePayNow = true;
       loadTeam(teamSelected.entityId, function(team){
-        $scope.disablePayNow = false;
+        var fm = JSON.parse(team.attributes.feeManagement)
+
+        $scope.orderRequest.organizationId = fm.details.organizationId;
+        $scope.orderRequest.organizationName = fm.details.organizationName;
+        $scope.orderRequest.organizationLocation = fm.details.organizationLocation;
+        $scope.orderRequest.productId = team.attributes.productId;
+        $scope.orderRequest.productName = fm.details.name;
+        $scope.orderRequest.productImage = team.getImage('image').url;
+
+        CartService.setOrderRequest($scope.orderRequest);
+
+        loadPaymentPlans(team);
       });
     };
 
-    // $scope.selectAthlete = function (athlete) {
-    //   if (athlete.firstName === 'Add New Athlete') {
-    //     console.log('Add New Athlete');
-    //   }
-    // };
+    function loadPaymentPlans(team){
+      try{
+        var fm = JSON.parse(team.attributes.feeManagement);
+        var pm = JSON.parse(team.attributes.feeManagement).paymentPlans
+        CartService.setFeeManagement(fm);
+        $scope.paymentPlans = [];
+        if($scope.$storage.pnPaymentPlan){
+          $scope.paymentPlans.push({
+            id : $scope.$storage.pnPaymentPlan,
+            description : pm[$scope.$storage.pnPaymentPlan].description
+          });
+        }else{
+          for(var reference in pm){
+            if(pm[reference].visible){
+              $scope.paymentPlans.push({
+                id : reference,
+                description : pm[reference].description
+              });
+            }
+          }
+        }
+        $scope.renderPaymentPlans = true;
+        $scope.showDropDownPaymenPlans = true;
+        $scope.disablePayNow = false;
+      }catch (err){
+        $scope.errorFeeManagment = true;
+      }
+    }
+
+    $scope.selectPaymentplan = function(pm){
+      var ro = CartService.getOrderRequest();
+      $scope.orderRequest.paymentPlanSelected = pm.id;
+      CartService.setOrderRequest($scope.orderRequest);
+
+      var fm = CartService.getFeeManagement();
+      fm.paymentPlanSelected = pm.id;
+      CartService.setFeeManagement(fm);
+      $scope.disablePayNow = false;
+    }
+
+
   });

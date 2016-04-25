@@ -10,6 +10,12 @@ angular.module('convenienceApp')
         roles:['guest']
       }
     }).state('main-pn', {
+      url: '/pn/:team/:paymentPlan',
+      templateUrl: 'app/application/main/main.html',
+      data:{
+        roles:['guest']
+      }
+    }).state('main-pn-g', {
       url: '/pn/:team',
       templateUrl: 'app/application/main/main.html',
       data:{

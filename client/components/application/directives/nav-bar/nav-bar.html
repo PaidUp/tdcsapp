@@ -79,10 +79,10 @@
             <a href="" ui-sref="faq" ng-click="toggleMenu()">FAQ</a>
           </li>
           <li class="my-athletes" ng-show="isLoggedIn()  && isUser()" ng-click="toggleMenu()">
-            <a href="" ui-sref="athletes">Athlete(s)</a>
+            <a href="" ui-sref="athletes" id="aHrefAthletes">Athlete(s)</a>
           </li>
           <li ng-show="isLoggedIn() && isUser()" ng-click="toggleMenu()">
-            <a href="" ui-sref="teams-dashboard">Teams</a>
+            <a href="" ui-sref="teams-dashboard" id="aHreTeams">Teams</a>
           </li>
           <li ng-show="!isLoggedIn()">
             <ng-include src="'app/auth/login/auth.html'">
