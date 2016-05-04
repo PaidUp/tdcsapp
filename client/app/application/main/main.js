@@ -49,5 +49,8 @@ angular.module('convenienceApp')
       url: '/about-us',
       templateUrl: 'app/application/main/about-us.html',
       controller : 'aboutUsCtrl'
+    }).state('sso', {
+      url: '/sso/:token',
+      controller : 'SSOCtrl'
     });
   });
