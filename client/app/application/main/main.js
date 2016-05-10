@@ -52,5 +52,11 @@ angular.module('convenienceApp')
     }).state('sso', {
       url: '/sso/:token',
       controller : 'SSOCtrl'
+    }).state('sso-team', {
+      url: '/sso/:token/:team',
+      controller : 'SSOCtrl'
+    }).state('sso-team-pp', {
+      url: '/sso/:token/:team/:paymentPlan',
+      controller : 'SSOCtrl'
     });
   });
