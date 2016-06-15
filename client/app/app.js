@@ -27,7 +27,8 @@ angular.module('convenienceApp', [
       .otherwise('/');
 
     $locationProvider.html5Mode(true);
-    FacebookProvider.init('717631811625048');
+    FacebookProvider.init('499580560213861');
+    //FacebookProvider.init('499580560213861 717631811625048');
     $httpProvider.interceptors.push('authInterceptor');
 
     $httpProvider.defaults.cache = false;

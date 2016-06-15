@@ -1,13 +1,10 @@
 'use strict';
 
-var paymentService = require('../../payment/payment.service');
 var userService = require('../../user/user.service');
-var loanService = require('../../loan/loan.service');
 var logger = require('../../../config/logger');
-var userLoanService = require('../../loan/application/user/user.service');
 var commerceService = require('../commerce.service');
 var async = require('async');
-//var mix = require('../../../config/mixpanel');
+var OrderService = require('./order.service');
 
 exports.listOrders = function (req, res) {
   var user = req.user;
@@ -32,6 +29,40 @@ exports.listOrders = function (req, res) {
       return res.status(200).json(orders);
     });
   });
+}
+
+exports.getOrder = function(req , res){
+  let user = req.user;
+  if (!req.params.orderId) {
+    return handleError(res, {name : 'ValidationError' , message : 'orderId is required' });
+  }
+
+  commerceService.getOrder(user, req.params.orderId, function(err1, data){
+    if (err1) {
+      return handleError(res, err1);
+    }
+    return res.status(200).json(data);
+  });
+
+}
+
+exports.createOrder = function(req, res){
+  let user = req.user;
+  let params = req.body;
+
+  params.userId = user._id;
+  params.userName = user.firstName + ' ' + user.lastName;
+  params.paymentId = user.meta.TDPaymentId;
+  params.email = user.email;
+
+
+  OrderService.createOrder(params, function(err, data){
+    if (err) {
+      return handleError(res, err);
+    }
+    return res.status(200).json(data);
+  })
+
 }
 
 function handleError(res, err) {

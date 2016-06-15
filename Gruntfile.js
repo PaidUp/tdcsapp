@@ -345,6 +345,12 @@ module.exports = function (grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      videos: {
+        expand: true,
+        cwd: '<%= yeoman.client %>',
+        src: 'assets/videos/*',
+        dest: '<%= yeoman.dist %>/public',
+      },
       dist: {
         files: [{
           expand: true,
@@ -731,6 +737,7 @@ module.exports = function (grunt) {
     'ngtemplates',
     'concat',
     'ngAnnotate',
+    'copy:videos',
     'copy:dist',
     'cdnify',
     'cssmin',

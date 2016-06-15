@@ -12,8 +12,12 @@ angular.module('convenienceApp')
 
     $scope.setPnTeam = function(){
         var pnTeam = $stateParams.team;
+        var paymentPlan = $stateParams.paymentPlan;
         if(pnTeam){
           $scope.$storage.pnTeam = pnTeam;
+        }
+        if(paymentPlan){
+          $scope.$storage.pnPaymentPlan = paymentPlan;
         }
 
       //$rootScope.$emit('verify-email', {});
@@ -58,6 +62,16 @@ angular.module('convenienceApp')
     $rootScope.$on('logout', function () {
       $rootScope.alerts = [];
     });
+
+    if(!navigator.cookieEnabled){
+      console.log('Convenience select uses cookies. For using our services, you should enable cookies.')
+      console.log('To find out more about cookies, including how to see what cookies have been set and how to block and delete cookies, please visit http://www.aboutcookies.org/.')
+      FlashService.addAlert({
+        type: 'info',
+        msg: 'Convenience select uses cookies. To use our services, you must enable cookies.',
+        timeout: 100000
+      });
+    }
 
     //$rootScope.$on('close-alerts', function () {
     //  $rootScope.alerts = [];

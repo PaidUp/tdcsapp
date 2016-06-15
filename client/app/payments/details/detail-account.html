@@ -1,5 +1,5 @@
 <form name="checkoutForm" ng-submit="placeOrder(null, null)" novalidate>
-  <div class="container">
+  <div class="container" >
     <div class="row">
 
       <div class="col-sm-4 text-center clearfix">
@@ -8,10 +8,9 @@
 
     </div>
 
-
     <div class="row">
-      <div class="col-sm-4 col-sm-offset-4 " ng-repeat="schedule in schedules">
-        <h4>{{schedule.name}}</h4>
+      <div class="col-sm-4 col-sm-offset-4 ">
+        <h4>{{team.attributes.shortDescription}}</h4>
         <div class="clearfix"></div>
         <table class="table table-bordered table-hover">
           <thead>
@@ -19,9 +18,9 @@
           <th>Value</th>
           </thead>
           <tbody>
-          <tr ng-repeat="period in schedule.periods">
-            <td class="">{{period.nextPaymentDue | date:'MM/dd/yyyy'}} - {{period.description}}</td>
-            <td>{{period.price | currency}}</td>
+          <tr ng-repeat="due in dues">
+            <td class="">{{due.dateCharge | limitTo:10}} - {{due.description}}</td>
+            <td>{{due.owedPrice | currency}}</td>
           </tr>
           </tbody>
         </table>
@@ -170,6 +169,7 @@
         <div class="col-sm-4 col-sm-offset-4"  ng-class="{ 'has-error': checkoutForm.selectBank.$invalid && submitted }">
           <div class="form-group">
             <select name="selectAccount"
+                    id="lstSelectAccount"
                     class="form-control"
                     ng-model="accountDetails"
                     ng-required="accounts.length > 1"
@@ -200,7 +200,7 @@
 
             <div class="row">
               <div class="col-sm-12"><strong>
-                By clicking on the "Place Order" button, I agree to Convenience Select's:<br>
+                By clicking on the "Place Order" button, I agree to PaidUp's:<br>
                 <ul>
                   <li><a href="" ng-click="modalFactory.TermsOfServiceModal()">Terms of service</a></li>
                   <li><a href="" ng-click="modalFactory.PrivacyModal()">Privacy Policy</a></li>

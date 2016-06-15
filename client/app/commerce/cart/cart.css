@@ -1,5 +1,5 @@
 .cart-order-summary > thead{
-  color: #ff805d;
+  color: #006e82;
   font-size: 12px;
   border-bottom: none;
 }
@@ -10,7 +10,7 @@
 
 
 .cart-table > thead{
-  color: #ff805d;
+  color: #006e82;
   font-size: 12px;
   border-bottom: none;
 }
@@ -48,7 +48,7 @@
   border-left: 4px solid #ffffff;
 }
 .cart-table .items-required > td:first-child{
-  border-left: 4px solid #ff805d;
+  border-left: 4px solid #006e82;
 }
 .cart-table > tbody > tr > td > .edit-item{
   opacity: 0;
@@ -80,14 +80,14 @@
   margin-bottom: 1px;
 }
 .order-summary li:first-child{
-  color: #ff805d;
+  color: #006e82;
   text-align: center;
 }
 .order-summary li span{
   float: right;
 }
 .order-summary li:last-child span{
-  color: #ff805d;
+  color: #006e82;
   font-size: 22px;
 }
 .empty-car{

@@ -40,7 +40,10 @@ exports.associate = function (req, res) {
 };
 
 exports.listCards = function(req, res){
-  var filter= {_id:req.user._id};
+
+  let userId = req.params.userId || req.user._id
+
+  var filter= {_id:userId};
   userService.find(filter,function(err, dataUser){
     if(err){
       return handleError(res, err);

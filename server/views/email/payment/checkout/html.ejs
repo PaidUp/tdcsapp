@@ -18,10 +18,10 @@
                         We will charge the account on file ending in <%= last4Digits %> on the following schedule:
                         <br />
                         <br />
-                        <% for(var i=0; i < schedules.length; i++) {
-                          var nextPaymentDue = new Date(schedules[i].nextPaymentDue);
+                        <%
+                          for(var i=0; i < schedules.length; i++) {
                         %>
-                        <%= nextPaymentDue.getMonth()+1 %>/<%= nextPaymentDue.getDate() %>/<%= nextPaymentDue.getFullYear() %>: $<%= schedules[i].price %><br>
+                        <%= schedules[i].nextPaymentDue.substring(0, 4)  %>-<%= schedules[i].nextPaymentDue.substring(5, 7) %>-<%= schedules[i].nextPaymentDue.substring(8,10) %>: $<%= schedules[i].price %><br>
                         <br />
                             <% } %>
                             Total: $ <%= amount %>
@@ -29,7 +29,7 @@
                             <br />
                             <br />
                             Before we can charge you, we must first verify that you are the owner of the bank account provided. In a few days check your bank statement and find two small deposits.<br><br>
-                            Once received, please visit convenienceselect.com and confirm your account so we can get started.<br><br>
+                            Once received, please visit app.getpaidup.com and confirm your account so we can get started.<br><br>
                             If you have any questions or issues, please reply to this email or contact us at 855.764.3232.<br><br>
                             <% } %>
                             <br />
@@ -37,7 +37,7 @@
                         Reply to this email if you have any questions.
                         <br />
                             <br />
-                        Convenience Select
+                        PaidUp
                             <br />
                             <!-- datos de orden -->
                           </div>

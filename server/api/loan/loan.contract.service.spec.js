@@ -17,7 +17,7 @@ describe('loanContractService', function () {
         isEmail: true,
         convenienceSelect: {
           state: 'Texas',
-          creditor: 'Convenience Select, LLC',
+          creditor: 'PaidUp, Inc.',
           address: '2900 North Quinlan Park Rd. Suite 240-320.',
           city: 'Austin',
           zip: '78732',
@@ -32,7 +32,7 @@ describe('loanContractService', function () {
           CellPhoneNumber: 6466623303,
           unsubscribeEmailTo: 'ourteam@convenienceslect.com',
           customerServiceTelephoneNumber: '(855) 764-3232',
-          signedAt: 'Convenience Select, LLC'
+          signedAt: 'PaidUp, Inc.'
         },
         clientData: {
           DisputesTelephoneNumber: '(855) 764-3232',

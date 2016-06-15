@@ -301,7 +301,9 @@ angular.module('convenienceApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('admin') != -1;
+        if($rootScope.currentUser && $rootScope.currentUser.roles) {
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('admin') != -1;
+        }
       },
 
       isCoach: function() {
@@ -314,6 +316,18 @@ angular.module('convenienceApp')
         if($rootScope.currentUser && $rootScope.currentUser.roles){
           return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf('user') != -1;
         }
+      },
+
+      validateRole: function(role) {
+
+        if(!role){
+          return false;
+        }
+
+        if($rootScope.currentUser && $rootScope.currentUser.roles){
+          return angular.isDefined($rootScope.currentUser) && $rootScope.currentUser.roles.indexOf(role) != -1;
+        }
+        return false;
       },
 
       /**

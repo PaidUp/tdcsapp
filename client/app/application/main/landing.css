@@ -47,8 +47,9 @@
   }
 
   .titleBannerHome{
-    font-size: 42px !important;
+    font-size: 24px !important;
   }
+
 }
 
 @media screen and (max-width: 768px) {
@@ -58,7 +59,7 @@
   }
 
   .titleBannerHome{
-    font-size: 36px !important;
+    font-size: 24px !important;
   }
 
   .bannerLanding{
@@ -75,13 +76,13 @@
     background-image: url(/assets/images/landing/im_bg_main_baner.jpg);
     background-size: auto !important;
     color: #fff;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 200;
 
   }
 
   .solutionDescBottom {
-    padding-top: 70px !important;
+    padding-top: 20px !important;
     font-size: 16px !important;
   }
 
@@ -206,6 +207,45 @@
   }
 
 
+
+}
+
+.video-container {
+  position: relative;
+  vertical-align: bottom;
+}
+video {
+  height: auto;
+  vertical-align: bottom;
+  width: 100%;
+}
+.overlay-desc {
+  vertical-align: bottom;
+  background: rgba(0,0,0,0);
+  position: absolute;
+  top: 65%; right: 0; bottom: 0; left: 0;
+  display: flex;
+  align-items: center;
+  height: 20%;
+  justify-content: center;
+  z-index: 1;
+}
+
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ECEEEF;
 }
 
 .salesPhone{
@@ -316,19 +356,22 @@
 .solutionsForTeams .item1{
   display: inline-block !important;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_01_sprite.jpg);
+  background-color: #006e82;
+  #background-image: url(/assets/images/landing/im_bg_solutions_01_sprite1.jpg);
 }
 
 .solutionsForTeams .item2{
   display: inline-block !important;
+  background-color: #006e82;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_02_sprite.jpg);
+  #background-image: url(/assets/images/landing/im_bg_solutions_02_sprite1.jpg);
 }
 
 .solutionsForTeams .item3{
   display: inline-block !important;
   background-position: -405px -5px;
-  background-image: url(/assets/images/landing/im_bg_solutions_03_sprit.jpg);
+  background-color: #006e82;
+  #background-image: url(/assets/images/landing/im_bg_solutions_03_sprit1.jpg);
 }
 
 .solutionDescTop{
@@ -348,7 +391,7 @@
   font-weight: 300;
   color: #FFFFFF;
   text-align: justify;
-  padding-top: 100px;
+  padding-top: 40px;
   line-height: normal;
 }
 
@@ -370,7 +413,7 @@
 .bannerLandingPayment{
   min-height: 400px;
   width: 100%;
-  color: #ff805d;
+  color: #006e82;
   font-size: 18px;
   background-size: cover;
 }
@@ -391,7 +434,7 @@
   min-height: 200px;
   width: 100%;
   background-size: cover;
-  background-color: #ff805d;
+  background-color: #006e82;
   text-align: justify;
 }
 
@@ -404,17 +447,17 @@
 
 
 .btnContactUs{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .btnContactUs:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -430,17 +473,17 @@
 }
 
 .bannerContactUs .btnSignUp{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .bannerContactUs .btnSignUp:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -455,7 +498,7 @@
 .bannerComingSoon .title{
   margin-top: 20px;
   font-size: 25px;
-  color: #ff805d;
+  color: #006e82;
   text-align: center;
 }
 
@@ -480,7 +523,7 @@
 .divAboutUs .title{
   margin-top: 20px;
   font-size: 25px;
-  color: #ff805d;
+  color: #006e82;
   text-align: center;
 }
 
@@ -499,17 +542,17 @@
 }
 
 .btnComingSoon{
-  color: #FF805D;
+  color: #006e82;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
 
 .btnComingSoon:hover{
-  color: #FF805D;
+  color: #006e82;
   background-color: #ebedef;
 }
 
@@ -517,8 +560,8 @@
   min-height: 700px;
   color: #FFFFFF;
   background-color: #FFFFFF;
-  border-color: #FF734D;
-  border-bottom-color: #C65C43;
+  border-color: #00425F;
+  border-bottom-color: #00425F;
   background-position: center;
   background-image: url(/assets/images/landing/im_bg_pricing.jpg);
   padding-bottom: 10px;
@@ -669,13 +712,13 @@
 .bannerTestimonial{
   /*min-height: 400px;*/
 
-  border-color: #484C4F;
-  border-bottom-color: #C65C43;
+  border-color: #00B39F;
+  border-bottom-color: #00425F;
   background-position:center;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  background-color: #484C4F;
+  background-color: #00B39F;
   color: #F8F8F8;
 }
 

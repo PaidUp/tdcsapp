@@ -43,7 +43,7 @@ select{
   height: 40px !important;
 }
 a{
-    color: #FF805D;
+    color: #006e82;
 }
 a:hover{
     color: #000;
@@ -66,7 +66,7 @@ div small{
   z-index: 1041;
 }
 .header {
-    color: #FF805D;
+    color: #006e82;
     text-align: center;
 }
 .header .small{
@@ -83,7 +83,7 @@ div small{
 }
 
 .main {
-  padding-top: 97px;
+  padding-top: 125px;
   color: inherit;
 /*  margin-bottom: 30px;*/
 }
@@ -113,16 +113,16 @@ div small{
 }
 .btnSignUp{
     color: #fff;
-    background-color: #FF805D;
-    border-color: #FF734D;
-    border-bottom-color: #C65C43;
+    background-color: #006e82;
+    border-color: #00425F;
+    border-bottom-color: #00425F;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
 .btnSignUp:hover{
   color: #fff;
-  background-color: #e57354;
+  background-color: #00425F;
 }
 .btnSignUp:disabled{
     color: #fff;
@@ -133,7 +133,7 @@ div small{
 .btnSignUpWhite{
   margin-top: 10px;
   background-color: #ffffff;
-  color: #ff805d;
+  color: #006e82;
   border-color: #ebedef;
   border-bottom-color: #cad0d7;
   -webkit-border-radius: 0px;
@@ -141,7 +141,7 @@ div small{
   border-radius: 0px;
 }
 .btnSignUpWhite:hover{
-  color: #ff805d;
+  color: #00425F;
   background-color: #ebebeb;
 }
 .inputWIcons input[type="text"],
@@ -223,7 +223,7 @@ input[type="password"]:-ms-input-placeholder{ /* Internet Explorer 10+ */
   top: 3px;
 }
 .text-CS {
-  color: #ff805d;
+  color: #006e82;
 }
 .text-green-CS {
   color: #69bb17;
@@ -288,7 +288,7 @@ input[type="password"]:-ms-input-placeholder{ /* Internet Explorer 10+ */
     color: #6C737C;
 }
 .btnCancel{
-    color: #ff805d;
+    color: #006e82;
     background-color: #ffffff;
     border-color: #ebedef;
     border-bottom-color: #cad0d7;
@@ -410,7 +410,7 @@ alert a{
   color: #ffffff;
 }
 .breadcrumb a{
-  color: #c6614a;
+  color: #006e82;
 }
 .breadcrumb > li + li:before {
   color: #ffffff;

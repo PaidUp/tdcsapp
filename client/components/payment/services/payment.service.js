@@ -5,8 +5,10 @@ angular.module('convenienceApp')
 
     var Payment = $resource('/api/v1/commerce/checkout/place', {}, {});
     var BankPayment = $resource('/api/v1/payment/bank/:action', {}, {});
+    var ListBanks= $resource('/api/v1/payment/bank/list/user/:userId', {}, {});
     var DeleteBank = $resource('/api/v1/payment/bank/delete/:customerId/:bankId', {}, {});
     var CardPayment = $resource('/api/v1/payment/card/:action', {}, {});
+    var ListCards = $resource('/api/v1/payment/card/list/user/:userId', {}, {});
     var CustomerPayment = $resource('/api/v1/payment/customer/:action', {}, {});
 
     this.sendPayment = function (payment) {
@@ -17,7 +19,12 @@ angular.module('convenienceApp')
       return BankPayment.save({ action: 'associate' }, data).$promise;
     };
 
-    this.listBankAccounts =  function () {
+    this.listBankAccounts =  function (userId) {
+
+      if(userId){
+        return ListBanks.get({ userId: userId }).$promise;
+      }
+
       return BankPayment.get({ action: 'list' }).$promise;
     };
 
@@ -50,7 +57,11 @@ angular.module('convenienceApp')
       return BankPayment.save({ action: 'verify' }, bankInfo).$promise;
     };
 
-    this.listCards =  function () {
+    this.listCards =  function (userId) {
+
+      if(userId){
+        return ListCards.get({ userId: userId }).$promise;
+      }
       return CardPayment.get({ action: 'list' }).$promise;
     };
 

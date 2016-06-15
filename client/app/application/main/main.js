@@ -10,6 +10,12 @@ angular.module('convenienceApp')
         roles:['guest']
       }
     }).state('main-pn', {
+      url: '/pn/:team/:paymentPlan',
+      templateUrl: 'app/application/main/main.html',
+      data:{
+        roles:['guest']
+      }
+    }).state('main-pn-g', {
       url: '/pn/:team',
       templateUrl: 'app/application/main/main.html',
       data:{
@@ -43,5 +49,14 @@ angular.module('convenienceApp')
       url: '/about-us',
       templateUrl: 'app/application/main/about-us.html',
       controller : 'aboutUsCtrl'
+    }).state('sso', {
+      url: '/sso/:token',
+      controller : 'SSOCtrl'
+    }).state('sso-team', {
+      url: '/sso/:token/:team',
+      controller : 'SSOCtrl'
+    }).state('sso-team-pp', {
+      url: '/sso/:token/:team/:paymentPlan',
+      controller : 'SSOCtrl'
     });
   });
