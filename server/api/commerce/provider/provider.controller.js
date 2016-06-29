@@ -91,11 +91,6 @@ exports.providerResponse = function (req, res) {
                 // return handleError(res, err)
                 return res.status(401).json({})
               }
-
-              if (err) {
-                // return handleError(res, err)
-                return res.status(401).json({})
-              }
               var productTeam = {
                 type: config.commerce.products.defaultValue.type,
                 set: config.commerce.products.defaultValue.set,
@@ -122,7 +117,7 @@ exports.providerResponse = function (req, res) {
                   // return handleError(res, err)
                   return res.status(402).json({})
                 }
-                commerceService.providerResponseUpdate(providerId, {verify: 'done', aba: '', dda: '', ownerSSN: ''}, function (err, providerData) {
+                commerceService.providerResponseUpdate(providerId, {verify: 'done', aba: '', dda: '', ownerSSN: '', paymentId: account.id}, function (err, providerData) {
                   if (err) {
                     // return handleError(res, err)
                     return res.status(403).json({})
