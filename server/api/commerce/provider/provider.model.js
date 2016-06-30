@@ -41,7 +41,8 @@ var ProviderSchema = new Schema({
   createAt: {type: Date, default: new Date()},
   updateAt: {type: Date, default: new Date()},
   verify: {type: String,default: 'pending'},
-  referralCode: { type: String, default: ''} // email
+  referralCode: { type: String, default: ''}, // email
+  paymentId: { type: String, default: ''}
 })
 
 /**
